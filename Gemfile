@@ -12,6 +12,7 @@ gem 'spring',        group: :development
 gem 'unicorn'
 
 gem 'laser-cutter'
+gem 'turbolinks'
 
 gem 'rb-fsevent' 
 # Use Capistrano for deployment
