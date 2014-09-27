@@ -13,3 +13,39 @@
  *= require_tree .
  *= require_self
  */
+
+label, .form-element, .form-explanation {
+	float: left;
+	margin-right: 15px;
+	width: 200px;
+}
+
+label {
+    text-align: right;
+}
+
+textarea:focus, input:focus {
+	border: 0px solid #00FF00;
+}
+
+h4 {
+    color: #A0A0A0;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+#formDiv {
+    position:relative;
+    overflow: hidden;
+    width: 600px;
+    margin-bottom: 50px;
+}
+
+#formDiv input {
+    width: 120px;
+}
+
+.navbar-brand {
+    font-size: 24pt;
+    font-weight: bold;
+
+}
