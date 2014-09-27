@@ -13,6 +13,7 @@ gem 'unicorn'
 
 gem 'laser-cutter'
 
+gem 'rb-fsevent' 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -23,5 +24,4 @@ group :test, :development, :demo do
   gem 'spring-commands-rspec'
   gem 'rspec-rails'
   gem 'guard-rspec'
-  gem 'rb-fsevent' if `uname` =~ /Darwin/
 end
