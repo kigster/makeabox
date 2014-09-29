@@ -15,37 +15,55 @@
  */
 
 label, .form-element, .form-explanation {
-	float: left;
-	margin-right: 15px;
-	width: 200px;
+    float: left;
+    margin-right: 15px;
 }
 
 label {
+    width: 100px;
     text-align: right;
 }
 
-textarea:focus, input:focus {
-	border: 0px solid #00FF00;
+label:hover {
+    cursor: pointer;
+}
+
+textarea:focus, input[type='text']:focus {
+    background-color: #F0FFF0;
 }
 
 h4 {
+    margin-top: 30px;
     color: #A0A0A0;
-    border-bottom: 1px solid #DDDDDD;
 }
 
-#formDiv {
-    position:relative;
-    overflow: hidden;
-    width: 600px;
-    margin-bottom: 50px;
+input[type='number'].numeric {
+    width: 80px !important;
+    text-align: right;
 }
-
-#formDiv input {
-    width: 120px;
-}
-
 .navbar-brand {
     font-size: 24pt;
     font-weight: bold;
+}
 
+footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 1px solid #DDDDDD;
+}
+
+.error {
+    color: #FF8080;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #FF8080;
+}
+
+.logo {
+    width: 100%;
+    text-align: center;
+}
+
+.spacer-50 {
+    height: 50px;
 }

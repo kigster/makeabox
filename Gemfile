@@ -9,9 +9,10 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'unicorn'
 gem "twitter-bootstrap-rails"
-gem 'laser-cutter', '>=0.4.1'
+gem 'laser-cutter', '>=0.5.0'
 gem 'turbolinks'
 gem 'rb-fsevent'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'spring'

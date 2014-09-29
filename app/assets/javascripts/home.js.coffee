@@ -6,3 +6,9 @@ jQuery ->
   $("input[name='config[units]'").on "click", (e) ->
     f = $(e.target).closest("form")
     f.submit()
+
+  $('.numeric').on "keypress", (e)->
+    char_code = e.which || e.key_code
+    char_str = String.fromCharCode(char_code);
+    if /[a-zA-Z]/.test(char_str)
+      return false
