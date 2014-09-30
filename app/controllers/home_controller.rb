@@ -1,22 +1,17 @@
 class HomeController < ApplicationController
+
+  before_filter :handle_cache_control,
+                :load_parameters,
+                :handle_unit_change
+
+
   def index
-    @config = Laser::Cutter::Configuration.new(params[:config] || {} )
-    if params['units'] && params['units'] != @config.units
-      @config.units = params['units']
-      @config.change_units(params['units'] == 'in' ? 'mm' : 'in')
-    end
-    @config.page_size ||= 'LETTER'
-    @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
-      digits = @config.units.eql?('in') ? 1 : 0
-      [ sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0]) ]
-    end
+    populate_form_fields
 
-    %w(width height depth thickness notch).each do |f|
-      @config[f] = nil if @config[f] == 0.0
-    end
+    if params['commit'] && request.post?
 
-    if params['commit']
-      @config['file'] = "/tmp/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
+      not_cacheable!
+      @config['file'] = exported_file_name
       begin
         @config.validate!
         generate_pdf @config
@@ -28,6 +23,41 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def populate_form_fields
+    @config.page_size ||= 'LETTER'
+    @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
+      digits = @config.units.eql?('in') ? 1 : 0
+      [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
+    end
+
+    %w(width height depth thickness notch).each do |f|
+      @config[f] = nil if @config[f] == 0.0
+    end
+  end
+
+  def load_parameters
+    @config = Laser::Cutter::Configuration.new(params[:config] || {})
+  end
+
+  def handle_cache_control
+    if request.get? && params[:config].nil?
+      expires_in 20.minutes, :public => true
+    else
+
+    end
+  end
+
+  def handle_unit_change
+    if params['units'] && params['units'] != @config.units
+      @config.units = params['units']
+      @config.change_units(params['units'] == 'in' ? 'mm' : 'in')
+    end
+  end
+
+  def exported_file_name
+    "/tmp/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
+  end
 
   def generate_pdf(config)
     r = Laser::Cutter::Renderer::LayoutRenderer.new(config)
