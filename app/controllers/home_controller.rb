@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @config = Laser::Cutter::Configuration.new(params[:config] || {})
+    @config = Laser::Cutter::Configuration.new(params[:config] || {} )
     if params['units'] && params['units'] != @config.units
       @config.units = params['units']
       @config.change_units(params['units'] == 'in' ? 'mm' : 'in')

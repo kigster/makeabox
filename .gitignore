@@ -14,3 +14,19 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+**/*.pdf
+**/.DS_Store
+**/*.swp
+*.gem
+*.rbc
+.bundle
+.config
+.yardoc
+tmp
+*.bundle
+*.so
+*.o
+*.a
+mkmf.log
+.idea/
+.ruby_version

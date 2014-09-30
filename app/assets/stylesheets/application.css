@@ -46,6 +46,24 @@ input[type='number'].numeric {
     font-weight: bold;
 }
 
+.logo-name {
+    float: left;
+    width: 250px;
+    margin-top: -10px;
+}
+
+.logo-image {
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-top: 0px;
+}
+
+.btn-pink {
+    background-color: #ff5e5e;
+    color: white;
+}
+
 footer {
     margin-top: 40px;
     padding-top: 10px;
@@ -57,13 +75,23 @@ footer {
     text-align: center;
     padding: 10px;
     border: 1px solid #FF8080;
+    margin-bottom: 20px;
 }
 
-.logo {
-    width: 100%;
-    text-align: center;
-}
 
+
+.spacer-20 {
+    height: 20px;
+}
 .spacer-50 {
     height: 50px;
 }
+
+.form-label-and-select {
+    width: 300px;
+}
+.form-label-and-element {
+    width: 200px;
+}
+
+
