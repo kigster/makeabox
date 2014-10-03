@@ -2,14 +2,12 @@ class HomeController < ApplicationController
 
   before_filter :handle_cache_control,
                 :load_parameters,
-                :handle_unit_change
+                :populate_form_fields,
+                :handle_units_change
 
 
   def index
-    populate_form_fields
-
     if params['commit'] && request.post?
-
       not_cacheable!
       @config['file'] = exported_file_name
       begin
@@ -23,16 +21,9 @@ class HomeController < ApplicationController
   end
 
   private
-
-  def populate_form_fields
-    @config.page_size ||= 'LETTER'
-    @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
-      digits = @config.units.eql?('in') ? 1 : 0
-      [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
-    end
-
-    %w(width height depth thickness notch).each do |f|
-      @config[f] = nil if @config[f] == 0.0
+  def handle_cache_control
+    if request.get? && params[:config].nil?
+      expires_in 15.minutes, :public => true, must_validate: true
     end
   end
 
@@ -40,15 +31,18 @@ class HomeController < ApplicationController
     @config = Laser::Cutter::Configuration.new(params[:config] || {})
   end
 
-  def handle_cache_control
-    if request.get? && params[:config].nil?
-      expires_in 20.minutes, :public => true
-    else
-
+  def populate_form_fields
+    %w(width height depth thickness).each do |f|
+      @config[f] = nil if @config[f] == 0.0
+    end
+    @config.page_size ||= 'LETTER'
+    @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
+      digits = @config.units.eql?('in') ? 1 : 0
+      [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
     end
   end
 
-  def handle_unit_change
+  def handle_units_change
     if params['units'] && params['units'] != @config.units
       @config.units = params['units']
       @config.change_units(params['units'] == 'in' ? 'mm' : 'in')

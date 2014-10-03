@@ -120,13 +120,25 @@
     <div class="spacer-20"></div>
 
     <div class="row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-4">
-        <div class="text-center">
-          <%= submit_tag("Make My Pretty Box!", class: 'btn btn-lg active btn-pink') %>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4 text-center">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Use Cookies to Save Settings</h4>
+          </div>
+          <div class="panel-body">
+            <div class="btn-group" id="save-clear" style="min-width: 200px; margin: 0 auto;">
+              <button type="button" class="btn btn-default" id="save">Save</button>
+              <button type="button" class="btn btn-default" id="restore">Restore</button>
+              <button type="button" class="btn btn-default" id="clear">Clear</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-sm-4"></div>
+      <div class="col-sm-4 text-center">
+        <%= submit_tag("Make My Pretty Box!", class: 'btn btn-lg btn-pink') %>
+      </div>
+      <div class="col-sm-1"></div>
     </div>
 
 <% end %>

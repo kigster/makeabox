@@ -12,3 +12,16 @@ jQuery ->
     char_str = String.fromCharCode(char_code);
     if /[a-zA-Z]/.test(char_str)
       return false
+
+  $('#clear').on "click", (e) ->
+    $('form').clear();
+
+  $('#save').on "click", (e) ->
+    $.cookie("makeabox-settings", $('form').serialize());
+
+  $('#restore').on "click", (e) ->
+    settings = $.cookie("makeabox-settings");
+    if settings
+      $('form').deserialize(settings);
+
+
