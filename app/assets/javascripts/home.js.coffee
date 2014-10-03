@@ -17,7 +17,7 @@ jQuery ->
     $('form').clear();
 
   $('#save').on "click", (e) ->
-    $.cookie("makeabox-settings", $('form').serialize());
+    $.cookie("makeabox-settings", $('form').serialize(),  { expires: 365, path: '/' });
 
   $('#restore').on "click", (e) ->
     settings = $.cookie("makeabox-settings");
