@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/kigster/laser-cutter.git
+  revision: 82129c39c88b6ec1caa26229de4b3717e7af72df
+  specs:
+    laser-cutter (0.5.1)
+      colored
+      hashie
+      prawn
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -66,10 +75,6 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     kgio (2.9.2)
-    laser-cutter (0.5.1)
-      colored
-      hashie
-      prawn
     listen (2.7.11)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -188,7 +193,7 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
-  laser-cutter (>= 0.5.1)
+  laser-cutter (>= 0.5.1)!
   newrelic_rpm
   rails (= 4.1.6)
   rb-fsevent
