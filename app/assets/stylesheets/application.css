@@ -53,14 +53,22 @@ input[type='number'].numeric {
     float: left;
 }
 
-.btn-pink {
+.btn-pink:default {
     background-color: #ff5e5e;
+    border-color: #af2e2e;
     color: white;
+}
+
+.btn-pink:hover {
+    color: white;
+    background-color: #ef2e2e;
+    border-color: white;
 }
 
 footer {
     margin-top: 40px;
-    padding-top: 10px;
+    padding: 10px 20px;
+
     border-top: 1px solid #DDDDDD;
 }
 
@@ -78,6 +86,11 @@ footer {
 
 .spacer-50 {
     height: 50px;
+}
+
+#clear-box-container {
+    text-align: right;
+    width: 200px;
 }
 
 .form-label-and-select {
@@ -103,4 +116,3 @@ footer {
     }
 
 }
-

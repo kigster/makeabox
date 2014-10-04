@@ -1,6 +1,7 @@
 
-$.fn.clear = function () {
-    $(this).find('input')
+$.fn.clear = function (className) {
+    var context = className ? $(this).find(className + " input") : $(this).find('input');
+    context
         .filter(':text, :password, :file').val('')
         .end()
         .filter('.numeric').val('')
