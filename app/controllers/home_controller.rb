@@ -15,6 +15,7 @@ class HomeController < ApplicationController
         generate_pdf @config
       rescue Exception => e
         @error = e.message
+        Rails.logger.error(e.backtrace.join("\n"))
         # TODO: delete the temp file!
       end
     end
@@ -56,6 +57,7 @@ class HomeController < ApplicationController
   def generate_pdf(config)
     r = Laser::Cutter::Renderer::LayoutRenderer.new(config)
     r.render
+    self.temp_files << config['file']
     send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
   end
 
