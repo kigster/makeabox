@@ -32,14 +32,14 @@ class HomeController < ApplicationController
   end
 
   def populate_form_fields
-    %w(width height depth thickness).each do |f|
-      @config[f] = nil if @config[f] == 0.0
+    %w(width height depth thickness notch page_size).each do |f|
+      @config[f] = nil if @config[f] == 0.0 || @config[f] == ""
     end
-    @config.page_size ||= 'LETTER'
     @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
       digits = @config.units.eql?('in') ? 1 : 0
       [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
     end
+    @page_size_options.insert(0, ["Auto Fit the Box", ""])
   end
 
   def handle_units_change

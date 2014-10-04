@@ -2,9 +2,15 @@
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8  ">
-        <div class="panel panel-default">
+
+        <div class="panel panel-default"     id="slide-panel">
           <div class="panel-heading">
-            <h3 class="panel-title">Hey, what is up folks!</h3>
+            <h3 class="panel-title">
+              <div class="pull-right" id="opener">
+                <i class="fa fa-times"></i>
+              </div>
+              Hey, what is up folks!
+            </h3>
           </div>
           <div class="panel-body">
             <p class="lead">Are you here to make some boxes? It's so fun and simple! All you need to know is
@@ -59,17 +65,12 @@
           </div>
         </div>
 
-
         <div class="panel panel-default box-dimensions">
           <div class="panel-heading">
             <h4 class="panel-title">Box Dimensions</h4>
           </div>
           <div class="panel-body">
             <%= raw(config_form_element_group(%w(width height depth thickness notch), @config)) %>
-            <p>
-              <%= label_tag("", "") %>
-              <button type="button" class="btn btn-sm btn-warning" id="clear-box">Clear Values</button>
-            </p>
           </div>
 
           <div class="panel-footer small">
@@ -78,18 +79,20 @@
           </div>
         </div>
 
-        <!--<div class="panel panel-default invisible">-->
-          <!--<div class="panel-heading">-->
-            <!--<h4 class="panel-title">Use Cookies to Save Settings</h4>-->
-          <!--</div>-->
-          <!--<div class="panel-body">-->
-            <!--<div class="btn-group" id="save-clear" style="min-width: 200px; margin: 0 auto;">-->
-              <!--<button type="button" class="btn btn-default" id="save">Save</button>-->
-              <!--<button type="button" class="btn btn-default" id="restore">Restore</button>-->
-              <!--<button type="button" class="btn btn-default" id="clear">Clear</button>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="pull-right">(Optional)</span>
+            <h4 class="panel-title">Use Cookies to Save Settings</h4>
+
+          </div>
+          <div class="panel-body">
+            <div class="btn-group btn-group-md" id="save-clear">
+              <button type="button" class="btn btn-default" id="save">Save</button>
+              <button type="button" class="btn btn-default" id="restore">Restore</button>
+              <button type="button" class="btn btn-default" id="clear">Clear</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="col-sm-4">
@@ -112,6 +115,11 @@
             <h4 class="panel-title">Orientation and Page Size</h4>
           </div>
           <div class="panel-body">
+            <p class="form-label-and-select">
+              <%= label_tag(:page_size, "Page Size") %>&nbsp;<%= select_tag('config[page_size]',
+                            options_for_select(@page_size_options,
+                                               @page_size_options.find { |a| a.first.include?(@config.page_size || "") })) %>
+            </p>
 
             <p>
               <%= label_tag(:page_layout_portrait, "Portrait") %>
@@ -121,10 +129,6 @@
             <p>
               <%= label_tag(:page_layout_landscape, "Landscape") %>
               <%= radio_button_tag('config[page_layout]', "landscape", @config.page_layout == 'landscape') %>
-            </p>
-
-            <p class="form-label-and-select">
-              <%= label_tag(:page_size, "Page Size") %>&nbsp;<%= select_tag('config[page_size]', options_for_select(@page_size_options, @page_size_options.find { |a| a.first.include?(@config.page_size) })) %>
             </p>
 
             <p>
@@ -146,7 +150,7 @@
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8 text-center">
-        <%= submit_tag("Make My Pretty Box!", class: 'btn btn-lg btn-primary active btn-pink') %>
+        <%= submit_tag("Make My Pretty Box!", id: 'make-box', class: 'btn btn-lg btn-primary active btn-pink') %>
       </div>
       <div class="col-sm-2"></div>
     </div>

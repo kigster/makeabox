@@ -10,7 +10,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'unicorn'
 gem "twitter-bootstrap-rails"
-gem 'laser-cutter', '>=0.5.1', github: 'kigster/laser-cutter'
+gem 'laser-cutter', '>=0.5.2', github: 'kigster/laser-cutter'
 gem 'turbolinks'
 gem 'rb-fsevent'
 gem 'newrelic_rpm'

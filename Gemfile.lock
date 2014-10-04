@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/kigster/laser-cutter.git
-  revision: 82129c39c88b6ec1caa26229de4b3717e7af72df
+  revision: 3071d16612181014ca3162f6c4314bf93a42bf1d
   specs:
-    laser-cutter (0.5.1)
+    laser-cutter (0.5.2)
       colored
       hashie
       prawn
@@ -193,7 +193,7 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
-  laser-cutter (>= 0.5.1)!
+  laser-cutter (>= 0.5.2)!
   newrelic_rpm
   rails (= 4.1.6)
   rb-fsevent

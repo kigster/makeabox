@@ -29,23 +29,26 @@ jQuery ->
 
   $(document).on 'ready', (e) ->
     window.handler = new MakeABox.FormHandler('pdf-generator')
+
+  $('.numeric').on "keypress", (e)->
+    return handler.prevent_non_numeric(e)
+
+  $('#clear').on "click", (e) ->
+    handler.clear()
+
+  $('#clear-box').on "click", (e) ->
+    handler.clear('.box-dimensions')
+
+  $('#save').on "click", (e) ->
+    handler.save()
+
+  $('#restore').on "click", (e) ->
     handler.restore()
 
-    $('.numeric').on "keypress", (e)->
-      return handler.prevent_non_numeric(e)
-
-    $('#clear').on "click", (e) ->
-      handler.clear()
-
-    $('#clear-box').on "click", (e) ->
-      handler.clear('.box-dimensions')
-
-    $('#save').on "click", (e) ->
-      handler.save()
-
-    $('#restore').on "click", (e) ->
-      handler.restore()
-
-    $('form#pdf-generator').on 'submit', (e) ->
-      handler.save()
-
+  $('#opener').on 'click', (e) ->
+     panel = $('#slide-panel')
+     if panel.hasClass("hidden")
+         panel.removeClass('hidden')
+     else
+         panel.addClass('hidden')
+     return false;
