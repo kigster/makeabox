@@ -29,14 +29,15 @@ class MakeABox.FormHandler
     else
       $('#page-settings').show()
 
-jQuery ->
-  $("input[name='config[units]'").on "click", (e) ->
-    f = $(e.target).closest("form")
-    f.submit()
 
+jQuery ->
   $(document).on 'ready', (e) ->
     window.handler = new MakeABox.FormHandler('pdf-generator')
     handler.updatePageSettings()
+
+  $("input[name='config[units]'").on "click", (e) ->
+    f = $(e.target).closest("form")
+    f.submit()
 
   $('.numeric').on "keypress", (e)->
     return handler.preventNonNumeric(e)
@@ -63,3 +64,9 @@ jQuery ->
   $('#restore').on "click", (e) ->
     handler.restore()
 
+  $('.logo-image, .logo-name').on 'click', (e) ->
+    document.location = '/'
+    false
+
+  $('#thickness-info').on 'click', (e) ->
+    $('#thickness-info-modal').modal('show')

@@ -45,12 +45,13 @@ input[type='number'].numeric {
 .logo-name {
     float: left;
     width: 200px;
-    margin-left: 30px;
+    margin-left: 0px;
 }
 
 .logo-image {
     width: 50px;
     float: left;
+
 }
 
 .btn-pink:default {
@@ -133,6 +134,19 @@ dl.dl-horizontal dd.last {
     margin-bottom: -20px;
 }
 
-#help:hover {
+#help:hover, #thickness-info:hover {
     cursor: pointer;
 }
+
+#thickness-info {
+    position: absolute;
+    margin-top:45px;
+    float: right;
+}
+
+span.inches, span.mm {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+

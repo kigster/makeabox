@@ -23,9 +23,9 @@ class HomeController < ApplicationController
 
   private
   def handle_cache_control
-    if request.get? && params[:config].nil?
-      expires_in 15.minutes, :public => true, must_validate: true
-    end
+    # if request.get? && params[:config].nil?
+    #   expires_in 15.minutes, :public => true, must_validate: true
+    # end
   end
 
   def load_parameters
