@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/kigster/laser-cutter.git
-  revision: a7e0656369afb048a0df15ee3c97d5b4d2b1c962
+  revision: 9a30f22490c30c831919aca067c2ff3a0e9209dd
   specs:
     laser-cutter (0.5.3)
       colored
