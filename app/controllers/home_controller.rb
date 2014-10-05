@@ -52,7 +52,7 @@ class HomeController < ApplicationController
   end
 
   def exported_file_name
-    "/tmp/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
+    "#{Rails.root}/tmp/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
   end
 
   def generate_pdf(config)
