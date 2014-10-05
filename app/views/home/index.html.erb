@@ -1,81 +1,6 @@
-<!-- Modal -->
-<div class="modal fade" id="thickness-info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Standard Acrylic Thickness Values</h4>
-      </div>
-      <div class="modal-body">
-        <strong><span class="inches">Inches</span><span class="mm">Millimeters</span></strong><br />
-        <span class="inches">0.060</span><span class="mm">1.5</span>
-        <span class="inches">0.080</span><span class="mm">2.0</span>
-        <span class="inches">0.098</span><span class="mm">2.5</span>
-        <span class="inches">0.100</span><span class="mm">2.5</span>
-        <span class="inches">0.118</span><span class="mm">3.0</span>
-        <span class="inches">0.125</span><span class="mm">3.2</span>
-        <span class="inches">0.150</span><span class="mm">3.8</span>
-        <span class="inches">0.177</span><span class="mm">4.3</span>
-        <span class="inches">0.177</span><span class="mm">4.5</span>
-        <span class="inches">0.187</span><span class="mm">4.7</span>
-        <span class="inches">0.197</span><span class="mm">5.0</span>
-        <span class="inches">0.220</span><span class="mm">5.6</span>
-        <span class="inches">0.236</span><span class="mm">6.0</span>
-        <span class="inches">0.250</span><span class="mm">6.4</span>
-        <span class="inches">0.295</span><span class="mm">7.5</span>
-        <span class="inches">0.312</span><span class="mm">7.9</span>
-        <span class="inches">0.354</span><span class="mm">9.0</span>
-        <span class="inches">0.375</span><span class="mm">9.5</span>
-        <span class="inches">0.472</span><span class="mm">12.0</span>
-        <span class="inches">0.500</span><span class="mm">12.7</span>
-        <span class="inches">0.591</span><span class="mm">15.0</span>
-        <span class="inches">0.625</span><span class="mm">15.9</span>
-        <span class="inches">0.708</span><span class="mm">18.0</span>
-        <span class="inches">0.750</span><span class="mm">19.1</span>
-        <span class="inches">0.944</span><span class="mm">24.0</span>
-        <span class="inches">1.000</span><span class="mm">25.4</span>
-        <span class="inches">1.125</span><span class="mm">28.6</span>
-        <span class="inches">1.500</span><span class="mm">38.1</span>
-        <span class="inches">1.750</span><span class="mm">44.5</span>
-        <span class="inches">2.000</span><span class="mm">50.8</span>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row hidden" id="introduction">
-  <div class="col-sm-2"></div>
-  <div class="col-sm-8  ">
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">
-          <div class="pull-right" id="opener">
-            <i class="fa fa-times fa-lg"></i>
-          </div>
-          Hey, what is up folks!
-        </h3>
-      </div>
-      <div class="panel-body">
-        <p class="md">Are you here to make some boxes? It's so fun and simple! All you need to know is
-          that this little tool enables you to generate a design for a custom-sized box,
-          that's supposed to be laser-cut out of such material as acrylic or wood, or even glass.
-          More importantly, designs include notches that allow the sides of the box to snap
-          perfectly together!
-
-        <p class="small">The PDF you generate will be downloaded straight to your computer,
-          and it's ready for printing on a laser cutter, or you can import it into a graphics
-          software (such as Adobe Illustrator&trade;) for further customization.</p>
-
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-2"></div>
-</div>
+<%= render 'modal_advanced_info' %>
+<%= render 'modal_introduction' %>
+<%= render 'modal_thickness' %>
 
 <div class="row">
   <div class="col-sm-2"></div>
@@ -90,13 +15,12 @@
 </div>
 
 <%= form_tag("", method: "post", novalidate: true, id: 'pdf-generator') do %>
-
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-          <i id="help" class="pull-right fa fa-question-circle fa-lg"></i>
+          <i id="introduction" class="pull-right fa fa-question-circle fa-lg"></i>
             <h4 class="panel-title">Units</h4>
           </div>
           <div class="panel-body">
@@ -119,61 +43,35 @@
           </div>
           <div class="panel-body">
             <p>Note: all dimensions are internal (inside of the box).</p>
-            <%= raw(config_form_element_group(%w(width height depth), @config)) %>
-
+            <%= raw(config_form_element_group(%w(width height depth), @config, true, 1)) %>
             <hr/>
+            <%= raw(config_form_element_group(%w(thickness), @config, true, 4)) %>
             <dl class="dl-horizontal">
-              <dt>Thickness</dt>
-              <dd class="small">of the material that's being cut. Typical values are 3, 4.7, 5, 6 (in mm),
-                or 0.125, 0.187, 0.25 (in inches). <i class="fa fa-info-circle fa-lg" id="thickness-info"></i>
+              <dt></dt>
+              <dd class="small">of the material that's being cut. &nbsp;
+                <i class="fa fa-info-circle fa-lg" id="thickness-info"></i>
               </dd>
             </dl>
-
-            <%= raw(config_form_element_group(%w(thickness), @config, false)) %>
-
-            <hr/>
-            <dl class="dl-horizontal">
-              <dt>Notch</dt>
-              <dd class="small">is the length of the notch used to join the sides. Leave this value blank to use 3x
-                thickness as a default.
-              </dd>
-            </dl>
-            <%= raw(config_form_element_group(%w(notch), @config, false)) %>
-
-
           </div>
         </div>
-
-
       </div>
 
       <div class="col-sm-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h4 class="panel-title">Optional Settings</h4>
+            <i id="advanced-info" class="pull-right fa fa-info-circle fa-lg"></i>
+            <h4 class="panel-title">Advanced Settings</h4>
           </div>
           <div class="panel-body">
-            <%= raw(config_form_element_group(%w(margin padding stroke), @config)) %>
-          </div>
-          <div class="panel-footer small">
+            <%= raw(config_form_element_group(%w(notch), @config)) %>
             <dl class="dl-horizontal">
-              <dt>Margin</dt>
-              <dd>is spacing around the box layout</dd>
-              <dt>Padding</dt>
-              <dd>is the spacing between sides of the box as they are laid out</dd>
-              <dt>Stroke</dt>
-              <dd class="last">is the thickness of the lines drawn.
-                <span class="small">(For an Epilog printer stroke 0.001in is required in order to make a cut.)</span>
+              <dt></dt>
+              <dd class="small">The length of the notch used to join the sides. Leave this value blank to use 3x
+                thickness as a default.
               </dd>
             </dl>
-          </div>
 
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">Orientation and Page Size</h4>
-          </div>
-          <div class="panel-body">
+            <%= raw(config_form_element_group(%w(margin padding stroke), @config)) %>
             <p class="form-label-and-select">
               <%= label_tag(:page_size, "Page Size") %>&nbsp;<%= select_tag('config[page_size]',
                                                                             options_for_select(@page_size_options,
@@ -202,9 +100,7 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <span class="pull-right">(Optional)</span>
             <h4 class="panel-title">Use Cookies to Save Settings</h4>
-
           </div>
           <div class="panel-body">
             <div class="btn-group btn-group-md" id="save-clear">
@@ -224,7 +120,7 @@
     <div class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8 text-center">
-        <%= submit_tag("Make My Pretty Box!", id: 'make-box', class: 'btn btn-lg btn-primary active btn-pink') %>
+        <%= submit_tag("Make My Pretty Box!", tabindex: 5, id: 'make-box', class: 'btn btn-lg btn-primary active btn-pink') %>
       </div>
       <div class="col-sm-2"></div>
     </div>

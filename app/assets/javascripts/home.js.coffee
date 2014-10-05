@@ -45,16 +45,6 @@ jQuery ->
   $('#config_page_size').on 'change', (e) ->
     handler.updatePageSettings()
 
-  $('#help').on 'click', (e) ->
-    $('#introduction').fadeIn("fast")
-    $('#introduction').removeClass("hidden")
-
-  $('#opener').on 'click', (e) ->
-     $('#introduction').fadeOut("fast")
-
-  $('#clear').on "click", (e) ->
-    handler.clear('.box-dimensions')
-
   $('#clear-box').on "click", (e) ->
     handler.clear('.box-dimensions')
 
@@ -70,3 +60,9 @@ jQuery ->
 
   $('#thickness-info').on 'click', (e) ->
     $('#thickness-info-modal').modal('show')
+
+  $('#introduction').on 'click', (e) ->
+    $('#introduction-modal').modal('show')
+
+  $('#advanced-info').on 'click', (e) ->
+    $('#advanced-info-modal').modal('show')
