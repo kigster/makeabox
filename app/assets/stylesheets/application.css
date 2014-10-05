@@ -120,3 +120,19 @@ footer {
     }
 
 }
+
+dl.dl-horizontal dt {
+    width: 100px;
+}
+dl.dl-horizontal dd {
+    margin-left: 115px;
+    margin-bottom: 5px;
+}
+
+dl.dl-horizontal dd.last {
+    margin-bottom: -20px;
+}
+
+#help:hover {
+    cursor: pointer;
+}

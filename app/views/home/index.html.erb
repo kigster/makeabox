@@ -1,34 +1,33 @@
-<%- unless params['commit'] || params['units'] %>
-    <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8  ">
 
-        <div class="panel panel-default"     id="slide-panel">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              <div class="pull-right" id="opener">
-                <i class="fa fa-times"></i>
-              </div>
-              Hey, what is up folks!
-            </h3>
+<div class="row hidden" id="introduction">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8  ">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <div class="pull-right" id="opener">
+            <i class="fa fa-times fa-lg"></i>
           </div>
-          <div class="panel-body">
-            <p class="lead">Are you here to make some boxes? It's so fun and simple! All you need to know is
-              that this little tool enables you to generate a design for a custom-sized box,
-              that's supposed to be laser-cut out of such material as acrylic or wood, or even glass.
-              More importantly, designs include notches that allow the sides of the box to snap
-              perfectly together!
-
-            <p class="small">The PDF you generate will be downloaded straight to your computer,
-              and it's ready for printing on a laser cutter, or you can import it into a graphics
-              software (such as Adobe Illustrator&trade;) for further customization.</p>
-
-          </div>
-        </div>
+          Hey, what is up folks!
+        </h3>
       </div>
-      <div class="col-sm-2"></div>
+      <div class="panel-body">
+        <p class="md">Are you here to make some boxes? It's so fun and simple! All you need to know is
+          that this little tool enables you to generate a design for a custom-sized box,
+          that's supposed to be laser-cut out of such material as acrylic or wood, or even glass.
+          More importantly, designs include notches that allow the sides of the box to snap
+          perfectly together!
+
+        <p class="small">The PDF you generate will be downloaded straight to your computer,
+          and it's ready for printing on a laser cutter, or you can import it into a graphics
+          software (such as Adobe Illustrator&trade;) for further customization.</p>
+
+      </div>
     </div>
-<%- end %>
+  </div>
+  <div class="col-sm-2"></div>
+</div>
 
 <div class="row">
   <div class="col-sm-2"></div>
@@ -49,7 +48,10 @@
       <div class="col-sm-4">
         <div class="panel panel-default">
           <div class="panel-heading">
+          <i id="help" class="pull-right fa fa-question-circle fa-lg"></i>
+
             <h4 class="panel-title">Units</h4>
+
           </div>
           <div class="panel-body">
             <p>
@@ -70,29 +72,32 @@
             <h4 class="panel-title">Box Dimensions</h4>
           </div>
           <div class="panel-body">
-            <%= raw(config_form_element_group(%w(width height depth thickness notch), @config)) %>
-          </div>
+            <p>Note: all dimensions are internal (inside of the box).</p>
+            <%= raw(config_form_element_group(%w(width height depth), @config)) %>
 
-          <div class="panel-footer small">
-            All dimensions are of the internal box, so thickness of material will add twice the thickness on each side.
-            Notch is the length of the notch, but it won't be that exactly, we make best effort to match it.
+            <hr/>
+            <dl class="dl-horizontal">
+              <dt>Thickness</dt>
+              <dd class="small">of the material that's being cut. Typical values are 3mm, 6mm, or 0.125in, 0.25in,
+                etc.
+              </dd>
+            </dl>
+            <%= raw(config_form_element_group(%w(thickness), @config, false)) %>
+
+            <hr/>
+            <dl class="dl-horizontal">
+              <dt>Notch</dt>
+              <dd class="small">is the length of the notch used to join the sides. Leave this value blank to use 3x
+                thickness as a default.
+              </dd>
+            </dl>
+            <%= raw(config_form_element_group(%w(notch), @config, false)) %>
+
+
           </div>
         </div>
 
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <span class="pull-right">(Optional)</span>
-            <h4 class="panel-title">Use Cookies to Save Settings</h4>
 
-          </div>
-          <div class="panel-body">
-            <div class="btn-group btn-group-md" id="save-clear">
-              <button type="button" class="btn btn-default" id="save">Save</button>
-              <button type="button" class="btn btn-default" id="restore">Restore</button>
-              <button type="button" class="btn btn-default" id="clear">Clear</button>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="col-sm-4">
@@ -104,9 +109,16 @@
             <%= raw(config_form_element_group(%w(margin padding stroke), @config)) %>
           </div>
           <div class="panel-footer small">
-            Padding is the distance between sides as they are printed. Stroke is the
-            thickness of the lines created. For Epilog printer, for example, it's required to have
-            stroke of 0.001in in order to cut. This is the default.
+            <dl class="dl-horizontal">
+              <dt>Margin</dt>
+              <dd>is spacing around the box layout</dd>
+              <dt>Padding</dt>
+              <dd>is the spacing between sides of the box as they are laid out</dd>
+              <dt>Stroke</dt>
+              <dd class="last">is the thickness of the lines drawn.
+                <span class="small">(For an Epilog printer stroke 0.001in is required in order to make a cut.)</span>
+              </dd>
+            </dl>
           </div>
 
         </div>
@@ -117,20 +129,21 @@
           <div class="panel-body">
             <p class="form-label-and-select">
               <%= label_tag(:page_size, "Page Size") %>&nbsp;<%= select_tag('config[page_size]',
-                            options_for_select(@page_size_options,
-                                               @page_size_options.find { |a| a.first.include?(@config.page_size || "") })) %>
+                                                                            options_for_select(@page_size_options,
+                                                                                               @page_size_options.find { |a| a.first.include?(@config.page_size || "") })) %>
             </p>
 
-            <p>
-              <%= label_tag(:page_layout_portrait, "Portrait") %>
-              <%= radio_button_tag('config[page_layout]', "portrait", @config.page_layout == 'portrait') %>
-            </p>
+            <div id="page-settings">
+              <p>
+                <%= label_tag(:page_layout_portrait, "Portrait") %>
+                <%= radio_button_tag('config[page_layout]', "portrait", @config.page_layout == 'portrait') %>
+              </p>
 
-            <p>
-              <%= label_tag(:page_layout_landscape, "Landscape") %>
-              <%= radio_button_tag('config[page_layout]', "landscape", @config.page_layout == 'landscape') %>
-            </p>
-
+              <p>
+                <%= label_tag(:page_layout_landscape, "Landscape") %>
+                <%= radio_button_tag('config[page_layout]', "landscape", @config.page_layout == 'landscape') %>
+              </p>
+            </div>
             <p>
               <%= label_tag(:metadata, "Meta Data") %>&nbsp;<%= check_box_tag(:metadata, 1, @config['metadata']) %>
             </p>
@@ -139,6 +152,21 @@
             When checked, meta-data about your box will be included in the PDF for reference.
           </div>
         </div>
+
+        <div class="panel panel-default">
+               <div class="panel-heading">
+                 <span class="pull-right">(Optional)</span>
+                 <h4 class="panel-title">Use Cookies to Save Settings</h4>
+
+               </div>
+               <div class="panel-body">
+                 <div class="btn-group btn-group-md" id="save-clear">
+                   <button type="button" class="btn btn-default" id="save">Save</button>
+                   <button type="button" class="btn btn-default" id="restore">Restore</button>
+                   <button type="button" class="btn btn-default" id="clear">Clear</button>
+                 </div>
+               </div>
+             </div>
 
       </div>
       <div class="col-sm-2"></div>

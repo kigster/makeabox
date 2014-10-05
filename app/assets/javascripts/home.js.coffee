@@ -16,11 +16,18 @@ class MakeABox.FormHandler
   clear:(extraClass) ->
     @form.clear(extraClass)
 
-  prevent_non_numeric: (e) ->
+  preventNonNumeric: (e) ->
     char_code = e.which || e.key_code
     char_str = String.fromCharCode(char_code);
     if /[a-zA-Z]/.test(char_str)
       return false
+
+  updatePageSettings: ->
+    val = $('select#config_page_size option:selected' ).text();
+    if /Auto/i.test(val)
+      $('#page-settings').hide()
+    else
+      $('#page-settings').show()
 
 jQuery ->
   $("input[name='config[units]'").on "click", (e) ->
@@ -29,12 +36,23 @@ jQuery ->
 
   $(document).on 'ready', (e) ->
     window.handler = new MakeABox.FormHandler('pdf-generator')
+    handler.updatePageSettings()
 
   $('.numeric').on "keypress", (e)->
-    return handler.prevent_non_numeric(e)
+    return handler.preventNonNumeric(e)
+
+  $('#config_page_size').on 'change', (e) ->
+    handler.updatePageSettings()
+
+  $('#help').on 'click', (e) ->
+    $('#introduction').fadeIn("fast")
+    $('#introduction').removeClass("hidden")
+
+  $('#opener').on 'click', (e) ->
+     $('#introduction').fadeOut("fast")
 
   $('#clear').on "click", (e) ->
-    handler.clear()
+    handler.clear('.box-dimensions')
 
   $('#clear-box').on "click", (e) ->
     handler.clear('.box-dimensions')
@@ -45,10 +63,3 @@ jQuery ->
   $('#restore').on "click", (e) ->
     handler.restore()
 
-  $('#opener').on 'click', (e) ->
-     panel = $('#slide-panel')
-     if panel.hasClass("hidden")
-         panel.removeClass('hidden')
-     else
-         panel.addClass('hidden')
-     return false;

@@ -29,13 +29,14 @@ class HomeController < ApplicationController
   end
 
   def load_parameters
-    @config = Laser::Cutter::Configuration.new(params[:config] || {})
+    c = params[:config] || {}
+    %w(width height depth thickness notch page_size).each do |f|
+      c[f] = nil if (c[f] == 0.0 || c[f] == "")
+    end
+    @config = Laser::Cutter::Configuration.new(c)
   end
 
   def populate_form_fields
-    %w(width height depth thickness notch page_size).each do |f|
-      @config[f] = nil if @config[f] == 0.0 || @config[f] == ""
-    end
     @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
       digits = @config.units.eql?('in') ? 1 : 0
       [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
