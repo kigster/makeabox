@@ -13,6 +13,7 @@ class HomeController < ApplicationController
       begin
         @config.validate!
         generate_pdf @config
+        NewRelic::Agent.set_transaction_name("#{NewRelic::Agent.get_transaction_name}#pdf")
       rescue Exception => e
         @error = e.message
         Rails.logger.error(e.backtrace.join("\n"))
