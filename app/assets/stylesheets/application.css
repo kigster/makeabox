@@ -144,6 +144,12 @@ span.inches {
     border: 0;
 }
 
+#disqus_thread {
+    width: 97%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
 @media only screen and (max-width: 740px) {
     body {
         padding: 0;
@@ -160,5 +166,10 @@ span.inches {
 
     img.photo {
         width: 70%;
+    }
+
+    #disqus_thread {
+        width: 90%;
+        margin: 0 auto;
     }
 }
