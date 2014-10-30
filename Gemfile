@@ -1,4 +1,4 @@
-ruby '2.1.2'
+ruby '2.1.3'
 source 'https://rubygems.org'
 
 gem 'rails', '4.1.6'
@@ -10,7 +10,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'unicorn'
 gem "twitter-bootstrap-rails"
-gem 'laser-cutter', '>=0.5.3', github: 'kigster/laser-cutter'
+gem 'laser-cutter', '>=1.0.2'
 gem 'turbolinks'
 gem 'rb-fsevent'
 gem 'newrelic_rpm'

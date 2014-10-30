@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/kigster/laser-cutter.git
-  revision: 9a30f22490c30c831919aca067c2ff3a0e9209dd
-  specs:
-    laser-cutter (0.5.3)
-      colored
-      hashie
-      prawn
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -51,10 +42,10 @@ GEM
     colored (1.2)
     diff-lcs (1.2.5)
     erubis (2.7.0)
-    execjs (2.2.1)
-    ffi (1.9.5)
+    execjs (2.2.2)
+    ffi (1.9.6)
     formatador (0.2.5)
-    guard (2.6.1)
+    guard (2.7.0)
       formatador (>= 0.2.4)
       listen (~> 2.7)
       lumberjack (~> 1.0)
@@ -67,7 +58,7 @@ GEM
     hike (1.2.3)
     hitimes (1.2.2)
     i18n (0.6.11)
-    jbuilder (2.1.3)
+    jbuilder (2.2.4)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (3.1.2)
@@ -75,6 +66,10 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     kgio (2.9.2)
+    laser-cutter (1.0.2)
+      colored
+      hashie
+      prawn
     listen (2.7.11)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -83,10 +78,10 @@ GEM
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.3)
+    mime-types (2.4.3)
     minitest (5.4.2)
     multi_json (1.10.1)
-    newrelic_rpm (3.9.4.245)
+    newrelic_rpm (3.9.6.257)
     pdf-core (0.4.0)
     prawn (1.3.0)
       pdf-core (~> 0.4.0)
@@ -124,12 +119,12 @@ GEM
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
       rspec-mocks (~> 3.1.0)
-    rspec-core (3.1.4)
+    rspec-core (3.1.7)
       rspec-support (~> 3.1.0)
     rspec-expectations (3.1.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.1.0)
-    rspec-mocks (3.1.2)
+    rspec-mocks (3.1.3)
       rspec-support (~> 3.1.0)
     rspec-rails (3.1.0)
       actionpack (>= 3.0)
@@ -139,12 +134,12 @@ GEM
       rspec-expectations (~> 3.1.0)
       rspec-mocks (~> 3.1.0)
       rspec-support (~> 3.1.0)
-    rspec-support (3.1.1)
+    rspec-support (3.1.2)
     sass (3.2.19)
-    sass-rails (4.0.3)
+    sass-rails (4.0.4)
       railties (>= 4.0.0, < 5.0)
-      sass (~> 3.2.0)
-      sprockets (~> 2.8, <= 2.11.0)
+      sass (~> 3.2.2)
+      sprockets (~> 2.8, < 2.12)
       sprockets-rails (~> 2.0)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
@@ -158,17 +153,17 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.1.4)
+    sprockets-rails (2.2.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
-      sprockets (~> 2.8)
+      sprockets (>= 2.8, < 4.0)
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
     timers (4.0.1)
       hitimes
     ttfunk (1.4.0)
-    turbolinks (2.3.0)
+    turbolinks (2.5.1)
       coffee-rails
     twitter-bootstrap-rails (3.2.0)
       actionpack (~> 4.1)
@@ -193,7 +188,7 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
-  laser-cutter (>= 0.5.3)!
+  laser-cutter (>= 1.0.2)
   newrelic_rpm
   rails (= 4.1.6)
   rb-fsevent

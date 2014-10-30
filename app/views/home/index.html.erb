@@ -68,15 +68,7 @@
             <h4 class="panel-title">Advanced Settings</h4>
           </div>
           <div class="panel-body">
-            <%= raw(config_form_element_group(%w(notch), @config)) %>
-            <dl class="dl-horizontal">
-              <dt></dt>
-              <dd class="small">The length of the notch used to join the sides. Leave this value blank to use 3x
-                thickness as a default.
-              </dd>
-            </dl>
-
-            <%= raw(config_form_element_group(%w(margin padding stroke), @config)) %>
+            <%= raw(config_form_element_group(%w(notch kerf margin padding stroke), @config)) %>
             <p class="form-label-and-select">
               <%= label_tag(:page_size, "Page Size") %>&nbsp;<%= select_tag('config[page_size]',
                                                                             options_for_select(@page_size_options,

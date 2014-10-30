@@ -31,7 +31,7 @@ class HomeController < ApplicationController
 
   def load_parameters
     c = params[:config] || {}
-    %w(width height depth thickness notch page_size).each do |f|
+    %w(width height depth thickness notch page_size kerf).each do |f|
       c[f] = nil if (c[f] == 0.0 || c[f] == "")
     end
     @config = Laser::Cutter::Configuration.new(c)
