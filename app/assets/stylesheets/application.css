@@ -150,6 +150,11 @@ span.inches {
     margin: 0 auto;
 }
 
+h4.panel-title {
+    margin-bottom: 7px;
+    font-size: 12px;
+}
+
 @media only screen and (max-width: 740px) {
     body {
         padding: 0;
