@@ -14,9 +14,11 @@ gem 'laser-cutter', '>=1.0.2'
 gem 'turbolinks'
 gem 'rb-fsevent'
 gem 'newrelic_rpm'
+gem 'capistrano'
 
 group :development do
   gem 'spring'
+  gem 'capistrano-rails', '~> 1.1.1'
 end
 
 group :test, :development, :demo do
