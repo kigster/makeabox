@@ -10,14 +10,16 @@ class HomeController < ApplicationController
     if params['commit'] && request.post?
       not_cacheable!
       @config['file'] = exported_file_name
-      begin
-        NewRelic::Agent.set_transaction_name("#{NewRelic::Agent.get_transaction_name}#pdf")
-        @config.validate!
-        generate_pdf @config
-      rescue Exception => e
-        @error = e.message
-        Rails.logger.error(e.backtrace.join("\n"))
-        # TODO: delete the temp file!
+      logging "Dumped file [#{@config['file']}]" do
+        begin
+          NewRelic::Agent.set_transaction_name("#{NewRelic::Agent.get_transaction_name}#pdf")
+          @config.validate!
+          generate_pdf @config
+        rescue Exception => e
+          @error = e.message
+          Rails.logger.error(e.backtrace.join("\n"))
+          # TODO: delete the temp file!
+        end
       end
     end
   end

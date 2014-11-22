@@ -45,7 +45,7 @@ jQuery ->
   $('#config_page_size').on 'change', (e) ->
     handler.updatePageSettings()
 
-  $('#clear-box').on "click", (e) ->
+  $('#clear').on "click", (e) ->
     handler.clear('.box-dimensions')
 
   $('#save').on "click", (e) ->

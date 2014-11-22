@@ -24,6 +24,7 @@
             <h4 class="panel-title">Units</h4>
           </div>
           <div class="panel-body">
+
             <p>
               <%= hidden_field_tag("units", @config.units) %>
               <%= label_tag("config[units]_in", "Inches") %>
@@ -42,7 +43,7 @@
             <h4 class="panel-title">Box Dimensions</h4>
           </div>
           <div class="panel-body">
-            <p>Note: all dimensions are internal (inside of the box).</p>
+            <p class="small">Note: all dimensions are internal (inside of the box).</p>
             <%= raw(config_form_element_group(%w(width height depth), @config, true, 1)) %>
             <hr/>
             <%= raw(config_form_element_group(%w(thickness), @config, true, 4)) %>
@@ -100,7 +101,7 @@
             <h4 class="panel-title">Use Cookies to Save Settings</h4>
           </div>
           <div class="panel-body">
-            <div class="btn-group btn-group-md" id="save-clear">
+            <div class="btn-group btn-group-lg" id="save-clear">
               <button type="button" class="btn btn-default" id="save">Save</button>
               <button type="button" class="btn btn-default" id="restore">Restore</button>
               <button type="button" class="btn btn-default" id="clear">Clear</button>

@@ -11,4 +11,11 @@ class ApplicationController < ActionController::Base
   def not_cacheable!
     expires_now
   end
+
+  def logging(message, &block)
+    t1 = Time.now
+    result = yield
+    t2 = Time.now - t1
+    Rails.logger.info(message + sprintf(", elapsed %dms", t2 / 1000))
+  end
 end
