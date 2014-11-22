@@ -3,6 +3,11 @@ worker_processes 16
 timeout 15
 preload_app true
 listen "*:23432", :tcp_nopush => true, :backlog => 64
+app = '/home/kig/makeabox'
+
+pid "#{app}/shared/pids/unicorn.pid"
+stderr_path "#{app}/shared/log/unicorn.stderr.log"
+stdout_path "#{app}/shared/log/unicorn.stdout.log"
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do
