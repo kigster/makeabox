@@ -33,7 +33,7 @@ set :deploy_to, '/home/kig/makeabox'
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
-set :default_env, { path: "/opt/rbenv/versions/2.1.2:$PATH" }
+set :default_env, { path: "/opt/rbenv/versions/2.1.2/bin:$PATH" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
