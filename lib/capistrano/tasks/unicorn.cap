@@ -17,7 +17,7 @@ namespace :unicorn do
   desc 'Stop unicorn'
   task :stop do
     on roles(:app) do
-      execute 'kill `ps -u kig | grep ruby | cut -d " " -f 1` 2>&1 > /dev/null || true'
+      execute 'kill `ps -u kig | grep ruby | cut -d " " -f 1` 2>&1 > /dev/null || true && sleep 5'
     end
   end
 
