@@ -43,12 +43,13 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      invoke 'unicorn:stop'
-      invoke 'unicorn:start'
+      # invoke 'unicorn:stop'
+      # invoke 'unicorn:start'
     end
   end
 
   after :publishing, :restart
+  after :restart, 'unicorn:restart'
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do

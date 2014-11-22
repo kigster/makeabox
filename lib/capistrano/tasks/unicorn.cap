@@ -1,16 +1,26 @@
 namespace :unicorn do
   desc 'Restart unicorn'
+  task :restart do
+    on roles(:app) do
+    end
+  end
   desc 'Start unicorn'
   task :start do
+    
     on roles(:app) do
-      execute "unicorn_rails -D -E #{fetch(:rails_env)} -c config/unicorn.rb"
+      within '/home/kig/makeabox/current' do
+        execute "cd /home/kig/makeabox/current && /opt/rbenv/versions/2.1.2/bin/bundle exec unicorn_rails -D -E #{fetch(:rails_env)} -c config/unicorn.rb"
+      end
     end
   end
 
   desc 'Stop unicorn'
   task :stop do
     on roles(:app) do
-#      execute 'pkill unicorn_rails pkill ruby'
+      execute 'pkill unicorn_rails; pkill ruby'
     end
   end
+
+  before 'unicorn:restart', 'unicorn:stop'
+  after 'unicorn:restart', 'unicorn:start'
 end
