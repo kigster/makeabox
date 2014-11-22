@@ -2,7 +2,11 @@
 lock '3.1.0'
 
 set :application, 'makeabox'
-set :repo_url, 'git@github.com:kigster/makeabox.git'
+set :repo_url, 'https://github.com/kigster/MakeABox.git'
+
+set :bundle_flags, "--jobs=8 --deployment"
+set :bundle_without,  "development test"
+set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -26,10 +30,10 @@ set :deploy_to, '/home/kig/makeabox'
 # set :linked_files, %w{config/database.yml}
 
 # Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "/opt/rbenv/versions/2.1.2:$PATH" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5

@@ -15,6 +15,7 @@ gem 'turbolinks'
 gem 'rb-fsevent'
 gem 'newrelic_rpm'
 gem 'capistrano'
+gem 'capistrano-bundler'
 
 group :development do
   gem 'spring'

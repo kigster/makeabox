@@ -3,14 +3,14 @@ namespace :unicorn do
   desc 'Start unicorn'
   task :start do
     on roles(:app) do
-      execute "bundle exec unicorn_rails -D -E #{fetch(:rails_env)} -c config/unicorn.rb"
+      execute "unicorn_rails -D -E #{fetch(:rails_env)} -c config/unicorn.rb"
     end
   end
 
   desc 'Stop unicorn'
   task :stop do
     on roles(:app) do
-      execute 'pkill unicorn_rails; pkill ruby'
+#      execute 'pkill unicorn_rails pkill ruby'
     end
   end
 end

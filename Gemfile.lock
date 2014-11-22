@@ -205,6 +205,7 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
+  capistrano-bundler
   capistrano-rails (~> 1.1.1)
   coffee-rails (~> 4.0.0)
   guard-rspec
