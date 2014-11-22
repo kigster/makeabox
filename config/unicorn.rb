@@ -2,6 +2,7 @@
 worker_processes 16
 timeout 15
 preload_app true
+listen "*:23432", :tcp_nopush => true, :backlog => 64
 
 before_fork do |server, worker|
   Signal.trap 'TERM' do

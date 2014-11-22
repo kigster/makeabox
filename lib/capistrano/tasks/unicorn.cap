@@ -9,7 +9,7 @@ namespace :unicorn do
     
     on roles(:app) do
       within '/home/kig/makeabox/current' do
-        execute "cd /home/kig/makeabox/current && /opt/rbenv/versions/2.1.2/bin/bundle exec unicorn_rails -D -E #{fetch(:rails_env)} -c config/unicorn.rb"
+        execute "cd /home/kig/makeabox/current && PATH=/opt/rbenv/versions/2.1.2/bin:$PATH bundle exec unicorn_rails -D -E production -c config/unicorn.rb"
       end
     end
   end
