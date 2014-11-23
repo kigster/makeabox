@@ -13,11 +13,11 @@ if [ ! -d "${RAILS_ROOT}/config" ]; then
 fi
 
 sig () {
-  test -s "$PID" && kill -$1 `cat "$PID"`
+  test -s "$PID" && kill -$1 `cat "$PID"` 2>/dev/null
 }
 
 oldsig () {
-  test -s "$OLD_PID" && kill -$1 `cat "$OLD_PID"`
+  test -s "$OLD_PID" && kill -$1 `cat "$OLD_PID"` 2>/dev/null
 }
 
 cmd () {
