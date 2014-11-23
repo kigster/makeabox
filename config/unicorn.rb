@@ -5,7 +5,7 @@ preload_app true
 listen "*:8899", :tcp_nopush => true, :backlog => 64
 app = '/home/kig/makeabox'
 
-pid "#{app}/shared/tmp/unicorn.pid"
+pid "#{app}/shared/tmp/pids/unicorn.pid"
 stderr_path "#{app}/shared/log/unicorn.stderr.log"
 stdout_path "#{app}/shared/log/unicorn.stdout.log"
 

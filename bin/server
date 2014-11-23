@@ -1,0 +1,83 @@
+#!/bin/bash
+# 
+# usage: $0 <command> <environemnt-file>
+#
+# env file shoul contain your RAILS_ENV, secret, etc.
+set -e
+
+RAILS_ROOT=`pwd`
+
+if [ ! -d "${RAILS_ROOT}/config" ]; then
+        echo >&2 "Not in a Rails folder. Can't find config directory"
+        exit 1
+fi
+
+sig () {
+  test -s "$PID" && kill -$1 `cat "$PID"`
+}
+
+oldsig () {
+  test -s "$OLD_PID" && kill -$1 `cat "$OLD_PID"`
+}
+
+cmd () {
+
+  case $1 in
+    start)
+      sig 0 && echo >&2 "Already running" && exit 0
+      echo "Starting"
+      $CMD
+      ;;
+    stop)
+      sig QUIT && echo "Stopping" && exit 0
+      echo >&2 "Not running"
+      ;;
+    force-stop)
+      sig TERM && echo "Forcing a stop" && exit 0
+      echo >&2 "Not running"
+      ;;
+    restart|reload)
+      sig USR2 && sleep 5 && oldsig QUIT && echo "Killing old master" `cat $OLD_PID` && exit 0
+      echo >&2 "Couldn't reload, starting '$CMD' instead"
+      $CMD
+      ;;
+    upgrade)
+      sig USR2 && echo Upgraded && exit 0
+      echo >&2 "Couldn't upgrade, starting '$CMD' instead"
+      $CMD
+      ;;
+    rotate)
+	    sig USR1 && echo rotated logs OK && exit 0
+	    echo >&2 "Couldn't rotate logs" && exit 1
+	    ;;
+    *)
+      echo >&2 "Usage: $0 <start|stop|restart|upgrade|rotate|force-stop> <env-file>"
+      exit 1
+      ;;
+    esac
+}
+
+setup () {
+  echo -n "$RAILS_ROOT: "
+  cd $RAILS_ROOT || exit 1
+  if [ -z "$RAILS_ENV" ]; then
+        echo >&2 "RAILS_ENV is not set"
+        exit 1
+  fi
+  export PID=$RAILS_ROOT/tmp/pids/unicorn.pid
+  export OLD_PID="$PID.oldbin"
+  CMD="bundle exec unicorn_rails -D -E $RAILS_ENV -c config/unicorn.rb"
+}
+
+start_stop () {
+  if [[ ! -z "$2" && -f "$2" ]]; then
+    source $2
+    setup
+    cmd $1
+  else
+    echo "Need 2nd argument"
+  fi
+}
+
+ARGS="$1 $2"
+start_stop $ARGS

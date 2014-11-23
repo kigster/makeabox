@@ -9,7 +9,7 @@ namespace :unicorn do
     
     on roles(:app) do
       within '/home/kig/makeabox/current' do
-        execute "cd /home/kig/makeabox/current && PATH=/opt/rbenv/versions/2.1.2/bin:$PATH SECRET_KEY_BASE=234982349sdffff9988 bundle exec unicorn_rails -D -E production -c config/unicorn.rb"
+        execute "cd /home/kig/makeabox/current && bin/server start ~/.production"
       end
     end
   end
@@ -17,7 +17,7 @@ namespace :unicorn do
   desc 'Stop unicorn'
   task :stop do
     on roles(:app) do
-      execute 'kill `ps -u kig | grep ruby | cut -d " " -f 1` 2>&1 > /dev/null || true && sleep 5'
+      execute "cd /home/kig/makeabox/current && bin/server stop ~/.production"
     end
   end
 
