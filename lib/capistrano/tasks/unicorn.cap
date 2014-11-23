@@ -2,25 +2,23 @@ namespace :unicorn do
   desc 'Restart unicorn'
   task :restart do
     on roles(:app) do
+      within '/home/kig/makeabox/current' do
+        execute "cd /home/kig/makeabox/current && bin/server restart ~/.production"
+      end
     end
   end
   desc 'Start unicorn'
-  task :start do
-    
+  task :start do    
     on roles(:app) do
       within '/home/kig/makeabox/current' do
         execute "cd /home/kig/makeabox/current && bin/server start ~/.production"
       end
     end
   end
-
   desc 'Stop unicorn'
   task :stop do
     on roles(:app) do
       execute "cd /home/kig/makeabox/current && bin/server stop ~/.production"
     end
   end
-
-  before 'unicorn:restart', 'unicorn:stop'
-  after 'unicorn:restart', 'unicorn:start'
 end
