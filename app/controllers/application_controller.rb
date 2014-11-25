@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
     t1 = Time.now
     result = yield
     t2 = Time.now - t1
-    Rails.logger.info(message + sprintf(", elapsed %dms", t2 / 1000))
+    Rails.logger.info(message + sprintf(", elapsed %.4f(ms)", t2 * 1000))
+    result
   end
 end
