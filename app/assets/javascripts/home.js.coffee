@@ -29,15 +29,24 @@ class MakeABox.FormHandler
     else
       $('#page-settings').show()
 
+delay = (ms, func) -> setTimeout func, ms
 
 jQuery ->
   $(document).on 'ready', (e) ->
     window.handler = new MakeABox.FormHandler('pdf-generator')
     handler.updatePageSettings()
+    seenNotice = $.cookie("had-seen-the-notice")
+    if !seenNotice
+      delay 3000, ->
+        $('#one-time-notice').fadeIn "slow"
 
   $("input[name='config[units]'").on "click", (e) ->
     f = $(e.target).closest("form")
     f.submit()
+
+  $('#dont-show-notice').on 'click', (e) ->
+    $.cookie("had-seen-the-notice", "yes",  { expires: 365, path: '/' })
+    $('#one-time-notice').fadeOut "slow"
 
   $('.numeric').on "keypress", (e)->
     return handler.preventNonNumeric(e)
