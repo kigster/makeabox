@@ -2,7 +2,7 @@
 lock '3.1.0'
 
 set :application, 'makeabox'
-set :repo_url, 'https://github.com/kigster/MakeABox.git'
+set :repo_url, 'git@github.com:kigster/MakeABox.git'
 
 set :bundle_flags, "--jobs=8 --deployment"
 set :bundle_without,  "development test"
