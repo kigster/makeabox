@@ -10,6 +10,10 @@ class HomeController < ApplicationController
     if params['commit'] && request.post?
       not_cacheable!
       @config['file'] = exported_file_name
+      if @error
+        flash.now[:error] = @error
+        render and return
+      end
       logging "Dumped file [#{@config['file']}]" do
         begin
           NewRelic::Agent.set_transaction_name("#{NewRelic::Agent.get_transaction_name}#pdf")
@@ -36,6 +40,9 @@ class HomeController < ApplicationController
     %w(width height depth thickness notch page_size kerf).each do |f|
       c[f] = nil if (c[f] == 0.0 || c[f] == "")
     end
+    perimeter = %w(width height depth).map{|f| c[f].to_f }.inject(&:+)
+    perimeter = Laser::Cutter::UnitsConverter.mm2in(perimeter) if c[:units].eql?('mm')
+    @error ||= 'Sorry, this box is too large for the webapp. Please use laser-cutter ruby gem directly. ' if perimeter > 60
     @config = Laser::Cutter::Configuration.new(c)
   end
 
