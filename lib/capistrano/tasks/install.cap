@@ -4,7 +4,8 @@ namespace :install do
     on roles(:app) do
       within "#{deploy_to}" do
         with rails_env: "#{fetch(:stage)}" do
-          execute :rbenv, :install, fetch(:ruby_version)
+          execute :rbenv, :install, '-f', fetch(:ruby_version)
+          execute :rbenv, :default, fetch(:ruby_version)
         end
       end
     end

@@ -5,7 +5,7 @@ set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/MakeABox.git'
 
 set :bundle_flags, "--jobs=8 --deployment"
-set :bundle_without,  "development test"
+set :bundle_without, "development test"
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 
 # Default branch is :master
@@ -34,7 +34,9 @@ set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
-set :default_env, { path: "#{fetch(:user_home)}/.rbenv/versions/#{fetch(:ruby_version)}/bin:#{fetch(:user_home)}/.rbenv/bin:/opt/local/bin:$PATH", 'MAKE_OPTS' => '-j48' }
+set :default_env, { path:         "#{fetch(:user_home)}/.rbenv/versions/#{fetch(:ruby_version)}/bin:#{fetch(:user_home)}/.rbenv/bin:/opt/local/bin:$PATH",
+                    'MAKE_OPTS'   => '-j48',
+                    'RUBY_CFLAGS' => "-L/opt/local/lib -I/opt/local/include" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
