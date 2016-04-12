@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 RSpec.describe HomeController, :type => :controller do
 
   describe "GET index" do
@@ -8,10 +8,11 @@ RSpec.describe HomeController, :type => :controller do
     end
   end
 
-  describe "GET makebox" do
+  describe "POST index" do
     it "returns http success" do
-      get :makebox
+      post :index
       expect(response).to have_http_status(:success)
+      puts response.body
     end
   end
 
