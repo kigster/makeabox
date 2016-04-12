@@ -1,7 +1,7 @@
-role :app, %w{kig@demo100.demo.wanelo.com}
-role :web, %w{kig@demo100.demo.wanelo.com}
+role :app, %w{kig@kig.re}
+role :web, %w{kig@kig.re}
 
-server 'demo100.demo.wanelo.com', user: 'kig', roles: %w{web app}
+server 'kig.re', user: 'kig', roles: %w{web app}
 
 set :ssh_options, {
    keys: %w(/Users/kig/.ssh/id_rsa),
