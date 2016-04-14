@@ -1,26 +1,23 @@
-
-
 namespace :unicorn do
-  desc 'Restart unicorn'
-  task :restart do
-    on roles(:app) do
-      within '/home/kig/makeabox/current' do
-        execute "cd /home/kig/makeabox/current && bin/server restart ~/.production"
-      end
-    end
-  end
-  desc 'Start unicorn'
+  desc 'Start Unicorn'
   task :start do    
     on roles(:app) do
-      within '/home/kig/makeabox/current' do
-        execute "cd /home/kig/makeabox/current && bin/server start ~/.production"
+      within current_path do
+        execute "APP=#{fetch(:application)} RAILS_ENV=#{fetch(:stage)} bundle exec unicorn -c config/unicorn.rb -D"
       end
     end
   end
-  desc 'Stop unicorn'
+  desc 'Stop Unicorn'
   task :stop do
     on roles(:app) do
-      execute "cd /home/kig/makeabox/current && bin/server stop ~/.production"
+      execute "pkill -USR1 #{fetch(:application)}"
     end
   end
+
+  desc 'Restart Unicorn'
+  task :restart do
+  end
+
+  before :restart, :stop
+  after :restart, :start
 end

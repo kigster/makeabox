@@ -1,7 +1,4 @@
-role :app, %w{kig@kig.re}
-role :web, %w{kig@kig.re}
-
-server 'kig.re', user: 'kig', roles: %w{web app}
+server 'app101.dev.nvnt.re', roles: %w{app db web worker}, user: 'kig'
 
 set :ssh_options, {
    keys: %w(/Users/kig/.ssh/id_rsa),

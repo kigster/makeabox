@@ -1,11 +1,40 @@
 # config valid only for Capistrano 3.1
-#lock '3.1.0'
+# lock '3.1.0'
+
+# Standard Flow:
+
+# deploy
+#   deploy:starting
+#     [before]
+#       deploy:ensure_stage
+#       deploy:set_shared_assets
+#     deploy:check
+#   deploy:started
+#   deploy:updating
+#     git:create_release
+#     deploy:symlink:shared
+#   deploy:updated
+#     [before]
+#       deploy:bundle
+#     [after]
+#       deploy:migrate
+#       deploy:compile_assets
+#       deploy:normalize_assets
+#   deploy:publishing
+#     deploy:symlink:release
+#   deploy:published
+#   deploy:finishing
+#     deploy:cleanup
+#   deploy:finished
+#     deploy:log_revision
+
+require 'colored2'
 
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/MakeABox.git'
 
-set :bundle_flags, "--jobs=8 --deployment"
-set :bundle_without, "development test"
+set :bundle_flags, '--jobs=8 --deployment'
+set :bundle_without, 'development test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 
 # Default branch is :master
@@ -14,53 +43,100 @@ set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 set :ruby_version, '2.3.0'
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
-
-# Default valu e for :scm is :git
-# set :scm, :git
+set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/versions/#{fetch(:ruby_version)}/bin"
+set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
 
 # Default value for :format is :pretty
-# set :format, :pretty
+#set :format, :pretty
+set :format, :pretty
+set :log_level, :debug
+set :pty, true
 
-# Default value for :log_level is :debug
-# set :log_level, :debug
+# set :target_os, 'SunOS'
+set :target_os, 'Linux'
 
-# Default value for :pty is false
-# set :pty, true
 
-# Default value for :linked_files is []
 # set :linked_files, %w{config/database.yml}
-
 # Default value for linked_dirs is []
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-# Default value for default_env is {}
-set :default_env, { path:         "#{fetch(:user_home)}/.rbenv/versions/#{fetch(:ruby_version)}/bin:#{fetch(:user_home)}/.rbenv/bin:/opt/local/bin:$PATH",
-                    'MAKE_OPTS'   => '-j48',
-                    'RUBY_CFLAGS' => "-L/opt/local/lib -I/opt/local/include" }
+if fetch(:target_os).eql?('SunOS')
+  set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/opt/local/bin:$PATH",
+                      MAKE_OPTS:       '-j48',
+                      LD_LIBRARY_PATH: '/opt/local/lib',
+                      LDFLAGS:         '-L/opt/local/lib -R/opt/local/lib',
+                      CFLAGS:          '-I/opt/local/include'
+  }
+  set :packages, %w(
+    git
+    gcc49
+    gmake
+    libiconv
+    libxml2
+    libxslt
+    openssl
+    watch
+    zlib
+    tar
+  )
+else
+  set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/opt/local/bin:$PATH",
+                      MAKE_OPTS:       '-j48'
+  }
+  set :packages, %w(
+    build-essential
+    gcc
+    git
+    git-core
+    htop
+    libbz2-dev
+    libffi-dev
+    libmagickwand-dev
+    libmemcached-dev
+    libpq-dev
+    libreadline-dev
+    libssl-dev
+    make
+    pgbouncer
+    postgresql-client
+    wget
+    curl
+    zlib1g-dev
+    libcurl4-openssl-dev
+    libxml2-dev
+    libxslt1-dev
+    libyaml-dev
+  )
+end
+
+puts Dir.pwd
+eval File.read("lib/capistrano/tasks/os/#{fetch(:target_os).downcase}.cap")
+
+before 'bundler:install', 'rbenv:ruby:global'
+# before 'bundler:install', 'smartos:nokogiri'
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-namespace :deploy do
-
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      # invoke 'unicorn:stop'
-      # invoke 'unicorn:start'
-    end
-  end
-
-  after :publishing, :restart
-  after :restart, 'unicorn:restart'
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
-end
+# namespace :deploy do
+#   desc 'Restart application'
+#   task :restart do
+#     on roles(:app), in: :sequence, wait: 5 do
+#       invoke 'unicorn:stop'
+#       invoke 'unicorn:start'
+#     end
+#   end
+#
+#   after :publishing, :restart
+#   after :restart, 'unicorn:restart'
+#
+#   after :restart, :clear_cache do
+#     on roles(:web), in: :groups, limit: 3, wait: 10 do
+#       # Here we can do anything such as:
+#       # within release_path do
+#       #   execute :rake, 'cache:clear'
+#       # end
+#     end
+#   end
+#
+# end

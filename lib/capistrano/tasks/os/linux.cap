@@ -1,0 +1,14 @@
+namespace :os do
+
+  desc 'Install Linux package dependencies'
+  task :packages do
+    on roles(:app) do |role_host|
+      host = SSHKit::Host.new("root@#{role_host}")
+      on host do
+        execute 'apt-get upgrade -y -qqq'
+        execute 'apt-get update -qqq'
+        execute "apt-get install -y -qqq  #{fetch(:packages).join(' ')}"
+      end
+    end
+  end
+end

@@ -1,0 +1,31 @@
+namespace :os do
+  desc 'Install SmartOS package dependencies'
+  task :packages do
+    on roles(:app) do |role_host|
+      host = SSHKit::Host.new("root@#{role_host}")
+      on host do
+        execute "pkgin -y in #{fetch(:packages).join(' ')}"
+      end
+    end
+  end
+
+  task :nogokiri do
+    require 'pp'
+    pp SSHKit.config.command_map.prefix[:gem].shift
+    pp SSHKit.config.command_map.prefix[:gem].shift
+    pp SSHKit.config.command_map.prefix
+    on roles(:app) do
+      execute :gem, <<-EOF
+        install nokogiri -- \
+            --use-system-libraries \
+            --with-xml2-lib=/opt/local/lib \
+            --with-xml2-include=/opt/local/include/libxml2 \
+            --with-xslt-lib=/opt/local/lib \
+            --with-xslt-include=/opt/local/include/libxslt \
+            --with-iconv-lib=/opt/local/lib \
+            --with-iconv-include=/opt/local/include \
+            --with-zlib-dir=/opt/local/lib
+      EOF
+    end
+  end
+end

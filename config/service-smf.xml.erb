@@ -1,0 +1,46 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+  <service name='application/<%= service.name %>' type='service' version='0'>
+    <create_default_instance enabled='false'/>
+    <single_instance/>
+    <dependency name='filesystem' grouping='require_all' restart_on='error' type='service'>
+      <service_fmri value='svc:/system/filesystem/local'/>
+    </dependency>
+    <dependency name='network' grouping='require_all' restart_on='error' type='service'>
+      <service_fmri value='svc:/milestone/network:default'/>
+    </dependency>
+    <dependency name='dnsclient' grouping='require_all' restart_on='error' type='service'>
+      <service_fmri value='svc:/network/dns/client:default'/>
+    </dependency>
+    <dependency name='filesystem-local' grouping='require_all' restart_on='none' type='service'>
+      <service_fmri value='svc:/system/filesystem/local:default'/>
+    </dependency>
+    <dependency name='autofs' grouping='optional_all' restart_on='error' type='service'>
+      <service_fmri value='svc:/system/filesystem/autofs:default'/>
+    </dependency>
+    <method_context>
+      <method_environment>
+        <envvar name='LD_PRELOAD_32' value='/usr/lib/extendedFILE.so.1'/>
+      </method_environment>
+    </method_context>
+    <exec_method name='start' type='method' exec='<%= service.command %>' timeout_seconds='<%= service.timeout.start %>'/>
+    <exec_method name='stop' type='method' exec=':kill' timeout_seconds='<%= service.timeout.stop %>'/>
+    <exec_method name='refresh' type='method' exec=':kill -HUP' timeout_seconds='60'/>
+    <property_group name='application' type='application'>
+    <%- service.properties.each_pair do |property, value| %>
+      <propval name='<%= property %>' type='astring' value='<%= value %>'/>
+    <%- end %>
+    </property_group>
+    <property_group name='startd' type='framework'>
+      <propval name='duration' type='astring' value='contract'/>
+      <propval name='ignore_error' type='astring' value='core,signal'/>
+    </property_group>
+    <stability value='Evolving'/>
+    <template>
+      <common_name>
+        <loctext xml:lang='C'><%= service.description %></loctext>
+      </common_name>
+    </template>
+  </service>
+</service_bundle>
