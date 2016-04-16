@@ -4,7 +4,7 @@ end
 
 namespace :unicorn do
   desc 'Start Unicorn'
-  task :start do    
+  task :start do
     on roles(:app) do
       execute (unicorn :start)
     end

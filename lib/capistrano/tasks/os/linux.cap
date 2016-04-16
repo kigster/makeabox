@@ -11,4 +11,17 @@ namespace :os do
       end
     end
   end
+
+  namespace :unicorn do
+    desc 'Install Unicorn init script'
+    task :init do
+      on roles(:app) do |role_host|
+        host = SSHKit::Host.new("root@#{role_host}")
+        on host do
+          execute "ln -nfs #{current_path}/exe/unicorn-init /etc/rc2.d/S98unicorn"
+          execute "ln -nfs #{current_path}/exe/unicorn-init /etc/rc2.d/K01unicorn"
+        end
+      end
+    end
+  end
 end

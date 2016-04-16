@@ -132,5 +132,6 @@ namespace :deploy do
 
   after :publishing, :restart
   after :restart, 'unicorn:restart'
-
+  # ensure OS-specifc init script exists, so that reboots are OK
+  after :finished, 'os:unicorn:init'
 end

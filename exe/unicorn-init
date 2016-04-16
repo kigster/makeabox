@@ -1,18 +1,31 @@
 #!/usr/bin/env bash
 set -e
-# Example init script, this can be used with nginx, too,
-# since nginx and unicorn accept the same signals
 
-# Feel free to change any of the following variables for your app:
+[[ -z "$RAILS_ENV" ]] && {
+  if [[ "$(uname -s)" == "Linux" ]]; then
+    RAILS_ENV=production
+  else
+    RAILS_ENV=development
+  fi
+}
+
+if [[ "$RAILS_ENV" == "production" ]]; then
+  APP_ROOT=/home/kig/apps/makeabox/current
+  export OWNER=kig
+else
+  APP_ROOT=$(dirname $(dirname $0))
+  export OWNER=$USER
+fi
+
+if [[ "$(whoami)" == "root" ]]; then
+  su - $OWNER -c "cd ${APP_ROOT} && ./exe/unicorn-init $1 >/dev/null"
+  exit 0
+fi
+
 eval "$(rbenv init -)"
 BUNDLE=$(which bundle)
 TIMEOUT=${TIMEOUT-60}
 
-if [[ "$RAILS_ENV" == "production" ]]; then
-  APP_ROOT=/home/kig/apps/makeabox/current
-else
-  APP_ROOT=$(dirname $(dirname $0))
-fi
 
 PID=$APP_ROOT/tmp/pids/unicorn.pid
 CMD="$BUNDLE exec unicorn -D -c $APP_ROOT/config/unicorn.rb"
@@ -25,56 +38,56 @@ old_pid="$PID.oldbin"
 cd $APP_ROOT || exit 1
 
 sig () {
-	test -s "$PID" && kill -$1 `cat $PID`
+    test -s "$PID" && kill -$1 `cat $PID`
 }
 
 oldsig () {
-	test -s $old_pid && kill -$1 `cat $old_pid`
+    test -s $old_pid && kill -$1 `cat $old_pid`
 }
 
 case $action in
 start)
-	sig 0 && echo >&2 "Already running" && exit 0
-	$CMD
-	;;
+    sig 0 && echo >&2 "Already running" && exit 0
+    $CMD
+    ;;
 stop)
-	sig QUIT && exit 0
-	echo >&2 "Not running"
-	;;
+    sig QUIT && exit 0
+    echo >&2 "Not running"
+    ;;
 force-stop)
-	sig TERM && exit 0
-	echo >&2 "Not running"
-	;;
+    sig TERM && exit 0
+    echo >&2 "Not running"
+    ;;
 restart|reload)
-	sig HUP && echo reloaded OK && exit 0
-	echo >&2 "Couldn't reload, starting '$CMD' instead"
-	$CMD
-	;;
+    sig HUP && echo reloaded OK && exit 0
+    echo >&2 "Couldn't reload, starting '$CMD' instead"
+    $CMD
+    ;;
 upgrade)
-	if sig USR2 && sleep 2 && sig 0 && oldsig QUIT
-	then
-		n=$TIMEOUT
-		while test -s $old_pid && test $n -ge 0
-		do
-			printf '.' && sleep 1 && n=$(( $n - 1 ))
-		done
-		echo
+    if sig USR2 && sleep 2 && sig 0 && oldsig QUIT
+    then
+        n=$TIMEOUT
+        while test -s $old_pid && test $n -ge 0
+        do
+            printf '.' && sleep 1 && n=$(( $n - 1 ))
+        done
+        echo
 
-		if test $n -lt 0 && test -s $old_pid
-		then
-			echo >&2 "$old_pid still exists after $TIMEOUT seconds"
-			exit 1
-		fi
-		exit 0
-	fi
-	echo >&2 "Couldn't upgrade, starting '$CMD' instead"
-	$CMD
-	;;
+        if test $n -lt 0 && test -s $old_pid
+        then
+            echo >&2 "$old_pid still exists after $TIMEOUT seconds"
+            exit 1
+        fi
+        exit 0
+    fi
+    echo >&2 "Couldn't upgrade, starting '$CMD' instead"
+    $CMD
+    ;;
 reopen-logs)
-	sig USR1
-	;;
+    sig USR1
+    ;;
 *)
-	echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs>"
-	exit 1
-	;;
+    echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs>"
+    exit 1
+    ;;
 esac
