@@ -58,7 +58,7 @@ set :target_os, 'Linux'
 
 # set :linked_files, %w{config/database.yml}
 # Default value for linked_dirs is []
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 if fetch(:target_os).eql?('SunOS')
   set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/opt/local/bin:$PATH",

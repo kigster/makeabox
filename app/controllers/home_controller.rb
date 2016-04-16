@@ -61,8 +61,11 @@ class HomeController < ApplicationController
     end
   end
 
+  require 'fileutils'
   def exported_file_name
-    "#{Rails.root}/tmp/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
+    pdf_export_folder="#{Rails.root}/tmp/pdfs"
+    FileUtils.mkdir_p(pdf_export_folder)
+    "#{pdf_export_folder}/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
   end
 
   def generate_pdf(config)
