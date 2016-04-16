@@ -1,26 +1,32 @@
+def unicorn action
+  "cd #{current_path} && APP=#{fetch(:application)} #{current_path}/bin/unicorn-init #{action}"
+end
+
 namespace :unicorn do
   desc 'Start Unicorn'
   task :start do    
     on roles(:app) do
       within "#{current_path}" do
-        execute %Q% eval "$(rbenv init -)"; cd #{current_path}; pwd; APP=#{fetch(:application)} bundle exec unicorn --env #{fetch(:stage)} -c config/unicorn.rb -D%
+        execute (unicorn :start)
       end
     end
   end
   desc 'Stop Unicorn'
   task :stop do
-    app = fetch(:application)
     on roles(:app) do
-      execute :bash, '-c ',
-%Q/ "
-    "
-
-/
+      within "#{current_path}" do
+        execute (unicorn :stop)
+      end
     end
   end
 
   desc 'Restart Unicorn'
   task :restart do
+    on roles(:app) do
+      within "#{current_path}" do
+        execute (unicorn :restart)
+      end
+    end
   end
 
   before :restart, :stop
