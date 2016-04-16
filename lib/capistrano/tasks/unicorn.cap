@@ -2,15 +2,20 @@ namespace :unicorn do
   desc 'Start Unicorn'
   task :start do    
     on roles(:app) do
-      within current_path do
-        execute "APP=#{fetch(:application)} RAILS_ENV=#{fetch(:stage)} bundle exec unicorn -c config/unicorn.rb -D"
+      within "#{current_path}" do
+        execute %Q% eval "$(rbenv init -)"; cd #{current_path}; pwd; APP=#{fetch(:application)} bundle exec unicorn --env #{fetch(:stage)} -c config/unicorn.rb -D%
       end
     end
   end
   desc 'Stop Unicorn'
   task :stop do
+    app = fetch(:application)
     on roles(:app) do
-      execute "pkill -USR1 #{fetch(:application)}"
+      execute :bash, '-c ',
+%Q/ "
+    "
+
+/
     end
   end
 

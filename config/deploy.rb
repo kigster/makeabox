@@ -78,6 +78,7 @@ if fetch(:target_os).eql?('SunOS')
     watch
     zlib
     tar
+    nodejs
   )
 else
   set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/opt/local/bin:$PATH",
@@ -106,37 +107,30 @@ else
     libxml2-dev
     libxslt1-dev
     libyaml-dev
+    nodejs
   )
 end
 
 puts Dir.pwd
 eval File.read("lib/capistrano/tasks/os/#{fetch(:target_os).downcase}.cap")
 
-before 'bundler:install', 'rbenv:ruby:global'
-# before 'bundler:install', 'smartos:nokogiri'
+before 'bundler:install', 'ruby:bundler:install'
+before 'deploy:starting', 'os:packages' if ENV['UPDATE_SYSTEM']
+
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-# namespace :deploy do
-#   desc 'Restart application'
-#   task :restart do
-#     on roles(:app), in: :sequence, wait: 5 do
-#       invoke 'unicorn:stop'
-#       invoke 'unicorn:start'
-#     end
-#   end
-#
-#   after :publishing, :restart
-#   after :restart, 'unicorn:restart'
-#
-#   after :restart, :clear_cache do
-#     on roles(:web), in: :groups, limit: 3, wait: 10 do
-#       # Here we can do anything such as:
-#       # within release_path do
-#       #   execute :rake, 'cache:clear'
-#       # end
-#     end
-#   end
-#
-# end
+namespace :deploy do
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      invoke 'unicorn:stop'
+      invoke 'unicorn:start'
+    end
+  end
+
+  after :publishing, :restart
+  after :restart, 'unicorn:restart'
+
+end

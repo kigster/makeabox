@@ -30,3 +30,4 @@ tmp
 mkmf.log
 .idea/
 .ruby_version
+.cap_tasks~

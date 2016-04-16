@@ -38,7 +38,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
-    capistrano (3.4.0)
+    capistrano (3.4.1)
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
