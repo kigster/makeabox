@@ -32,5 +32,15 @@ module MakeABox
     config.middleware.delete "ActionDispatch::Cookies"
     config.middleware.delete "ActionDispatch::Session::CookieStore"
     config.middleware.delete "ActionDispatch::Flash"
+
+    config.assets.precompile += %w( tether.css tether.js )
+
+    config.generators do |g|
+      g.template_engine :haml
+
+      # you can also specify a different test framework or ORM here
+      # g.test_framework  :rspec
+      # g.orm             :mongoid
+    end
   end
 end

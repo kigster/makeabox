@@ -1,0 +1,133 @@
+@import "variables";
+
+body {
+  form {
+
+    label {
+      color: $main-fg;
+      font-weight: normal;
+      text-align: right;
+      float: left;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    label, input, label select {
+      font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    }
+    label, input {
+      display: block;
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
+      margin-bottom: 10px;
+
+    }
+    label {
+      padding-top: 10px;
+      padding-right: 15px;
+      width: 35%;
+      font-size: 15pt;
+    }
+    input[type=number].numeric {
+      font-size: 18pt;
+      box-shadow: $form-input-box-shadow;
+      border: $form-input-border;
+      background-color: $form-input-bg;
+      color: $form-input-fg;
+      width: 40%;
+      text-align: right;
+      margin-left: 10px;
+    }
+
+    textarea:focus, input[type=number]:focus, {
+      background-color: $form-input-focus-bg;
+      color: $form-input-focus-fg;
+    }
+
+    .mkbx-checkbox {
+      float: right;
+      margin: 5px 15px 20px 40px;
+    }
+
+    input[type=radio], input[type=checkbox]{
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      padding-left: 8px;
+      padding-right: 9px;
+      border: 1px solid #888;
+      box-shadow: 0 0 8px #000;
+      background-color: #FFFFFF;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      -webkit-appearance: button;
+    }
+
+    input[type=radio] {
+      border-radius: 15px;
+    }
+    input[type=radio]:checked, input[type=checkbox]:checked {
+      background-color: $radio-selected-bg;
+      border-color: #000;
+    }
+
+    input[type=radio]:hover, input[type=checkbox]:hover {
+      box-shadow: 0px 0px 10px #488100;
+      background-color: #8af5c5;
+    }
+
+    .panel-body {
+      width: 100%;
+    }
+    .form-label-and-select {
+      label {
+        width: 100%;
+        text-align: left;
+        padding: 0;
+        margin: 10px 0 10px 0;
+        height: auto;
+      }
+      select {
+        margin: 10px 0 0 0;
+        width: 100% !important;
+        padding: 10px;
+      }
+    }
+    .measurements {
+      label, .mkbx-radio {
+        height: 60px;
+        width: 47%;
+        padding: 7px;
+        padding-bottom: 0;
+      }
+      .mkbx-radio {
+        float: right;
+        clear: left;
+      }
+      label {
+        float: left;
+        padding-top: 15px;
+
+      }
+    }
+
+    #action-bar {
+      margin: 0 auto;
+      text-align: center;
+      .dropdown-menu {
+        .dropdown-item {
+          padding-top: 7px;
+          height: 40px;
+          border-bottom: 1px solid #aaa;
+          &:last-child {
+            border-bottom: 0px solid white;
+          }
+        }
+      }
+    }
+
+  }
+}

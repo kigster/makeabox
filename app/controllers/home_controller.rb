@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
 
   def index
-    if params['commit'] && request.post?
+    if params['commit'].eql?('true') && request.post?
       not_cacheable!
       @config['file'] = exported_file_name
       if @error

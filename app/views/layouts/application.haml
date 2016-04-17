@@ -1,0 +1,11 @@
+!!!
+%html{:lang => "en", :xmlns => "http://www.w3.org/1999/html"}
+  = render 'shared/head'
+  %body
+    = render '/shared/nav_bar_logo'
+    .container
+      = yield
+    .spacer-50
+    = render 'shared/disqus'
+    .spacer-50
+    = render 'shared/footer'

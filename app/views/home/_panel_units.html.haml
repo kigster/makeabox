@@ -1,0 +1,14 @@
+.panel.units
+  .panel-heading
+    %i#introduction.pull-right.fa.fa-question-circle.fa-lg
+    %h1.panel-title Units
+  .panel-body.measurements
+    = hidden_field_tag('commit', false)
+    = hidden_field_tag('units', @config.units)
+    .mkbx-radio
+      = radio_button_tag('config[units]', 'in', @config.units.eql?('in'))
+    = label_tag('config[units]_in', 'Inches')
+    .mkbx-radio
+      = radio_button_tag('config[units]', 'mm', @config.units.eql?('mm'))
+    = label_tag('config[units]_mm', 'Millimeters')
+    .clear

@@ -1,0 +1,47 @@
+%footer
+  .row
+    .col-md-3
+    .col-md-6.text-left.small
+      .panel.panel-default.page-footer
+        .panel-heading
+          %p
+            %span{:style => "font-size: 13pt;"} &#169;
+            %strong.panel-title 2014-2016 Konstantin Gredeskoul
+            of ReinventONE, Inc.
+          This site is a front-end to the
+          %a{:href => "https://github.com/kigster/laser-cutter"} laser-cutter ruby gem
+          (version #{Laser::Cutter::VERSION}) distributed under MIT License.
+          Fixes and other  contributions are
+          = succeed "." do
+            %a{:href => "https://github.com/kigster/laser-cutter/blob/master/CONTRIBUTING.md"} wanted and highly encouraged
+        .panel-body
+          %p
+            Lovingly crafted in San Francisco, this is as a hobby project of
+            = succeed "," do
+              %a{:href => "http://kiguino.moos.io/"} Konstantin Gredeskoul
+            %a{:href => "http://github.com/kigster"} @kigster
+            on github,
+            %a{:href => "http://twitter.com/kig"} @kig
+            on twitter.
+            %a{:href => "http://wanelo.com/kig"} @kig
+            @ wanelo, which is where I work.
+        .reinvent-one.panel-footer
+          %a{:href => "http://reinvent.one/"}
+            %img{:src => "http://reinvent.one/img/logo.png", :width => "200"}/
+    .col-md-3
+- if Rails.env.production?
+  :javascript
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-53462349-3', 'auto');
+    ga('send', 'pageview');

@@ -1,0 +1,11 @@
+.panel.box-dimensions
+  .panel-heading
+    %i#thickness-info.pull-right.fa.fa-info-circle.fa-lg
+    %h1.panel-title Box Dimensions
+  .panel-body
+    %p.small Note: all dimensions are internal (inside of the box).
+    = raw(config_form_element_group(%w(width height depth), @config, true, 1))
+    %hr/
+    = raw(config_form_element_group(%w(thickness), @config, true, 4))
+    %p.small
+      This is the thickness of the material that's being cut.

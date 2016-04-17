@@ -2,10 +2,12 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 class MakeABox.FormHandler
-
-
   constructor:(formId) ->
     @form = $('form#' + formId)
+
+  haveSettings: ->
+    settings = $.cookie("makeabox-settings");
+    return settings ? true : false
 
   restore: ->
     settings = $.cookie("makeabox-settings");
@@ -15,21 +17,10 @@ class MakeABox.FormHandler
   showSaveStatusLast: false
 
   showSaveStatus: ->
-    settings = $.cookie("makeabox-settings");
-    if settings
-      $('#save-status').fadeOut 'slow', ->
-        if this.showSaveStatusLast
-          $('#save-status').html('Restore')
-          this.showSaveStatusLast = false
-        else
-          $('#save-status').html('Available')
-          this.showSaveStatusLast = true
-        $('#save-status').fadeIn('slow')
-      hander = this
-      delay 5000, ->
-        handler.showSaveStatus()
+    if this.haveSettings()
+      $('#restore').disable
     else
-      $('#save-status').fadeOut('slow')
+      $('#restore').enable
 
   save: ->
     $.cookie("makeabox-settings", @form.serialize(),  { expires: 365, path: '/' });
@@ -55,6 +46,7 @@ class MakeABox.FormHandler
     else
       $('#page-settings').show()
     this.showSaveStatus()
+
     alert = $('.alert-danger')
     if alert
       delay 10000, ->
@@ -74,9 +66,15 @@ jQuery ->
       delay 10000, ->
         $('#one-time-notice').fadeOut "slow"
 
-  $("input[name='config[units]'").on "click", (e) ->
-    f = $(e.target).closest("form")
-    f.submit()
+  $("#config_units_in").on "click", (e) ->
+    $('form#pdf-generator').submit();
+
+  $("#config_units_mm").on "click", (e) ->
+    $('form#pdf-generator').submit();
+
+  $("#make-pdf").on "click", (e) ->
+    $('input[name=commit]')[0].value = "true"
+    $('form#pdf-generator').submit();
 
   $('.dont-show-notice').on 'click', (e) ->
     $.cookie("had-seen-the-notice", "yes",  { expires: 21, path: '/' })

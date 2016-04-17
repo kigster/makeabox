@@ -1,0 +1,37 @@
+/ Modal
+#introduction-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header
+        %button.btn-lg.close{"data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &#215;
+          %span.sr-only Close
+        %h1#myModalLabel.modal-title Welcome to Make-A-Box!
+      .modal-body
+        %p.lead Are you ready to make some boxes?! Let's go!
+        %p
+          Thanks for using MakeABox! After a long lull in development, and a week-long downtime (whoops!) this site
+          is back online with a vengeance. It's running in a new cloud, with automated deployment, yada yada, and it's
+          ready to make you some boxes.
+        %p
+          This super-duper awesome (ZOMG!) online box making thingy can generate a design for your
+          custom sized box in a blink of an eye!  You can then feed the PDF to a laser-cutter and
+          cut sides for your box out of acrylic, wood, or even glass. The generated design includes notches
+          that make the sides of the box snap into each other perfectly. Not only that, but the
+          notches are symmetric, making it super easy to assemble the box.
+        %p
+          If you are interested in the back-story of this project, please check out the
+          %strong
+            %a{:href => "http://kiguino.moos.io/2014/11/21/announcing-laser-cutter-makeabox-dot-io.html?ref=reddit"}
+              blog post announcing its release.
+        %p
+          The PDF you generate will be downloaded straight to your computer. Typically
+          you would want to import it into a graphics software (such as Adobe Illustrator&#8482;)
+          for further customization, hole cutting, etc.
+        .spacer-50
+        .text-center
+          = image_tag("notched-boxes.jpg", class: "photo")
+
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        %button.dont-show-notice.btn.btn-warning{"data-dismiss" => "modal", :type => "button"} Close &amp; Don't Show Again

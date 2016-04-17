@@ -6,17 +6,16 @@ gem 'rails'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
-gem 'jquery-rails'
 gem 'jbuilder'
 gem 'sdoc', group: :doc
 gem 'unicorn'
-gem 'twitter-bootstrap-rails'
 gem 'laser-cutter'
 gem 'turbolinks'
 gem 'rb-fsevent'
 gem 'newrelic_rpm'
 gem 'capistrano'
 gem 'capistrano-bundler'
+gem 'haml'
 
 group :development do
   gem 'spring'
