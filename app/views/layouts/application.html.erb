@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -19,6 +19,8 @@
   <meta name="description" content="Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Sides snap into each other using automatically created notches. Use acrylic, wood, or any other material that can be cut with a laser-cutter."/>
   <meta property="twitter:description" content="Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Make-A-Box!"/>
   <meta name="keywords" content="laser cutter,boxmaker,notches,laser-cut box,laser,box maker,make-a-box,PDF,box creator,box designer"/>
+
+  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700|Roboto+Slab:400,700|Fira+Mono' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -31,12 +33,13 @@
 <div class="navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
         <%= link_to image_tag("logo-with-gray.png", class: 'logo-image'), '#', class: 'pull-right' %>
+          <div class="author">Made lovingly in San Francisco, by <a href="http://kig.re/">Konstantin Gredeskoul</a>.</div>
         <%= link_to image_tag("make-a-box-transparent.png", class: 'logo-name'), '#', class: 'navbar-brand logo ' %>
       </div>
-      <div class="col-sm-2"></div>
+      <div class="col-md-1"></div>
     </div>
   </div>
 </div>
@@ -48,8 +51,8 @@
 <div class="spacer-50"></div>
 
 <div class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-6">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -67,7 +70,7 @@
     <noscript>Please enable JavaScript to view the
       <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   </div>
-  <div class="col-md-3"></div>
+  <div class="col-md-2"></div>
 </div>
 </body>
 
@@ -76,11 +79,11 @@
 
 <footer>
   <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4 text-center small">
-      <div class="panel panel-default">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-left small">
+      <div class="panel panel-default page-footer">
         <div class="panel-heading">
-          <h4 class="panel-title">&copy; 2014 Konstantin Gredeskoul</h4>
+          <p><span style="font-size: 13pt;">&copy;</span>  <strong class="panel-title">2014-2016 Konstantin Gredeskoul</strong> of ReinventONE, Inc. </p>
           This site is a front-end to the <a href="https://github.com/kigster/laser-cutter">laser-cutter ruby gem</a> (version <%= Laser::Cutter::VERSION %>) distributed under MIT License.
             Fixes and other  contributions are <a href="https://github.com/kigster/laser-cutter/blob/master/CONTRIBUTING.md">wanted and highly encouraged</a>.
         </div>
@@ -92,10 +95,14 @@
             <a href="http://wanelo.com/kig">@kig</a> @ wanelo, which is where I work.
           </p>
         </div>
+        <div class="reinvent-one panel-footer">
+          <a href="http://reinvent.one/">
+            <img width="200" src="http://reinvent.one/img/logo.png"/>
+          </a>
+        </div>
       </div>
-
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
   </div>
 </footer>
 <%- if Rails.env.production? %>

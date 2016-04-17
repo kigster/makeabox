@@ -39,6 +39,3 @@ $.fn.deserialize = function (serializedString) {
         }
     });
 }
-
-
-
