@@ -2,9 +2,11 @@
 
 body {
   .modal-content {
+    line-height: 1.2;
     border-radius: 15px;
     .close { padding: 10px; margin-right: 15px; font-size: 40pt; }
     .modal-header {
+
       padding: 0;
       border: 1px solid $header-border;
       border-top-left-radius: 10px !important;
@@ -13,43 +15,57 @@ body {
       background-color: $header-bg;
       color: $header-fg;
       height: 50pt;
+
       h1 {
-        font-size: 20pt;
-        padding-left: 30px;
-        margin-top: 0px;
-        padding-top: 10px;
+        font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
         font-weight: 300;
-        text-transform: uppercase;
+        color: #ef2e2e;
+        text-shadow: 0 0 10px white;
+        font-size: 20pt;
+        padding-left: 20px;
+        padding-top: 20px;
+        font-weight: 700;
+      }
+    }
+    .thickness-table {
+      width: 100%;
+      height: auto;
+      line-height: 1;
+
+      strong {
+        span {
+          font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
+          font-weight: 700;
+          font-size: 16pt;
+          border-bottom: 0px solid white;
+        }
+      }
+      span {
+        display: block;
+        margin: 0;
+        padding: 0;
+        width: 200px;
+        border-bottom: 1px solid rgba(#ffc542, 0.4);
+        padding-top: 10px;
+        float: left;
+        text-align: right;
+        font-family: 'Fira Mono', 'Consolas', 'Monaco', 'Courier', sans-serif;
+        font-size: 12pt;
+        &.inches {
+          margin-left: 10%;
+          padding-right: 20%;
+          width: 40%;
+          clear: left;
+        }
+        &.mm {
+          width: 40%;
+          padding-left: 10%;
+          padding-right: 20%;
+        }
       }
     }
     .modal-body {
-      .thickness-table {
-        width: 600px;
-        span {
-          display: inline-block;
-          padding-top: 10px;
-          text-align: right;
-          font-family: 'Fira Mono', 'Consolas', 'Monaco', 'Courier', sans-serif;
-          font-size: 15pt;
-          border-bottom: 1px dotted #aaa;
-          &.mm {
-            width: 200px;
-            margin-right: 60px;
-          }
-          &.inches {
-            width: 200px;
-            margin-left: 60px;
-          }
-        }
-        strong {
-          span {
-            font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
-            font-weight: 700;
-            font-size: 22pt;
-            border-bottom: 0px solid white;
-          }
-        }
-      }
+
 
       dl.dl-horizontal {
         width: 90%;

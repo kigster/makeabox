@@ -1,10 +1,9 @@
 @import 'variables';
 
-
 body {
   .container {
     .panel {
-      border-radius: 10px !important;
+      border-radius: 15px !important;
       border: $header-border;
       box-shadow: $header-box-shadow;
       color: $panel-fg;
@@ -15,62 +14,104 @@ body {
       width: 100% !important;
       margin: 0 auto;
       margin-bottom: 30px;
-    }
 
-    .panel-heading  {
-      padding: 0;
-      border: 1px solid $header-border;
-      border-top-left-radius: 10px !important;
-      border-top-right-radius: 10px !important;
-      margin-bottom: 7px;
-      background-color: $header-bg;
-      color: $header-fg;
-      height: 40pt;
-
-
-      h1, h2, h3, h4, h5 {
-        font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
-        font-weight: 300;
-        padding: 20px 10px 10px 10px;
+      .panel-heading  {
+        padding: 0;
+        border: 1px solid $header-border;
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        margin-bottom: 7px;
+        background-color: $header-bg;
         color: $header-fg;
-        text-shadow: $header-text-shadow;
+        height: 40pt;
+
+        h1, h2, h3, h4, h5 {
+          font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
+          font-weight: 300;
+          padding: 20px 10px 10px 10px;
+          color: $header-fg;
+          text-shadow: $header-text-shadow;
+        }
+
+        h1 {
+          font-size: 20pt;
+          padding-left: 30px;
+          margin-top: 0px;
+          padding-top: 15px;
+          font-weight: 300;
+          text-transform: uppercase;
+        }
+
       }
 
-      h1 {
-        font-size: 20pt;
-        padding-left: 30px;
-        margin-top: 0px;
-        padding-top: 15px;
-        font-weight: 300;
-        text-transform: uppercase;
+      .panel-body {
+        padding: 20px;
+
+        #action-bar {
+          font-size: 12pt;
+        }
       }
 
-    }
+      .panel-footer {
+        margin-top: 30px;
+        background-color: $panel-sub-panel-bg;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        .reinvent-one {
+          width: 100%;
+          text-align: center;
+          padding: 5px;
+          img {
+            width: 150px;
+          }
+        }
+      }
 
-    .panel-body {
-      padding: 20px;
+      i {
+        margin-top: 6px;
+        margin-right: 20px;
+        background-color: white;
+        border-radius:20px;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        &.fa {
+          font-size: 30pt;
+          padding-left: 2px;
+          padding-top: 4px;
+        }
+      }
     }
+  }
+}
 
-    .panel-footer {
-      margin-top: 30px;
-      margin-bottom: 10px;
-      background-color: $panel-sub-panel-bg;
+footer {
+  .container {
+    .panel {
+      box-shadow: 0 0 0;
+      border: 0;
       border-radius: 15px;
-      border-width: 0;
-    }
+      background-color: rgba(39, 56, 33, 0.59);
+      color: white;
+      font-family: 'Fira Mono';
+      a {
+        color: rgb(255, 180, 152);
+      }
+      p {
+        margin-bottom:10px;
+      }
+      .panel-body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 40px;
+        padding-right: 20px;
+        line-height: 1.3;
+        font-size: 8pt;
+      }
+      .panel-footer {
+        margin-top: 0;
+        background-color: rgb(241, 163, 155);
 
-    i {
-      margin-top: 6px;
-      margin-right: 20px;
-      background-color: white;
-      border-radius:20px;
-      width: 38px;
-      height: 38px;
-      padding: 0;
-      &.fa {
-        font-size: 30pt;
-        padding-left: 2px;
-        padding-top: 4px;
       }
     }
   }

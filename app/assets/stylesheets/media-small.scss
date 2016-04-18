@@ -2,63 +2,18 @@
 
 @media all and (max-width: 750px) {
   body {
-    font-size: 12pt;
-    img#fork-me {
-      display: none;
-    }
-    .logo-name {
-      width: 200px;
-      margin-left: 0;
-    }
-    form {
-      label, input {
-        height: 40px;
-        vertical-align: middle;
-        margin-bottom: 10px;
-      }
-      label {
-        padding-top: 14px;
-        width: 45%;
-        font-size: 13pt;
-        margin-right: 10px;
-      }
-      input[type=number].numeric {
-        font-size: 16pt;
-        box-shadow: $form-input-box-shadow;
-        border: $form-input-border;
-        background-color: $form-input-bg;
-        color: $form-input-fg;
-        width: 46%;
-        text-align: right;
-        margin-left: 10px;
+    .container {
+      .btn-lg {
+        font-size: 12pt;
       }
 
-      .measurements {
-        label, .mkbx-radio {
-          height: 30px;
-          overflow: hidden;
-          padding: 1px;
-          text-align: left;
-          input[type=radio], input[type=checkbox]{
-            width: 20px;
-            height: 20px;
-          }
-        }
-        .mkbx-radio {
-          width: 30%;
-          overflow: hidden;
-        }
-        label {
-          width: 50%;
-          text-align: right;
-        }
-
+      font-size: 12pt;
+      img#fork-me {
+        display: none;
       }
-
-      label, input[type=number].numeric {
-        font-size: 14pt;
-        padding: 4px;
-        height: 34px;;
+      .logo-name {
+        width: 200px;
+        margin-left: 0;
       }
 
       .panel {
@@ -71,28 +26,83 @@
           width:  80%;
         }
 
-        h1.panel-title, .modal-header h1 {
-          font-size: 17pt;
-          text-transform: none;
-          padding-left: 15px;
-          margin-top: 0px;
-          padding-top: 10px;
-        }
-        i {
-          margin-top: 12px;
-          margin-right: 20px;
-          background-color: white;
-          border-radius:20px;
-          width: 26px;
-          height: 26px;
-          padding: 0;
-          &.fa {
-            font-size: 20pt;
-            padding-left: 2px;
-            padding-top: 4px;
+        .panel-heading {
+
+          h1.panel-title, .modal-header h1 {
+            font-size: 17pt;
+            text-transform: none;
+            padding-left: 15px;
+            margin-top: 0px;
+            padding-top: 10px;
+          }
+          i {
+            margin-top: 12px;
+            margin-right: 20px;
+            background-color: white;
+            border-radius:20px;
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            &.fa {
+              font-size: 20pt;
+              padding-left: 2px;
+              padding-top: 4px;
+            }
           }
         }
       }
+      form {
+        label, input {
+          height: 40px;
+          vertical-align: middle;
+          margin-bottom: 10px;
+        }
+        label {
+          padding-top: 14px;
+          width: 45%;
+          font-size: 13pt;
+          margin-right: 10px;
+        }
+        input[type=number].numeric {
+          font-size: 16pt;
+          box-shadow: $form-input-box-shadow;
+          border: $form-input-border;
+          background-color: $form-input-bg;
+          color: $form-input-fg;
+          width: 46%;
+          text-align: right;
+          margin-left: 10px;
+        }
+
+        .measurements {
+          label, .mkbx-radio {
+            height: 30px;
+            overflow: hidden;
+            padding: 1px;
+            text-align: left;
+            input[type=radio], input[type=checkbox]{
+              width: 20px;
+              height: 20px;
+            }
+          }
+          .mkbx-radio {
+            width: 30%;
+            overflow: hidden;
+          }
+          label {
+            width: 50%;
+            text-align: right;
+          }
+
+        }
+
+        label, input[type=number].numeric {
+          font-size: 14pt;
+          padding: 4px;
+          height: 34px;;
+        }
+      }
+
     }
   }
 }
