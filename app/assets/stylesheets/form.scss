@@ -2,7 +2,6 @@
 
 body {
   form {
-
     label {
       color: $main-fg;
       font-weight: normal;
@@ -14,24 +13,25 @@ body {
     }
 
     label, input, label select {
-      font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+      font-family: $main-font-family;
     }
+
     label, input {
       display: block;
       height: 40px;
       vertical-align: middle;
       margin-right: 10px;
       margin-bottom: 10px;
-
     }
+
     label {
       padding-top: 10px;
       padding-right: 15px;
       width: 35%;
-      font-size: 15pt;
     }
+
     input[type=number].numeric {
-      font-size: 18pt;
+      font-size: $main-font-size + 5;
       box-shadow: $form-input-box-shadow;
       border: $form-input-border;
       background-color: $form-input-bg;
@@ -100,16 +100,18 @@ body {
       label, .mkbx-radio {
         height: 60px;
         width: 47%;
-        padding: 7px;
+        padding: 0px;
         padding-bottom: 0;
       }
       .mkbx-radio {
         float: right;
         clear: left;
+        padding-left:10px;
       }
       label {
         float: left;
-        padding-top: 15px;
+        padding-top: 5px;
+        padding-bottom: 9px;
 
       }
     }

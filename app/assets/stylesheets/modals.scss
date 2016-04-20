@@ -17,7 +17,7 @@ body {
       height: 50pt;
 
       h1 {
-        font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
+        font-family: $header-h1-font-family;
         font-weight: 300;
         color: #ef2e2e;
         text-shadow: 0 0 10px white;
@@ -34,7 +34,7 @@ body {
 
       strong {
         span {
-          font-family: 'Oswald', "HelveticaNeue-CondensedBold", "Arial Black", Helvetica, sans-serif;
+          font-family: $header-h1-font-family;
           font-weight: 700;
           font-size: 16pt;
           border-bottom: 0px solid white;
@@ -49,7 +49,7 @@ body {
         padding-top: 10px;
         float: left;
         text-align: right;
-        font-family: 'Fira Mono', 'Consolas', 'Monaco', 'Courier', sans-serif;
+        font-family: $main-font-family-monospaced; 
         font-size: 12pt;
         &.inches {
           margin-left: 10%;

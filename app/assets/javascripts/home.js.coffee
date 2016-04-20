@@ -24,11 +24,10 @@ class MakeABox.FormHandler
 
   save: ->
     $.cookie("makeabox-settings", @form.serialize(),  { expires: 365, path: '/' });
-    console.log("saving")
-    $('#save-status').html('Saved');
-    $('#save-status').fadeIn 'slow'
-    delay 4000, ->
-      this.showSaveStatus()
+    # $('#save-status').html('Saved');
+    # $('#save-status').fadeIn 'slow'
+    # delay 4000, ->
+    #   this.showSaveStatus()
 
   clear:(extraClass) ->
     @form.clear(extraClass)
