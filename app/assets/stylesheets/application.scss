@@ -26,11 +26,17 @@ body {
   color: $main-fg;
   background-color: $main-bg !important;
 
-  .logo-name {
-    float: left;
-    width: 150px;
-    margin-left: 10px;
+  .navbar {
+    height: 45px;;
+    .logo-name {
+      float: left;
+      width: 120px;
+      margin-left: 30px;
+      height: 30px;
+      margin-top: -10px;
+    }
   }
+
 
   .alert {
     box-shadow: $header-box-shadow;
@@ -39,15 +45,14 @@ body {
   }
 
   .alert-danger {
-    border: 2px solid #ef2e2e;
-    border-box-shadow: 10px 10px 20px black;
+    border: 1px solid #ef2e2e;
     border-radius: 20px;
-    min-height: 150px;
+    margin: 20px 0;
+    min-height: 50px;
     width: 100%;
-    font-size: 25pt;
-    line-height: 26pt;
+    font-size: 20pt;
+    line-height: 24pt;
     padding: 20px;
-    text-shadow: 1px 1px 2px #000;
   }
 
   .error {
@@ -60,14 +65,11 @@ body {
 
 
   .logo-image {
-
-    width: 50px;
-    float: right;
     margin:0;
     width:40px;
     position: absolute;
-    right: 10px;
-    top: 0px;
+    left: 0px;
+    top: 0;
   }
 
   footer {

@@ -107,3 +107,6 @@ jQuery ->
 
   $('#advanced-info').on 'click', (e) ->
     $('#advanced-info-modal').modal('show')
+
+  $('#notch-help').on 'click', (e) ->
+    $('#advanced-info-modal').modal('show')

@@ -38,7 +38,7 @@ body {
           padding-left: 30px;
           margin-top: 0px;
           padding-top: 15px;
-          text-transform: uppercase;
+          //text-transform: uppercase;
         }
 
       }
@@ -54,8 +54,9 @@ body {
       .panel-footer {
         margin-top: 30px;
         background-color: $panel-sub-panel-bg;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-width: 0;
         .reinvent-one {
           width: 100%;
           text-align: center;
@@ -69,15 +70,15 @@ body {
       i {
         margin-top: 12px;
         margin-right: 20px;
-        background-color: white;
+        background-color: #CDF0FF;
         border-radius:20px;
-        width: 25px;
-        height: 25px;
+        width: 36px;
+        height: 36px;
         padding: 0;
         &.fa {
           font-size: 19pt;
-          padding-left: 2px;
-          padding-top: 4px;
+          padding-left: 7px;
+          padding-top: 9px;
         }
       }
     }
@@ -89,11 +90,11 @@ footer {
     .panel {
       box-shadow: 0 0 0;
       border: 0;
-      border-radius: 15px;
+      border-radius: 10px;
       background-color: rgba(39, 56, 33, 0.59);
       color: white;
       font-family: $main-font-family;
-      font-size: $main-font-size - 3;
+      font-size: $main-font-size - 5;
       a {
         color: rgb(255, 180, 152);
       }

@@ -1,7 +1,24 @@
 @import 'variables';
 
+@media all and (max-width: 550px) {
+  body {
+    .container {
+      .panel {
+        margin: 20px 0 !important;
+        &.units {
+          margin-top: 0 !important;
+        }
+      }
+    }
+  }
+}
+
 @media all and (max-width: 750px) {
   body {
+    .navbar {
+      height: 20px;;
+
+    }
     .container {
       .btn-lg {
         font-size: 12pt;
@@ -23,7 +40,7 @@
         }
 
         .btn-pink {
-          width:  80%;
+          width: 80%;
         }
 
         .panel-heading {
@@ -39,7 +56,7 @@
             margin-top: 12px;
             margin-right: 20px;
             background-color: white;
-            border-radius:20px;
+            border-radius: 20px;
             width: 26px;
             height: 26px;
             padding: 0;
@@ -80,7 +97,7 @@
             overflow: hidden;
             padding: 1px;
             text-align: left;
-            input[type=radio], input[type=checkbox]{
+            input[type=radio], input[type=checkbox] {
               width: 20px;
               height: 20px;
             }
