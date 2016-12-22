@@ -7,7 +7,7 @@ namespace :ruby do
     on roles(:app) do
       within "#{fetch(:user_home)}" do
         execute :bash, '-c',
-%Q{ "[[ -d #{home}/.rbenv ]] || git clone https://github.com/rbenv/rbenv.git #{home}/.rbenv >/dev/null;
+                %Q{ "[[ -d #{home}/.rbenv ]] || git clone https://github.com/rbenv/rbenv.git #{home}/.rbenv >/dev/null;
      [[ -d #{home}/.rbenv/plugins/ruby-build ]] || git clone https://github.com/rbenv/ruby-build.git #{home}/.rbenv/plugins/ruby-build >/dev/null;
      [[ -d #{home}/.rbenv/plugins/rbenv-gem-rehash ]] || git clone https://github.com/rbenv/rbenv-gem-rehash.git #{home}/.rbenv/plugins/rbenv-gem-rehash/ > /dev/null "
         }.gsub(/\n/, '')
@@ -34,7 +34,9 @@ namespace :ruby do
     task :install do
       on roles(:app) do
         within "#{deploy_to}" do
-          execute :bash, %Q/ -c "[[ \\"$(which bundle)\\" =~ 'rbenv' ]] || gem install bundler -f --no-ri --no-rdoc -no-wrappers -n #{fetch(:ruby_bin_dir)}"/
+          execute :bash, <<-EOF.gsub(/\s{2,}/, ' ')
+            -c 'source ~/.bashrc; [[ "$(which bundle)" =~ "rbenv" ]] || gem install bundler -f --no-ri --no-rdoc -no-wrappers -n #{fetch(:ruby_bin_dir)}'
+          EOF
         end
       end
     end
@@ -45,7 +47,9 @@ namespace :ruby do
     task :uninstall do
       on roles(:app) do
         within "#{deploy_to}" do
-          execute :bash, %Q/ -c "[[ \"$(which bundle)\" =~ \"rbenv\" ]] && gem uninstall bundler -x "/
+          execute :bash, <<-EOF
+          -c 'source ~/.bashrc; [[ "$(which bundle)" =~ "rbenv" ]] && gem uninstall bundler -x "
+          EOF
         end
       end
     end

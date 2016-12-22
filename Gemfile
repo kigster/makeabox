@@ -1,8 +1,7 @@
-ruby '2.3.0'
 source 'https://rubygems.org'
 
 gem 'colored2'
-gem 'rails'
+gem 'rails', '~> 5.0'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'

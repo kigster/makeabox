@@ -1,0 +1,7 @@
+require 'colored2'
+
+namespace :deploy do
+  task setup: %w(os:init ruby:bundler:install)
+
+  before :check, 'deploy:setup'
+end

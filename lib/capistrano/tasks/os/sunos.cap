@@ -1,22 +1,44 @@
+set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/opt/local/bin:$PATH",
+                    MAKE_OPTS:       '-j48',
+                    LD_LIBRARY_PATH: '/opt/local/lib',
+                    LDFLAGS:         '-L/opt/local/lib -R/opt/local/lib',
+                    CFLAGS:          '-I/opt/local/include'
+}
+
+set :packages, %w(
+   git
+   gcc49
+   gmake
+   libiconv
+   libxml2
+   libxslt
+   openssl
+   watch
+   zlib
+   tar
+   nodejs
+ )
+
+SSHKit.config.command_map[:tar] = 'gtar'
+SSHKit.config.command_map[:bundle] = 'source ~/.bashrc; bundle'
+
 namespace :os do
+  task init: [ :packages, :nokogiri ]
+
   desc 'Install SmartOS package dependencies'
   task :packages do
     on roles(:app) do |role_host|
       host = SSHKit::Host.new("root@#{role_host}")
       on host do
-        execute "pkgin -y in #{fetch(:packages).join(' ')}"
+        execute "pkgin -y in #{fetch(:packages).join(' ')}; true"
       end
     end
   end
 
-  task :nogokiri do
-    require 'pp'
-    pp SSHKit.config.command_map.prefix[:gem].shift
-    pp SSHKit.config.command_map.prefix[:gem].shift
-    pp SSHKit.config.command_map.prefix
+  task :nokogiri do
     on roles(:app) do
-      execute :gem, <<-EOF
-        install nokogiri -- \
+      execute :bash, <<-EOF.gsub(/\s{2,}/, ' ')
+       -c 'source ~/.bashrc; gem install nokogiri --conservative --no-ri --no-rdoc -- \
             --use-system-libraries \
             --with-xml2-lib=/opt/local/lib \
             --with-xml2-include=/opt/local/include/libxml2 \
@@ -24,8 +46,10 @@ namespace :os do
             --with-xslt-include=/opt/local/include/libxslt \
             --with-iconv-lib=/opt/local/lib \
             --with-iconv-include=/opt/local/include \
-            --with-zlib-dir=/opt/local/lib
+            --with-zlib-dir=/opt/local/lib \
+        '
       EOF
+
     end
   end
 end

@@ -1,7 +1,6 @@
-server 'app101.dev.nvnt.re', roles: %w{app db web worker}, user: 'kig'
+set :target_os, 'linux'
+require_relative '../../lib/capistrano/loader/os'
 
-set :ssh_options, {
-   keys: %w(/Users/kig/.ssh/id_rsa),
-   forward_agent: false,
-   auth_methods: %w(publickey)
-}
+server 'app101.dev.nvnt.re', roles: %w{app db web worker}, user: 'kig'
+set :ruby_version, '2.3.0'
+
