@@ -1,0 +1,45 @@
+# Standard Flow:
+
+# deploy
+#   deploy:starting
+#     [before]
+#       deploy:ensure_stage
+#       deploy:set_shared_assets
+#     deploy:check
+#   deploy:started
+#   deploy:updating
+#     git:create_release
+#     deploy:symlink:shared
+#   deploy:updated
+#     [before]
+#       deploy:bundle
+#     [after]
+#       deploy:migrate
+#       deploy:compile_assets
+#       deploy:normalize_assets
+#   deploy:publishing
+#     deploy:symlink:release
+#   deploy:published
+#   deploy:finishing
+#     deploy:cleanup
+#   deploy:finished
+#     deploy:log_revision
+
+namespace :deploy do
+  task :setup do
+    invoke "#{fetch(:target_os)}:init"
+    invoke 'ruby:bundler:install'
+  end
+  after :check, 'deploy:setup'
+
+  task :secrets do
+    on roles(:app) do
+      within release_path do
+        execute :rm, '-f config/secrets.yml'
+      end
+    end
+  end
+  before 'symlink:linked_dirs', 'secrets'
+end
+
+

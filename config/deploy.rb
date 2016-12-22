@@ -36,14 +36,13 @@ set :repo_url, 'git@github.com:kigster/MakeABox.git'
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
-
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
-set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/versions/#{fetch(:ruby_version)}/bin"
 set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
+set :native_gems, %i(nokogiri)
 
 # Default value for :format is :pretty
 set :format, :pretty
@@ -56,15 +55,15 @@ set :ssh_options, {
    auth_methods: %w(publickey)
 }
 
-# set :linked_files, %w{config/database.yml}
-# Default value for linked_dirs is []
+set :linked_files, %w{config/secrets.yml}
 set :linked_dirs, %w{bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-
-before 'bundler:install', 'ruby:bundler:install'
-before 'deploy:starting', 'os:packages' if ENV['UPDATE_SYSTEM']
+set :default_env, {}
 
 # Default value for keep_releases is 5
-# set :keep_releases, 5
+set :keep_releases, 5
+
+before 'deploy:starting', 'deploy:setup'
+before 'bundler:install', 'ruby:bundler:native_config'
 
 namespace :deploy do
   desc 'Restart application'
@@ -77,8 +76,7 @@ namespace :deploy do
 
   after :publishing, :restart
   after :restart, 'unicorn:restart'
-  # ensure OS-specifc init script exists, so that reboots are OK
   after :finished, 'os:unicorn:init'
-
 end
+
 

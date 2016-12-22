@@ -35,13 +35,27 @@ namespace :ruby do
       on roles(:app) do
         within "#{deploy_to}" do
           execute :bash, <<-EOF.gsub(/\s{2,}/, ' ')
-            -c 'source ~/.bashrc; [[ "$(which bundle)" =~ "rbenv" ]] || gem install bundler -f --no-ri --no-rdoc -no-wrappers -n #{fetch(:ruby_bin_dir)}'
+            -c 'source ~/.bashrc; [[ -z "$(gem list | grep bundler)" ]] && gem install bundler --no-ri --no-rdoc '
           EOF
         end
       end
     end
 
     before :install, 'ruby:install'
+
+    task :native_config do
+      on roles(:app) do
+        within release_path do
+          execute 'cat .bundle/config > ~/before'
+          fetch(:native_gems).each do |gem|
+            next unless fetch(:gem_config)[gem]
+            execute :bash, "-c 'source ~/.bashrc; bundle config --local build.#{gem} #{fetch(:gem_config)[gem]}'"
+          end
+          execute 'cat .bundle/config > ~/after'
+        end
+      end
+    end
+
 
     desc 'Uninstall bundler'
     task :uninstall do

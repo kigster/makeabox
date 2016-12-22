@@ -27,7 +27,7 @@ set :packages, %w(
   nodejs
 )
 
-namespace :os do
+namespace :linux do
   task init: [ :packages, 'unicorn:init' ]
 
   desc 'Install Linux package dependencies'

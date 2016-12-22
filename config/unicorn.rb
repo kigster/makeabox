@@ -1,17 +1,16 @@
 # config/unicorn.rb
-require 'colored2'
 worker_processes 16
 timeout 15
 preload_app true
 listen "*:8899", :tcp_nopush => true, :backlog => 64
 
-app_shared_root = if ENV['RAILS_ENV'] == 'production'
-  '/home/kig/apps/makeabox/shared'
+REMOTE_SHARED_DIR = '/home/kig/apps/makeabox/shared'
+app_shared_root = if ENV['RAILS_ENV'] == 'production' && Dir.exist?(REMOTE_SHARED_DIR)
+  REMOTE_SHARED_DIR
 else
   File.expand_path('../../', __FILE__)
 end
 
-puts "━━━━━━━━".yellow + " app root is set to ".green + "━━━━━━━━━┫".yellow + " #{app_shared_root} ".blue + "┣━".yellow
 
 pid "#{app_shared_root}/tmp/pids/unicorn.pid"
 stderr_path "#{app_shared_root}/log/unicorn.stderr.log"

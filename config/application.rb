@@ -29,9 +29,9 @@ module MakeABox
 
     # Be sure to restart your server when you modify this file.
     # config/application.rb
-    config.middleware.delete "ActionDispatch::Cookies"
-    config.middleware.delete "ActionDispatch::Session::CookieStore"
-    config.middleware.delete "ActionDispatch::Flash"
+    config.middleware.delete ActionDispatch::Cookies
+    config.middleware.delete ActionDispatch::Session::CookieStore
+    config.middleware.delete ActionDispatch::Flash
 
     config.assets.precompile += %w( tether.css tether.js )
 

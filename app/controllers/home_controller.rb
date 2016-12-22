@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  before_filter :handle_cache_control,
+  before_action :handle_cache_control,
                 :load_parameters,
                 :populate_form_fields,
                 :handle_units_change

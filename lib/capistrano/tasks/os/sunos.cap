@@ -19,13 +19,22 @@ set :packages, %w(
    nodejs
  )
 
-SSHKit.config.command_map[:tar] = 'gtar'
+set :bundle_exec, 'source ~/.bashrc; bundle exec'
+SSHKit.config.command_map[:tar]    = 'gtar'
 SSHKit.config.command_map[:bundle] = 'source ~/.bashrc; bundle'
 
-namespace :os do
-  task init: [ :packages, :nokogiri ]
+namespace :bundler do
+  task :map_bins do
+    fetch(:bundle_bins).each do |command|
+      SSHKit.config.command_map.prefix[command.to_sym].delete('bundle exec')
+      SSHKit.config.command_map.prefix[command.to_sym].push(fetch(:bundle_exec))
+    end
+  end
+end
 
-  desc 'Install SmartOS package dependencies'
+namespace :sunos do
+  SSHKit.config.command_map[:rake] = 'source ~/.bashrc; bundle exec rake '
+  desc ' Install SmartOS package dependencies '
   task :packages do
     on roles(:app) do |role_host|
       host = SSHKit::Host.new("root@#{role_host}")
@@ -35,10 +44,16 @@ namespace :os do
     end
   end
 
-  task :nokogiri do
-    on roles(:app) do
-      execute :bash, <<-EOF.gsub(/\s{2,}/, ' ')
-       -c 'source ~/.bashrc; gem install nokogiri --conservative --no-ri --no-rdoc -- \
+  namespace :native_extensions do
+    task :install do
+      on roles(:app) do
+        within release_path do
+          fetch(:native_gems).each do |gem|
+            version = `grep #{gem} Gemfile.lock | grep -v '>' | sed ' s/[()]//g' | awk '{print $2}'`
+            execute :bash, <<-EOF.gsub(/ \ s { 2, }/, ' ')
+-c 'source ~/.bashrc; gem install #{gem} --version #{version} \
+            --install-dir #{shared_path}/bundle \
+            --no-ri --no-rdoc -- \
             --use-system-libraries \
             --with-xml2-lib=/opt/local/lib \
             --with-xml2-include=/opt/local/include/libxml2 \
@@ -48,8 +63,15 @@ namespace :os do
             --with-iconv-include=/opt/local/include \
             --with-zlib-dir=/opt/local/lib \
         '
-      EOF
-
-    end
-  end
+EOF
 end
+end
+
+end
+end
+end
+
+task init: %w(packages)
+end
+
+
