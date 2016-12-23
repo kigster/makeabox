@@ -64,11 +64,11 @@ class HomeController < ApplicationController
   def exported_file_name
     pdf_export_folder="#{Rails.root}/tmp/pdfs"
     FileUtils.mkdir_p(pdf_export_folder)
-    "#{pdf_export_folder}/makeabox-io-#{sprintf '%.2f', @config.width}Wx#{sprintf '%.2f', @config.height}Hx#{sprintf '%.2f', @config.depth}D-#{@config.thickness}T-#{timestamp}.box.pdf"
+    "#{pdf_export_folder}/makeabox-#{sprintf '%.2f', @config.width}W-#{sprintf '%.2f', @config.height}H-#{sprintf '%.2f', @config.depth}D-#{sprintf '%.2f', @config.thickness}T-#{timestamp}.pdf"
   end
 
   def timestamp
-    Time.now.strftime '%Y%M%d.%H%M%S.%L'
+    Time.now.strftime '%Y%M%d%H%M%S'
   end
 
   def generate_pdf(config)
