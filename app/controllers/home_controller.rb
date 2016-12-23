@@ -7,13 +7,12 @@ class HomeController < ApplicationController
 
 
   def index
+    if @error
+      flash.now[:error] = @error
+      render and return
+    end
     if params['commit'].eql?('true') && request.post?
       not_cacheable!
-      @config['file'] = exported_file_name
-      if @error
-        flash.now[:error] = @error
-        render and return
-      end
       logging "Dumped file [#{@config['file']}]" do
         begin
           NewRelic::Agent.set_transaction_name("#{NewRelic::Agent.get_transaction_name}#pdf")
@@ -43,6 +42,16 @@ class HomeController < ApplicationController
     end
     c[:metadata] = params[:metadata].blank? ? false : true
     @config = Laser::Cutter::Configuration.new(c)
+    @config['file'] = exported_file_name if %w(width height depth thickness).all?{ |f| c[f] }
+    begin
+      @config.validate!
+      Rails.logger.info 'config validation OK'
+      true
+    rescue Exception => e
+      Rails.logger.error "config validation failed with error: #{e}"
+      @error = e.message
+      false
+    end
   end
 
   def populate_form_fields

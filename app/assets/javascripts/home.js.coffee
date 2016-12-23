@@ -34,7 +34,7 @@ class MakeABox.FormHandler
 
   preventNonNumeric: (e) ->
     char_code = e.which || e.key_code
-    char_str = String.fromCharCode(cchar_code);
+    char_str = String.fromCharCode(char_code);
     if /[a-zA-Z]/.test(char_str)
       return false
 
@@ -52,6 +52,14 @@ class MakeABox.FormHandler
         alert.fadeOut 'slow'
 
 delay = (ms, func) -> setTimeout func, ms
+
+MakeABox.GA = (label) ->
+  ga 'send',
+    hitType: 'event'
+    eventCategory: 'PDF'
+    eventAction: 'download'
+    eventLabel: label
+  alert('google analytics notified')
 
 jQuery ->
   $(document).on 'ready', (e) ->
@@ -72,6 +80,7 @@ jQuery ->
     $('form#pdf-generator').submit();
 
   $("#make-pdf").on "click", (e) ->
+    MakeABox.GA('Download PDF')
     $('input[name=commit]')[0].value = "true"
     $('form#pdf-generator').submit();
 
