@@ -39,7 +39,33 @@ namespace :deploy do
       end
     end
   end
-  before 'symlink:linked_dirs', 'secrets'
-end
 
+  before 'symlink:linked_dirs', 'secrets'
+
+  Rake::Task['deploy:symlink:linked_dirs'].clear_actions
+
+  namespace :symlink do
+    desc 'Symlink linked directories'
+    task :linked_dirs do
+      next unless any? :linked_dirs
+      on release_roles :all do
+        execute :mkdir, '-p', linked_dir_parents(release_path)
+
+        cmd = fetch(:linked_dirs).map do |dir|
+          target = release_path.join(dir)
+          source = shared_path.join(dir)
+          if !test( "[ -L #{target} ]")
+            out = []
+            out << "rm -rf #{target}" if test("[ -d #{target} ]")
+            out << "ln -s #{source} #{target}"
+            out
+          else
+            nil
+          end
+        end.flatten.compact.join('; ')
+        execute cmd
+      end
+    end
+  end
+end
 

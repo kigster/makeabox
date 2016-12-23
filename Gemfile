@@ -19,6 +19,7 @@ gem 'haml'
 group :development do
   gem 'spring'
   gem 'capistrano-rails'
+  gem 'airbrussh', :require => false
 end
 
 group :test, :development, :demo do

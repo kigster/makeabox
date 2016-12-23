@@ -41,13 +41,15 @@ set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
-set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
-set :native_gems, %i(nokogiri)
 
 # Default value for :format is :pretty
-set :format, :pretty
+set :format, :airbrussh
 set :log_level, :info
 set :pty, true
+
+set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
+set :native_gems, %i(nokogiri)
+set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
 set :ssh_options, {
    keys: %w(/Users/kig/.ssh/id_rsa),

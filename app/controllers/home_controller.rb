@@ -38,10 +38,11 @@ class HomeController < ApplicationController
   def load_parameters
     c = params[:config] || {}
     %w(width height depth thickness notch page_size kerf).each do |f|
-      c[f] = nil if (c[f] == 0.0 || c[f] == "")
+      c[f] = nil if c[f] == '0' or c[f].blank?
     end
     perimeter = %w(width height depth).map{|f| c[f].to_f }.inject(&:+)
     perimeter = Laser::Cutter::UnitsConverter.mm2in(perimeter) if c[:units].eql?('mm')
+    c[:metadata] = params[:metadata].blank? ? false : true
     @error ||= 'Sorry, this box is too large for the webapp. Please use laser-cutter ruby gem directly. ' if perimeter > 60
     @config = Laser::Cutter::Configuration.new(c)
   end

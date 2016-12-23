@@ -6,11 +6,13 @@ namespace :ruby do
     home = fetch(:user_home)
     on roles(:app) do
       within "#{fetch(:user_home)}" do
-        execute :bash, '-c',
-                %Q{ "[[ -d #{home}/.rbenv ]] || git clone https://github.com/rbenv/rbenv.git #{home}/.rbenv >/dev/null;
-     [[ -d #{home}/.rbenv/plugins/ruby-build ]] || git clone https://github.com/rbenv/ruby-build.git #{home}/.rbenv/plugins/ruby-build >/dev/null;
-     [[ -d #{home}/.rbenv/plugins/rbenv-gem-rehash ]] || git clone https://github.com/rbenv/rbenv-gem-rehash.git #{home}/.rbenv/plugins/rbenv-gem-rehash/ > /dev/null "
-        }.gsub(/\n/, '')
+        execute :bash, <<-EOF.gsub(/\n\s{2,}/, ' ')
+        -c '
+           [[ -d #{home}/.rbenv ]] || git clone https://github.com/rbenv/rbenv.git #{home}/.rbenv >/dev/null ;
+           [[ -d #{home}/.rbenv/plugins/ruby-build ]] || git clone https://github.com/rbenv/ruby-build.git #{home}/.rbenv/plugins/ruby-build >/dev/null ;
+           [[ -d #{home}/.rbenv/plugins/rbenv-gem-rehash ]] || git clone https://github.com/rbenv/rbenv-gem-rehash.git #{home}/.rbenv/plugins/rbenv-gem-rehash/ > /dev/null
+        '
+        EOF
       end
     end
   end
@@ -30,12 +32,12 @@ namespace :ruby do
   before :install, :rbenv
 
   namespace :bundler do
-    desc 'Install bundler into the ruby bin dir'
+    desc 'Install bundler'
     task :install do
       on roles(:app) do
         within "#{deploy_to}" do
           execute :bash, <<-EOF.gsub(/\s{2,}/, ' ')
-            -c 'source ~/.bashrc; [[ -z "$(gem list | grep bundler)" ]] && gem install bundler --no-ri --no-rdoc '
+            -c 'source ~/.bashrc; [[ -n "$(gem list | grep bundler)" ]] || gem install bundler --no-ri --no-rdoc '
           EOF
         end
       end
@@ -46,24 +48,10 @@ namespace :ruby do
     task :native_config do
       on roles(:app) do
         within release_path do
-          execute 'cat .bundle/config > ~/before'
           fetch(:native_gems).each do |gem|
             next unless fetch(:gem_config)[gem]
             execute :bash, "-c 'source ~/.bashrc; bundle config --local build.#{gem} #{fetch(:gem_config)[gem]}'"
           end
-          execute 'cat .bundle/config > ~/after'
-        end
-      end
-    end
-
-
-    desc 'Uninstall bundler'
-    task :uninstall do
-      on roles(:app) do
-        within "#{deploy_to}" do
-          execute :bash, <<-EOF
-          -c 'source ~/.bashrc; [[ "$(which bundle)" =~ "rbenv" ]] && gem uninstall bundler -x "
-          EOF
         end
       end
     end

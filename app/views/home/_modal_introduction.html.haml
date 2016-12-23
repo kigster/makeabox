@@ -7,6 +7,9 @@
           %span{"aria-hidden" => "true"} &#215;
           %span.sr-only Close
         %h1#myModalLabel.modal-title Welcome to Make-A-Box!
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        %button.dont-show-notice.btn.btn-warning{"data-dismiss" => "modal", :type => "button"} Close &amp; Don't Show Again
       .modal-body
         %p.lead Are you ready to make some boxes?! Let's go!
         %p
@@ -22,7 +25,7 @@
         %p
           If you are interested in the back-story of this project, please check out the
           %strong
-            %a{:href => "http://kiguino.moos.io/2014/11/21/announcing-laser-cutter-makeabox-dot-io.html?ref=reddit"}
+            %a{:href => 'http://kiguino.moos.io/2014/11/21/announcing-laser-cutter-makeabox-dot-io.html?ref=reddit'}
               blog post announcing its release.
         %p
           The PDF you generate will be downloaded straight to your computer. Typically
@@ -31,7 +34,3 @@
         .spacer-50
         .text-center
           = image_tag("notched-boxes.jpg", class: "photo")
-
-      .modal-footer
-        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
-        %button.dont-show-notice.btn.btn-warning{"data-dismiss" => "modal", :type => "button"} Close &amp; Don't Show Again

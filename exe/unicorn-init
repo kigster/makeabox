@@ -2,43 +2,33 @@
 set -e
 
 [[ -z "$RAILS_ENV" ]] && {
-  if [[ "$(uname -s)" == "Linux" ]]; then
-    RAILS_ENV=production
-  else
-    RAILS_ENV=development
-  fi
+  echo 'RAILS_ENV must be set!'
+  exit 1
 }
 
-if [[ "$RAILS_ENV" == "production" ]]; then
-  APP_ROOT=/home/kig/apps/makeabox/current
-  export OWNER=kig
-else
-  APP_ROOT=$(dirname $(dirname $0))
-  export OWNER=$USER
-fi
+app_root=$(pwd)
 
-if [[ "$(whoami)" == "root" ]]; then
-  su - $OWNER -c "cd ${APP_ROOT} && ./exe/unicorn-init $1 >/dev/null"
-  exit 0
-fi
+[[ -f 'exe/unicorn-init' ]] || {
+  echo "Invalid root: $app_root"
+  exit 2
+}
 
 eval "$(rbenv init -)"
-BUNDLE=$(which bundle)
-TIMEOUT=${TIMEOUT-60}
 
+bundler=$(which bundle)
+timeout=${timeout-60}
 
-PID=$APP_ROOT/tmp/pids/unicorn.pid
-CMD="$BUNDLE exec unicorn -D -c $APP_ROOT/config/unicorn.rb"
+pid="${app_root}/tmp/pids/unicorn.pid"
+command="$bundler exec unicorn -D -c $app_root/config/unicorn.rb"
 action="$1"
 set -u
 
+old_pid="$pid.oldbin"
 
-old_pid="$PID.oldbin"
-
-cd $APP_ROOT || exit 1
+cd $app_root || exit 1
 
 sig () {
-    test -s "$PID" && kill -$1 `cat $PID`
+    test -s "$pid" && kill -$1 `cat $pid`
 }
 
 oldsig () {
@@ -48,7 +38,7 @@ oldsig () {
 case $action in
 start)
     sig 0 && echo >&2 "Already running" && exit 0
-    $CMD
+    $command
     ;;
 stop)
     sig QUIT && exit 0
@@ -60,13 +50,13 @@ force-stop)
     ;;
 restart|reload)
     sig HUP && echo reloaded OK && exit 0
-    echo >&2 "Couldn't reload, starting '$CMD' instead"
-    $CMD
+    echo >&2 "Couldn't reload, starting '$command' instead"
+    $command
     ;;
 upgrade)
     if sig USR2 && sleep 2 && sig 0 && oldsig QUIT
     then
-        n=$TIMEOUT
+        n=$timeout
         while test -s $old_pid && test $n -ge 0
         do
             printf '.' && sleep 1 && n=$(( $n - 1 ))
@@ -75,13 +65,13 @@ upgrade)
 
         if test $n -lt 0 && test -s $old_pid
         then
-            echo >&2 "$old_pid still exists after $TIMEOUT seconds"
+            echo >&2 "$old_pid still exists after $timeout seconds"
             exit 1
         fi
         exit 0
     fi
-    echo >&2 "Couldn't upgrade, starting '$CMD' instead"
-    $CMD
+    echo >&2 "Couldn't upgrade, starting '$command' instead"
+    $command
     ;;
 reopen-logs)
     sig USR1
