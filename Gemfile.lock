@@ -237,6 +237,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrussh
   capistrano
   capistrano-bundler
   capistrano-rails
