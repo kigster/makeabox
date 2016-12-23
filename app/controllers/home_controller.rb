@@ -68,7 +68,7 @@ class HomeController < ApplicationController
   end
 
   def timestamp
-    Time.now.strftime '%Y%M%d%H%M%S'
+    Time.now.strftime '%Y%m%d%H%M%S'
   end
 
   def generate_pdf(config)
