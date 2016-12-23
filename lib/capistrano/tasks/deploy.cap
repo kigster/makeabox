@@ -40,7 +40,7 @@ namespace :deploy do
     end
   end
 
-  before 'symlink:linked_dirs', 'secrets'
+  before 'symlink:linked_files', 'secrets'
 
   Rake::Task['deploy:symlink:linked_dirs'].clear_actions
 

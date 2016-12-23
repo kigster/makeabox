@@ -68,17 +68,8 @@ before 'deploy:starting', 'deploy:setup'
 before 'bundler:install', 'ruby:bundler:native_config'
 
 namespace :deploy do
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      invoke 'unicorn:stop'
-      invoke 'unicorn:start'
-    end
-  end
-
-  after :publishing, :restart
-  after :restart, 'unicorn:restart'
-  after :finished, 'os:unicorn:init'
+  after :publishing, 'unicorn:setup'
+  after 'unicorn:setup', 'unicorn:restart'
 end
 
 

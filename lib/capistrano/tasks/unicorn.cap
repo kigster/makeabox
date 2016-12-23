@@ -1,8 +1,13 @@
 def unicorn action
-  "cd #{current_path} && APP=#{fetch(:application)} RAILS_ENV=#{fetch(:stage)} #{current_path}/exe/unicorn-init #{action}"
+  "cd #{current_path} && source ~/.bashrc && APP=#{fetch(:application)} RAILS_ENV=#{fetch(:rails_env)} #{current_path}/exe/unicorn-init #{action}"
 end
 
 namespace :unicorn do
+  task :setup do
+    invoke "#{fetch(:target_os)}:unicorn:init"
+  end
+
+
   desc 'Start Unicorn'
   task :start do
     on roles(:app) do

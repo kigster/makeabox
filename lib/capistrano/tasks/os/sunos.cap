@@ -44,34 +44,20 @@ namespace :sunos do
     end
   end
 
-  namespace :native_extensions do
-    task :install do
-      on roles(:app) do
-        within release_path do
-          fetch(:native_gems).each do |gem|
-            version = `grep #{gem} Gemfile.lock | grep -v '>' | sed ' s/[()]//g' | awk '{print $2}'`
-            execute :bash, <<-EOF.gsub(/\s{2,}/, ' ')
-            -c 'source ~/.bashrc; gem install #{gem} --version #{version}
-              --install-dir #{shared_path}/bundle
-              --no-ri --no-rdoc
-              --
-              --use-system-libraries
-              --with-xml2-lib=/opt/local/lib
-              --with-xml2-include=/opt/local/include/libxml2
-              --with-xslt-lib=/opt/local/lib
-              --with-xslt-include=/opt/local/include/libxslt
-              --with-iconv-lib=/opt/local/lib
-              --with-iconv-include=/opt/local/include
-              --with-zlib-dir=/opt/local/lib'
-            EOF
-          end
-        end
+  task init: %w(packages)
 
+  namespace :unicorn do
+    desc 'Install Unicorn init script'
+    task :init do
+      on roles(:app) do |role_host|
+        host = SSHKit::Host.new("root@#{role_host}")
+        on host do
+          # execute "ln -nfs #{current_path}/exe/unicorn-init /etc/rc2.d/S98unicorn"
+          # execute "ln -nfs #{current_path}/exe/unicorn-init /etc/rc2.d/K01unicorn"
+        end
       end
     end
   end
-
-  task init: %w(packages)
 end
 
 
