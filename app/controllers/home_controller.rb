@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  attr_accessor :latest_error
 
   before_action :handle_cache_control,
                 :load_parameters,
@@ -7,11 +8,12 @@ class HomeController < ApplicationController
 
 
   def index
-    if @error
-      flash.now[:error] = @error
-      render and return
-    end
     if params['commit'].eql?('true') && request.post?
+      if latest_error
+        flash.now[:error] = latest_error
+        @error = latest_error
+        render and return
+      end
       not_cacheable!
       logging "Dumped file [#{@config['file']}]" do
         begin
@@ -19,11 +21,12 @@ class HomeController < ApplicationController
           @config.validate!
           generate_pdf @config
         rescue Exception => e
-          @error = e.message
+          self.latest_error = e.message
           Rails.logger.error(e.backtrace.join("\n"))
-          # TODO: delete the temp file!
         end
       end
+    else
+      flash.clear
     end
   end
 
@@ -49,7 +52,7 @@ class HomeController < ApplicationController
       true
     rescue Exception => e
       Rails.logger.error "config validation failed with error: #{e}"
-      @error = e.message
+      self.latest_error = e.message
       false
     end
   end

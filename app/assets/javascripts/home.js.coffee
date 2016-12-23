@@ -54,12 +54,12 @@ class MakeABox.FormHandler
 delay = (ms, func) -> setTimeout func, ms
 
 MakeABox.GA = (label) ->
-  ga 'send',
-    hitType: 'event'
-    eventCategory: 'PDF'
-    eventAction: 'download'
-    eventLabel: label
-  alert('google analytics notified')
+  if (ga?)
+    ga 'send',
+      hitType: 'event'
+      eventCategory: 'PDF'
+      eventAction: 'download'
+      eventLabel: label
 
 jQuery ->
   $(document).on 'ready', (e) ->

@@ -2,13 +2,12 @@
   .panel-body
     #action-bar.pull-right.btn-toolbar{:role => 'toolbar'}
       .btn-group{:role => "group", "aria-label": "Action Group"}
-        %button#save-settings-group.btn-lg.btn-info.dropdown-toggle{'aria-expanded': false, "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-          Settings
-        %nbps;
-        .dropdown-menu{'aria-labelledby' => 'save-settings-group'}
-          %a.dropdown-item{:href => '#', id: 'save'}    Save Current Settings
-          %a.dropdown-item{:href => '#', id: 'restore'} Recall Previously Saved Settings
-          %a.dropdown-item{:href => '#', id: 'clear'}   Clear Current Form
+        -#%button#save-settings-group.btn-lg.btn-info.dropdown-toggle{'aria-expanded': false, "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+        -#  Settings
+        -#.dropdown-menu{'aria-labelledby' => 'save-settings-group'}
+        -#  %a.dropdown-item{:href => '#', id: 'save'}    Save Current Settings
+        -#  %a.dropdown-item{:href => '#', id: 'restore'} Recall Previously Saved Settings
+        -#  %a.dropdown-item{:href => '#', id: 'clear'}   Clear Current Form
         %button#make-pdf.btn-success.btn-lg.pull-right{ tabindex: 5, type: 'submit' }
           Download PDF
     .clear-right
