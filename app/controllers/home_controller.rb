@@ -29,6 +29,7 @@ class HomeController < ApplicationController
   end
 
   private
+
   def handle_cache_control
     # if request.get? && params[:config].nil?
     #   expires_in 15.minutes, :public => true, must_validate: true
@@ -40,10 +41,7 @@ class HomeController < ApplicationController
     %w(width height depth thickness notch page_size kerf).each do |f|
       c[f] = nil if c[f] == '0' or c[f].blank?
     end
-    perimeter = %w(width height depth).map{|f| c[f].to_f }.inject(&:+)
-    perimeter = Laser::Cutter::UnitsConverter.mm2in(perimeter) if c[:units].eql?('mm')
     c[:metadata] = params[:metadata].blank? ? false : true
-    @error ||= 'Sorry, this box is too large for the webapp. Please use laser-cutter ruby gem directly. ' if perimeter > 60
     @config = Laser::Cutter::Configuration.new(c)
   end
 
@@ -52,7 +50,7 @@ class HomeController < ApplicationController
       digits = @config.units.eql?('in') ? 1 : 0
       [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
     end
-    @page_size_options.insert(0, ["Auto Fit the Box", ""])
+    @page_size_options.insert(0, ['Auto Fit the Box', ''])
   end
 
   def handle_units_change
@@ -66,7 +64,11 @@ class HomeController < ApplicationController
   def exported_file_name
     pdf_export_folder="#{Rails.root}/tmp/pdfs"
     FileUtils.mkdir_p(pdf_export_folder)
-    "#{pdf_export_folder}/makeabox-io-#{@config.width}x#{@config.height}x#{@config.depth}-#{rand(10000)}.box.pdf"
+    "#{pdf_export_folder}/makeabox-io-#{sprintf '%.2f', @config.width}Wx#{sprintf '%.2f', @config.height}Hx#{sprintf '%.2f', @config.depth}D-#{@config.thickness}T-#{timestamp}.box.pdf"
+  end
+
+  def timestamp
+    Time.now.strftime '%Y%M%d.%H%M%S.%L'
   end
 
   def generate_pdf(config)
