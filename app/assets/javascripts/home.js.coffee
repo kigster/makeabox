@@ -2,12 +2,12 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 class MakeABox.FormHandler
-  constructor:(formId) ->
+  constructor: (formId) ->
     @form = $('form#' + formId)
 
   haveSettings: ->
     settings = $.cookie("makeabox-settings");
-    return settings ? true : false
+    return settings ? true: false
 
   restore: ->
     settings = $.cookie("makeabox-settings");
@@ -23,13 +23,13 @@ class MakeABox.FormHandler
       $('#restore').enable
 
   save: ->
-    $.cookie("makeabox-settings", @form.serialize(),  { expires: 365, path: '/' });
-    # $('#save-status').html('Saved');
-    # $('#save-status').fadeIn 'slow'
-    # delay 4000, ->
-    #   this.showSaveStatus()
+    $.cookie("makeabox-settings", @form.serialize(), {expires: 365, path: '/'});
+# $('#save-status').html('Saved');
+# $('#save-status').fadeIn 'slow'
+# delay 4000, ->
+#   this.showSaveStatus()
 
-  clear:(extraClass) ->
+  clear: (extraClass) ->
     @form.clear(extraClass)
 
   preventNonNumeric: (e) ->
@@ -39,7 +39,7 @@ class MakeABox.FormHandler
       return false
 
   updatePageSettings: ->
-    val = $('select#config_page_size option:selected' ).text();
+    val = $('select#config_page_size option:selected').text();
     if /Auto/i.test(val)
       $('#page-settings').hide()
     else
@@ -60,6 +60,15 @@ MakeABox.GA = (label) ->
       eventCategory: 'PDF'
       eventAction: 'download'
       eventLabel: label
+
+show_thickness_info = ->
+  $('.thickness-info-modal').modal('show')
+
+show_advanced_info = ->
+  $('.advanced-info-modal').modal('show')
+
+show_introduction = ->
+  $('#introduction-modal').modal('show')
 
 jQuery ->
   $(document).on 'ready', (e) ->
@@ -85,7 +94,7 @@ jQuery ->
     $('form#pdf-generator').submit();
 
   $('.dont-show-notice').on 'click', (e) ->
-    $.cookie("had-seen-the-notice", "yes",  { expires: 21, path: '/' })
+    $.cookie("had-seen-the-notice", "yes", {expires: 21, path: '/'})
     $('#one-time-notice').fadeOut "slow"
     $('.modal').fadeOut "slow"
 
@@ -100,22 +109,28 @@ jQuery ->
 
   $('#save').on "click", (e) ->
     handler.save()
+    false
 
   $('#restore').on "click", (e) ->
     handler.restore()
+    false
 
   $('.logo-image, .logo-name').on 'click', (e) ->
     document.location = '/'
     false
 
   $('#thickness-info').on 'click', (e) ->
-    $('#thickness-info-modal').modal('show')
+    show_thickness_info()
+    false
 
   $('#introduction').on 'click', (e) ->
-    $('#introduction-modal').modal('show')
+    show_introduction()
+    false
 
-  $('#advanced-info').on 'click', (e) ->
-    $('#advanced-info-modal').modal('show')
+  $('.advanced-info').on 'click', (e) ->
+    show_advanced_info()
+    false
 
-  $('#notch-help').on 'click', (e) ->
-    $('#advanced-info-modal').modal('show')
+  $('.notch-help').on 'click', (e) ->
+    show_advanced_info()
+    false

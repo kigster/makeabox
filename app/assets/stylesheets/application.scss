@@ -13,8 +13,8 @@
 *= require_tree .
 *= require_self
 */
-
 @import "variables";
+
 @media all and (min-width: 750px) {
 }
 
@@ -27,7 +27,19 @@ body {
   background-color: $main-bg !important;
 
   .navbar {
-    height: 45px;;
+    h1.logo {
+      font-family: $header-h1-font-family;
+      font-weight: $header-font-weight;
+      font-size: $header-h1-font-size + 20;
+      color: $header-fg;
+      text-shadow: $header-text-shadow;
+      margin-left: 100px;
+      margin-top: 40px;
+
+    }
+
+    height: 100px;
+    margin-bottom: 20px;
     .logo-name {
       float: left;
       margin-left: 30px;
@@ -35,7 +47,6 @@ body {
       margin-top: -10px;
     }
   }
-
 
   .alert {
     box-shadow: $header-box-shadow;
@@ -62,10 +73,9 @@ body {
     margin-bottom: 20px;
   }
 
-
   .logo-image {
-    margin:0;
-    width:40px;
+    margin: 0;
+    width: 100px;
     position: absolute;
     left: 0px;
     top: 0;
@@ -144,7 +154,9 @@ body {
     margin-right: 0;
   }
 
-  #save-settings-group { margin-right: 20px; }
+  #save-settings-group {
+    margin-right: 20px;
+  }
 
   .page-footer {
     .panel-heading {

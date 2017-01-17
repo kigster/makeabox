@@ -1,10 +1,6 @@
 .panel
   .panel-heading
-    %i#advanced-info.pull-right.fa.fa-info-circle.fa-lg
+    %i.advanced-info.pull-right.fa.fa-info-circle.fa-lg
     %h1.panel-title Optional Settings
   .panel-body
-    .small
-      Notch is the width (or length) of each "tab", that binds the two sides. OK to leave blank.
-      %a#notch-help{:href => '#'} Read more...
-    %br
-    = raw(config_form_element_group(%w(notch kerf margin padding stroke), @config))
+    = raw(config_form_element_group(%w(kerf margin padding stroke), @config))

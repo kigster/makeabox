@@ -1,7 +1,7 @@
 @import 'variables';
 
 body {
-  .container {
+  .container-fluid {
     .panel {
       border-radius: 10px !important;
       border: $header-border;
@@ -86,7 +86,7 @@ body {
 }
 
 footer {
-  .container {
+  .container-fluid {
     .panel {
       box-shadow: 0 0 0;
       border: 0;

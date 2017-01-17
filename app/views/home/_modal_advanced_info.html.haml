@@ -1,5 +1,5 @@
 / Modal
-#advanced-info-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+.advanced-info-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-md
     .modal-content
       .modal-header
@@ -9,8 +9,15 @@
         %h1#myModalLabel.modal-title Advanced Options
       .modal-body
         %dl.dl-horizontal
-          %dt Notch
-          %dd The length of the notch (the width of the tabs) binding the two sides. Leave this value blank to use 3x thickness as the default.
+          %dt Approximate Tab Width
+          %dd
+            %p
+              If you specify a value in this field, it will be used as a
+              %em guideline,
+              not an exact value. The layout of the tabs on each side of the box contributes to the overall aesthetics of the final product.
+            %p
+              One of the key differences of MakeABox and other tools, is that MakeABox goes out of its way to create a symmetric tab layout. To accomplish this,
+              we always choose an odd number of outward  tabs per side, ie. 3, 5, 7, etc. The value you provide in this field helps the algorithm determine how many tabs per side to generate.
           %dt Kerf
           %dd
             Kerf is defined as the cut width: the amount of material that laser removes while cutting. By adding a non-zero kerf you can compensate for the
