@@ -29,5 +29,5 @@ tmp
 *.a
 mkmf.log
 .idea/
-.ruby_version
+.ruby-version
 .cap_tasks~
