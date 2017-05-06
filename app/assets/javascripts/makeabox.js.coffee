@@ -1,1 +1,1 @@
-window.MakeABox= {} if typeof MakeABox == 'undefined'
+window.MakeABox = {} if typeof MakeABox == 'undefined'

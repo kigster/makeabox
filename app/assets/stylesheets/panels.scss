@@ -7,6 +7,8 @@ body {
     .donate {
       max-width: 100% !important;
       margin-left: 5px;
+      font-size: $main-font-size - 2;
+      color: $panel-fg + 50;
     }
 
     .panel {
@@ -22,6 +24,10 @@ body {
       width: 100%;
       margin: 30px auto;
       max-width: 350pt;
+
+      &.panel-actions {
+        max-width: 100%;
+      }
 
       .panel-heading {
         padding: 0;

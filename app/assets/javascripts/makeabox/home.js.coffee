@@ -24,10 +24,10 @@ class MakeABox.FormHandler
 
   save: ->
     $.cookie("makeabox-settings", @form.serialize(), {expires: 365, path: '/'});
-# $('#save-status').html('Saved');
-# $('#save-status').fadeIn 'slow'
-# delay 4000, ->
-#   this.showSaveStatus()
+    $('#save-status').html('Saved');
+    $('#save-status').fadeIn 'slow'
+    delay 4000, ->
+      this.showSaveStatus()
 
   clear: (extraClass) ->
     @form.clear(extraClass)
@@ -61,6 +61,8 @@ MakeABox.GA = (label) ->
       eventAction: 'download'
       eventLabel: label
 
+MakeABox.handler = null
+
 show_thickness_info = ->
   $('.thickness-info-modal').modal('show')
 
@@ -70,22 +72,39 @@ show_advanced_info = ->
 show_introduction = ->
   $('#introduction-modal').modal('show')
 
-jQuery ->
-  $(document).on 'ready', (e) ->
-    window.handler = new MakeABox.FormHandler('pdf-generator')
-    handler.updatePageSettings()
-    seenNotice = $.cookie("had-seen-the-notice")
-    if !seenNotice
-      delay 200, ->
-        $('#one-time-notice').fadeIn "slow"
-        $('#introduction-modal').modal('show').fadeIn "fast"
-      delay 10000, ->
-        $('#one-time-notice').fadeOut "slow"
+$(document).ready ->
+  window.handler = new MakeABox.FormHandler('pdf-generator')
+  document.handler = window.handler
+  window.MakeABox.handler = window.handler
+  MakeABox.handler.updatePageSettings()
+  seenNotice = $.cookie("had-seen-the-notice")
+  if !seenNotice
+    delay 200, ->
+      $('#one-time-notice').fadeIn "slow"
+      $('#introduction-modal').modal('show').fadeIn "fast"
+    delay 10000, ->
+      $('#one-time-notice').fadeOut "slow"
+
+  delay 200, ->
+    # Restore units the user had previously selected.
+    if $('input[name="config[units]"]')[1].checked
+      currentUnits = 'mm'
+    else
+      currentUnits = 'in'
+
+    storedUnits = $.cookie("makeabox-units")
+    if storedUnits
+      if storedUnits == 'mm' && currentUnits == 'in'
+        $('input[name="config[units]"]')[0].checked = false
+        $('input[name="config[units]"]')[1].checked = true
+        $('form#pdf-generator').submit();
 
   $("#config_units_in").on "click", (e) ->
+    $.cookie("makeabox-units", 'in', {expires: 365, path: '/'});
     $('form#pdf-generator').submit();
 
   $("#config_units_mm").on "click", (e) ->
+    $.cookie("makeabox-units", 'mm', {expires: 365, path: '/'});
     $('form#pdf-generator').submit();
 
   $("#make-pdf").on "click", (e) ->
@@ -99,20 +118,20 @@ jQuery ->
     $('.modal').fadeOut "slow"
 
   $('.numeric').on "keypress", (e)->
-    return handler.preventNonNumeric(e)
+    return MakeABox.handler.preventNonNumeric(e)
 
   $('#config_page_size').on 'change', (e) ->
-    handler.updatePageSettings()
+    MakeABox.handler.updatePageSettings()
 
   $('#clear').on "click", (e) ->
-    handler.clear('.box-dimensions')
+    MakeABox.handler.clear('.box-dimensions')
 
   $('#save').on "click", (e) ->
-    handler.save()
+    MakeABox.handler.save()
     false
 
   $('#restore').on "click", (e) ->
-    handler.restore()
+    MakeABox.handler.restore()
     false
 
   $('.logo-image, .logo-name').on 'click', (e) ->
