@@ -1,15 +1,12 @@
 !!!
-%html{:lang => "en", :xmlns => "http://www.w3.org/1999/html"}
-  = render 'shared/head'
+%html{:lang => 'en'}
+  = render 'shared/1_head'
   %body
     .container-fluid
-      = render '/shared/nav_bar_logo'
+      = render '/shared/2_nav_bar_logo'
+    .container.container-fluid
       = yield
   %footer
-    .container
+    .container-fluid
       .spacer-20
-      = render 'shared/google'
-      = render 'shared/disqus'
-      .spacer-20
-      = render 'shared/footer'
-      .spacer-50
+      = render 'shared/4_footer'

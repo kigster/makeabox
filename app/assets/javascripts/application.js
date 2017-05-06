@@ -10,7 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 
-//= require turbolinks
 //= require makeabox
-//= require utils
-//= require_tree .
+//= require bootstrap-tweaks
+//= require jquery.cookie
+//= require_tree ./makeabox

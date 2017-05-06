@@ -1,16 +1,20 @@
 @import "variables";
 
 body {
+  .modal-dialog{
+    padding: 0 0px;
+    min-width: 40%;
+  }
   .modal-content {
-    line-height: 1.2;
-    border-radius: 15px;
+    line-height: 1.1;
+    border-radius: $default-border-radius * 1.5;
     .close { padding: 10px; margin-right: 15px; font-size: 40pt; }
     .modal-header {
 
       padding: 0;
       border: 1px solid $header-border;
-      border-top-left-radius: 10px !important;
-      border-top-right-radius: 10px !important;
+      border-top-left-radius: $default-border-radius;
+      border-top-right-radius: $default-border-radius;
       margin-bottom: 7px;
       background-color: $header-bg;
       color: $header-fg;
@@ -18,7 +22,6 @@ body {
 
       h1 {
         font-family: $header-h1-font-family;
-        font-weight: 300;
         color: #ef2e2e;
         text-shadow: 0 0 10px white;
         font-size: 20pt;
@@ -49,16 +52,16 @@ body {
         padding-top: 10px;
         float: left;
         text-align: right;
-        font-family: $main-font-family-monospaced; 
+        font-family: $main-font-family-monospaced;
         font-size: 12pt;
         &.inches {
           margin-left: 10%;
           padding-right: 20%;
-          width: 40%;
+          width: 20%;
           clear: left;
         }
         &.mm {
-          width: 40%;
+          width: 20%;
           padding-left: 10%;
           padding-right: 20%;
         }

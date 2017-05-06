@@ -2,36 +2,33 @@
 = render 'modal_introduction'
 = render 'modal_thickness'
 = render 'alert_error'
--#= form_tag("", method: "post", novalidate: true, id: 'pdf-generator') do
--#  .row
--#    .col-sm-0.col-md-0.col-lg-1
--#    .col-sm-6.col-md-6.col-lg-5
--#      = render 'panel_dimensions'
--#      = render 'panel_advanced'
--#    .col-sm-6.col-md-6.col-lg-5
--#      = render 'panel_units'
--#      = render 'panel_layout'
--#      = render 'panel_actions'
--#    .col-sm-0.col-md-0.col-lg-1
--#.row
--#  .col-sm-3.col-md-3.col-lg-3
--#  .col-sm-6.col-md-6.col-lg-6
--#    = render 'panel_donate'
--#  .col-sm-3.col-md-3.col-lg-3
-= form_tag("", method: "post", novalidate: true, id: 'pdf-generator') do
-  .row
-    .col-sm-1.col-md-1.col-lg-1
-    .col-sm-3.col-md-3.col-lg-3
-      = render 'panel_units'
-      = render 'panel_layout'
-    .col-sm-5.col-md-5.col-lg-5
-      = render 'panel_dimensions'
-      = render 'panel_advanced'
-    .col-sm-2.col-md-2.col-lg-2
-      = render 'panel_actions'
-    .col-sm-1.col-md-1.col-lg-1
+
 .row
-  .col-sm-3.col-md-3.col-lg-3
-  .col-sm-6.col-md-6.col-lg-6
+  .col-sm-0.col-md-0.col-lg-1.col-xl-1
+  .col-sm-12.col-md-12.col-lg-10.col-xl-10
     = render 'panel_donate'
-  .col-sm-3.col-md-3.col-lg-3
+  .col-sm-0.col-md-0.col-lg-1.col-xl-1
+
+= form_tag('', method: 'post', novalidate: true, id: 'pdf-generator') do
+  .row
+    .col-sm-0.col-md-0.col-lg-0.col-xl-1
+    .col-sm-12.col-md-4.col-lg-4.col-xl-3
+      = render 'panel_units'
+    .col-sm-12.col-md-4.col-lg-4.col-xl-4
+      = render 'panel_advanced'
+    .col-sm-12.col-md-4.col-lg-4.col-xl-3
+      = render 'panel_dimensions'
+    .col-sm-0.col-md-0.col-lg-0.col-xl-1
+  .row
+    .col-sm-0.col-md-0.col-lg-1.col-xl-2
+    .col-sm-12.col-md-12.col-lg-10.col-xl-8
+      = render 'panel_actions'
+    .col-sm-0.col-md-0.col-lg-1.col-xl-2
+
+  = if Rails.env.production?
+    .row
+      .col-sm-0.col-md-0.col-lg-1.col-xl-2
+      .col-sm-12.col-md-12.col-lg-10.col-xl-8
+        = render 'disqus'
+      .col-sm-0.col-md-0.col-lg-1.col-xl-2
+

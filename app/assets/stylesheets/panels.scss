@@ -1,61 +1,87 @@
 @import 'variables';
 
 body {
-  .container-fluid {
+  .container-fluid, .container {
+    width: 100%;
+
+    .donate {
+      max-width: 100% !important;
+      margin-left: 5px;
+    }
+
     .panel {
-      border-radius: 10px !important;
+      display: block;
+      border-radius: $default-border-radius;
       border: $header-border;
       box-shadow: $header-box-shadow;
       color: $panel-fg;
       background-color: $panel-bg;
       &.units {
-        height: 230px;
+        //height: 230px;
       }
-      width: 100% !important;
-      margin: 0 auto;
-      margin-bottom: 30px;
+      width: 100%;
+      margin: 30px auto;
+      max-width: 350pt;
 
-      .panel-heading  {
+      .panel-heading {
         padding: 0;
         border: 1px solid $header-border;
-        border-top-left-radius: 10px !important;
-        border-top-right-radius: 10px !important;
+        border-top-left-radius: $default-border-radius !important;
+        border-top-right-radius: $default-border-radius !important;
         margin-bottom: 7px;
         background-color: $header-bg;
         color: $header-fg;
-        height: 40pt;
+        min-height: 40pt;
 
         h1, h2, h3, h4, h5 {
+          font-size: $header-h1-font-size;
           font-family: $header-h1-font-family;
           font-weight: $header-font-weight;
-          padding: 20px 10px 10px 10px;
           color: $header-fg;
           text-shadow: $header-text-shadow;
+          padding: $panel-header-text-padding;
+          margin: $panel-header-text-margin;
         }
-
-        h1 {
-          font-size: $header-h1-font-size;
-          padding-left: 30px;
-          margin-top: 0px;
-          padding-top: 15px;
-          //text-transform: uppercase;
+        h2 {
+          font-size: $header-h1-font-size - 2;
         }
-
       }
 
       .panel-body {
-        padding: 40px;
-
+        padding: $panel-padding;
         #action-bar {
           font-size: 12pt;
+        }
+
+        .btn-lg {
+          font-size: $button-font-size;
+          font-family: $button-font-family;
+          text-shadow: $button-text-shadow;
+
+          white-space: nowrap;
+        }
+        .paypal-logo {
+          float: right;
+          margin-left: 50px;
+          input[type=image] {
+            margin: 0;
+            padding: 0;
+            box-shadow: 0 0 10px #222;
+            border-radius: 10px;
+            &:hover {
+              box-shadow: 0 0 20px white;
+            }
+          }
+
         }
       }
 
       .panel-footer {
+        width: 100%;
         margin-top: 30px;
         background-color: $panel-sub-panel-bg;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: $default-border-radius;
+        border-bottom-right-radius: $default-border-radius;
         border-width: 0;
         .reinvent-one {
           width: 100%;
@@ -68,17 +94,17 @@ body {
       }
 
       i {
-        margin-top: 12px;
-        margin-right: 20px;
-        background-color: #CDF0FF;
-        border-radius:20px;
-        width: 36px;
-        height: 36px;
+        margin-top: 10px;
+        margin-right: 16px;
+        background-color: #eee;
+        border-radius: 14px;
+        width: 30px;
+        height: 30px;
         padding: 0;
         &.fa {
-          font-size: 19pt;
-          padding-left: 7px;
-          padding-top: 9px;
+          font-size: 20pt;
+          padding-top: 6px;
+          padding-left: 5px;
         }
       }
     }
@@ -87,27 +113,30 @@ body {
 
 footer {
   .container-fluid {
-    .panel {
-      box-shadow: 0 0 0;
+    .panel.footer-panel {
+      box-shadow: 0 0 10px #444;
       border: 0;
-      border-radius: 10px;
+      border-radius: $default-border-radius;
       background-color: rgba(39, 56, 33, 0.59);
       color: white;
       font-family: $main-font-family;
-      font-size: $main-font-size - 5;
+      font-size: $main-font-size - 1;
+      max-width: 100%;
+      margin: 0;
       a {
         color: rgb(255, 180, 152);
       }
       p {
-        margin-bottom:10px;
+        margin-bottom: 10px;
       }
-      .panel-body {
-        padding-top: 20px;
-        padding-bottom: 20px;
-        padding-left: 40px;
-        padding-right: 20px;
-        line-height: 1.3;
-      }
+      //.panel-body {
+      //  padding-top: 20px;
+      //  padding-bottom: 20px;
+      //  padding-left: 40px;
+      //  padding-right: 20px;
+      //  line-height: 1.3;
+      //  width: 100%;
+      //}
       .panel-footer {
         margin-top: 0;
         background-color: rgb(241, 163, 155);

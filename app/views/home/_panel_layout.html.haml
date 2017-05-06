@@ -2,26 +2,3 @@
   .panel-heading
     %h1.panel-title Layout Settings
   .panel-body
-    .form-label-and-select
-      = label_tag(:page_size, "Page Size")
-      %small
-        Note, that selecting anything except "auto"
-        %strong page size
-        may split your design into multiple pages, but probably not the way you want it :)
-      = select_tag('config[page_size]', options_for_select(@page_size_options, @page_size_options.find { |a| a.first.include?(@config.page_size || "") }))
-    .measurements#page-settings
-      .spacer-20
-      .mkbx-radio
-        = radio_button_tag('config[page_layout]', "portrait", @config.page_layout == 'portrait')
-      = label_tag(:page_layout_landscape, "Landscape")
-      .mkbx-radio
-        = radio_button_tag('config[page_layout]', "landscape", @config.page_layout == 'landscape')
-      = label_tag(:page_layout_portrait, "Portrait")
-
-    .form-label-and-select.clear-both
-      .spacer-20
-      = label_tag(:metadata, "Include Dimensions?")
-      .mkbx-checkbox
-        = check_box_tag(:metadata, 1, @config['metadata'], class: 'mkbx-checkbox')
-        %small When checked, information about your box will be included in the PDF for your reference.
-    .clear

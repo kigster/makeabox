@@ -1,0 +1,29 @@
+@import 'variables';
+
+.navbar {
+  background-color: #403D3B;
+  height: 80px;
+  display: block;
+  padding: 5px;
+  margin: 0 -20px;
+  width: 120%;
+
+  .logo-image {
+    margin: 10px;
+    width: 50px;
+    float: left;
+    box-shadow: 0 0 10px #222;
+  }
+
+  h1.logo {
+    float: left;
+    text-align: left;
+    font-family: $header-h1-font-family;
+    font-weight: $header-font-weight;
+    font-size: 40pt;
+    color: $header-fg;
+    text-shadow: $header-text-shadow;
+    margin: 10px;
+    margin-top: 5px;
+  }
+}

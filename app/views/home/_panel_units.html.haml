@@ -2,6 +2,7 @@
   .panel-heading
     %i#introduction.pull-right.fa.fa-question-circle.fa-lg
     %h1.panel-title Units
+
   .panel-body.measurements
     = hidden_field_tag('commit', false)
     = hidden_field_tag('units', @config.units)
@@ -11,4 +12,20 @@
     .mkbx-radio
       = radio_button_tag('config[units]', 'mm', @config.units.eql?('mm'))
     = label_tag('config[units]_mm', 'Millimeters')
+  .clear
+  .panel-body.measurements
+    .mkbx-radio
+      = radio_button_tag('config[page_layout]', "portrait", @config.page_layout == 'portrait')
+    = label_tag(:page_layout_landscape, "Landscape")
+    .mkbx-radio
+      = radio_button_tag('config[page_layout]', "landscape", @config.page_layout == 'landscape')
+    = label_tag(:page_layout_portrait, "Portrait")
+  .clear
+  .panel-body.measurements
+    .mkbx-radio
+      = check_box_tag(:metadata, 1, @config['metadata'], class: 'mkbx-checkbox')
+    = label_tag(:metadata, "Print Info?")
+    .clear
+    %small
+      When checked, information about your box will be included in the left bottom corner of the PDF document for your reference.
     .clear

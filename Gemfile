@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'colored2'
-gem 'rails', '~> 5.0'
 gem 'sass-rails'
+gem 'rails', '~> 5.1'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'jbuilder'
@@ -11,7 +11,7 @@ gem 'unicorn'
 gem 'laser-cutter'
 gem 'turbolinks'
 gem 'rb-fsevent'
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', require: false
 gem 'capistrano'
 gem 'capistrano-bundler'
 gem 'haml'

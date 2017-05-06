@@ -6,6 +6,7 @@ body {
       color: $main-fg;
       font-weight: normal;
       text-align: right;
+      white-space: nowrap;
       float: left;
       &:hover {
         cursor: pointer;
@@ -22,6 +23,8 @@ body {
       vertical-align: middle;
       margin-right: 10px;
       margin-bottom: 10px;
+      padding: 5px;
+      padding-left: 0;
     }
 
     label {
@@ -31,7 +34,6 @@ body {
     }
 
     input[type=number].numeric {
-      font-size: $main-font-size + 5;
       box-shadow: $form-input-box-shadow;
       border: $form-input-border;
       background-color: $form-input-bg;
@@ -46,10 +48,6 @@ body {
       color: $form-input-focus-fg;
     }
 
-    .mkbx-checkbox {
-      float: right;
-      margin: 5px 15px 20px 40px;
-    }
 
     input[type=radio], input[type=checkbox]{
       cursor: pointer;
@@ -57,36 +55,16 @@ body {
       height: 35px;
       padding-left: 8px;
       padding-right: 9px;
-      //border: 1px solid #888;
-      //box-shadow: 0 0 8px #000;
-      //background-color: #FFFFFF;
-      //color: #fff;
-      //white-space: nowrap;
-      //overflow: hidden;
-      //-webkit-appearance: button;
     }
-
-    //input[type=radio] {
-    //  border-radius: 15px;
-    //}
-    //input[type=radio]:checked, input[type=checkbox]:checked {
-    //  background-color: $radio-selected-bg;
-    //  border-color: #000;
-    //}
-    //
-    //input[type=radio]:hover, input[type=checkbox]:hover {
-    //  box-shadow: 0px 0px 10px #488100;
-    //  background-color: #8af5c5;
-    //}
 
     .panel-body {
       width: 100%;
     }
+
     .form-label-and-select {
       label {
         width: 100%;
         text-align: left;
-        padding: 0;
         margin: 10px 0 10px 0;
         height: auto;
       }
@@ -96,25 +74,22 @@ body {
         padding: 10px;
       }
     }
+
     .measurements {
+      border-top: 1px solid #ccc;
       label, .mkbx-radio {
         height: 60px;
         width: 47%;
-        padding: 0px;
-        padding-bottom: 0;
+        padding: 0px 0px 0;
       }
       .mkbx-radio {
         float: right;
         clear: left;
         padding-left:10px;
       }
-      label {
-        float: left;
-        padding-top: 5px;
-        padding-bottom: 9px;
-
-      }
     }
+
+
 
     #action-bar {
       margin: 0 auto;

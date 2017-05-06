@@ -4,3 +4,10 @@
     %h1.panel-title Optional Settings
   .panel-body
     = raw(config_form_element_group(%w(kerf margin padding stroke), @config))
+    .form-label-and-select
+      = label_tag(:page_size, "Optional PDF Page Size")
+      %small
+        Note, that selecting anything except "auto"
+        %strong page size
+        may split your design into multiple pages, but probably not the way you want it :)
+      = select_tag('config[page_size]', options_for_select(@page_size_options, @page_size_options.find { |a| a.first.include?(@config.page_size || "") }))
