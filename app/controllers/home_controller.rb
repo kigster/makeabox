@@ -17,7 +17,6 @@ class HomeController < ApplicationController
       not_cacheable!
       logging "Dumped file [#{@config['file']}]" do
         begin
-          NewRelic::Agent.set_transaction_name("#{NewRelic::Agent.get_transaction_name}#pdf")
           @config.validate!
           generate_pdf @config
         rescue Exception => e

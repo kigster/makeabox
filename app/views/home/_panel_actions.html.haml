@@ -1,17 +1,18 @@
-.panel
+.panel.panel-actions
   .panel-body
     #action-bar.btn-toolbar{:role => 'toolbar'}
-      %button#make-pdf.btn-success.btn-lg{ tabindex: 5, type: 'submit' }
+      %button#make-pdf.btn-success.text-center.btn-lg{ tabindex: 5, type: 'submit' }
         Generate PDF
       .spacer-20
-    .clear-right
-      -#.btn-group{:role => 'group', 'aria-label': 'Action Group'}
-      -#  %button#save-settings-group.btn-lg.btn-info.dropdown-toggle{'aria-expanded': false, 'aria-haspopup' => 'true', 'data-toggle' => 'dropdown', :type => 'button'}
-      -#    Settings
-      -#  .dropdown-menu{'aria-labelledby' => 'save-settings-group'}
-      -#    %a.dropdown-item{:href => '#', id: 'save'}    Save Current Settings
-      -#    %a.dropdown-item{:href => '#', id: 'restore'} Recall Previously Saved Settings
-      -#    %a.dropdown-item{:href => '#', id: 'clear'}   Clear Current Form
-      -#.clear-left
-      -#.clear-right
-      -#.spacer-20
+      &nbsp;
+      &nbsp;
+      .btn-group{:role => 'group', 'aria-label': 'Action Group'}
+        %button#save-settings-group.btn-lg.btn-info.dropdown-toggle{'aria-expanded': false, 'aria-haspopup' => 'true', 'data-toggle' => 'dropdown', :type => 'button'}
+          Settings
+        .dropdown-menu{'aria-labelledby' => 'save-settings-group'}
+          %a.dropdown-item{:href => '#', id: 'save'}    Save Current Settings
+          %a.dropdown-item{:href => '#', id: 'restore'} Recall Previously Saved Settings
+          %a.dropdown-item{:href => '#', id: 'clear'}   Clear Current Form
+      .clear-left
+      .clear-right
+      .spacer-20
