@@ -4,6 +4,13 @@
 = render 'home/partials/alert'
 
 #action-status.ui-widget-content.ui-corner-all
+  
+.row
+  .col-sm-0.col-md-0.col-lg-0.col-xl-1
+  .col-sm-12.col-md-12.col-lg-12.col-xl-10
+    = render 'home/panels/donate'
+  .col-sm-0.col-md-0.col-lg-0.col-xl-1
+
 
 = form_tag('/', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
   .row
@@ -15,6 +22,8 @@
     .col-sm-12.col-md-12.col-lg-4.col-xl-3
       = render 'home/panels/advanced'
     .col-sm-0.col-md-0.col-lg-0.col-xl-1
+
+
 
 
 = render 'home/partials/disqus_thread' if Rails.env.production?

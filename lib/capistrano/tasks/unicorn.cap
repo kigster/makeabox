@@ -25,10 +25,10 @@ namespace :unicorn do
   desc 'Restart Unicorn'
   task :restart do
     on roles(:app) do
-      execute (unicorn :restart)
+      execute (unicorn :stop)
+      sleep 5
+      execute (unicorn :start)
     end
   end
 
-  before :restart, :stop
-  after :restart, :start
 end
