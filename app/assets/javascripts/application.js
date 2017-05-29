@@ -12,8 +12,6 @@
 
 //= require_tree ./jquery-ui-1.12.1
 //= require makeabox
-//= require makeabox/utils
-//= require makeabox/form_handler
-//= require makeabox/home
+//= require_tree ./makeabox
 
 
