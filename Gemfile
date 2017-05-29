@@ -15,6 +15,7 @@ gem 'newrelic_rpm', require: false
 gem 'capistrano'
 gem 'capistrano-bundler'
 gem 'haml'
+gem 'jquery_file_download-rails'
 
 group :development do
   gem 'spring'

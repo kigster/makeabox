@@ -88,22 +88,5 @@ body {
         padding-left:10px;
       }
     }
-
-
-
-    #action-bar {
-      margin: 0 auto;
-      text-align: center;
-      .dropdown-menu {
-        .dropdown-item {
-          padding-top: 7px;
-          height: 40px;
-          border-bottom: 1px solid #aaa;
-          &:last-child {
-            border-bottom: 0px solid white;
-          }
-        }
-      }
-    }
   }
 }

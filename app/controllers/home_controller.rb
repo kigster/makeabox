@@ -1,17 +1,16 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
-  before_action :handle_cache_control,
-                :load_parameters,
+  before_action :load_parameters,
                 :populate_form_fields,
                 :handle_units_change
 
 
   def index
-    if params['commit'].eql?('true') && request.post?
+    if params['commit'].eql?('true')
       if latest_error
         flash.now[:error] = latest_error
-        @error = latest_error
+        @error            = latest_error
         render and return
       end
       not_cacheable!
@@ -29,6 +28,23 @@ class HomeController < ApplicationController
     end
   end
 
+  def generate
+    if params['commit'].eql?('true') && !latest_error
+      logging "Dumped file [#{@config['file']}]" do
+        begin
+          @config.validate!
+          generate_pdf @config
+          return
+        rescue Exception => e
+          self.latest_error = e.message
+          Rails.logger.error(e.backtrace.join("\n"))
+        end
+      end
+    end
+    @error = latest_error
+    render :index
+  end
+
   private
 
   def handle_cache_control
@@ -42,9 +58,9 @@ class HomeController < ApplicationController
     %w(width height depth thickness notch page_size kerf).each do |f|
       c[f] = nil if c[f] == '0' or c[f].blank?
     end
-    c[:metadata] = params[:metadata].blank? ? false : true
-    @config = Laser::Cutter::Configuration.new(c)
-    @config['file'] = exported_file_name if %w(width height depth thickness).all?{ |f| c[f] }
+    c[:metadata]    = params[:metadata].blank? ? false : true
+    @config         = Laser::Cutter::Configuration.new(c)
+    @config['file'] = exported_file_name if %w(width height depth thickness).all? {|f| c[f]}
     begin
       @config.validate!
       Rails.logger.info 'config validation OK'
@@ -72,6 +88,7 @@ class HomeController < ApplicationController
   end
 
   require 'fileutils'
+
   def exported_file_name
     pdf_export_folder="#{Rails.root}/tmp/pdfs"
     FileUtils.mkdir_p(pdf_export_folder)

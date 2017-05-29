@@ -10,7 +10,10 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 
+//= require_tree ./jquery-ui-1.12.1
 //= require makeabox
-//= require bootstrap-tweaks
-//= require jquery.cookie
-//= require_tree ./makeabox
+//= require makeabox/utils
+//= require makeabox/form_handler
+//= require makeabox/home
+
+

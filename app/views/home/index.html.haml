@@ -1,0 +1,20 @@
+= render 'home/modals/advanced_info'
+= render 'home/modals/introduction'
+= render 'home/modals/thickness'
+= render 'home/partials/alert'
+
+#action-status.ui-widget-content.ui-corner-all
+
+= form_tag('/', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
+  .row
+    .col-sm-0.col-md-0.col-lg-0.col-xl-1
+    .col-sm-12.col-md-6.col-lg-4.col-xl-3
+      = render 'home/panels/units'
+    .col-sm-12.col-md-6.col-lg-4.col-xl-4
+      = render 'home/panels/dimensions'
+    .col-sm-12.col-md-12.col-lg-4.col-xl-3
+      = render 'home/panels/advanced'
+    .col-sm-0.col-md-0.col-lg-0.col-xl-1
+
+
+= render 'home/partials/disqus_thread' if Rails.env.production?

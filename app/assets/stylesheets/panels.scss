@@ -25,10 +25,6 @@ body {
       margin: 30px auto;
       max-width: 350pt;
 
-      &.panel-actions {
-        max-width: 100%;
-      }
-
       .panel-heading {
         padding: 0;
         border: 1px solid $header-border;

@@ -1,0 +1,13 @@
+
+.panel-actions
+  .btn-group{:role => 'group', 'aria-label': 'Action Group'}
+    %button#save-settings-group.btn-lg.btn-info.dropdown-toggle{'aria-expanded': false, 'aria-haspopup' => 'true', 'data-toggle' => 'dropdown', :type => 'button'}
+      Actions...
+    .dropdown-menu{'aria-labelledby' => 'save-settings-group'}
+      %a.dropdown-item{:href => '#', id: 'save'}    Save Parameters
+      %a.dropdown-item{:href => '#', id: 'restore'} Recall Previously Saved Settings
+      %a.dropdown-item{:href => '#', id: 'clear'}   Reset the Form to Defaults
+      %a.dropdown-item.divider{role: 'separator'}
+      %a.dropdown-item{:href => '#', id: 'download'} Save & Download PDF
+    %button#make-pdf.btn-success.text-center.btn-lg{ tabindex: 5, type: 'submit' }
+      Download PDF

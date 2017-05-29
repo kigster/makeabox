@@ -3,10 +3,8 @@
   .modal-dialog.modal-md
     .modal-content
       .modal-header
-        %button.btn-lg.close{"data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"} &#215;
-          %span.sr-only Close
-        %h1#myModalLabel.modal-title Welcome to Make-A-Box!
+        = render 'home/modals/close_x'
+        %h1.modal-title Welcome to Make-A-Box!
       .modal-footer
         %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
         %button.dont-show-notice.btn.btn-warning{"data-dismiss" => "modal", :type => "button"} Close &amp; Don't Show Again

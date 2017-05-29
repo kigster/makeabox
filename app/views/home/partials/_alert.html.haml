@@ -1,0 +1,10 @@
+.row#alert
+  .col-sm-1
+  .col-sm-10
+    - if @error
+      .alert.alert-danger{style: 'display: none;'}
+        Whoops, #{@error} :(
+    - elsif @notice
+      .alert.alert-info{style: 'display: none;'}
+        #{@notice}
+  .col-sm-1

@@ -1,16 +1,27 @@
 @import "variables";
 
 body {
-  .modal-dialog{
+  .modal-dialog {
     padding: 0 0px;
-    min-width: 40%;
+    min-width: 50%;
   }
   .modal-content {
     line-height: 1.1;
     border-radius: $default-border-radius * 1.5;
-    .close { padding: 10px; margin-right: 15px; font-size: 40pt; }
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 0px;
+      padding: 0px;
+      margin: 0px;
+      font-size: 40pt;
+      z-index: 1000;
+      &:hover {
+        text-shadow: 0px 0px 15px white;
+        cursor: pointer;
+      }
+    }
     .modal-header {
-
       padding: 0;
       border: 1px solid $header-border;
       border-top-left-radius: $default-border-radius;
@@ -19,15 +30,21 @@ body {
       background-color: $header-bg;
       color: $header-fg;
       height: 50pt;
+      position: relative;
 
       h1 {
+        width: 100%;
+        text-align: center;
+        position: relative;
+        left: 0px;
         font-family: $header-h1-font-family;
         color: #ef2e2e;
         text-shadow: 0 0 10px white;
         font-size: 20pt;
-        padding-left: 20px;
-        padding-top: 20px;
+        padding: 0px;
         font-weight: 700;
+        margin: 0;
+        padding-right: 20px;
       }
     }
     .thickness-table {
@@ -47,22 +64,21 @@ body {
         display: block;
         margin: 0;
         padding: 0;
-        width: 200px;
-        border-bottom: 1px solid rgba(#ffc542, 0.4);
+        border-bottom: 2px solid rgba(#ffc542, 0.4);
         padding-top: 10px;
         float: left;
-        text-align: right;
+        text-align: right !important;
         font-family: $main-font-family-monospaced;
         font-size: 12pt;
         &.inches {
           margin-left: 10%;
-          padding-right: 20%;
-          width: 20%;
+          width: 30%;
           clear: left;
+          text-align: right;
         }
         &.mm {
-          width: 20%;
-          padding-left: 10%;
+          width: 50%;
+          text-align: right;
           padding-right: 20%;
         }
       }
@@ -74,7 +90,7 @@ body {
         padding: 20px;
         dt {
           padding-top: 20px;
-          margin-top:-10px;
+          margin-top: -10px;
           font-weight: bold;
           font-family: $header-h1-font-family;
 

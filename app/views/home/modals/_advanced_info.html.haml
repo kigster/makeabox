@@ -2,10 +2,8 @@
   .modal-dialog.modal-md
     .modal-content
       .modal-header
-        %button.btn-lg.close{"data-dismiss" => "modal", :type => "button btn-lg"}
-          %span{"aria-hidden" => "true"} &#215;
-          %span.sr-only Close
-        %h1#myModalLabel.modal-title Advanced Options
+        = render 'home/modals/close_x'
+        %h1.modal-title Advanced Options
       .modal-body
         %dl.dl-horizontal
           %dt Approximate Tab Width

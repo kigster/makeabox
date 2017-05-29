@@ -3,10 +3,8 @@
   .modal-dialog
     .modal-content
       .modal-header
-        %button.close{"data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true", "style" => "font-size: 30pt; float: right;"} &#215;
-          %span.sr-only Close
-        %h1#myModalLabel.modal-title Typical Acrylic Thickness Values
+        = render 'home/modals/close_x'
+        %h1.modal-title Typical Acrylic Thickness Values
       .modal-body.thickness-table
         %strong
           %span.inches Inches
