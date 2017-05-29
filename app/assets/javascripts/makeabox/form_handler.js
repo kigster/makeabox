@@ -50,20 +50,21 @@ class FormHandler {
     console.log("form serialized: " + $(this.form).serialize());
     $.cookie("makeabox-settings", $(this.form).serialize(), {expires: 365, path: '/'});
     if (showNotice == true) this.showActionStatus('Current parameters have been saved');
-    return this;
+    return false;
   }
 
   reset(e) {
-    return this.form.reset();
+    this.form.reset();
+    return false;
   }
 
   restore(e) {
-    let settings = $.cookie("makeabox-settings");
+     let settings = $.cookie("makeabox-settings");
     if (settings) {
       this.deserialize(settings);
       this.showActionStatus('Settings have been restored.');
     }
-    return this;
+    return false;
   }
 
   preventNonNumeric(e) {
