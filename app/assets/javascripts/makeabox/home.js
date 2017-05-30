@@ -73,11 +73,13 @@ $.when($.ready).then(function() {
   $("#config_units_in").on("click", function(e) {
     $.cookie("makeabox-units", 'in', {expires: 365, path: '/'});
     Handler.switchUnits('in');
+    e.preventDefault();
   });
 
   $("#config_units_mm").on("click", function(e) {
     $.cookie("makeabox-units", 'mm', {expires: 365, path: '/'});
     Handler.switchUnits('mm');
+    e.preventDefault();
   });
 
   $("#make-pdf").on("click", function(e) {

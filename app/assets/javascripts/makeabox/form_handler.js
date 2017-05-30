@@ -1,25 +1,25 @@
 class FormHandler {
   constructor(formId) {
-    this.form   = $(`form#${formId}`)[ 0 ];
+    this.form = $(`form#${formId}`)[0];
     this.status = $('#action-status');
   }
 
   showActionStatus(message, period = 3000) {
     this.status.clearQueue()
-        .hide()
-        .html(message + '...')
-        .fadeIn(500)
-        .delay(period)
-        .fadeOut(1000);
+      .hide()
+      .html(message + '...')
+      .fadeIn(500)
+      .delay(period)
+      .fadeOut(1000);
   }
 
   restoreUnits() {
-    let currentUnits = $('input[name="config[units]"]')[ 1 ].checked ? 'mm' : 'in';
-    let storedUnits  = $.cookie("makeabox-units");
+    let currentUnits = $('input[name="config[units]"]')[1].checked ? 'mm' : 'in';
+    let storedUnits = $.cookie("makeabox-units");
     if (storedUnits) {
       if ((storedUnits === 'mm') && (currentUnits === 'in')) {
-        $('input[name="config[units]"]')[ 0 ].checked = false;
-        $('input[name="config[units]"]')[ 1 ].checked = true;
+        $('input[name="config[units]"]')[0].checked = false;
+        $('input[name="config[units]"]')[1].checked = true;
         this.switchUnits('mm');
       }
     }
@@ -28,12 +28,21 @@ class FormHandler {
 
   generatePDF() {
     this.showActionStatus('PDF is now generating...');
-    $('input[name=commit]')[ 0 ].value = "true";
+    $('input[name=commit]')[0].value = "true";
     return $(this.form).submit();
   }
 
   switchUnits(units) {
-    let conversion = (units == 'in') ? (value) => { return parseFloat(value) / 25.4 } : (value) => { return parseFloat(value) * 25.4 }
+    let currentUnits = $('input[name="config[units]"]')[1].checked ? 'mm' : 'in';
+    if (units === currentUnits) {
+      return this;
+    }
+
+    let conversion = (units === 'in') ? (value) => {
+      return parseFloat(value) / 25.4
+    } : (value) => {
+      return parseFloat(value) * 25.4
+    }
 
     $('input[type="number"]').each(function() {
       let field = $(this);
@@ -42,14 +51,14 @@ class FormHandler {
       }
     });
 
-    this.showActionStatus(`Units are now set to ${units == 'in' ? "inches" : "millimeters"}.`);
+    this.showActionStatus(`Units are now set to ${units === 'in' ? "inches" : "millimeters"}.`);
     return this;
   }
 
   save(showNotice = true) {
     console.log("form serialized: " + $(this.form).serialize());
     $.cookie("makeabox-settings", $(this.form).serialize(), {expires: 365, path: '/'});
-    if (showNotice == true) this.showActionStatus('Current parameters have been saved');
+    if (showNotice === true) this.showActionStatus('Current parameters have been saved');
     return false;
   }
 
@@ -59,7 +68,7 @@ class FormHandler {
   }
 
   restore(e) {
-     let settings = $.cookie("makeabox-settings");
+    let settings = $.cookie("makeabox-settings");
     if (settings) {
       this.deserialize(settings);
       this.showActionStatus('Settings have been restored.');
@@ -69,7 +78,7 @@ class FormHandler {
 
   preventNonNumeric(e) {
     let char_code = e.which || e.key_code;
-    let char_str  = String.fromCharCode(char_code);
+    let char_str = String.fromCharCode(char_code);
 
     if (/[a-zA-Z]/.test(char_str)) {
       return false;
@@ -107,18 +116,18 @@ class FormHandler {
   deserialize(serializedString) {
     var $form = this.form;
     $form.reset();
-    serializedString   = serializedString.replace(/\+/g, '%20');
+    serializedString = serializedString.replace(/\+/g, '%20');
     var formFieldArray = serializedString.split("&");
     $.each(formFieldArray, function(i, pair) {
       var nameValue = pair.split("=");
-      var name      = decodeURIComponent(nameValue[ 0 ]);
-      var value     = decodeURIComponent(nameValue[ 1 ]);
-      var $field    = $('[name="' + name + '"]');
+      var name = decodeURIComponent(nameValue[0]);
+      var value = decodeURIComponent(nameValue[1]);
+      var $field = $('[name="' + name + '"]');
 
-      if ($field[ 0 ].type == "radio"
-          || $field[ 0 ].type == "checkbox") {
+      if ($field[0].type == "radio"
+        || $field[0].type == "checkbox") {
         var $fieldWithValue = $field.filter('[value="' + value + '"]');
-        var isFound         = ($fieldWithValue.length > 0);
+        var isFound = ($fieldWithValue.length > 0);
         if (!isFound && value == "on") {
           $field.first().prop("checked", true);
         }
