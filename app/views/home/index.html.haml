@@ -5,12 +5,17 @@
 
 #action-status.ui-widget-content.ui-corner-all
 
-.row
-  .col-sm-0.col-md-0.col-lg-0.col-xl-1
-  .col-sm-12.col-md-12.col-lg-12.col-xl-10
+.row#donate-row{style: 'display: none;'}
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8
     = render 'home/panels/donate'
-  .col-sm-0.col-md-0.col-lg-0.col-xl-1
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
 
+.row#adsense-row
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center
+    = render 'home/partials/adsense' if true #|| Rails.env.production?
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
 
 = form_tag('/', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
   .row
@@ -23,11 +28,6 @@
       = render 'home/panels/advanced'
     .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
-.row
-  .col-sm-0.col-md-0.col-lg-0.col-xl-1
-  .col-sm-12.col-md-12.col-lg-12.col-xl-10
-    = render 'home/partials/adsense' if Rails.env.production?
-  .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
 
 = render 'home/partials/disqus_thread' if Rails.env.production?

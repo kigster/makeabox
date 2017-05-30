@@ -7,13 +7,22 @@ body {
   color: $main-fg;
   background-color: $main-bg !important;
 
+  #adsense-row {
+    padding-top: 20px;
+    height: 150px;
+    text-align: center;
+  }
+
+  #donate-row {
+    height: 150px;
+    text-align: center;
+  }
+
   .adsense {
-    display: block;
-    margin: 0px;
-    padding: 10px;
     position: relative;
-    min-width: 728px;
-    height: 90px;
+    padding: 10px;
+    text-align: center;
+    width: auto !important;
   }
 
   .alert {

@@ -15,7 +15,51 @@ MakeABox.GA = function(label) {
 };
 
 
+class Toggle {
+  constructor(array_of_divs, array_of_durations) {
+    this.divs      = array_of_divs;
+    this.durations = array_of_durations;
+    this.effectDuration = 1500;
+  }
+
+  toggle(index) {
+    //console.log(`entering toggle, index is ${index}, this.divs are ${this.divs}`);
+
+    let previousDiv = $(this.divs[ index ]);
+    //console.log(`previous div[${index}] is ${previousDiv.attr('id')}`);
+
+    var nextIndex = this.nextIndex(index);
+
+    var currentDiv = $(this.divs[ nextIndex ]);
+    //console.log(`current div[${nextIndex}] is ${currentDiv.attr('id')}`);
+
+    var adToggle = this;
+
+    previousDiv.fadeOut(adToggle.effectDuration, function() {
+      currentDiv.fadeIn(adToggle.effectDuration);
+    });
+
+    delay(adToggle.effectDuration + this.durations[nextIndex], function() {
+      window.MakeABox.AdToggle.toggle(nextIndex);
+    });
+
+    return true;
+  }
+
+  nextIndex(index) {
+    index++;
+    return index % this.divs.length;
+    ;
+  }
+}
+
+window.MakeABox.AdToggle = new Toggle([ '#adsense-row', '#donate-row' ], [ 9000, 5000 ]);
+
 $.when($.ready).then(function() {
+
+  $('#donate-row').hide();
+
+  delay(10, function() { window.MakeABox.AdToggle.toggle(1) });
 
   let show_thickness_info = () => $('.thickness-info-modal').modal('show');
   let show_advanced_info  = () => $('.advanced-info-modal').modal('show');

@@ -1,5 +1,21 @@
 @import 'variables';
 
+@media all and (max-width: 600px) {
+  body {
+    .container-fluid, .container {
+      .donate {
+        margin: 0;
+        padding: 2px;
+        font-size: $main-font-size - 5;
+      }
+      #action-status {
+        left: 4%;
+        right: 4%;
+      }
+    }
+  }
+}
+
 body {
   .container-fluid, .container {
     width: 100%;
@@ -7,7 +23,7 @@ body {
     .donate {
       max-width: 100% !important;
       margin-left: 5px;
-      font-size: $main-font-size - 2;
+      font-size: $main-font-size - 3;
       color: $panel-fg + 50;
     }
 
