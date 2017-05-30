@@ -7,6 +7,15 @@ body {
   color: $main-fg;
   background-color: $main-bg !important;
 
+  .adsense {
+    display: block;
+    margin: 0px;
+    padding: 10px;
+    position: relative;
+    min-width: 728px;
+    height: 90px;
+  }
+
   .alert {
     box-shadow: $header-box-shadow;
     font-size: 15pt;
