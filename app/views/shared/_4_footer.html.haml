@@ -6,4 +6,8 @@
   .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
 .row
-  = render 'shared/4_1_google'
+  = render 'shared/4_1_google' if Rails.env.production?
+
+= render 'shared/4_4_freshdesk' if Rails.env.production?
+
+
