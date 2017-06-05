@@ -14,14 +14,19 @@ gem 'capistrano-bundler'
 gem 'haml'
 gem 'jquery_file_download-rails'
 
+group :development, :test do
+  gem 'spring-commands-rspec'
+  gem 'rspec-rails'
+  gem 'jasmine'
+  gem 'teaspoon-mocha'
+  gem 'coffee-script'
+  gem 'guard-rspec'
+  gem 'guard-teaspoon'
+end
+
 group :development do
   gem 'spring'
   gem 'capistrano-rails'
   gem 'airbrussh', :require => false
 end
 
-group :test, :development, :demo do
-  gem 'spring-commands-rspec'
-  gem 'rspec-rails'
-  gem 'guard-rspec'
-end
