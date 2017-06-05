@@ -2,7 +2,7 @@ class UnitsHandler {
   constructor(radioButtons, hiddenField) {
     this.klass = radioButtons;
     this.hidden = hiddenField;
-
+    this.cookieName = "makeabox-units";
     this.mapping = {'in': 0, 'mm': 1};
 
     this.conversions = {
@@ -17,8 +17,9 @@ class UnitsHandler {
 
     const myself = this;
 
-    $(myself.radios).on('change', function() {
+    $(this.radios).on('change', function() {
       myself.setUnitsTo($(this).val());
+      status(`Units have been changed to "${myself.currentUnits()}".`);
       return true;
     })
   }
@@ -31,7 +32,7 @@ class UnitsHandler {
     $('input[type="number"]').each(function() {
       let field = $(this);
       if (field.val()) {
-        field.val(`${conversion(field.val()).toFixed(3)}`)
+        field.val(`${conversion(field.val())}`)
       }
     });
 
@@ -43,17 +44,25 @@ class UnitsHandler {
   }
 
   cookieUnits() {
-    return $.cookie("makeabox-units");
+    return $.cookie(this.cookieName);
   }
 
-  restoreUnits() {
+  fromCookie() {
     let _current = this.currentUnits();
     let _stored  = this.cookieUnits();
     if (_stored &&
         this.mapping[ _stored ] !== undefined &&
         _stored !== _current) {
       this.setUnitsTo(_stored);
+      return true;
     }
+    return false;
+  }
+
+  toCookie() {
+    let u = this.currentUnits();
+    $.cookie(this.cookieName, u, {expires: 365, path: '/'} );
+    status("Saved the current units in your browser's cookie.");
     return this;
   }
 

@@ -1,30 +1,21 @@
 class FormHandler {
   constructor(formId) {
     this.form = $(`form#${formId}`)[0];
-    this.status = $('#action-status');
-  }
-
-  showActionStatus(message, period = 3000) {
-    this.status.clearQueue()
-      .hide()
-      .html(message + '...')
-      .fadeIn(500)
-      .delay(period)
-      .fadeOut(1000);
   }
 
   generatePDF() {
-    this.showActionStatus('PDF is now generating...');
+    status('PDF is now generating...');
     window.MakeABox.GA('Download PDF');
     $('input[name=commit]')[0].value = "true";
-    return $(this.form).submit();
+    $(this.form).submit();
+    return true;
   }
 
-  save(showNotice = true) {
+  save(e, showNotice = true) {
     console.log("form serialized: " + $(this.form).serialize());
     $.cookie("makeabox-settings", $(this.form).serialize(), {expires: 365, path: '/'});
-    if (showNotice === true) this.showActionStatus('Current parameters have been saved');
-    return false;
+    if (showNotice === true) status('Current parameters have been saved');
+    return true;
   }
 
   reset(e) {
@@ -36,9 +27,11 @@ class FormHandler {
     let settings = $.cookie("makeabox-settings");
     if (settings) {
       this.deserialize(settings);
-      this.showActionStatus('Settings have been restored.');
+      status('Settings have been restored.');
+    } else {
+      status('No settings were found in your browser cookies, sorry.');
     }
-    return false;
+    return true;
   }
 
   preventNonNumeric(e) {

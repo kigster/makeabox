@@ -84,6 +84,8 @@ body {
       }
     }
     .modal-body {
+      color: $modal-fg;
+
       dl.dl-horizontal {
         width: 90%;
         margin: 0 auto;
@@ -93,14 +95,26 @@ body {
           margin-top: -10px;
           font-weight: bold;
           font-family: $header-h1-font-family;
-
+          color: $modal-fg - 40;
         }
         dd {
           margin-top: 10px;
-          margin-left: 115px;
+          margin-left: 80px;
         }
         dd.last {
           margin-bottom: -20px;
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 600px) {
+  body {
+    .modal-body {
+      dl.dl-horizontal {
+        dd {
+          margin-left: 0px !important;
         }
       }
     }

@@ -8,6 +8,12 @@ $.when($.ready).then(function() {
   // Initialize the Units Conversion Handler
   window.MakeABox.uh = new MakeABox.UnitsHandler('input[name="config[units]"]', '#units');
 
+  if (MakeABox.uh.cookieUnits() !== undefined) {
+    if (MakeABox.uh.fromCookie()) {
+      status('Welcome back! Form units have been restored from the browser cookie.');
+    }
+  }
+
   // Initialize the main Form Handler
   window.MakeABox.fh = new MakeABox.FormHandler('pdf-generator');
 
@@ -31,12 +37,14 @@ $.when($.ready).then(function() {
   $('#config_page_size').on('change', e => window.MakeABox.fh.updatePageSettings());
 
   // Drop Down Options
-  $('#clear').on("click", e => window.MakeABox.fh.reset(e));
-  $('#save').on("click", e => window.MakeABox.fh.save(true));
-  $('#restore').on("click", e => window.MakeABox.fh.restore(e));
+  $('#clear').on("click", e => window.MakeABox.fh.reset(this));
+  $('#save').on("click", e => window.MakeABox.fh.save(this, true));
+  $('#save-units').on("click", e => window.MakeABox.uh.toCookie(this));
+  $('#restore').on("click", e => window.MakeABox.fh.restore(this));
   $('#download').on("click", e => {
-    window.MakeABox.fh.save(false);
-    return window.MakeABox.fh.generatePDF(e);
+    window.MakeABox.fh.save(this, false);
+    window.MakeABox.fh.generatePDF(e);
+    return true;
   });
 
   $('.logo-image, .logo-name').on('click', function(e) {
