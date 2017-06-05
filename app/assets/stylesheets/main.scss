@@ -110,9 +110,12 @@ body {
   }
 
   #disqus_thread {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
+    position: relative;
+    max-height: 2000px !important;
+    overflow: auto;
+    height: 100% !important;
+    width: auto !important;
   }
 
   #save-settings-group {
