@@ -1,1 +1,6 @@
-if (typeof MakeABox === 'undefined') { window.MakeABox = {}; }
+if (typeof MakeABox === 'undefined') {
+  var MakeABox = {};
+  window.MakeABox = MakeABox;
+}
+
+let delay = (ms, func) => setTimeout(func, ms);

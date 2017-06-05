@@ -13,46 +13,11 @@ class FormHandler {
       .fadeOut(1000);
   }
 
-  restoreUnits() {
-    let currentUnits = $('input[name="config[units]"]')[1].checked ? 'mm' : 'in';
-    let storedUnits = $.cookie("makeabox-units");
-    if (storedUnits) {
-      if ((storedUnits === 'mm') && (currentUnits === 'in')) {
-        $('input[name="config[units]"]')[0].checked = false;
-        $('input[name="config[units]"]')[1].checked = true;
-        this.switchUnits('mm');
-      }
-    }
-    return this;
-  }
-
   generatePDF() {
     this.showActionStatus('PDF is now generating...');
+    window.MakeABox.GA('Download PDF');
     $('input[name=commit]')[0].value = "true";
     return $(this.form).submit();
-  }
-
-  switchUnits(units) {
-    let currentUnits = $('input[name="config[units]"]')[1].checked ? 'mm' : 'in';
-    if (units === currentUnits) {
-      return this;
-    }
-
-    let conversion = (units === 'in') ? (value) => {
-      return parseFloat(value) / 25.4
-    } : (value) => {
-      return parseFloat(value) * 25.4
-    }
-
-    $('input[type="number"]').each(function() {
-      let field = $(this);
-      if (field.val()) {
-        field.val(`${conversion(field.val()).toFixed(3)}`)
-      }
-    });
-
-    this.showActionStatus(`Units are now set to ${units === 'in' ? "inches" : "millimeters"}.`);
-    return this;
   }
 
   save(showNotice = true) {
@@ -142,3 +107,4 @@ class FormHandler {
   }
 }
 
+MakeABox.FormHandler = FormHandler;

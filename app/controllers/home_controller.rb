@@ -28,23 +28,6 @@ class HomeController < ApplicationController
     end
   end
 
-  def generate
-    if params['commit'].eql?('true') && !latest_error
-      logging "Dumped file [#{@config['file']}]" do
-        begin
-          @config.validate!
-          generate_pdf @config
-          return
-        rescue Exception => e
-          self.latest_error = e.message
-          Rails.logger.error(e.backtrace.join("\n"))
-        end
-      end
-    end
-    @error = latest_error
-    render :index
-  end
-
   private
 
   def handle_cache_control
