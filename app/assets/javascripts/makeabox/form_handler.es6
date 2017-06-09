@@ -3,8 +3,12 @@ class FormHandler {
     this.form = $(`form#${formId}`)[0];
   }
 
+  status(message, period = 4000) {
+    $('#action-status').clearQueue().hide().html(message).fadeIn(500).delay(period).fadeOut(1000);
+  }
+
   generatePDF() {
-    status('PDF is now generating...');
+    this.status('PDF is now generating...');
     window.MakeABox.GA('Download PDF');
     $('input[name=commit]')[0].value = "true";
     $(this.form).submit();
@@ -14,7 +18,7 @@ class FormHandler {
   save(e, showNotice = true) {
     console.log("form serialized: " + $(this.form).serialize());
     $.cookie("makeabox-settings", $(this.form).serialize(), {expires: 365, path: '/'});
-    if (showNotice === true) status('Current parameters have been saved');
+    if (showNotice === true) this.status('Current parameters have been saved');
     return true;
   }
 
@@ -27,9 +31,9 @@ class FormHandler {
     let settings = $.cookie("makeabox-settings");
     if (settings) {
       this.deserialize(settings);
-      status('Settings have been restored.');
+      this.status('Settings have been restored.');
     } else {
-      status('No settings were found in your browser cookies, sorry.');
+      this.status('No settings were found in your browser cookies, sorry.');
     }
     return true;
   }
@@ -54,19 +58,23 @@ class FormHandler {
 
     let alert = $('.alert:first');
     if (alert) {
-      delay(10000, () => alert.fadeOut(1000));
+      this.delay(10000, () => alert.fadeOut(1000));
     }
     return this;
+  }
+
+  delay(ms, func) {
+    return setTimeout(func, ms);
   }
 
   presentNotice() {
     let seenNotice = $.cookie("had-seen-the-notice");
     if (!seenNotice) {
-      delay(200, function() {
+      this.delay(200, function() {
         $('#one-time-notice').fadeIn(250);
         return $('#introduction-modal').modal('show').fadeIn("fast");
       });
-      delay(10000, () => $('#one-time-notice').hide("slow"));
+      this.delay(10000, () => $('#one-time-notice').hide("slow"));
     }
     return this;
   }
@@ -100,4 +108,4 @@ class FormHandler {
   }
 }
 
-MakeABox.FormHandler = FormHandler;
+window.MakeABox.FormHandler = FormHandler;

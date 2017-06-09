@@ -1,21 +1,21 @@
-$.when($.ready).then(function() {
 
+$.when($.ready).then(function() {
   $('#donate-row').hide();
 
   // Toggle between AdSense Ad and our own donation
-  window.MakeABox.toggle = new MakeABox.Toggler([ '#adsense-row', '#donate-row' ], [ 9000, 5000 ]);
+  window.MakeABox.toggle = new window.MakeABox.Toggler([ '#adsense-row', '#donate-row' ], [ 9000, 5000 ]);
 
   // Initialize the Units Conversion Handler
-  window.MakeABox.uh = new MakeABox.UnitsHandler('input[name="config[units]"]', '#units');
+  window.MakeABox.uh = new window.MakeABox.UnitsHandler('input[name="config[units]"]', '#units');
 
-  if (MakeABox.uh.cookieUnits() !== undefined) {
-    if (MakeABox.uh.fromCookie()) {
-      status('Welcome back! Form units have been restored from the browser cookie.');
+  if (window.MakeABox.uh.cookieUnits() !== undefined) {
+    if (window.MakeABox.uh.fromCookie()) {
+      window.MakeABox.uh.status('Welcome back! Form units have been restored from the browser cookie.');
     }
   }
 
   // Initialize the main Form Handler
-  window.MakeABox.fh = new MakeABox.FormHandler('pdf-generator');
+  window.MakeABox.fh = new window.MakeABox.FormHandler('pdf-generator');
 
   let show_thickness_info = () => $('.thickness-info-modal').modal('show');
   let show_advanced_info  = () => $('.advanced-info-modal').modal('show');

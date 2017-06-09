@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'colored2'
-gem 'sass-rails'
 gem 'rails', '~> 5.1'
+
+gem 'colored2'
 gem 'jbuilder'
 gem 'sdoc', group: :doc
 gem 'unicorn'
@@ -11,8 +11,14 @@ gem 'rb-fsevent'
 gem 'newrelic_rpm', require: false
 gem 'capistrano'
 gem 'capistrano-bundler'
+
 gem 'haml'
-gem 'jquery_file_download-rails'
+
+gem 'sass-rails', git: 'https://github.com/rails/sass-rails', branch: 'master'
+
+gem 'sprockets-rails', git: 'https://github.com/rails/sprockets-rails', branch: 'master'
+gem 'sprockets', git: 'https://github.com/rails/sprockets', branch: 'master'
+gem 'babel-transpiler'
 
 group :development do
   gem 'spring'

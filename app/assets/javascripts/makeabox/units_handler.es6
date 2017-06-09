@@ -6,7 +6,7 @@ class UnitsHandler {
     this.mapping = {'in': 0, 'mm': 1};
 
     this.conversions = {
-      'in'   : (value) => {
+      'in': (value) => {
         return parseFloat(value) / 25.4
       }, 'mm': (value) => {
         return parseFloat(value) * 25.4
@@ -19,15 +19,19 @@ class UnitsHandler {
 
     $(this.radios).on('change', function() {
       myself.setUnitsTo($(this).val());
-      status(`Units have been changed to "${myself.currentUnits()}".`);
+      myself.status(`Units have been changed to "${myself.currentUnits()}".`);
       return true;
     })
+  }
+
+  status(message, period = 4000) {
+    $('#action-status').clearQueue().hide().html(message).fadeIn(500).delay(period).fadeOut(1000);
   }
 
   setUnitsTo(targetUnits) {
     let newUnits = targetUnits;
     this.selectRadioButton(newUnits);
-    let conversion = this.conversions[ newUnits ];
+    let conversion = this.conversions[newUnits];
 
     $('input[type="number"]').each(function() {
       let field = $(this);
@@ -49,10 +53,10 @@ class UnitsHandler {
 
   fromCookie() {
     let _current = this.currentUnits();
-    let _stored  = this.cookieUnits();
+    let _stored = this.cookieUnits();
     if (_stored &&
-        this.mapping[ _stored ] !== undefined &&
-        _stored !== _current) {
+      this.mapping[_stored] !== undefined &&
+      _stored !== _current) {
       this.setUnitsTo(_stored);
       return true;
     }
@@ -61,8 +65,8 @@ class UnitsHandler {
 
   toCookie() {
     let u = this.currentUnits();
-    $.cookie(this.cookieName, u, {expires: 365, path: '/'} );
-    status("Saved the current units in your browser's cookie.");
+    $.cookie(this.cookieName, u, {expires: 365, path: '/'});
+    this.status("Saved the current units in your browser's cookie.");
     return this;
   }
 
@@ -75,6 +79,6 @@ class UnitsHandler {
 
 }
 
-MakeABox.UnitsHandler = UnitsHandler;
+window.MakeABox.UnitsHandler = UnitsHandler;
 
 

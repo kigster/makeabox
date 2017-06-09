@@ -1,3 +1,4 @@
+
 class Toggler {
   constructor(array_of_divs, array_of_durations = []) {
     this.divs = array_of_divs;
@@ -6,7 +7,11 @@ class Toggler {
 
     const myself = this;
 
-    delay(10, function() { myself.toggle(1) });
+    this.delay(10, function() { myself.toggle(1) });
+  }
+
+  delay(ms, func) {
+    return setTimeout(func, ms);
   }
 
   toggle(currentIndex) {
@@ -21,7 +26,7 @@ class Toggler {
       _next.fadeIn(myself.effectDuration);
     });
 
-    delay(myself.effectDuration + myself.durations[nextIndex], function () {
+    this.delay(myself.effectDuration + myself.durations[nextIndex], function () {
       myself.toggle(nextIndex);
     });
 
@@ -34,4 +39,4 @@ class Toggler {
   }
 }
 
-MakeABox.Toggler = Toggler;
+window.MakeABox.Toggler = Toggler;

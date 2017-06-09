@@ -2,27 +2,18 @@
   %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   / Required meta tags
   %meta{:charset => "utf-8"}/
-  %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
-  / Bootstrap CSS
-  %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css", :integrity => "sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ", :rel => "stylesheet"}/
-  %link{:href => "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", :rel => "stylesheet"}/
-  %link{:href => "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css", :rel => "stylesheet"}/
-  %link{:href => "https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css", :rel => "stylesheet"}/
+  %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
 
+  = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Signika+Negative:400,600", :media => "all"
+  = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Slabo+27px|Fjalla+One", :media => "all"
 
   = stylesheet_link_tag "application", :media => "all"
+
   = favicon_link_tag "favicon.ico", :rel => "shortcut icon"
 
   %title= content_for?(:title) ? yield(:title) : "Make A Box"
 
-  %script{:crossorigin => "anonymous", :integrity => "sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=", :src => "https://code.jquery.com/jquery-3.2.1.slim.min.js"}
-  -#%script{:crossorigin => "anonymous", :integrity => "sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=", :src => "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"}
-  %script{:crossorigin => "anonymous", :integrity => "sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb", :src => "https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"}
-
   = javascript_include_tag "application"
-
-  %script{:crossorigin => "anonymous", :src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"}
-  %script{:crossorigin => "anonymous", :integrity => "sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"}
 
   %meta{:content => "Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Sides snap into each other using automatically created notches. Use acrylic, wood, or any other material that can be cut with a laser-cutter.", :name => "description"}/
   %meta{:content => "Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Make-A-Box!", :property => "twitter:description"}/
