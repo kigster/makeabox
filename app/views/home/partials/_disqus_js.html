@@ -1,13 +1,14 @@
 <script async="true">
-  var disqus_shortname = 'makeabox'; // required: replace example with your forum shortname
-  <!-- * * * DON'T EDIT BELOW THIS LINE * * */ -->
-  (function () {
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+var disqus_config = function () {
+  this.page.url = document.location.href.replace('https', 'http');
+  this.page.identifier = document.location.href.replace('https', 'http');
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://makeabox.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
 </script>
 <noscript>
   Please enable JavaScript to view the
