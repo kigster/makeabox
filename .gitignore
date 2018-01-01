@@ -31,3 +31,4 @@ mkmf.log
 .idea/
 .ruby-version
 .cap_tasks~
+log/**

@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.1'
+gem 'rails'
 
 gem 'colored2'
 gem 'jbuilder'
 gem 'sdoc', group: :doc
-gem 'unicorn'
-gem 'laser-cutter'
+gem 'puma'
+gem 'laser-cutter', '~> 1.0.5'
 gem 'rb-fsevent'
 gem 'newrelic_rpm', require: false
 gem 'capistrano'
