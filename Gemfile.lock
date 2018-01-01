@@ -254,7 +254,7 @@ DEPENDENCIES
   guard-rspec
   haml
   jbuilder
-  laser-cutter (~> 1.0.5)
+  laser-cutter (~> 1.0.3)
   newrelic_rpm
   puma
   rails

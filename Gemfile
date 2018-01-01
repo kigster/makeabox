@@ -6,7 +6,7 @@ gem 'colored2'
 gem 'jbuilder'
 gem 'sdoc', group: :doc
 gem 'puma'
-gem 'laser-cutter', '~> 1.0.5'
+gem 'laser-cutter', '~> 1.0.3'
 gem 'rb-fsevent'
 gem 'newrelic_rpm', require: false
 gem 'capistrano'
