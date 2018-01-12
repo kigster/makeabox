@@ -1,10 +1,10 @@
 def puma
   <<-EOF
-cd #{current_path}
+cd #{release_path}
 source ~/.bashrc
-export APP=#{fetch(:application)} 
-export RAILS_ENV=#{fetch(:rails_env)} 
-bin/puma-start
+export APP=#{fetch(:application)}
+export RAILS_ENV=#{fetch(:rails_env)}
+#{release_path}/bin/puma-start
 EOF
 end
 
