@@ -19,6 +19,6 @@ fi
 
 export RAILS_ENV=production
 bundle exec rake assets:precompile 1>/dev/null & 
-bundle exec puma -C config/puma.rb
+bundle exec puma -C config/puma.rb -d
 
 
