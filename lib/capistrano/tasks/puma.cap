@@ -1,0 +1,22 @@
+def puma
+  <<-EOF
+cd #{current_path}
+source ~/.bashrc
+export APP=#{fetch(:application)} 
+export RAILS_ENV=#{fetch(:rails_env)} 
+bin/puma-start
+EOF
+end
+
+namespace :puma do
+  task :setup do
+    invoke "#{fetch(:target_os)}:puma:init"
+  end
+
+  desc 'Start puma'
+  task :start do
+    on roles(:app) do
+      execute (puma)
+    end
+  end
+end

@@ -1,0 +1,18 @@
+version: '2'
+services:
+  app:
+    image: makeabox_app:latest
+    command: bundle exec puma -C config/puma.rb
+    volumes:
+      - /usr/src/app
+    expose:
+      - "3000"
+  web:
+    image: makeabox_web:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    links:
+      - app
+    ports:
+      - "80:80"

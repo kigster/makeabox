@@ -31,7 +31,7 @@
 require 'colored2'
 
 set :application, 'makeabox'
-set :repo_url, 'git@github.com:kigster/MakeABox.git'
+set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
 
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development test'
@@ -68,8 +68,5 @@ before 'deploy:starting', 'deploy:setup'
 before 'bundler:install', 'ruby:bundler:native_config'
 
 namespace :deploy do
-  after :publishing, 'unicorn:setup'
-  after 'unicorn:setup', 'unicorn:restart'
+  after :publishing, 'puma:start'
 end
-
-

@@ -123,7 +123,7 @@ GEM
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
     json (1.8.6)
-    laser-cutter (1.0.5)
+    laser-cutter (1.0.3)
       colored
       hashie
       prawn
@@ -254,7 +254,7 @@ DEPENDENCIES
   guard-rspec
   haml
   jbuilder
-  laser-cutter (~> 1.0.3)
+  laser-cutter (= 1.0.3)
   newrelic_rpm
   puma
   rails
