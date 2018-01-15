@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails'
+gem 'rails', '=5.2.0.beta2'
 
 gem 'colored2'
 gem 'jbuilder'
