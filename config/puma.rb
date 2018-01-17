@@ -1,7 +1,7 @@
 
-tag                        'makabox'
-threads                    4, 32 
-workers                    3
+tag                        'makeabox'
+threads                    4, 10
+workers                    5
 log_requests               true
 
 preload_app!
@@ -16,4 +16,4 @@ on_restart do
   puts 'Restarting'
 end
 
-worker_timeout 400
+worker_timeout 600
