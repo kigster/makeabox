@@ -1,4 +1,4 @@
-set :ruby_version, '2.3.3'
+set :ruby_version, '2.5.0'
 set :target_os, 'sunos'
 set :rails_env, 'production'
 
