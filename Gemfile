@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '=5.2.0.rc1'
+gem 'rails', '~> 5.2'
 
 gem 'colored2'
 gem 'jbuilder'
@@ -11,7 +11,7 @@ gem 'rb-fsevent'
 gem 'newrelic_rpm', require: false
 gem 'capistrano'
 gem 'capistrano-bundler'
-
+gem 'tzinfo-data'
 gem 'haml'
 
 gem 'sass-rails', git: 'https://github.com/rails/sass-rails', branch: 'master'
