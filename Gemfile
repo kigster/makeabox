@@ -8,7 +8,7 @@ gem 'sdoc', group: :doc
 gem 'puma'
 gem 'laser-cutter', '= 1.0.3'
 gem 'rb-fsevent'
-gem 'newrelic_rpm', require: false
+gem 'newrelic_rpm'
 gem 'tzinfo-data'
 gem 'haml'
 
