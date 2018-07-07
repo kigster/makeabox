@@ -10,9 +10,6 @@ end
 
 namespace :puma do
   task :setup do
-    invoke "#{fetch(:target_os)}:puma:init"
-  end
-
   desc 'Start puma'
   task :start do
     on roles(:app) do
