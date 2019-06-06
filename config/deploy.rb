@@ -64,9 +64,10 @@ set :default_env, {}
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
-before 'deploy:starting', 'deploy:setup'
 before 'bundler:install', 'ruby:bundler:native_config'
 
 namespace :deploy do
+  before :starting, 'deploy:setup'
+  namespace(:assets) { after :precompile, 'deploy:permissions' }
   after :publishing, 'puma:start'
 end

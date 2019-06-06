@@ -1,13 +1,3 @@
-def puma
-  <<-EOF
-cd #{release_path}
-source ~/.bashrc
-export APP=#{fetch(:application)}
-export RAILS_ENV=#{fetch(:rails_env)}
-#{release_path}/exe/puma-start
-EOF
-end
-
 namespace :puma do
   task :setup do
     invoke "#{fetch(:target_os)}:puma:init"
@@ -16,7 +6,13 @@ namespace :puma do
   desc 'Start puma'
   task :start do
     on roles(:app) do
-      execute (puma)
+      execute <<-EOF
+        cd #{release_path}
+        source ~/.bashrc
+        export APP=#{fetch(:application)}
+        export RAILS_ENV=#{fetch(:rails_env)}
+        #{release_path}/exe/puma-start
+      EOF
     end
   end
 end
