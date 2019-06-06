@@ -16,19 +16,29 @@
       = render 'home/panels/advanced'
     .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
-.row#donate-row{style: 'display: none;'}
+.row#ad-content-donate{style: 'display: none;'}
   .col-sm-0.col-md-0.col-lg-1.col-xl-2
-  .col-sm-12.col-md-12.col-lg-10.col-xl-8
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
     = render 'home/panels/donate'
   .col-sm-0.col-md-0.col-lg-1.col-xl-2
 
-.row#adsense-row
+.row#ad-content-refine{style: 'display: none;'}
   .col-sm-0.col-md-0.col-lg-1.col-xl-2
-  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
+    = render 'home/panels/refine'
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+
+.row#ad-content-adsense{style: 'display: none;'}
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
     = render 'home/partials/adsense' if Rails.env.production?
   .col-sm-0.col-md-0.col-lg-1.col-xl-2
 
 .spacer-50
-= render 'home/partials/disqus_thread' if Rails.env.production?
 
-
+.row
+  .col-sm-0.col-md-1.col-lg-2.col-xl-2
+  .col-sm-12.col-md-10.col-lg-8.col-xl-8
+    #disqus_thread
+      = render 'home/partials/disqus_js' if Rails.env.production?
+  .col-sm-0.col-md-1.col-lg-2.col-xl-2

@@ -2,12 +2,13 @@
 class Toggler {
   constructor(array_of_divs, array_of_durations = []) {
     this.divs = array_of_divs;
+    this.divs_count = this.divs.length;
     this.durations = array_of_durations;
     this.effectDuration = 1500;
 
     const myself = this;
 
-    this.delay(10, function() { myself.toggle(1) });
+    this.delay(10, function() { myself.toggle(0) });
   }
 
   delay(ms, func) {
@@ -26,7 +27,9 @@ class Toggler {
       _next.fadeIn(myself.effectDuration);
     });
 
-    this.delay(myself.effectDuration + myself.durations[nextIndex], function () {
+    let _toggleAfter = myself.effectDuration + myself.durations[nextIndex];
+
+    this.delay(_toggleAfter, function () {
       myself.toggle(nextIndex);
     });
 
@@ -35,7 +38,7 @@ class Toggler {
 
   nextIndex(index) {
     index++;
-    return index % this.divs.length;
+    return index % this.divs_count;
   }
 }
 

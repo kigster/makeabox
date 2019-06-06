@@ -1,0 +1,18 @@
+body {
+  .ad-panel {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: auto !important;
+    padding: 0 !important;
+    height: 250px;
+    overflow: hidden;
+    text-align: center;
+
+    #refine-ad img {
+      border: 1px solid #2A1F32;
+    }
+  }
+}
+
+

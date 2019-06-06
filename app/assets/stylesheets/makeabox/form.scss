@@ -43,7 +43,7 @@ body {
       margin-left: 10px;
     }
 
-    textarea:focus, input[type=number]:focus, {
+    textarea:focus, input[type=number]:focus {
       background-color: $form-input-focus-bg;
       color: $form-input-focus-fg;
     }

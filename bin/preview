@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+# This script precompiles assets in production mode, 
+# and starts a new server in prod mode as well.
+#
+
+runx() {
+  echo "$1"
+  shift
+  set -x
+  $@
+  set +x
+}
+
+set -e
+export RAILS_ENV=production
+
+runx "Precompiling assets..."   bundle exec rake assets:precompile
+runx "Starting Rails server..." bin/puma-start

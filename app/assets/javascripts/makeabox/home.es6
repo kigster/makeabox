@@ -1,9 +1,13 @@
 
 $.when($.ready).then(function() {
-  $('#donate-row').hide();
 
   // Toggle between AdSense Ad and our own donation
-  window.MakeABox.toggle = new window.MakeABox.Toggler([ '#adsense-row', '#donate-row' ], [ 9000, 5000 ]);
+  window.MakeABox.toggle = new window.MakeABox.Toggler(
+    [
+      '#ad-content-adsense',
+      '#ad-content-donate',
+      '#ad-content-refine'
+    ], [ 5000, 5000, 5000 ]);
 
   // Initialize the Units Conversion Handler
   window.MakeABox.uh = new window.MakeABox.UnitsHandler('input[name="config[units]"]', '#units');

@@ -80,21 +80,20 @@ class FormHandler {
   }
 
   deserialize(serializedString) {
-    var $form = this.form;
+    const $form = this.form;
     $form.reset();
-    serializedString = serializedString.replace(/\+/g, '%20');
-    var formFieldArray = serializedString.split("&");
+    serializedString     = serializedString.replace(/\+/g, '%20');
+    const formFieldArray = serializedString.split("&");
     $.each(formFieldArray, function(i, pair) {
       var nameValue = pair.split("=");
       var name = decodeURIComponent(nameValue[0]);
       var value = decodeURIComponent(nameValue[1]);
       var $field = $('[name="' + name + '"]');
 
-      if ($field[0].type == "radio"
-        || $field[0].type == "checkbox") {
+      if ($field[0].type === "radio" || $field[0].type === "checkbox") {
         var $fieldWithValue = $field.filter('[value="' + value + '"]');
         var isFound = ($fieldWithValue.length > 0);
-        if (!isFound && value == "on") {
+        if (!isFound && value === "on") {
           $field.first().prop("checked", true);
         }
         else {
