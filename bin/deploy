@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+[[ -d ~/.bashmatic ]] || git clone https://github.com/kigster/bashmatic ~/.bashmatic
+source ~/.bashmatic/init.sh
+
+bundle install
+bundle exec cap aws deploy
+
