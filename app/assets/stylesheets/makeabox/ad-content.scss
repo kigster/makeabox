@@ -9,10 +9,20 @@ body {
     overflow: hidden;
     text-align: center;
 
-    #refine-ad img {
+    .refine-ad-image {
+      @media all and (min-width: 662px) {
+        content: url(image-url("ads/refine-landscape.jpg"));
+      }
+      @media all and (max-width: 660px) {
+        content: url(image-url("ads/refine-portrait.jpg"))
+      }
+    }
+
+    #refine-ad img#refine-ad-img {
       border: 1px solid #2A1F32;
     }
   }
 }
+
 
 

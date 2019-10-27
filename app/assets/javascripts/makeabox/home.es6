@@ -4,7 +4,7 @@ $.when($.ready).then(function() {
   // Toggle between AdSense Ad and our own donation
   window.MakeABox.toggle = new window.MakeABox.Toggler(
     [
-      '#ad-content-refine',
+      // '#ad-content-refine',
       '#ad-content-adsense',
       '#ad-content-donate'
     ], [ 5000, 5000, 3000 ]);
@@ -17,6 +17,8 @@ $.when($.ready).then(function() {
       window.MakeABox.uh.status('Welcome back! Form units have been restored from the browser cookie.');
     }
   }
+
+  $('#refine-ad-img').addClass('.refine-ad-image');
 
   // Initialize the main Form Handler
   window.MakeABox.fh = new window.MakeABox.FormHandler('pdf-generator');

@@ -3,6 +3,13 @@
 = render 'home/modals/thickness'
 = render 'home/partials/alert'
 
+
+.row#ad-content-refine
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
+    = render 'home/panels/refine'
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+
 #action-status.ui-widget-content.ui-corner-all
 
 = form_tag('/', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
@@ -20,12 +27,6 @@
   .col-sm-0.col-md-0.col-lg-1.col-xl-2
   .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
     = render 'home/panels/donate'
-  .col-sm-0.col-md-0.col-lg-1.col-xl-2
-
-.row#ad-content-refine{style: 'display: none;'}
-  .col-sm-0.col-md-0.col-lg-1.col-xl-2
-  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
-    = render 'home/panels/refine'
   .col-sm-0.col-md-0.col-lg-1.col-xl-2
 
 .row#ad-content-adsense
