@@ -13,6 +13,7 @@ namespace :ruby do
            [[ -d #{home}/.rbenv/plugins/rbenv-gem-rehash ]] || git clone https://github.com/rbenv/rbenv-gem-rehash.git #{home}/.rbenv/plugins/rbenv-gem-rehash/ > /dev/null
         '
         EOF
+        execute :bash, "-c '[[ -d #{deploy_to} ]] || mkdir -p #{deploy_to}'"
       end
     end
   end
