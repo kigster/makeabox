@@ -13,13 +13,16 @@ namespace :puma do
         export RAILS_ENV=#{fetch(:rails_env)}
         #{release_path}/exe/puma-start
       EOF
+      sleep 0.4
+      execute 'ps -ef | grep puma'
     end
   end
 
   desc 'Stop Puma Workers'
   task :stop do
     on roles(:worker) do
-      execute "pkill [p]uma"
+      execute "set +e; pkill [p]uma; sleep 3; pkill -9 [p]uma; sleep 1; true"
+      execute 'ps -ef | grep puma'
     end
   end
 

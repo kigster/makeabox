@@ -36,8 +36,15 @@ set :repo_url, 'git@github.com:kigster/makeabox.git'
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
+#
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+local_branch = `git rev-parse --abbrev-ref HEAD`
+
+if local_branch != 'master'
+  ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+else
+  set :branch, 'master'
+end
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"

@@ -1,9 +1,7 @@
 ---
+:verbose: true
 :concurrency: 5
-staging:
-  :concurrency: 10
-production:
-  :concurrency: 5
+:timeout: 60
 :queues:
   - fast
   - default
