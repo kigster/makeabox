@@ -1,0 +1,29 @@
+namespace :sidekiq do
+
+  desc 'Start Sidekiq workers'
+  task :start do
+    on roles(:worker) do
+      execute <<-EOF
+        source ~/.bashrc
+        cd #{release_path} &&        
+        export APP=#{fetch(:application)}
+        export RAILS_ENV=#{fetch(:rails_env)}
+        bundle exec sidekiq-pool -v -d \
+          -e #{fetch(:rails_env)} \
+          -p $(pwd)/config/sidekiq-pool.yml \ 
+          -C $(pwd)/config/sidekiq.yml
+      EOF
+    end
+  end
+
+  desc 'Stop Sidekiq workers'
+  task :stop do
+    on roles(:worker) do
+      execute "pkill [s]idekiq; sleep 5; pkill -9 [s]idekiq"
+    end
+  end
+
+  desc 'Restart Sidekiq Pool'
+  task :restart => %i(stop start)
+
+end

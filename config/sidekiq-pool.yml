@@ -1,0 +1,8 @@
+:working_directory: .
+:workers:
+  -
+    :command: '-q default -q low -c5'
+    :amount: 2
+  -
+    :command: '-q fast -c5'
+    :amount: 2

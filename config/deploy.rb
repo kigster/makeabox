@@ -1,7 +1,7 @@
 # config valid only for Capistrano 3.1
 # lock '3.1.0'
 
-# Standard Flow:
+# Standard Settings:
 
 # deploy
 #   deploy:starting
@@ -31,7 +31,7 @@
 require 'colored2'
 
 set :application, 'makeabox'
-set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
+set :repo_url, 'git@github.com:kigster/makeabox.git'
 
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development test'
@@ -69,5 +69,10 @@ before 'bundler:install', 'ruby:bundler:native_config'
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
+
+  before :publishing, 'sidekiq:stop'
+  before :publishing, 'puma:stop'
+
   after :publishing, 'puma:start'
+  after :publishing, 'sidekiq:start'
 end

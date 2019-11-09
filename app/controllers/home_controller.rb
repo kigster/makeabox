@@ -7,24 +7,49 @@ class HomeController < ApplicationController
 
 
   def index
-    if params['commit'].eql?('true')
-      if latest_error
+    flash.clear
+  end
+
+  def processing
+    unless params['commit'].eql?('true')
+      flash.now[:error] = 'Please submit form with all values included.'
+      redirect_back fallback_location: '/', allow_other_host: false
+      return
+    end
+
+    if latest_error
+      flash.now[:error] = latest_error
+      @error            = latest_error
+      render and return
+    end
+
+    not_cacheable!
+
+    logging "dumped file [#{@config['file']}]" do
+      begin
+        @config.validate!
+        request.session[:generated_file] = config['file']
+        Workers::PDFGeneratorWorker.perform_async(@config, request.session.id)
+        redirect_to :home_download_path
+      rescue Exception => e
+        self.latest_error = e.message
         flash.now[:error] = latest_error
-        @error            = latest_error
-        render and return
+        redirect_back fallback_location: '/', allow_other_host: false
+        Rails.logger.error(e.backtrace.join("\n"))
       end
-      not_cacheable!
-      logging "Dumped file [#{@config['file']}]" do
-        begin
-          @config.validate!
-          generate_pdf @config
-        rescue Exception => e
-          self.latest_error = e.message
-          Rails.logger.error(e.backtrace.join("\n"))
-        end
+    end
+  end
+
+  def download
+    file = request.session[:generated_file]
+    loop do
+      if file && File.exist?(file)
+        send_file file, type: 'application/pdf; charset=utf-8', status: 200
+        return
+      else
+        Rails.logger.error("File #{file} does not exist yet...")
+        sleep 1
       end
-    else
-      flash.clear
     end
   end
 
@@ -43,7 +68,7 @@ class HomeController < ApplicationController
     end
     c[:metadata]    = params[:metadata].blank? ? false : true
     @config         = Laser::Cutter::Configuration.new(c)
-    @config['file'] = exported_file_name if %w(width height depth thickness).all? {|f| c[f]}
+    @config['file'] = exported_file_name if %w(width height depth thickness).all? { |f| c[f] }
     begin
       @config.validate!
       Rails.logger.info 'config validation OK'
@@ -73,7 +98,7 @@ class HomeController < ApplicationController
   require 'fileutils'
 
   def exported_file_name
-    pdf_export_folder="#{Rails.root}/tmp/pdfs"
+    pdf_export_folder = "#{Rails.root}/tmp/pdfs"
     FileUtils.mkdir_p(pdf_export_folder)
     "#{pdf_export_folder}/makeabox-#{sprintf '%.2f', @config.width}W-#{sprintf '%.2f', @config.height}H-#{sprintf '%.2f', @config.depth}D-#{sprintf '%.2f', @config.thickness}T-#{timestamp}.pdf"
   end
@@ -81,13 +106,5 @@ class HomeController < ApplicationController
   def timestamp
     Time.now.strftime '%Y%m%d%H%M%S'
   end
-
-  def generate_pdf(config)
-    r = Laser::Cutter::Renderer::LayoutRenderer.new(config)
-    r.render
-    self.temp_files << config['file']
-    send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
-  end
-
 
 end

@@ -1,9 +1,9 @@
 namespace :puma do
-  task :setup do
-    invoke "#{fetch(:target_os)}:puma:init"
-  end
-
-  desc 'Start puma'
+  # task :setup do
+  #   invoke "#{fetch(:target_os)}:puma:init"
+  # end
+  #
+  desc 'Start Puma Workers'
   task :start do
     on roles(:app) do
       execute <<-EOF
@@ -15,4 +15,14 @@ namespace :puma do
       EOF
     end
   end
+
+  desc 'Stop Puma Workers'
+  task :stop do
+    on roles(:worker) do
+      execute "pkill [p]uma"
+    end
+  end
+
+  desc 'Restart Puma'
+  task :restart => %i(stop start)
 end

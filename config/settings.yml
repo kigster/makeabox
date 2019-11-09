@@ -1,0 +1,8 @@
+---
+config:
+  sidekiq:
+    redis:
+      url: 'redis://127.0.0.1:6379/2'
+      namespace: 'mbox'
+      network_timeout: 0.5
+      pool_size: 10

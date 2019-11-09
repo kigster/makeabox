@@ -12,8 +12,8 @@ puma.boot() {
   fi
 
   bundle exec puma -e "${RAILS_ENV}" -p "3000" \
-    -t1:${max_threads} -w3 -C $(pwd)/config/puma.rb -v \
-    --redirect-append "$@"
+    -t1:${max_threads} -w3 -C $(pwd)/config/puma.rb -v "$@"
+    
 }
 
 puma.boot "$@"

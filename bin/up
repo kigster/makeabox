@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+export BashMatic="${HOME}/.bashmatic"
+
+[[ -s ${BashMatic}/init.sh ]] || {
+  rm -rf "${BashMatic}" 2>/dev/null
+  git clone https://github.com/kigster/bashmatic "${BashMatic}" 2>&1 1>/dev/null
+}
+
+source ~/.bashmatic/init.sh
+run::set-all abort-on-error
+
+export RAILS_ENV=production
+
+mk::setup() {
+  info "Prepping Ruby dependencies..."
+  run 'bundle check || bundle install'
+}
+
+mk::build::nginx() {
+  info "Building NGinx images..."
+  run::set-next show-output-on
+  run "docker build -f Dockerfile.nginx . -t makeabox_web"
+}
+
+mk::build::ruby() {
+  info "Building Ruby..."
+  run::set-next show-output-on
+  run "docker build -f Dockerfile       . -t makeabox_app"
+}
+
+mk::build() {
+  mk::build::ruby
+  mk::build::nginx
+}
+
+mk::main() {
+  local build_what="$1"; shift
+
+  if [[ -z ${build_what} ]]; then
+    mk::setup
+    mk::build
+
+    h2 'Starting Docker Compose...'
+    run::set-all show-output-on abort-on-error
+    run "docker-compose up --abort-on-container-exit"
+
+    info "Point your browser to http://127.0.0.1/"
+  elif [[ ${build_what} == "ruby" ]]; then
+    mk::setup
+    mk::build::ruby
+    docker run -it makeabox_app
+  elif [[ ${build_what} == "nginx" ]]; then
+    mk::build::nginx
+    docker run -it makeabox_web
+  elif [[ ${build_what} == "up" ]]; then
+    mk::build
+    set -e
+    docker-compose up --abort-on-container-exit
+  else
+    error "Invalid argument: ${build_what}. Expecting either nginx or ruby."
+    exit 1
+  fi
+
+  success "All done."
+  hr
+}
+
+
+mk::main "$@"
+
+
