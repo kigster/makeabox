@@ -1,9 +1,9 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
-  before_action :load_parameters,
-                :populate_form_fields,
-                :handle_units_change
+  before_action :load_parameters, only: %i(index processing)
+  before_action :populate_form_fields, only: %i(index)
+  before_action :handle_units_change, only: %i(index processing)
 
 
   def index
@@ -25,23 +25,25 @@ class HomeController < ApplicationController
 
     not_cacheable!
 
-    logging "dumped file [#{@config['file']}]" do
-      begin
-        @config.validate!
-        request.session[:generated_file] = config['file']
-        Workers::PDFGeneratorWorker.perform_async(@config, request.session.id)
-        redirect_to :home_download_path
-      rescue Exception => e
-        self.latest_error = e.message
-        flash.now[:error] = latest_error
-        redirect_back fallback_location: '/', allow_other_host: false
-        Rails.logger.error(e.backtrace.join("\n"))
-      end
+#    logging "dumped file [#{@config['file']}]" do
+    begin
+      @config.validate!
+      FileGeneratorWorker.perform_async(@config.to_hash, session.id)
+#        request.session[:generated_file] = @config['file'].to_s
+      redirect_to :download_path
+    rescue Exception => e
+      self.latest_error = e.message
+      flash.now[:error] = latest_error
+      redirect_back fallback_location: '/', allow_other_host: false
+      Rails.logger.error(e.backtrace.join("\n"))
     end
+    # end
   end
 
   def download
-    file = request.session[:generated_file]
+    file    = request.session[:generated_file]
+    timeout = 30
+    seconds = 0
     loop do
       if file && File.exist?(file)
         send_file file, type: 'application/pdf; charset=utf-8', status: 200
@@ -49,6 +51,12 @@ class HomeController < ApplicationController
       else
         Rails.logger.error("File #{file} does not exist yet...")
         sleep 1
+        seconds += 1
+
+        if seconds >= timeout
+          flash.now[:error] = "PDF is taking too long..."
+          redirect_to :root_path
+        end
       end
     end
   end
@@ -62,7 +70,8 @@ class HomeController < ApplicationController
   end
 
   def load_parameters
-    c = params[:config] || {}
+    latest_error = nil
+    c            = params[:config] || {}
     %w(width height depth thickness notch page_size kerf).each do |f|
       c[f] = nil if c[f] == '0' or c[f].blank?
     end

@@ -72,6 +72,7 @@ GEM
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (9.0.0)
+    awesome_print (1.8.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -135,6 +136,7 @@ GEM
       dry-equalizer (~> 0.2, >= 0.2.2)
       dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 1.0, >= 1.0.2)
+    equatable (0.6.1)
     erubi (1.9.0)
     execjs (2.7.0)
     ffi (1.11.1)
@@ -177,6 +179,9 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
+    pastel (0.7.3)
+      equatable (~> 0.6)
+      tty-color (~> 0.5)
     pdf-core (0.7.0)
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
@@ -269,6 +274,9 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.10)
     ttfunk (1.5.1)
+    tty-color (0.5.0)
+    tty-logger (0.2.0)
+      pastel (~> 0.7.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     tzinfo-data (1.2019.3)
@@ -284,6 +292,7 @@ PLATFORMS
 
 DEPENDENCIES
   airbrussh
+  awesome_print
   babel-transpiler
   capistrano
   capistrano-bundler
@@ -313,6 +322,7 @@ DEPENDENCIES
   sidekiq-unique-jobs
   sprockets!
   sprockets-rails!
+  tty-logger
   tzinfo-data
   uuid
 

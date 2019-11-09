@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  root 'home#index'
-  post '/processing' => 'home#processing'
-  get '/download' => 'home#download'
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
+  root 'home#index', as: 'root'
+  post '/processing' => 'home#processing', as: 'processing'
+  get '/download' => 'home#download', as: 'download'
 end

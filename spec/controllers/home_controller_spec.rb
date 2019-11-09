@@ -8,10 +8,10 @@ RSpec.describe HomeController, :type => :controller do
     end
   end
 
-  describe 'POST index' do
+  describe 'POST processing' do
     it 'returns http success' do
-      post :index
-      expect(response).to be_successful
+      post :processing
+      expect(response).to_not be_successful
       puts response.body
     end
   end

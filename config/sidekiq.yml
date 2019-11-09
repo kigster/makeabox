@@ -1,8 +1,9 @@
 ---
 :verbose: true
-:concurrency: 5
-:timeout: 60
+:concurrency: 10
+:timeout: 300
 :queues:
-  - fast
   - default
-  - low
+  - generation
+  - deletion
+  - email
