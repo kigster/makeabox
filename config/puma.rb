@@ -1,10 +1,11 @@
 root = Dir.getwd
 
 tag                        'makeabox'
-threads                    5, 10
-workers                    2
+threads                    10, 20
+workers                    10
 log_requests               true
-preload_app!(false)
+
+preload_app!(true)
 
 bind                       "tcp://0.0.0.0:8899"
 bind                       "tcp://0.0.0.0:3000"

@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  username: postgres
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: makeabox_io_development
+
+test:
+  <<: *default
+  database: makeabox_io_test
+
+production:
+  <<: *default
+  database: makeabox_io_production
+  password: <%= ENV['DATABASE_PASSWORD'] %>

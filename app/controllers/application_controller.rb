@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
   end
 
   def logging(message, &block)
-    t1 = Time.now
+    t1     = Time.now
     result = yield
-    t2 = Time.now - t1
+    t2     = Time.now - t1
     Rails.logger.info(message + sprintf(", elapsed %.4f(ms)", t2 * 1000))
     result
   end

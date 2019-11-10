@@ -1,32 +1,6 @@
 # config valid only for Capistrano 3.1
 # lock '3.1.0'
 
-# Standard Settings:
-
-# deploy
-#   deploy:starting
-#     [before]
-#       deploy:ensure_stage
-#       deploy:set_shared_assets
-#     deploy:check
-#   deploy:started
-#   deploy:updating
-#     git:create_release
-#     deploy:symlink:shared
-#   deploy:updated
-#     [before]
-#       deploy:bundle
-#     [after]
-#       deploy:migrate
-#       deploy:compile_assets
-#       deploy:normalize_assets
-#   deploy:publishing
-#     deploy:symlink:release
-#   deploy:published
-#   deploy:finishing
-#     deploy:cleanup
-#   deploy:finished
-#     deploy:log_revision
 
 require 'colored2'
 
