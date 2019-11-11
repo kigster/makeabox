@@ -1,8 +1,9 @@
-module HomeHelper
+# frozen_string_literal: true
 
+module HomeHelper
   FIELD_NAME_MAP = {
     'notch' => 'Tab Width'
-  }
+  }.freeze
 
   def field_name(field)
     FIELD_NAME_MAP[field] || field.to_s.capitalize
@@ -26,9 +27,9 @@ module HomeHelper
 
   def input_field_options(tabindex_start)
     options = {
-      min:      0.0,
-      step:     0.01,
-      class:    'numeric',
+      min: 0.0,
+      step: 0.01,
+      class: 'numeric',
       tabindex: tabindex_start
     }
     options

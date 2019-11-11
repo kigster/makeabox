@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Load DSL and Setup Up Stages
 require 'airbrussh/capistrano'
 require 'capistrano/setup'
@@ -12,6 +14,5 @@ require 'capistrano/rails/assets'
 require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git
 
-
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
-Dir.glob('lib/capistrano/tasks/**.cap').each { |r| import r }
+Dir.glob('tools/capistrano/tasks/**.cap').each { |r| import r }

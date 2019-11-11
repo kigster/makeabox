@@ -1,18 +1,26 @@
-version: '2'
+version: '3.7'
+
 services:
   app:
     image: makeabox_app:latest
-    command: bundle exec puma -C config/puma.rb
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - /usr/src/app
+    ports:
+      - "5001:5001"
     expose:
-      - "3000"
+      - "5001"
+    environment:
+      RAILS_ENV: "production"
+
   web:
     image: makeabox_web:latest
     build:
       context: .
       dockerfile: Dockerfile.nginx
     links:
-      - app
+      - "app:puma"
     ports:
       - "80:80"

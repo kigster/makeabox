@@ -1,0 +1,22 @@
+require 'capistrano/datadog'
+set :datadog_api_key, '6601a18dba5da550faf282ab39f66be1'
+
+$datadog_stage = fetch(:stage)
+
+module Capistrano
+  module Datadog
+    # override datadogs's puts so it's not so goddamn noisy
+    def self.puts(*args)
+    end
+
+    module Silencer
+      def report
+        super
+      rescue StandardError => e
+        STDOUT.puts "WARNING: intercepted datadog error #{e.message.bold.red} in stage #{$datadog_stage}".yellow if ENV['DEBUG']
+      end
+    end
+
+    Reporter.prepend(Silencer)
+  end
+end

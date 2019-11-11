@@ -1,8 +1,12 @@
-require File.expand_path('../boot', __FILE__)
+# frozen_string_literal: true
+
+require File.expand_path('boot', __dir__)
 
 # Pick the frameworks you want:
+
+require 'active_record/railtie'
 require 'active_model/railtie'
-# require "active_record/railtie"
+require "active_record/railtie"
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
 require 'action_view/railtie'
@@ -13,8 +17,9 @@ require 'newrelic_rpm' if Rails.env.production?
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+require 'devise/rails'
 
-module MakeABox
+module Makeabox
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -34,14 +39,13 @@ module MakeABox
     config.middleware.delete ActionDispatch::Session::CookieStore
     config.middleware.delete ActionDispatch::Flash
 
-    config.assets.precompile += %w( **.ttf )
+    config.assets.precompile += %w(**.ttf)
 
+    config.autoload_paths              += %W(#{config.root}/lib)
+    config.active_record.schema_format = :sql
     config.generators do |g|
       g.template_engine :haml
-
-      # you can also specify a different test framework or ORM here
-      # g.test_framework  :rspec
-      # g.orm             :mongoid
+      g.test_framework :rspec
     end
   end
 end

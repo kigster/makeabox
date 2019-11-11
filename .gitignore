@@ -33,3 +33,7 @@ mkmf.log
 .cap_tasks~
 log/**
 results/
+/coverage
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

@@ -1,43 +1,25 @@
+# frozen_string_literal: true
+
 # config valid only for Capistrano 3.1
 # lock '3.1.0'
-
-# Standard Flow:
-
-# deploy
-#   deploy:starting
-#     [before]
-#       deploy:ensure_stage
-#       deploy:set_shared_assets
-#     deploy:check
-#   deploy:started
-#   deploy:updating
-#     git:create_release
-#     deploy:symlink:shared
-#   deploy:updated
-#     [before]
-#       deploy:bundle
-#     [after]
-#       deploy:migrate
-#       deploy:compile_assets
-#       deploy:normalize_assets
-#   deploy:publishing
-#     deploy:symlink:release
-#   deploy:published
-#   deploy:finishing
-#     deploy:cleanup
-#   deploy:finished
-#     deploy:log_revision
 
 require 'colored2'
 
 set :application, 'makeabox'
-set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
+set :repo_url, 'git@github.com:kigster/makeabox.git'
 
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development test'
-set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
+set :bundle_env_variables, nokogiri_use_system_libraries: 1
+#
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+local_branch = `git rev-parse --abbrev-ref HEAD`
+
+if local_branch != 'master'
+  ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+else
+  set :branch, 'master'
+end
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
@@ -51,11 +33,10 @@ set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
 set :native_gems, %i(nokogiri)
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
-set :ssh_options, {
-   keys: %w(/Users/kig/.ssh/id_rsa),
-   forward_agent: false,
-   auth_methods: %w(publickey)
-}
+set :ssh_options,
+    keys: %w(/Users/kig/.ssh/id_rsa),
+    forward_agent: false,
+    auth_methods: %w(publickey)
 
 set :linked_files, %w{config/secrets.yml}
 set :linked_dirs, %w{bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
@@ -69,5 +50,10 @@ before 'bundler:install', 'ruby:bundler:native_config'
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
+
+  before :publishing, 'sidekiq:stop'
+  before :publishing, 'puma:stop'
+
   after :publishing, 'puma:start'
+  after :publishing, 'sidekiq:start'
 end

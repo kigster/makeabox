@@ -1,0 +1,24 @@
+---
+config:
+  x-redis: &default_redis
+    url: 'redis://127.0.0.1:6379/2'
+    namespace: 'a'
+    network_timeout: 0.5
+    driver: ':hiredis'
+
+  sidekiq:
+    pool_size: 10
+    redis:
+      <<: *default_redis
+      namespace: 's'
+
+  memcached:
+    pool_size: 10
+    timeout: 3
+    hosts:
+      - "127.0.0.1:11211:1"
+    cache:
+      namespace: 'c'
+      expires_in: 3600
+      compress: false
+

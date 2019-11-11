@@ -1,30 +1,62 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
-  before_action :load_parameters,
-                :populate_form_fields,
-                :handle_units_change
+  before_action :load_parameters, only: %i(index processing)
+  before_action :populate_form_fields, only: %i(index)
+  before_action :handle_units_change, only: %i(index processing)
 
+  def index; end
 
-  def index
-    if params['commit'].eql?('true')
-      if latest_error
-        flash.now[:error] = latest_error
-        @error            = latest_error
-        render and return
-      end
-      not_cacheable!
-      logging "Dumped file [#{@config['file']}]" do
-        begin
-          @config.validate!
-          generate_pdf @config
-        rescue Exception => e
-          self.latest_error = e.message
-          Rails.logger.error(e.backtrace.join("\n"))
+  def processing
+    unless params['commit'].eql?('true')
+      flash.now[:error] = 'Please submit form with all values included.'
+      redirect_back fallback_location: '/', allow_other_host: false
+      return
+    end
+
+    if latest_error
+      flash.now[:error] = latest_error
+      @error            = latest_error
+      render && return
+    end
+
+    not_cacheable!
+
+    #    logging "dumped file [#{@config['file']}]" do
+    begin
+      @config.validate!
+      FileGeneratorWorker.perform_async(@config.to_hash, session.id)
+      #        request.session[:generated_file] = @config['file'].to_s
+      redirect_to :download_path
+    rescue Exception => e
+      self.latest_error = e.message
+      flash.now[:error] = latest_error
+      redirect_back fallback_location: '/', allow_other_host: false
+      Rails.logger.error(e.backtrace.join("\n"))
+    end
+    # end
+  end
+
+  def download
+    file    = request.session[:generated_file]
+    timeout = 30
+    seconds = 0
+    loop do
+      if file && File.exist?(file)
+        send_file file, type: 'application/pdf; charset=utf-8', status: 200
+        return
+      else
+        Rails.logger.error("File #{file} does not exist yet...")
+        sleep 1
+        seconds += 1
+
+        if seconds >= timeout
+          flash.now[:error] = "PDF is taking too long..."
+          redirect_to :root_path
         end
       end
-    else
-      flash.clear
     end
   end
 
@@ -37,13 +69,14 @@ class HomeController < ApplicationController
   end
 
   def load_parameters
-    c = params[:config] || {}
+    latest_error = nil
+    c            = params[:config] || {}
     %w(width height depth thickness notch page_size kerf).each do |f|
-      c[f] = nil if c[f] == '0' or c[f].blank?
+      c[f] = nil if (c[f] == '0') || c[f].blank?
     end
     c[:metadata]    = params[:metadata].blank? ? false : true
     @config         = Laser::Cutter::Configuration.new(c)
-    @config['file'] = exported_file_name if %w(width height depth thickness).all? {|f| c[f]}
+    @config['file'] = exported_file_name if %w(width height depth thickness).all? { |f| c[f] }
     begin
       @config.validate!
       Rails.logger.info 'config validation OK'
@@ -73,7 +106,7 @@ class HomeController < ApplicationController
   require 'fileutils'
 
   def exported_file_name
-    pdf_export_folder="#{Rails.root}/tmp/pdfs"
+    pdf_export_folder = "#{Rails.root}/tmp/pdfs"
     FileUtils.mkdir_p(pdf_export_folder)
     "#{pdf_export_folder}/makeabox-#{sprintf '%.2f', @config.width}W-#{sprintf '%.2f', @config.height}H-#{sprintf '%.2f', @config.depth}D-#{sprintf '%.2f', @config.thickness}T-#{timestamp}.pdf"
   end
@@ -81,13 +114,4 @@ class HomeController < ApplicationController
   def timestamp
     Time.now.strftime '%Y%m%d%H%M%S'
   end
-
-  def generate_pdf(config)
-    r = Laser::Cutter::Renderer::LayoutRenderer.new(config)
-    r.render
-    self.temp_files << config['file']
-    send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
-  end
-
-
 end
