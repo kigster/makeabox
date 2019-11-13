@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+source ~/.bashmatic/init.sh
+
+# https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export RAILS_ENV="${RAILS_ENV:-"development"}"
+export PUMA_DEFUALT_THREAD_COUNT=10
+
+# Use a more concervative thread count in development
+[[ ${RAILS_ENV} == "development" ]] && export PUMA_DEFUALT_THREAD_COUNT=1
+
+# ——————————————————————————————————————————————————————————————————————
+puma.num-live-procs() {
+  printf "%d" "$(ps -ef | grep [p]uma | wc -l | sed 's/\ //g')"
+}
+
+puma.is-not-running() {
+  local pumas=$(puma.num-live-procs)
+  echo "got pumas: ${pumas}"
+  if [[ ${pumas} -eq 0 ]]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+puma.is-running() {
+  local pumas=$(puma.num-live-procs)
+  [[ ${pumas} -gt 0 ]]
+}
+
+puma.nuke-em() {
+  run "ps -ef | grep [p]uma | xargs kill -9"
+}
+
+puma.nuke-em-sudo() {
+  run "ps -ef | grep [p]uma | xargs sudo kill -9"
+}
+
+puma.wipe-before-start() {
+  puma.is-not-running && {
+    info "Puma is not currently running, starting..."
+    return
+  }
+
+  puma.is-running && {
+    info "Killing previous Puma Cluster, ${pumas} processes matched...  "
+    press-any-key-to-continue
+    puma.puma.nuke-em
+    sleep 3
+
+    puma.puma.is-running && {
+      printf "Still detecting %d Puma Processes...", $(ps -ef | grep [p]uma | wd -l)
+      returrn 1
+    }
+  }
+}
+
+puma.show() {
+  hr
+  ps -ef | grep [p]uma
+  hr
+}
+
+puma.start() {
+  puma.wipe-before-start
+  h2 "Booting Puma ${bldulw}$(bundle exec puma --version)"
+  run::set-next show-output-on
+  run "bundle exec puma -e ${RAILS_ENV} -p 3000 -t 1:${max_threads} -w 3 -C $(pwd)/config/puma.rb -v $@"
+  sleep 1 && info "Puma should now be running:"
+  puma.show
+}
+
+puma.stop() {
+  puma.wipe-before-start
+  info "Pima is now down."
+}
+
+main() {
+  if [[ $1 == "start" ]]; then
+    shift
+    puma.start "$@"
+  elif [[ $1 = "stop" ]]; then
+    shift
+    puma.stop "$@"
+  else
+    printf "
+${bldylw}USAGE:
+    ${bldgrn}bin/puma-ctl [ start | stop ]${clear}
+
+${bldylw}BECAUSE:
+    ${bldred}...HELL NO, YOU BEAAAAAAACHH!!!! 💀 ${clr}
+
+    "
+  fi
+}
+
+main "$@"

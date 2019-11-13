@@ -1,24 +1,19 @@
 # frozen_string_literal: true
 
-require_relative '../lib/makeabox/logger'
-root = Dir.getwd
-
-tag                        'makeabox'
-threads                    10, 20
-workers                    10
-log_requests               true
-
-preload_app!               false
-
-bind                       "tcp://0.0.0.0:8899"
-bind                       "tcp://0.0.0.0:3000"
-pidfile                    'tmp/pids/puma.pid'
-rackup                     "#{root}/config.ru"
-
-#stdout_redirect            'log/puma.stdout', 'log/puma.stderr', false
-stdout_redirect             STDOUT, STDERR, false
-
+bind "tcp://0.0.0.0:8899"
+first_data_timeout 3
+log_requests true
 on_restart { puts 'Restarting' }
 
-worker_timeout             30
+persistent_timeout "6"
+pidfile 'tmp/pids/puma.pid'
 
+port 3000
+preload_app! true
+rackup "#{Dir.pwd}/config.ru"
+stdout_redirect 'log/puma.stdout', 'log/puma.stderr', false
+threads 4, 9
+worker_boot_timeout 30
+worker_shutdown_timeout 60
+worker_timeout 60
+workers 10
