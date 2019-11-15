@@ -11,7 +11,8 @@ namespace :puma do
         source ~/.bashrc
         export APP=#{fetch(:application)}
         export RAILS_ENV=#{fetch(:rails_env)}
-        #{release_path}/exe/puma-start
+        #{release_path}/exe/puma-ctl stop
+        #{release_path}/exe/puma-ctl start
       EOF
     end
   end
