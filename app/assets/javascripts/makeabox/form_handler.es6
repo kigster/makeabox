@@ -8,7 +8,7 @@ class FormHandler {
   }
 
   generatePDF() {
-    this.status('PDF is now generating...');
+    this.status('PDF is now generating... It it takes more than 30 seconds, it will timeout — try with smaller Tab Width.');
     window.MakeABox.GA('Download PDF');
     $('input[name=commit]')[0].value = "true";
     $(this.form).submit();

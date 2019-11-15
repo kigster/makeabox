@@ -11,6 +11,7 @@ gem 'rb-fsevent'
 gem 'newrelic_rpm'
 gem 'tzinfo-data'
 gem 'haml'
+gem 'rack-timeout', require: "rack/timeout/base"
 
 gem 'sass-rails', git: 'https://github.com/rails/sass-rails', branch: 'master'
 gem 'sprockets-rails', git: 'https://github.com/rails/sprockets-rails', branch: 'master'

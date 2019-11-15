@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
@@ -5,22 +7,27 @@ class HomeController < ApplicationController
                 :populate_form_fields,
                 :handle_units_change
 
-
   def index
     if params['commit'].eql?('true')
       if latest_error
         flash.now[:error] = latest_error
         @error            = latest_error
-        render and return
+        render && return
       end
       not_cacheable!
       logging "Dumped file [#{@config['file']}]" do
         begin
           @config.validate!
+          flash[:error] = 'Your request has timed out maximum of 30 seconds allowed. Please reduce tap width.'
           generate_pdf @config
+          flash.clear
+        rescue Rack::Timeout::Error
+          flash[:error] = 'Your request has timed out maximum of 30 seconds allowed. Please reduce tap width.'
+          render && return
         rescue Exception => e
-          self.latest_error = e.message
+          flash[:error] = self.latest_error = e.message
           Rails.logger.error(e.backtrace.join("\n"))
+          render && return
         end
       end
     else
@@ -38,12 +45,14 @@ class HomeController < ApplicationController
 
   def load_parameters
     c = params[:config] || {}
-    %w(width height depth thickness notch page_size kerf).each do |f|
-      c[f] = nil if c[f] == '0' or c[f].blank?
+    %w[width height depth thickness notch page_size kerf].each do |f|
+      c[f] = nil if (c[f] == '0') || c[f].blank?
     end
     c[:metadata]    = params[:metadata].blank? ? false : true
     @config         = Laser::Cutter::Configuration.new(c)
-    @config['file'] = exported_file_name if %w(width height depth thickness).all? {|f| c[f]}
+    if %w[width height depth thickness].all? { |f| c[f] }
+      @config['file'] = exported_file_name
+    end
     begin
       @config.validate!
       Rails.logger.info 'config validation OK'
@@ -58,7 +67,7 @@ class HomeController < ApplicationController
   def populate_form_fields
     @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
       digits = @config.units.eql?('in') ? 1 : 0
-      [sprintf("%s %4.#{digits}f x %4.#{digits}f", *v), sprintf("%s", v[0])]
+      [format("%s %4.#{digits}f x %4.#{digits}f", *v), format('%s', v[0])]
     end
     @page_size_options.insert(0, ['Auto Fit the Box', ''])
   end
@@ -73,9 +82,9 @@ class HomeController < ApplicationController
   require 'fileutils'
 
   def exported_file_name
-    pdf_export_folder="#{Rails.root}/tmp/pdfs"
+    pdf_export_folder = "#{Rails.root}/tmp/pdfs"
     FileUtils.mkdir_p(pdf_export_folder)
-    "#{pdf_export_folder}/makeabox-#{sprintf '%.2f', @config.width}W-#{sprintf '%.2f', @config.height}H-#{sprintf '%.2f', @config.depth}D-#{sprintf '%.2f', @config.thickness}T-#{timestamp}.pdf"
+    "#{pdf_export_folder}/makeabox-#{format '%.2f', @config.width}W-#{format '%.2f', @config.height}H-#{format '%.2f', @config.depth}D-#{format '%.2f', @config.thickness}T-#{timestamp}.pdf"
   end
 
   def timestamp
@@ -85,9 +94,7 @@ class HomeController < ApplicationController
   def generate_pdf(config)
     r = Laser::Cutter::Renderer::LayoutRenderer.new(config)
     r.render
-    self.temp_files << config['file']
+    temp_files << config['file']
     send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
   end
-
-
 end
