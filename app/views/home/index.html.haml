@@ -6,13 +6,13 @@
 
 = render 'home/partials/alert'
 
-.row#ad-content-adsense
+.row.mt-2
   .col-sm-0.col-md-0.col-lg-2.col-xl-3
-  .col-sm-12.col-md-12.col-lg-8.col-xl-6.text-center.d-flex.align-content-center.w-100
-    = render 'home/partials/adsense'
+  .col-sm-12.col-md-12.col-lg-8.col-xl-6.ad-content-adsense.d-flex.align-content-center
+    = render 'home/partials/adsense' if Rails.env.production?
   .col-sm-0.col-md-0.col-lg-2.col-xl-3
 
-.spacer-50
+.spacer-10
 
 = form_tag('/', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
   .row
@@ -40,8 +40,7 @@
 .spacer-10
 
 .row
-  .col-sm-0.col-md-1.col-lg-3.col-xl-3
-  .col-sm-12.col-md-10.col-lg-6.col-xl-6.d-flex
-    #disqus_thread.d-flex
-      = render 'home/partials/disqus_js'
-  .col-sm-0.col-md-1.col-lg-3.col-xl-3
+  .col-sm-0.col-md-1.col-lg-1.col-xl-2
+  .col-sm-12.col-md-10.col-lg-10.col-xl-8
+    = render 'home/partials/disqus_js' if Rails.env.production?
+  .col-sm-0.col-md-1.col-lg-1.col-xl-2

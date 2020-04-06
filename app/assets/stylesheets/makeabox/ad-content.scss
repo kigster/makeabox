@@ -1,6 +1,25 @@
 @import "variables";
 
 body {
+  .container {
+    .row {
+      .ad-content-adsense {
+        min-height: 70px;
+        margin: 0;
+        width: 100%;
+
+        #adsense-banner {
+          display: block;
+          position: relative;
+          width: 100%;
+          min-height: 70px;
+          margin: 0 auto;
+          padding: 0;
+        }
+      }
+    }
+  }
+
   .ad-panel {
     color: $panel-fg;
     font-size: $main-font-size - 5;
