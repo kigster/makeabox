@@ -1,28 +1,30 @@
 
-$main-font-family:  "Signika Negative", "HelveticaNeue-Medium", Helvetica, sans-serif;
-$main-font-family-monospaced: 'Fira Mono', 'Consolas', 'Monaco', 'Courier', sans-serif;
-$main-font-size: 14pt;
-$main-font-weight: 500;
+$main-font-family: 'Lato', 'Avenir Next', 'HelveticaNeue', 'Arial', sans-serif;
+$main-font-family-monospaced: 'Ubuntu Mono','Monaco', 'Courier', sans-serif;
+$main-font-size: 15pt;
+$main-font-weight: 600;
+
 $main-fg: #333;
 $main-bg: rgba(121, 91, 123, 0.63);
 $main-border: #555;
 $main-box-shadow: 0px 0px 0px #333;
 
-//$header-h1-font-family: "Baloo", cursive;
-$header-h1-font-family: "Fjalla One", sans-serif;
+
+$header-h1-font-family: 'K2D', sans-serif;
 $header-h1-font-size: 20pt;
-$header-font-weight: 100;
+$header-font-weight: 700;
 $header-fg: #fff9f4;
 $header-bg: rgba(#ff3522, 0.47);;
 $header-border: 0px solid #6b150d;
-
+$header-hover: #FF6559;
 // shadows
 // title text shadow
+$logo-text-shadow: 5px 5px 10px #444;
 $header-text-shadow: 1px 1px 3px #3b1714;
 // panel itself
 $header-box-shadow: 2px 2px 5px #767a6a;
 
-$button-font-family: "Signika Negative", Helvetica, sans-serif;
+$button-font-family: "K2D", "HelveticaNeue-CondensedBold", "Oswald", "Impact", "Arial", sans-serif;
 $button-font-size: 20pt;
 $button-font-weight: 600;
 $button-text-shadow: 2px 2px 5px #767a6a;

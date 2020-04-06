@@ -12,7 +12,7 @@ NOTE: `direnv` is recommended.
 bundle exec cap aws deploy
 ```
 
-### Previewing
+### Previewing˙
 
 ```bash
 direnv allow .

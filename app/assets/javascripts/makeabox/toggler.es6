@@ -13,7 +13,7 @@ class Toggler {
 
   delay(ms, func) {
     return setTimeout(func, ms);
-  }
+}
 
   toggle(currentIndex) {
     let nextIndex = this.nextIndex(currentIndex);

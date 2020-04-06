@@ -1,10 +1,10 @@
-.row#alert
-  .col-sm-1
-  .col-sm-10
+.row#alert-row
+  .col-2
+  .col-8
     - if @error
-      .alert.alert-danger{style: 'display: none;'}
+      .alert.alert-danger
         Whoops, #{@error} :(
     - elsif @notice
-      .alert.alert-info{style: 'display: none;'}
+      .alert.alert-info
         #{@notice}
-  .col-sm-1
+  .col-2

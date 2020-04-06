@@ -3,27 +3,30 @@
 .navbar {
   background-color: #403D3B;
   height: 80px;
-  display: block;
   padding: 5px;
-  margin: 0 -20px;
-  width: 120%;
 
   .logo-image {
-    margin: 10px;
+    margin: 0 auto;
     width: 50px;
     float: left;
     box-shadow: 0 0 10px #222;
   }
 
   h1.logo {
-    float: left;
-    text-align: left;
+    width: auto;
+    position: relative;
+    margin: 0 auto;
+    padding:0;
+    margin-top: -10px;
+    color: $header-fg;
     font-family: $header-h1-font-family;
     font-weight: $header-font-weight;
-    font-size: 40pt;
-    color: $header-fg;
-    text-shadow: $header-text-shadow;
-    margin: 10px;
-    margin-top: 5px;
+    font-size: 55pt;
+    text-shadow: $logo-text-shadow;
+
+    &:hover {
+      color: $header-hover;
+      text-decoration: underline;
+    }
   }
 }

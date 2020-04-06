@@ -1,25 +1,23 @@
 .panel.box-dimensions
   .panel-heading
-    %i#thickness-info.pull-right.fa.fa-question-circle.fa-lg
+    %i#thickness-info.pull-right.fa.fa-question-circle.fa-2x
     %h1.panel-title Internal Box Dimensions
   .panel-body
     %p.small Please note that dimensions are <strong>internal</strong>, and define the space inside the box.
     = raw(config_form_element_group(%w(width height depth), @config, true, 1))
-    %hr/
     = raw(config_form_element_group(%w(thickness), @config, true, 4))
     %p.small
       I.E Thickness of the material that's being cut
-    %hr/
     %p.form-label-and-element
       %label{:for => 'config_notch'}
         Tab Width
         %a.notch-help{:href => '#'}
-          [?]
+          %i.fa.fa-question-circle.fa-1x
       %input#config_notch.numeric{:min => '0.0', :name => 'config[notch]', :step => '0.01', :type => 'number'}
     %p.small
       If you specify a value in this field, it will be used as a
       %em guideline,
       not an exact value
       %a.notch-help{:href => '#'}
-        [?]
+        %i.fa.fa-question-circle.fa-1x
     = render 'home/panels/actions'

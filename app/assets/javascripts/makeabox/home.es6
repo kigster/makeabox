@@ -1,13 +1,10 @@
+$.when($.ready).then(function () {
 
-$.when($.ready).then(function() {
+  window.hideAlert = function() {
+    $('#alert-row').fadeOut("slow");
+  };
 
-  // Toggle between AdSense Ad and our own donation
-  window.MakeABox.toggle = new window.MakeABox.Toggler(
-    [
-      '#ad-content-refine',
-      '#ad-content-adsense',
-      '#ad-content-donate'
-    ], [ 5000, 5000, 3000 ]);
+  setTimeout(hideAlert, 5000);
 
   // Initialize the Units Conversion Handler
   window.MakeABox.uh = new window.MakeABox.UnitsHandler('input[name="config[units]"]', '#units');
@@ -22,15 +19,15 @@ $.when($.ready).then(function() {
   window.MakeABox.fh = new window.MakeABox.FormHandler('pdf-generator');
 
   let show_thickness_info = () => $('.thickness-info-modal').modal('show');
-  let show_advanced_info  = () => $('.advanced-info-modal').modal('show');
-  let show_introduction   = () => $('#introduction-modal').modal('show');
+  let show_advanced_info = () => $('.advanced-info-modal').modal('show');
+  let show_introduction = () => $('#introduction-modal').modal('show');
 
-  $("#make-pdf").on("click", function(e) {
+  $("#make-pdf").on("click", function (e) {
     window.MakeABox.fh.generatePDF(e);
     return false;
   });
 
-  $('.dont-show-notice').on('click', function(e) {
+  $('.dont-show-notice').on('click', function (e) {
     $.cookie("had-seen-the-notice", "yes", {expires: 21, path: '/'});
     $('#one-time-notice').fadeOut("slow");
     return $('.modal').fadeOut("slow");
@@ -51,29 +48,44 @@ $.when($.ready).then(function() {
     return true;
   });
 
-  $('.logo-image, .logo-name').on('click', function(e) {
+  $('.logo-image, .logo-name').on('click', function (e) {
     document.location = '/';
     return false;
   });
 
-  $('#thickness-info').on('click', function(e) {
+  $('#thickness-info').on('click', function (e) {
     show_thickness_info();
     return false;
   });
 
-  $('#introduction').on('click', function(e) {
+  $('#introduction').on('click', function (e) {
     show_introduction();
     return false;
   });
 
-  $('.advanced-info').on('click', function(e) {
+  $('.advanced-info').on('click', function (e) {
     show_advanced_info();
     return false;
   });
 
-  $('.notch-help').on('click', function(e) {
+  $('.notch-help').on('click', function (e) {
     show_advanced_info();
     return false;
   });
+
+  window.captureOutboundLink = function (url) {
+    ga('send', 'event', 'outbound', 'click', url, {
+      'transport': 'beacon',
+      'hitCallback': function () {
+        document.location = url;
+      }
+    })
+  };
+
+  $('#refine-link').on('click', function (e) {
+    var link = $( this );
+    window.captureOutboundLink(link.attr("href"));
+    return true;
+  })
 
 });

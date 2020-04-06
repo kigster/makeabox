@@ -4,31 +4,14 @@
   %meta{:charset => "utf-8"}/
   %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
 
-  = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Signika+Negative:400,600", :media => "all"
-  = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Slabo+27px|Fjalla+One", :media => "all"
-
+  = stylesheet_link_tag "https://fonts.googleapis.com/css2?family=K2D:wght@700&Lato:wght@400;600&family=Ubuntu+Mono&display=swap", :media => "all"
   = stylesheet_link_tag "application", :media => "all"
-
   = favicon_link_tag "favicon.ico", :rel => "shortcut icon"
 
-  %title= content_for?(:title) ? yield(:title) : "Make A Box"
+  %title= content_for?(:title) ? yield(:title) : "Make A Box: Generate Laser Cutter Templates for Enclosures!"
 
   = javascript_include_tag "application"
 
   %meta{:content => "Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Sides snap into each other using automatically created notches. Use acrylic, wood, or any other material that can be cut with a laser-cutter.", :name => "description"}/
   %meta{:content => "Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Make-A-Box!", :property => "twitter:description"}/
   %meta{:content => "laser cutter,boxmaker,notches,laser-cut box,laser,box maker,make-a-box,PDF,box creator,box designer", :name => "keywords"}/
-
-:javascript
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1535561279882692');
-  fbq('track', 'PageView');
-%noscript
-  %img{:height => "1", :src => "https://www.facebook.com/tr?id=1535561279882692&ev=PageView&noscript=1", :style => "display:none", :width => "1"}/

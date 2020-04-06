@@ -2,8 +2,10 @@
 %html{:lang => 'en'}
   = render 'shared/1_head'
   %body
-    .container-fluid
-      = render '/shared/2_nav_bar_logo'
+    %nav.navbar.navbar-dark.bg-dark.d-flex
+      %a.navbar-brand{href: "/"}
+        = image_tag('logo-with-gray.png', class: 'logo-image')
+        %h1.logo.text-center make a box.io
     .container.container-fluid
       = yield
   %footer

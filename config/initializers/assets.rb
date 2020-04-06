@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 # Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = '1.0'
+Rails.application.config.assets.version = '1.1'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
@@ -12,4 +12,10 @@ Rails.application.config.assets.configure do |env|
     'moduleIds'  => true
   )
   env.register_transformer 'application/ecmascript-6', 'application/javascript', babel
+end
+
+MakeABox::Application.configure do
+  config.sass.preferred_syntax = :sass
+  config.sass.line_comments = false
+  config.sass.cache = true
 end

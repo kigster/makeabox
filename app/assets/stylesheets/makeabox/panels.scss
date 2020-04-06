@@ -3,11 +3,6 @@
 @media all and (max-width: 600px) {
   body {
     .container-fluid, .container {
-      .donate {
-        margin: 0;
-        padding: 2px;
-        font-size: $main-font-size - 5;
-      }
       #action-status {
         left: 4%;
         right: 4%;
@@ -20,11 +15,16 @@ body {
   .container-fluid, .container {
     width: 100%;
 
-    .donate {
-      max-width: 100% !important;
-      margin-left: 5px;
-      font-size: $main-font-size - 3;
-      color: $panel-fg + 50;
+
+    i.fa-question-circle {
+      padding: 0;
+      opacity: 1;
+      color: #8fcafe !important;
+      text-shadow: 0 0 1px #888;
+
+      &:hover {
+        color: #fefefe !important;
+      }
     }
 
     .panel {
@@ -34,12 +34,10 @@ body {
       box-shadow: $header-box-shadow;
       color: $panel-fg;
       background-color: $panel-bg;
-      &.units {
-        //height: 230px;
-      }
       width: 100%;
-      margin: 30px auto;
-      max-width: 350pt;
+      margin: 0 auto;
+      text-align: left;
+      max-width: 450px;
 
       .panel-heading {
         padding: 0;
@@ -60,13 +58,19 @@ body {
           padding: $panel-header-text-padding;
           margin: $panel-header-text-margin;
         }
+
         h2 {
           font-size: $header-h1-font-size - 2;
+        }
+
+        i.fa-question-circle {
+          margin: 10px;
         }
       }
 
       .panel-body {
         padding: $panel-padding;
+
         #action-bar {
           font-size: 12pt;
           text-align: center;
@@ -80,14 +84,15 @@ body {
 
           white-space: nowrap;
         }
+
         .paypal-logo {
-          float: right;
-          margin-left: 50px;
+          right: 0;
+
           input[type=image] {
-            margin: 0;
             padding: 0;
             box-shadow: 0 0 10px #222;
             border-radius: 10px;
+
             &:hover {
               box-shadow: 0 0 20px white;
             }
@@ -103,30 +108,18 @@ body {
         border-bottom-left-radius: $default-border-radius;
         border-bottom-right-radius: $default-border-radius;
         border-width: 0;
+
         .reinvent-one {
           width: 100%;
           text-align: center;
           padding: 5px;
+
           img {
             width: 150px;
           }
         }
       }
 
-      i {
-        margin-top: 10px;
-        margin-right: 16px;
-        background-color: #eee;
-        border-radius: 17px;
-        width: 32px;
-        height: 32px;
-        padding: 0;
-        &.fa {
-          font-size: 30px;
-          padding-top: 5px;
-          padding-left: 3px;
-        }
-      }
     }
   }
 }
@@ -143,12 +136,15 @@ footer {
       font-size: $main-font-size - 1;
       max-width: 100%;
       margin: 0;
+
       a {
         color: rgb(255, 180, 152);
       }
+
       p {
         margin-bottom: 10px;
       }
+
       //.panel-body {
       //  padding-top: 20px;
       //  padding-bottom: 20px;

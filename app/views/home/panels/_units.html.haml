@@ -1,6 +1,6 @@
 .panel.units
   .panel-heading
-    %i#introduction.pull-right.fa.fa-question-circle.fa-lg
+    %i#introduction.pull-right.fa.fa-question-circle.fa-2x
     %h1.panel-title Units
 
   .panel-body.measurements
@@ -22,10 +22,10 @@
     = label_tag(:page_layout_portrait, 'Portrait')
   .clear
   .panel-body.measurements
-    = label_tag(:metadata, 'Print Infobox?')
     .mkbx-radio
       = check_box_tag(:metadata, 1, @config['metadata'], class: 'mkbx-checkbox')
+    = label_tag(:metadata, 'Print Info Box?')
     .clear
-    %small
+    .small
       When checked, information about your box will be included in the left bottom corner of the PDF document for your reference.
     .clear

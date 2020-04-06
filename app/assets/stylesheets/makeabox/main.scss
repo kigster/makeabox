@@ -38,8 +38,20 @@ body {
     border-top: 1px solid #DDDDDD;
   }
 
+  .spacer-10 {
+    height: 10px;
+  }
+
   .spacer-20 {
     height: 20px;
+  }
+
+  .spacer-30 {
+    height: 30px;
+  }
+
+  .spacer-40 {
+    height: 40px;
   }
 
   .spacer-50 {
@@ -92,17 +104,18 @@ body {
   }
 
   #disqus_thread {
-    margin: 0;
-    padding: 10px;
+    margin: 40px 30px 40px 30px;
+    padding: 20px;
     position: relative;
-    max-height: 1000px !important;
-    overflow: auto;
-    height: 100% !important;
+    max-height: 1000px;
+    overflow: visible;
+    height: auto;
     width: auto !important;
   }
 
   #save-settings-group {
     margin-right: 20px;
+    flex-wrap: auto;
   }
 
   #action-status {
