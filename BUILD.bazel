@@ -1,0 +1,37 @@
+
+load(
+    "@bazelruby_rules_ruby//ruby:defs.bzl",
+    "ruby_binary",
+    "ruby_library",
+    "ruby_test",
+    "ruby_rspec",
+)
+
+ruby_library(
+    name = "makeabox-lib",
+    srcs = glob(["{app,lib,config,db}/**/*.rb"]),
+    includes = ["lib", "app"],
+    deps = [
+      "@bundle//:gem",
+    ]
+)
+
+ruby_binary(
+    name = "puma",
+    srcs = ["bin/puma-ctl"],
+    args =
+    deps = [":foo"],
+)
+
+ruby_test(
+    name = "foo-test",
+    srcs = ["test/foo_test.rb"],
+    deps = [":foo"],
+)
+
+ruby_rspec(
+    name = "foo-spec",
+    specs = glob(["spec/**/*.rb"]),
+    rspec_args = { "--format": "progress" },
+    deps = [":foo"]
+}
