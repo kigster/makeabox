@@ -52,13 +52,13 @@ set :native_gems, %i(nokogiri)
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
 set :ssh_options, {
-   keys: %w(/Users/kig/.ssh/id_rsa),
-   forward_agent: false,
-   auth_methods: %w(publickey)
+  keys: %W[#{Dir.home}/.ssh/id_rsa #{Dir.home}/.ssh/makeabox.pem],
+  forward_agent: false,
+  auth_methods: %w[publickey]
 }
 
-set :linked_files, %w{config/secrets.yml}
-set :linked_dirs, %w{bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_files, %w[config/secrets.yml]
+set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}
 
 # Default value for keep_releases is 5

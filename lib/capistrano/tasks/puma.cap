@@ -12,8 +12,8 @@ namespace :puma do
         export APP=#{fetch(:application)}
         export RAILS_ENV=#{fetch(:rails_env)}
         export PID=$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')
-        [[ -z "${PID}" ]] && bin/puma-start -d
-        [[ -n "${PID}" ]] && kill -USR1 ${PID}
+        [[ -z "${PID}" ]] && { echo "No puma was detected, starting!"; bin/puma-start -d; }
+        [[ -n "${PID}" ]] && { echo "Sending USR1 to ${PID}"; kill -USR1 ${PID}; }
       PUMA_STARTUP
     end
   end
