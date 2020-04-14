@@ -8,34 +8,55 @@ class HomeController < ApplicationController
                 :handle_units_change
 
   def index
-    if params['commit'].eql?('true')
-      if latest_error
-        flash.now[:error] = latest_error
-        @error            = latest_error
-        render && return
-      end
-      not_cacheable!
-      logging "Dumped file [#{@config['file']}]" do
-        begin
-          @config.validate!
-          flash[:error] = 'Your request has timed out maximum of 30 seconds allowed. Please reduce tap width.'
-          generate_pdf @config
-          flash.clear
-        rescue Rack::Timeout::Error
-          flash[:error] = 'Your request has timed out maximum of 30 seconds allowed. Please reduce tap width.'
-          render && return
-        rescue Exception => e
-          flash[:error] = self.latest_error = e.message
-          Rails.logger.error(e.backtrace.join("\n"))
-          render && return
-        end
-      end
-    else
+    unless params['commit'].eql?('true')
       flash.clear
+      return
     end
+
+    if latest_error
+      flash.now[:error] = latest_error
+      @error = latest_error
+      render && return
+    end
+
+    not_cacheable!
+
+    flash.clear
+
+    if validate_config!
+      generate_pdf @config
+    end
+
+    render
   end
 
   private
+
+  def validate_config!
+    @config.validate!
+    true
+  rescue Rack::Timeout::Error => e
+    flash[:error] = 'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
+    Rails.logger.warn "Timeout Error: #{e.message}"
+    false
+  rescue Laser::Cutter::MissingOption, Laser::Cutter::ZeroValueNotAllowed => e
+    flash[:error] = self.latest_error = clarify_error(e.message)
+    Rails.logger.info e.message
+    false
+  rescue StandardError => e
+    flash[:error] = self.latest_error = e.message
+    Rails.logger.error("ERROR: " + e.inspect + "\n" + e.backtrace.join("\n"))
+    false
+  end
+
+  def clarify_error(message)
+    m = message.gsub(/,? ?notch,?/i, '')
+    if m.split(',').size == 2
+      m.gsub(/are required/, 'is required')
+    else
+      m
+    end
+  end
 
   def handle_cache_control
     # if request.get? && params[:config].nil?
@@ -45,23 +66,21 @@ class HomeController < ApplicationController
 
   def load_parameters
     c = params[:config] || {}
+
     %w[width height depth thickness notch page_size kerf].each do |f|
       c[f] = nil if (c[f] == '0') || c[f].blank?
     end
-    c[:metadata]    = params[:metadata].blank? ? false : true
-    @config         = Laser::Cutter::Configuration.new(c)
+
+    c[:metadata] = params[:metadata].blank? ? false : true
+
+    @config = Laser::Cutter::Configuration.new(c)
+    @config['file'] = '/tmp/temporary'
+
     if %w[width height depth thickness].all? { |f| c[f] }
       @config['file'] = exported_file_name
     end
-    begin
-      @config.validate!
-      Rails.logger.info 'config validation OK'
-      true
-    rescue Exception => e
-      Rails.logger.error "config validation failed with error: #{e}"
-      self.latest_error = e.message
-      false
-    end
+
+    validate_config!
   end
 
   def populate_form_fields
@@ -96,5 +115,6 @@ class HomeController < ApplicationController
     r.render
     temp_files << config['file']
     send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
+    config['file']
   end
 end
