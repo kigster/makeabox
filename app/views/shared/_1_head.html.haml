@@ -1,17 +1,17 @@
 %head
-  %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
   / Required meta tags
-  %meta{:charset => "utf-8"}/
-  %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
+  %meta{:charset => 'utf-8'}/
+  %meta{:content => 'width=device-width, initial-scale=1, shrink-to-fit=no', :name => 'viewport'}
 
-  = stylesheet_link_tag "https://fonts.googleapis.com/css2?family=K2D:wght@700&Lato:wght@400;600&family=Ubuntu+Mono&display=swap", :media => "all"
-  = stylesheet_link_tag "application", :media => "all"
-  = favicon_link_tag "favicon.ico", :rel => "shortcut icon"
+  = stylesheet_link_tag 'https://fonts.googleapis.com/css2?family=K2D:wght@700&Inria+Sans:wght@300;400;700&family=Ubuntu+Mono&display=swap', :media => 'all'
+  = stylesheet_link_tag 'application', :media => 'all'
+  = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
 
-  %title= content_for?(:title) ? yield(:title) : "Make A Box: Generate Laser Cutter Templates for Enclosures!"
+  %title= content_for?(:title) ? yield(:title) : 'Make A Box: Generate Laser Cutter Templates for Enclosures!'
 
-  = javascript_include_tag "application"
+  = javascript_include_tag 'application'
 
-  %meta{:content => "Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Sides snap into each other using automatically created notches. Use acrylic, wood, or any other material that can be cut with a laser-cutter.", :name => "description"}/
-  %meta{:content => "Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Make-A-Box!", :property => "twitter:description"}/
-  %meta{:content => "laser cutter,boxmaker,notches,laser-cut box,laser,box maker,make-a-box,PDF,box creator,box designer", :name => "keywords"}/
+  %meta{:content => 'Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Sides snap into each other using automatically created notches. Use acrylic, wood, or any other material that can be cut with a laser-cutter.', :name => 'description'}/
+  %meta{:content => 'Create a perfect design for your laser-cut box of any dimensions, and save it to your computer as a PDF, instantly and for free! Make-A-Box!', :property => 'twitter:description'}/
+  %meta{:content => 'laser cutter,boxmaker,notches,laser-cut box,laser,box maker,make-a-box,PDF,box creator,box designer', :name => 'keywords'}/

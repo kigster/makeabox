@@ -1,13 +1,13 @@
 / Modal
-#introduction-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+#introduction-modal.modal.fade{'aria-hidden' => 'true', 'aria-labelledby' => 'myModalLabel', :role => 'dialog', :tabindex => '-1'}
   .modal-dialog.modal-md
     .modal-content
       .modal-header
         = render 'home/modals/close_x'
         %h1.modal-title Welcome to MakeABox.io!
       .modal-footer
-        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
-        %button.dont-show-notice.btn.btn-warning{"data-dismiss" => "modal", :type => "button"} Close &amp; Don't Show Again
+        %button.btn.btn-secondary{'data-dismiss' => 'modal', :type => 'button'} Close
+        %button.dont-show-notice.btn.btn-warning{'data-dismiss' => 'modal', :type => 'button'} Close &amp; Don't Show Again
       .modal-body
         %p.lead Are you ready to make some boxes?! Let's go!
         %p
@@ -49,4 +49,4 @@
 
         .spacer-50
         .text-center
-          = image_tag("notched-boxes.jpg", class: "photo")
+          = image_tag('notched-boxes.jpg', class: 'photo')

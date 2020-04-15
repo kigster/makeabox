@@ -7,9 +7,9 @@ class UnitsHandler {
 
     this.conversions = {
       'in': (value) => {
-        return parseFloat(value) / 25.4
+        return Number((parseFloat(value) / 25.4).toFixed(6));
       }, 'mm': (value) => {
-        return parseFloat(value) * 25.4
+        return Number((parseFloat(value) * 25.4).toFixed(6));
       }
     };
 

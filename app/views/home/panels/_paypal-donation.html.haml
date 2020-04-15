@@ -1,16 +1,24 @@
-.panel.paypal-donation
-  .panel-body#paypal-ad
+-#.panel.paypal-donation
+-#.panel-body#paypal-ad
+.w-100.d-flex.align-content-center.align-items-center.ad-panel.m-auto.p-5
+  .w-100.d-block.align-items-center.bg-danger.rounded.ui-widget-shadow.p-4.paypal-container
     .paypal-logo
       %form{:action => 'https://www.paypal.com/cgi-bin/webscr', :method => "post", :target => "_blank"}
         %input{:name => 'cmd', :type => "hidden", :value => "_s-xclick"}
         %input{:name => 'hosted_button_id', :type => "hidden", :value => "Y4XR246KD644W"}
         %input{:alt => 'paypal-donation', |
-          :style => 'margin: 0 auto;', |
-          :border => "0", :width => '200', |
+          :style => 'margin: 0 auto; width: 200px; height: auto; margin-top: 20px;', |
+          :border => "0",  |
           :name => "submit", |
           :src => 'https://www.paypalobjects.com/webstatic/mktg/merchant_portal/button/donate.en.png', |
           :title => 'PayPal - The safer, easier way to pay online!', :type => 'image'}
         %img{:alt => '', :border => '0', :height => '1', :src => 'https://www.paypal.com/en_US/i/scr/pixel.gif', :width => '1'}
-    %p
-      Hi! I am thrilled that you, and so many others generating 100s of boxes a day for your laser cutters.
-      To help keep this site running, please consider donating literally AMY AMOUNT is much appreciated.
+    .paypal-message
+      %h3 Dear Makers!
+
+      %p
+        Hi! I am thrilled to be helping this thriving community of makers in generating literally hundreds of boxes
+        %strong every single day
+        for your laser cutting needs.
+      %p
+        As I am sure you realize, it costs money to run this site, and therefore we are asking you to please consider donating literally any amount, as it's very much appreciated.

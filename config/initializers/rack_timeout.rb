@@ -1,4 +1,4 @@
-require "rack-timeout"
+require 'rack-timeout'
 
 # config/initializers/rack_timeout.rb
 
@@ -6,4 +6,4 @@ require "rack-timeout"
 # initialization arguments, or use environment variables
 Rails.application.config.middleware.insert_before Rack::Runtime, Rack::Timeout, service_timeout: 30, wait_overtime: 60
 
-#Rack::Timeout::Logger.logger = Rails.logger
+Rack::Timeout::Logger.logger = Logger.new(nil)

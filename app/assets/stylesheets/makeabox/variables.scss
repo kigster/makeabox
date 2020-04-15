@@ -1,8 +1,8 @@
 
-$main-font-family: 'Lato', 'Avenir Next', 'HelveticaNeue', 'Arial', sans-serif;
+$main-font-family: 'Inria Sans', 'DIN Alternate', 'Corbel', 'HelveticaNeue', 'Arial', sans-serif;
 $main-font-family-monospaced: 'Ubuntu Mono','Monaco', 'Courier', sans-serif;
 $main-font-size: 15pt;
-$main-font-weight: 600;
+$main-font-weight: 300;
 
 $main-fg: #333;
 $main-bg: rgba(121, 91, 123, 0.63);
@@ -35,7 +35,7 @@ $panel-sub-panel-bg: rgba(221, 153, 104, 0.27);
 
 $form-input-bg: rgba(#ffb800, 0.27);
 $form-input-fg: #222;
-$form-input-font-size: $main-font-size + 2;
+$form-input-font-size: $main-font-size;
 $form-input-focus-fg: rgb(56, 7, 7);
 $form-input-focus-bg: #fff;
 $form-input-border: 1px solid rgba(75, 126, 19, 0.5);
@@ -47,7 +47,7 @@ $radio-selected-bg: rgba(107, 176, 64, 0.57);
 $default-border-radius: 0px;
 
 $panel-header-text-padding: 10px 20px;
-$panel-padding: 20px;
+$panel-padding: 30px;
 $panel-header-text-margin: 0;
 
 $modal-fg: #777;

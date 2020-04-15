@@ -3,31 +3,40 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
-  before_action :load_parameters,
-                :populate_form_fields,
-                :handle_units_change
-
   def index
-    unless params['commit'].eql?('true')
-      flash.clear
-      return
-    end
+    create_new_config
+    populate_form_fields
+    handle_units_change
 
-    if latest_error
-      flash.now[:error] = latest_error
-      @error = latest_error
+    if request.get?
       render && return
     end
 
-    not_cacheable!
+    validate_config!
 
-    flash.clear
+    if params['commit'].eql?('true')
+      if latest_error
+        flash.now[:error] = latest_error
+        @error            = latest_error
+        render && return
+      end
 
-    if validate_config!
-      generate_pdf @config
+      not_cacheable!
+
+      flash.clear
+
+      if validate_config!
+        trace_make_pdf @config
+      else
+        render
+      end
     end
-
-    render
+  rescue Rack::Timeout::Error => e
+    Datadog.tracer.active_span&.set_tag('pdf.file.status', 2)
+    Datadog.tracer.active_span&.set_tag('pdf.file.error', e.message)
+    flash[:error] = 'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
+    Rails.logger.warn "Timeout Error: #{e.message}"
+    false
   end
 
   private
@@ -35,17 +44,13 @@ class HomeController < ApplicationController
   def validate_config!
     @config.validate!
     true
-  rescue Rack::Timeout::Error => e
-    flash[:error] = 'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
-    Rails.logger.warn "Timeout Error: #{e.message}"
-    false
   rescue Laser::Cutter::MissingOption, Laser::Cutter::ZeroValueNotAllowed => e
     flash[:error] = self.latest_error = clarify_error(e.message)
     Rails.logger.info e.message
     false
   rescue StandardError => e
     flash[:error] = self.latest_error = e.message
-    Rails.logger.error("ERROR: " + e.inspect + "\n" + e.backtrace.join("\n"))
+    Rails.logger.error('ERROR: ' + e.inspect + "\n" + e.backtrace.join("\n"))
     false
   end
 
@@ -64,23 +69,23 @@ class HomeController < ApplicationController
     # end
   end
 
-  def load_parameters
+  NUMERIC_FIELDS = %w[width height depth thickness notch page_size kerf].freeze
+
+  def create_new_config
     c = params[:config] || {}
 
-    %w[width height depth thickness notch page_size kerf].each do |f|
+    NUMERIC_FIELDS.each do |f|
       c[f] = nil if (c[f] == '0') || c[f].blank?
     end
 
     c[:metadata] = params[:metadata].blank? ? false : true
 
-    @config = Laser::Cutter::Configuration.new(c)
+    @config         = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
 
     if %w[width height depth thickness].all? { |f| c[f] }
       @config['file'] = exported_file_name
     end
-
-    validate_config!
   end
 
   def populate_form_fields
@@ -96,6 +101,10 @@ class HomeController < ApplicationController
       @config.units = params['units']
       @config.change_units(params['units'] == 'in' ? 'mm' : 'in')
     end
+
+    NUMERIC_FIELDS.each do |field|
+      @config[field] = @config[field].round(5) if @config[field] && @config[field].to_f > 0
+    end
   end
 
   require 'fileutils'
@@ -110,11 +119,47 @@ class HomeController < ApplicationController
     Time.now.strftime '%Y%m%d%H%M%S'
   end
 
-  def generate_pdf(config)
-    r = Laser::Cutter::Renderer::LayoutRenderer.new(config)
-    r.render
+  def make_pdf(config)
+    Laser::Cutter::Renderer::LayoutRenderer.new(config).render
+  end
+
+  def send_pdf(config)
     temp_files << config['file']
     send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
     config['file']
+  end
+
+  def trace_make_pdf(config)
+    Datadog.tracer.trace('web.request.pdf', service: 'makeabox', resource: 'POST /') do |span|
+      # Trace the activerecord call
+      Datadog.tracer.trace('pdf.render') do
+        make_pdf(config)
+      end
+
+      # Trace the template rendering
+      Datadog.tracer.trace('pdf.sendfile') do
+        send_pdf(config)
+      end
+
+      begin
+        # Add some APM tags
+        span.set_tag('pdf.box.count', temp_files.size)
+        span.set_tag('pdf.box.units', config.units)
+        span.set_tag('pdf.box.size', "#{config.width}x#{config.height}x#{config.depth} (#{config.thickness})")
+        span.set_tag('pdf.box.notch', config.notch)
+        span.set_tag('pdf.box.kerf', config.kerf)
+
+        if config.file && File.exist?(config.file)
+          span.set_tag('pdf.file.name', config.file)
+          span.set_tag('pdf.file.size', ::File.size(config.file)) if File.exist?(config.file)
+          span.set_tag('pdf.file.status', 0)
+        else
+          span.set_tag('pdf.file.status', 1)
+        end
+      rescue StandardError => e
+        Rails.logger.warn("Error processing tags for DataDog: #{e.inspect}")
+        Rails.logger.warn("Config: #{config.inspect}")
+      end
+    end
   end
 end

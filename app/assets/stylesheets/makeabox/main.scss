@@ -6,7 +6,7 @@ body {
   font-weight: $main-font-weight;
   color: $main-fg;
   background-color: $main-bg !important;
-
+  line-height: 16pt;
   .alert {
     box-shadow: $header-box-shadow;
     font-size: 15pt;

@@ -20,6 +20,8 @@ gem 'sprockets-rails'
 gem 'sprockets'
 gem 'babel-transpiler'
 
+gem 'ddtrace'
+
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
