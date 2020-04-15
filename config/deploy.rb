@@ -52,9 +52,9 @@ set :native_gems, %i(nokogiri)
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
 set :ssh_options, {
-  keys: %W[#{Dir.home}/.ssh/id_rsa #{Dir.home}/.ssh/makeabox.pem],
-  forward_agent: false,
-  auth_methods: %w[publickey]
+    keys:          %W[#{Dir.home}/.ssh/id_rsa #{Dir.home}/.ssh/makeabox.pem #{Dir.home}/.ssh/aws.reinvent1.pem],
+    forward_agent: false,
+    auth_methods:  %w[publickey]
 }
 
 set :linked_files, %w[config/secrets.yml]
