@@ -9,7 +9,7 @@
 .row.mt-2
   .col-sm-0.col-md-0.col-lg-2.col-xl-3
   .col-sm-12.col-md-12.col-lg-8.col-xl-6.ad-content-adsense.d-flex.align-content-center
-    = render 'home/partials/adsense' if Rails.env.production?
+    = render 'home/partials/adsense' if google?
   .col-sm-0.col-md-0.col-lg-2.col-xl-3
 
 .spacer-10
@@ -26,33 +26,36 @@
     .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
 .spacer-50
--#.row
--#  .col-sm-0.col-md-0.col-lg-0.col-xl-1
--#  .col-sm-12.col-md-6.col-lg-3.col-xl-3.ad-panel
--#    = render 'home/panels/paypal-donation'
--#  .col-sm-12.col-md-6.col-lg-6.col-xl-4.d-flex.align-content-center
--#    .ad-panel
--#      = render 'home/panels/refine'
--#  .col-sm-12.col-md-6.col-lg-3.col-xl-3.ad-panel#second-paypal
--#    = render 'home/panels/paypal-donation'
--#  .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
 .row
-  .col-sm-1.col-md-2.col-lg-2.col-xl-2
-  .col-sm-10.col-md-8.col-lg-8.col-xl-8
+  .col-sm-0.col-md-0.col-lg-0.col-xl-1
+  .col-sm-12.col-md-6.col-lg-3.col-xl-3.ad-panel
     = render 'home/panels/paypal-donation'
-  .col-sm-1.col-md-2.col-lg-2.col-xl-2
+  .col-sm-12.col-md-6.col-lg-6.col-xl-4.d-flex.align-content-center
+    .ad-panel
+      = render 'home/panels/refine'
+  .col-sm-12.col-md-6.col-lg-3.col-xl-3.ad-panel#second-paypal
+    = render 'home/panels/paypal-donation'
+  .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
-.row.mt-2
-  .col-sm-0.col-md-0.col-lg-2.col-xl-3
-  .col-sm-12.col-md-12.col-lg-8.col-xl-6.ad-content-adsense.d-flex.align-content-center
-    = render 'home/partials/adsense' if Rails.env.production?
-  .col-sm-0.col-md-0.col-lg-2.col-xl-3
+-# .row
+-#   .col-sm-1.col-md-2.col-lg-2.col-xl-2
+-#   .col-sm-10.col-md-8.col-lg-8.col-xl-8
+-#     = render 'home/panels/paypal-donation'
+-#   .col-sm-1.col-md-2.col-lg-2.col-xl-2
 
 .spacer-10
 
 .row
   .col-sm-0.col-md-1.col-lg-1.col-xl-2
   .col-sm-12.col-md-10.col-lg-10.col-xl-8
-    = render 'home/partials/disqus_js' if Rails.env.production?
+    = render 'home/partials/disqus_js' if disqus?
   .col-sm-0.col-md-1.col-lg-1.col-xl-2
+
+.row.mt-2
+  .col-sm-0.col-md-0.col-lg-2.col-xl-3
+  .col-sm-12.col-md-12.col-lg-8.col-xl-6.ad-content-adsense.d-flex.align-content-center
+    = render 'home/partials/adsense' if google?
+  .col-sm-0.col-md-0.col-lg-2.col-xl-3
+
+.spacer-10
