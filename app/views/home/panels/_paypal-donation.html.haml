@@ -1,19 +1,20 @@
 -#.panel.paypal-donation
 -#.panel-body#paypal-ad
-.w-100.d-flex.align-content-center.align-items-center.ad-panel.m-auto.p-5
-  .w-100.d-block.align-items-center.bg-danger.rounded.ui-widget-shadow.p-4.paypal-container
-    .paypal-logo
+.align-text-top
+  .spacer-20
+  .d-block.align-items-center.bg-danger.rounded.ui-widget-shadow.p-3.paypal-container.ad-panel.w-100
+    .paypal-logos
       %form{:action => 'https://www.paypal.com/cgi-bin/webscr', :method => "post", :target => "_blank"}
         %input{:name => 'cmd', :type => "hidden", :value => "_s-xclick"}
         %input{:name => 'hosted_button_id', :type => "hidden", :value => "Y4XR246KD644W"}
         %input{:alt => 'paypal-donation', |
-          :style => 'margin: 0 auto; width: 200px; height: auto; margin-top: 20px;', |
+          :style => 'margin: 10px; width: 200px; height: 50px; margin-top: 20px; clear: both;', |
           :border => "0",  |
           :name => "submit", |
           :src => 'https://www.paypalobjects.com/webstatic/mktg/merchant_portal/button/donate.en.png', |
           :title => 'PayPal - The safer, easier way to pay online!', :type => 'image'}
         %img{:alt => '', :border => '0', :height => '1', :src => 'https://www.paypal.com/en_US/i/scr/pixel.gif', :width => '1'}
-    .paypal-message
+    .paypal-message.clear-right
       %h3 Dear Makers!
 
       %p

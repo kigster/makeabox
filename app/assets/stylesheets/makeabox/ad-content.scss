@@ -20,10 +20,16 @@ body {
     }
   }
 
+  .google-adsense {
+    height: 150px !important;
+    max-height: 150px !important;
+    overflow-y: hidden;
+  }
+
   .ad-panel {
     color: $panel-fg;
     width: 100%;
-    padding: 15px;
+    padding: 0px;
     display: block;
     position: relative;
 
@@ -61,26 +67,36 @@ body {
     }
 
     #refine-ad {
-      padding: 0;
+      padding: 0 !important;
+      margin: 0 auto;
       position: relative;
       display: block;
-      height: 100%;
       z-index: 0;
-      margin: 0 auto;
 
       a#refine-link {
+        padding: 0 !important;
         display: block;
         position: relative;
         background-image: image-url("ads/refine-landscape.jpg");
         background-position-x: center;
         background-repeat: no-repeat;
         height: 234px;
+        width: 716px;
+        border: 1px solid white;
+        &:hover {
+          border: 1px solid #c9302c;
+          box-shadow: 0 0 25px #333;
+        }
+        &:active {
+          border: 1px solid #c9302c;
+          box-shadow: 0 0 10px #222;
+        }
       }
     }
   }
 }
 
-@media all and (max-width: 1500px) {
+@media all and (max-width: 1900px) {
   body {
     .ad-panel {
       #refine-ad {
@@ -89,6 +105,8 @@ body {
 
         a#refine-link {
           height: 600px;
+          width: 334px;
+
           background-repeat: no-repeat;
           background-image: image-url("ads/refine-portrait.jpg");
           background-position-x: center;
@@ -97,7 +115,7 @@ body {
     }
   }
   .panel {
-    margin-top: 40px;
+    margin-top: 20px;
   }
 }
 
