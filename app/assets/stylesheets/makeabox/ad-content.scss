@@ -1,121 +1,166 @@
 @import "variables";
 
+@mixin refine-horizontal {
+  height: 234px;
+  width: 716px;
+  background-image: image-url("ads/refine-landscape.jpg");
+}
+
+@mixin refine-vertical {
+  height: 600px;
+  width: 334px;
+  background-image: image-url("ads/refine-portrait.jpg");
+}
+
 body {
-  .container {
-    .row {
-      .ad-content-adsense {
-        min-height: 70px;
-        margin: 0;
-        width: 100%;
-
-        #adsense-banner {
-          display: block;
-          position: relative;
-          width: 100%;
-          min-height: 70px;
-          margin: 0 auto;
-          padding: 0;
-        }
-      }
-    }
-  }
-
-  .google-adsense {
-    height: 150px !important;
-    max-height: 150px !important;
-    overflow-y: hidden;
-  }
-
-  .ad-panel {
-    color: $panel-fg;
-    width: 100%;
-    padding: 0px;
-    display: block;
-    position: relative;
-
-    .paypal-logo {
-      padding-top: 50px;
-      margin-right: 30px;
-      float: left;
-      display: block;
-      min-width: 200px;
-      min-height: 200px;
-    }
-
-    .paypal-message {
-      color: white;
-      font-size: $main-font-size - 1 !important;
-      font-family: $main-font-family !important;
-      font-weight: $main-font-weight !important;
-
-      h3 {
-        font-family: $header-h1-font-family;
-        font-size: $header-h1-font-size;
-      }
-
-      strong {
-        font-weight: 600;
-        text-decoration: underline;
-      }
-    }
-
-    #paypal-ad {
+  .container-fluid, .container {
+    .ad-content-adsense {
+      min-height: 70px;
+      margin: 0;
       width: 100%;
-      height: 100%;
-      z-index: 1;
-      position: relative;
-    }
 
-    #refine-ad {
-      padding: 0 !important;
-      margin: 0 auto;
-      position: relative;
-      display: block;
-      z-index: 0;
-
-      a#refine-link {
-        padding: 0 !important;
+      #adsense-banner {
         display: block;
         position: relative;
-        background-image: image-url("ads/refine-landscape.jpg");
-        background-position-x: center;
-        background-repeat: no-repeat;
-        height: 234px;
-        width: 716px;
-        border: 1px solid white;
-        &:hover {
-          border: 1px solid #c9302c;
-          box-shadow: 0 0 25px #333;
+        width: 100%;
+        min-height: 70px;
+        margin: 0 auto;
+        padding: 0;
+      }
+    }
+
+    .row {
+      .wide-panel {
+        width: 100% !important;
+      }
+
+      .google-adsense {
+        height: 150px !important;
+        max-height: 150px !important;
+        overflow-y: hidden;
+      }
+
+      .ad-panel {
+        color: $panel-fg;
+        width: 100%;
+        padding: 0;
+        display: block;
+        position: relative;
+
+        .paypal-logo {
+          padding-top: 50px;
+          margin-right: 30px;
+          float: left;
+          display: block;
+          min-width: 200px;
+          min-height: 200px;
         }
-        &:active {
-          border: 1px solid #c9302c;
-          box-shadow: 0 0 10px #222;
+
+        // the two DONATE ONCE and DONATE MONTHLY image buttons
+        .paypal-button {
+          margin: 20px auto;
+          border-radius: 12px;
+          padding: 3px;
+          box-shadow: none;
+
+          &:hover {
+            /* offset-x | offset-y | blur-radius | spread-radius | color */
+            box-shadow: inset 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+          }
+
+          &:active {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            box-shadow: none;
+          }
+        }
+
+        .paypal-message {
+          color: white;
+          font-size: $main-font-size - 1 !important;
+          font-family: $main-font-family !important;
+          font-weight: $main-font-weight !important;
+
+          h3 {
+            font-family: $header-h1-font-family;
+            font-size: $header-h1-font-size;
+          }
+
+          strong {
+            font-weight: 600;
+            text-decoration: underline;
+            color: $main-fg;
+          }
+        }
+
+        .ad-component {
+          background-color: $panel-bg;
+          padding: 30px;
+        }
+
+        #paypal-ad {
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+          position: relative;
+        }
+
+        #refine-ad {
+          display: block;
+          height: 660px;
+          margin: 0 auto;
+          overflow: hidden;
+          padding: 0 !important;
+          position: relative;
+          z-index: 0;
+
+          a#refine-link {
+            padding: 0 !important;
+            display: block;
+            position: relative;
+            border: 1px solid white;
+
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: center;
+
+            &:hover {
+              border: 1px solid #c9302c;
+              box-shadow: 0 0 25px #333;
+            }
+
+            &:active {
+              border: 1px solid #c9302c;
+              box-shadow: 0 0 10px #222;
+            }
+          }
         }
       }
     }
   }
 }
 
-@media all and (max-width: 1900px) {
+@media all and (max-width: 1500px) {
   body {
     .ad-panel {
       #refine-ad {
-        height: 660px;
-        overflow: hidden;
-
         a#refine-link {
-          height: 600px;
-          width: 334px;
-
-          background-repeat: no-repeat;
-          background-image: image-url("ads/refine-portrait.jpg");
-          background-position-x: center;
+          @include refine-vertical;
         }
       }
     }
   }
-  .panel {
-    margin-top: 20px;
+}
+
+@media all and (min-width: 1501px) {
+  body {
+    .ad-panel {
+      #refine-ad {
+        a#refine-link {
+          @include refine-horizontal;
+        }
+      }
+    }
   }
 }
 

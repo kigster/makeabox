@@ -5,8 +5,6 @@
 require 'ddtrace'
 # require 'redis'
 
-Datadog::Logger.log = Rails.logger
-
 # This is the port we have configured in the /etc/datadog/datadog.yml (apm_config)
 Datadog.tracer.configure(port: 9126, enabled: true)
 
@@ -18,8 +16,10 @@ if %w(staging production).include?(ENV['RAILS_ENV'])
   # they are (i.e. -rails-tasks, or -rails-puma) and whether it's not rails at all, but redis
   # or dalli.
   Datadog.configure do |c|
+    c.logger = Rails.logger
     c.tracer enabled: true
     c.analytics_enabled = true
+
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#rails
     c.use :rails,
           service_name:        program,
