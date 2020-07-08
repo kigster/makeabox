@@ -5,7 +5,8 @@
 :sectnums:
 :toclevels: 4
 
-image::https://github.com/kigster/makeabox/workflows/RSpec/badge.svg[RSpec, link=https://github.com/kigster/makeabox/actions?query=workflow%3ARSpec]
+image:https://github.com/kigster/makeabox/workflows/RSpec/badge.svg[RSpec, link=https://github.com/kigster/makeabox/actions?query=workflow%3ARSpec]
+image:https://github.com/kigster/makeabox/workflows/RuboCop/badge.svg[RuboCop, link=https://github.com/kigster/makeabox/actions?query=workflow%3ARuboCop]
 
 __This__ is the https://makeabox.io/ application that generates laser-cut path as a downloadable PDF file.
 
