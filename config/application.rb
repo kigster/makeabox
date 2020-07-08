@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path('boot', __dir__)
 
 # Pick the frameworks you want:
 require 'active_model/railtie'
@@ -34,7 +34,7 @@ module MakeABox
     config.middleware.delete ActionDispatch::Session::CookieStore
     config.middleware.delete ActionDispatch::Flash
 
-    config.assets.precompile += %w( **.ttf )
+    config.assets.precompile += %w[**.ttf]
 
     config.generators do |g|
       g.template_engine :haml

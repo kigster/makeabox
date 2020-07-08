@@ -1,0 +1,78 @@
+= MakeABox -- Rails 5.2 Application
+
+:doctype: book
+:toc:
+:sectnums:
+:toclevels: 4
+
+image::https://github.com/kigster/makeabox/workflows/RSpec/badge.svg[RSpec, link=https://github.com/kigster/makeabox/actions?query=workflow%3ARSpec]
+
+__This__ is the https://makeabox.io/ application that generates laser-cut path as a downloadable PDF file.
+
+== USAGE
+
+NOTE: `direnv` is recommended.
+
+[source, bash]
+----
+brew install direnv
+# If using BASH:
+echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+source ~/.bashrc
+direnv allow .
+----
+
+== Install Dependencies
+
+Use Ruby 2.5+ and a recent bundler:
+
+[source, bash]
+----
+bundle install
+bundle exec rspec
+----
+
+== Run Locally
+
+You can start Puma via `rails s`, but we prefer using a wrapper script:
+
+[source, bash]
+----
+❯ bin/puma-start
+[71761] Puma starting in cluster mode...
+...
+[71761] * Process workers: 6
+[71761] * Phased restart available
+[71761] * Listening on tcp://0.0.0.0:3000
+[71761] Use Ctrl-C to stop
+----
+
+If the Puma process does not respond to `Ctrl-C`, use `Ctrl-Z` to push it to the background, and then `kill -9 %1` where `%1` is the job ID given during the suspend event.
+
+[source, bash]
+----
+^Z
+[1]+  Stopped                 bin/puma-start
+❯ kill -9 %1
+----
+
+The job number appears in the square brackets next to "Stopped". If the number is greater than one, it means you have other background jobs running. Run `jobs -l` to see them.
+
+== Deploying
+
+----
+bundle exec cap production deploy
+----
+
+== Previewing in Production Mode
+
+This script shows you the site in a local but production mode:
+
+[source,bash]
+----
+direnv allow . # just once
+preview
+# or
+bin/preview
+----
+

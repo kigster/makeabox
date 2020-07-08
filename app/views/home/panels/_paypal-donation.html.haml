@@ -20,7 +20,7 @@
               height: 50,
               class: 'paypal-button',
               style: 'width: 300px; height: 50px',
-              src: image_url('buttons/up-long/btn-donate-once.png'),
+              src: image_path('buttons/up-long/btn-donate-once.png'),
               title: 'PayPal - The safer, easier way to pay online!', type: 'image'}
             %img{:alt => '', :border => '0', :height => '1', :src => 'https://www.paypal.com/en_US/i/scr/pixel.gif', :width => '1'}
             %img{:alt => '', :border => '0', :height => '1', :src => 'https://www.paypalobjects.com/webstatic/mktg/merchant_portal/button/donate.en.png', :width => '1'}
@@ -48,7 +48,7 @@
           %input{alt: 'PayPal - The safer, easier way to pay online!',
             border: '0',
             name: 'submit',
-            src: image_url('buttons/up-long/btn-donate-monthly.png'),
+            src: image_path('buttons/up-long/btn-donate-monthly.png'),
             class: 'paypal-button',
             width: 350,
             height: 50,
@@ -58,6 +58,10 @@
           %img{alt: '', :border => '0', :height => '1', :src => 'https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif', :width => '1'}
 
       %h3.text-center Dear Makers!
+      %blockquote
+        Message from the site creator
+        %a{href: 'https://kig.re', target: '_blank'}Konstantin Gredeskoul.
+
       %p
         Hi! I am so thrilled that so many of you choose to make boxes on this site.
         There are thousands and thousands of boxes made

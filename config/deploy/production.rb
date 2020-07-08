@@ -4,6 +4,5 @@ set :rails_env, 'production'
 
 require_relative '../../lib/capistrano/loader/os'
 
-server 'makeabox.io', roles: %w{app db web worker}, user: 'kig', sudo: true
+server 'makeabox.io', roles: %w[app db web worker], user: 'kig', sudo: true
 set :gem_config, {}
-

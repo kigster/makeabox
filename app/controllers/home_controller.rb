@@ -8,9 +8,7 @@ class HomeController < ApplicationController
     populate_form_fields
     handle_units_change
 
-    if request.get?
-      render && return
-    end
+    return(render) if request.get?
 
     validate_config!
 
@@ -18,7 +16,7 @@ class HomeController < ApplicationController
       if latest_error
         flash.now[:error] = latest_error
         @error            = latest_error
-        render && return
+        return(render)
       end
 
       not_cacheable!
@@ -28,7 +26,7 @@ class HomeController < ApplicationController
       if validate_config!
         trace_make_pdf @config
       else
-        render
+        return(render)
       end
     end
   rescue Rack::Timeout::Error => e
@@ -83,9 +81,7 @@ class HomeController < ApplicationController
     @config         = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
 
-    if %w[width height depth thickness].all? { |f| c[f] }
-      @config['file'] = exported_file_name
-    end
+    @config['file'] = exported_file_name if %w[width height depth thickness].all? { |f| c[f] }
   end
 
   def populate_form_fields
