@@ -33,8 +33,8 @@ group :development do
 end
 
 group :test, :development, :demo do
-  gem 'simplecov'
   gem 'codecov'
-  gem 'rspec-rails'
   gem 'rspec-its'
+  gem 'rspec-rails'
+  gem 'simplecov'
 end

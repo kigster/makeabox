@@ -10,11 +10,11 @@ end
 
 if ENV['CODECOV_TOKEN']
   require 'codecov'
-  SimpleCov.formatters = 
+  SimpleCov.formatters =
     SimpleCov::Formatter::MultiFormatter.new([
-      SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::Codecov
-  ])
+                                               SimpleCov::Formatter::HTMLFormatter,
+                                               SimpleCov::Formatter::Codecov
+                                             ])
 end
 
 RSpec.configure do |config|

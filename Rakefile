@@ -11,6 +11,5 @@ if Rails.env.development?
 end
 
 task :doc do
-   puts `bundle exec yardoc -o doc '{lib,app,config,spec}/**/*.rb' - README.adoc`
+  puts `bundle exec yardoc -o doc '{lib,app,config,spec}/**/*.rb' - README.adoc`
 end
-

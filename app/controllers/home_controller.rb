@@ -24,14 +24,16 @@ class HomeController < ApplicationController
       flash.clear
 
       if validate_config!
-        trace_make_pdf @config
+        defined?(::DataDog) ? trace_make_and_send_pdf(@config) : make_and_send_pdf(@config)
       else
-        return(render)
+        render
       end
     end
   rescue Rack::Timeout::Error => e
-    Datadog.tracer.active_span&.set_tag('pdf.file.status', 2)
-    Datadog.tracer.active_span&.set_tag('pdf.file.error', e.message)
+    if defined?(::DataDog)
+      ::Datadog.tracer.active_span&.set_tag('pdf.file.status', 2)
+      ::Datadog.tracer.active_span&.set_tag('pdf.file.error', e.message)
+    end
     flash[:error] = 'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
     Rails.logger.warn "Timeout Error: #{e.message}"
     false
@@ -125,7 +127,11 @@ class HomeController < ApplicationController
     config['file']
   end
 
-  def trace_make_pdf(config)
+  def make_and_send_pdf(config)
+    %i[make_pdf send_pdf].each { |m| send(m, config) }
+  end
+
+  def trace_make_and_send_pdf(config)
     Datadog.tracer.trace('web.request.pdf', service: 'makeabox', resource: 'POST /') do |span|
       # Trace the activerecord call
       Datadog.tracer.trace('pdf.render') do
