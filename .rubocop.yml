@@ -1,4 +1,30 @@
-inherit_from: .rubocop_todo.yml
+inherit_from:
+  - .rubocop_todo.yml
+  - .relaxed-rubocop-2.4.yml
+
+AllCops:
+  TargetRubyVersion: 2.6
+  UseCache: true
+  DefaultFormatter: progress
+  DisplayStyleGuide: true
+  DisplayCopNames: true
+  Exclude:
+    - "external*/**/*"
+    - "bazel-*/**/*"
+    - "**/examples/**/*"
+    - "**/BUILD"
+    - "**/*.bazel"
+    - "**/*.bzl"
+    - "**/rubocop"
+    - "**/vendor/bundle/**/*"
+  Include:
+    - '**/*.rb'
+    - '**/*.gemfile'
+    - '**/*.gemspec'
+    - '**/*.rake'
+    - '**/*.ru'
+    - '**/Gemfile'
+    - '**/Rakefile'
 
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
