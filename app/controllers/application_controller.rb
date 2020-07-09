@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  include MakeABox::Logging::ControllerHelpers
+  around_action :log_incoming_request
+
   cattr_accessor :temp_files
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

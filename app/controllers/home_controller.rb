@@ -3,10 +3,30 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
+  DEFAULT_PARAMS_KEYS = %w[controller action]
+
   def index
     create_new_config
     populate_form_fields
     handle_units_change
+
+    if request.get? && parameter_keys.empty?
+      Rails.cache.fetch('/index', expires_in: 1.hour) do
+        render_index_action
+      end
+    else
+      render_index_action
+    end
+  end
+
+  private
+
+  def parameter_keys
+    params.keys - DEFAULT_PARAMS_KEYS
+  end
+
+  def render_index_action
+    logger.info("entering for #{request.ip}...")
 
     return(render) if request.get?
 
@@ -39,14 +59,12 @@ class HomeController < ApplicationController
     false
   end
 
-  private
-
   def validate_config!
     @config.validate!
     true
   rescue Laser::Cutter::MissingOption, Laser::Cutter::ZeroValueNotAllowed => e
     flash[:error] = self.latest_error = clarify_error(e.message)
-    Rails.logger.info e.message
+    Rails.logger.warn e.message
     false
   rescue StandardError => e
     flash[:error] = self.latest_error = e.message

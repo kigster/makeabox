@@ -98,14 +98,14 @@ body {
           padding: 30px;
         }
 
-        #paypal-ad {
+        .paypal-ad {
           width: 100%;
           height: 100%;
           z-index: 1;
           position: relative;
         }
 
-        #refine-ad {
+        .refine-ad {
           display: block;
           height: 660px;
           margin: 0 auto;
@@ -114,7 +114,7 @@ body {
           position: relative;
           z-index: 0;
 
-          a#refine-link {
+          a.refine-link {
             padding: 0 !important;
             display: block;
             position: relative;
@@ -140,23 +140,11 @@ body {
   }
 }
 
-@media all and (max-width: 1500px) {
+@media all and (min-width: 2001px) {
   body {
     .ad-panel {
-      #refine-ad {
-        a#refine-link {
-          @include refine-vertical;
-        }
-      }
-    }
-  }
-}
-
-@media all and (min-width: 1501px) {
-  body {
-    .ad-panel {
-      #refine-ad {
-        a#refine-link {
+      .refine-ad {
+        a.refine-link {
           @include refine-horizontal;
         }
       }
@@ -164,7 +152,19 @@ body {
   }
 }
 
-@media all and (max-width: 990px) {
+@media all and (min-width: 0px) and (max-width: 2000px) {
+  body {
+    .ad-panel {
+      .refine-ad {
+        a.refine-link {
+          @include refine-vertical;
+        }
+      }
+    }
+  }
+}
+
+@media all and (min-width: 0px) and (max-width: 990px) {
   body {
     .ad-panel {
       .paypal-logo {

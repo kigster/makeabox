@@ -18,6 +18,8 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    actionpack-action_caching (1.2.1)
+      actionpack (>= 4.0.0)
     actionview (5.2.4.3)
       activesupport (= 5.2.4.3)
       builder (~> 3.1)
@@ -47,6 +49,7 @@ GEM
     arel (9.0.0)
     asciidoctor (2.0.10)
     ast (2.4.1)
+    awesome_print (1.8.0)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -72,7 +75,9 @@ GEM
     colored2 (3.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.6)
+    connection_pool (2.2.3)
     crass (1.0.6)
+    dalli (2.7.10)
     ddtrace (0.37.0)
       msgpack
     diff-lcs (1.4.4)
@@ -241,8 +246,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack-action_caching
   airbrussh
   asciidoctor
+  awesome_print
   babel-transpiler
   bootsnap
   capistrano
@@ -250,6 +257,8 @@ DEPENDENCIES
   capistrano-rails
   codecov
   colored2
+  connection_pool
+  dalli
   ddtrace
   haml
   jbuilder

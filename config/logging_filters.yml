@@ -1,0 +1,81 @@
+# This file is used by the HomeBase::Logging::Filter
+filters:
+  active_record_all: !ruby/regexp /.*(SELECT|UPDATE|INSERT|DELETE|ALTER|SAVEPOINT|TRUNCATE|BEGIN|COMMIT|ROLLBACK|information_schema).*/
+  active_record_alter: !ruby/regexp /.*ALTER.*/
+  active_record_tx: !ruby/regexp /.*(BEGIN|COMMIT|ROLLBACK|SAVEPOINT).*/
+  active_record_delete: !ruby/regexp /.*DELETE.*/
+  active_record_info_schema: !ruby/regexp /.*information_schema.*/
+  active_record_insert: !ruby/regexp /.*INSERT.*/
+  active_record_select: !ruby/regexp /.*SELECT.*/
+  active_record_truncate: !ruby/regexp /.*TRUNCATE.*/
+  active_record_update: !ruby/regexp /.*UPDATE.*/
+  blank: !ruby/regexp /^\s*$/
+  cache: !ruby/regexp /^\s*(Cache|CACHE)/
+  dalli: !ruby/regexp /^Dalli/
+  deprecation: !ruby/regexp /^DEPRECATION WARNING:/
+  health_check: !ruby/regexp /health_check/
+  request_completed: !ruby/regexp /^\s*Completed \d+.*ms\)\s*/
+  request_filter_chain: !ruby/regexp /^Filter chain/
+  request_parameters: !ruby/regexp /^\s*Parameters:/
+  request_processing: !ruby/regexp /\s*Processing by/
+  request_redirected: !ruby/regexp /^\s*Redirected to/
+  request_rendered: !ruby/regexp /^\s*Rendered /
+  request_started: !ruby/regexp /^\s*Started /
+  template_rendering: !ruby/regexp /\s*Template render/
+  test_filter: !ruby/regexp /Jack and Jill/
+
+development:
+  filters:
+    - blank
+    - cache
+    - dalli
+    - deprecation
+    - request_filter_chain
+    - request_rendered
+    - request_processing
+    - request_parameters
+    - active_record_tx
+    - active_record_alter
+
+staging:
+  filters:
+    - blank
+    - dalli
+    - deprecation
+    - health_check
+    - request_completed
+    - request_filter_chain
+    - request_parameters
+    - request_processing
+    - request_rendered
+    - request_started
+
+production:
+  filters:
+    - active_record_all
+    - blank
+    - cache
+    - dalli
+    - deprecation
+    - health_check
+    - request_completed
+    - request_filter_chain
+    - request_processing
+    - request_parameters
+    - request_redirected
+    - request_rendered
+    - request_started
+    - template_rendering
+
+test:
+  filters:
+    - active_record_info_schema
+    - active_record_tx
+    - active_record_alter
+    - blank
+    - cache
+    - dalli
+    - deprecation
+    - test_filter
+    - request_processing
+    - template_rendering

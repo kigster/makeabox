@@ -82,7 +82,7 @@ $.when($.ready).then(function () {
     })
   };
 
-  $('#refine-link').on('click', function (e) {
+  $('.refine-link').on('click', function (e) {
     var link = $( this );
     window.captureOutboundLink(link.attr("href"));
     return true;

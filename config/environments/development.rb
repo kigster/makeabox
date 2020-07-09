@@ -21,7 +21,10 @@ Rails.application.configure do
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
-  config.log_formatter = ::Logger::Formatter.new
+  # config.log_formatter = ::Logger::Formatter.new
+
+  config.logger = ::MakeABox::Logging.logger
+  config.log_level = :debug
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
@@ -35,4 +38,16 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  config.cache_store = :dalli_store, %w[127.0.0.1:11211],
+    {
+      socket_timeout: 0.2,
+      expires_in: 3.minute,
+      keepalive: true,
+      compress: true,
+      failover: true,
+      pool_size: 8
+    }
+
+  config.session_store :dalli_store
 end

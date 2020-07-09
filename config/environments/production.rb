@@ -43,6 +43,7 @@ Rails.application.configure do
 
   # Set to :debug to see everything in the log.
   config.log_level = :info
+  config.logger = ::MakeABox::Logging.logger
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -74,4 +75,8 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  config.session_store :dalli_store
+
+  config.cache_store = :dalli_store, %w[127.0.0.1:11211], DALI_CONFIG
 end

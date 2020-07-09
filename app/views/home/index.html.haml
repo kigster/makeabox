@@ -22,20 +22,20 @@
       = render 'home/panels/units'
     .col-sm-12.col-md-6.col-lg-4.col-xl-4.d-flex
       = render 'home/panels/dimensions'
-    .col-sm-12.col-md-12.col-lg-4.col-xl-3.d-flex
+    .col-sm-12.col-md-6.col-lg-4.col-xl-3.d-flex
       = render 'home/panels/advanced'
     .col-sm-0.col-md-0.col-lg-0.col-xl-1
-
 
 .spacer-10
 
 .row
   .col-sm-0.col-md-0.col-lg-0.col-xl-1
-  .col-sm-12.col-md-6.col-lg-6.col-xl-4.ad-panel.d-flex.p-2
+  .col-sm-12.col-md-6.col-lg-4.col-xl-3.d-flex.w-100.ad-panel
+    = render 'home/panels/refine'
+  .col-sm-12.col-md-6.col-lg-4.col-xl-4.d-flex
     = render 'home/panels/paypal-donation'
-  .col-sm-12.col-md-6.col-lg-6.col-xl-6.d-flex.p-2
-    .ad-panel.w-100
-      = render 'home/panels/refine'
+  .col-sm-12.col-md-6.col-lg-4.col-xl-3.d-flex.w-100.ad-panel.second-refine
+    = render 'home/panels/refine'
   .col-sm-0.col-md-0.col-lg-0.col-xl-1
 
 .spacer-10

@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2'
-
 gem 'babel-transpiler'
 gem 'bootsnap'
 gem 'colored2'
+gem 'connection_pool'
 gem 'ddtrace', require: false
+gem 'dalli'
 gem 'haml'
 gem 'jbuilder'
 gem 'laser-cutter', '= 1.0.3'
@@ -33,6 +34,7 @@ group :development do
 end
 
 group :test, :development, :demo do
+  gem 'awesome_print'
   gem 'codecov'
   gem 'rspec-its'
   gem 'rspec-rails'

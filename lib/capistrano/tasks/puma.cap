@@ -1,3 +1,5 @@
+require_relative '../../makeabox/cap/puma'
+
 namespace :puma do
   task :setup do
     invoke "#{fetch(:target_os)}:puma:init"
@@ -6,15 +8,57 @@ namespace :puma do
   desc 'Start puma'
   task :start do
     on roles(:app) do
-      execute <<-PUMA_STARTUP
-        cd #{release_path}
-        source ~/.bashrc
-        export APP=#{fetch(:application)}
-        export RAILS_ENV=#{fetch(:rails_env)}
-        export PID=$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')
-        [[ -z "${PID}" ]] && { echo "No puma was detected, starting!"; DATADOG_ENABLED=true bin/puma-start -d; }
-        [[ -n "${PID}" ]] && { echo "Sending USR1 to ${PID}"; kill -USR1 ${PID}; }
-      PUMA_STARTUP
+      MakeABox::Cap::Puma.master_pid(
+        context: self,
+        command: "DATADOG_ENABLED=true bundle exec puma -C #{current_path}/config/puma.rb -e #{fetch(:rails_env)} -d"
+      )
     end
+  end
+
+  desc 'Stop puma'
+  task :stop do
+    on(roles(:app)) { MakeABox::Cap::Puma.master_pid(signals: %i[TERM STOP KILL], context: self) }
+  end
+
+  desc 'Show workers status, memory and CPU'
+  task :status do
+    on(roles(:app)) do
+      MakeABox::Cap::Puma.master_pid(
+        context: self,
+        command: 'grc ps -o pid,rss,vsz,fname,pcpu,args  -p $PID; echo; grc ps -o pid,rss,vsz,fname,pcpu,args  --ppid $PID --sort \'-%cpu\''
+      )
+    end
+  end
+
+  desc 'Hup puma to reopen log files'
+  task :hup do
+    on(roles(:app)) { MakeABox::Cap::Puma.master_pid(signals: %i[HUP], context: self) }
+  end
+
+  namespace :workers do
+    desc 'Add a worker to the pool'
+    task :add do
+      on(roles(:app)) { MakeABox::Cap::Puma.master_pid(signals: %i[TTIN], context: self) }
+    end
+
+    desc 'Remove a worker from the pool'
+    task :remove do
+      on(roles(:app)) { MakeABox::Cap::Puma.master_pid(signals: %i[TTOU], context: self) }
+    end
+  end
+
+  namespace :restart do
+    desc 'Phased restart of all workers'
+    task :phased do
+      on(roles(:app)) { MakeABox::Cap::Puma.master_pid(signals: %i[USR1], context: self) }
+    end
+
+    desc 'Instant restart of all workers (keeps master the same)'
+    task :instant do
+      on(roles(:app)) { MakeABox::Cap::Puma.master_pid(signals: %i[USR2], context: self) }
+    end
+
+    desc 'Full restart, including the master'
+    task full: %w[puma:stop puma:start]
   end
 end

@@ -4,14 +4,14 @@
 
 require 'etc'
 
-tracing_enabled = (
-ENV['DATADOG_ENABLED'] &&
-  Etc.uname[:sysname] =~ /linux/ &&
-  ENV['RAILS_ENV'] == 'production'
+DATADOG_ENABLED = (
+  ENV['DATADOG_ENABLED'] &&
+    Etc.uname[:sysname] =~ /linux/ &&
+    ENV['RAILS_ENV'] == 'production'
 )
 
-require 'ddtrace'
-if tracing_enabled
+if DATADOG_ENABLED
+  require 'ddtrace'
   program = 'makeabox'
 
   # Here we register Rails services and override automatically generated names by Datadog
@@ -20,11 +20,7 @@ if tracing_enabled
   # or dalli.
   Datadog.configure do |c|
     c.logger = Rails.logger
-
-    if tracing_enabled
-      c.tracer enabled: true, port: 9126
-    end
-
+    c.tracer enabled: true, port: 9126
     c.analytics_enabled = true
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#rails
@@ -34,7 +30,7 @@ if tracing_enabled
           distributed_tracing: true,
           middleware_names:    true
 
-    c.use :http, service_name: program + '-http-outbound'
+    c.use :http, service_name: program + '-http'
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#sidekiq
     # c.use :sidekiq, service_name: program
@@ -43,13 +39,9 @@ if tracing_enabled
     # c.use :redis, service_name: program + '-redis'
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#dalli
-    # c.use :dalli, service_name: program + '-memcached'
+    c.use :dalli, service_name: program + '-memcached'
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#aws
     # c.use :aws, service_name: program + '-aws'
-  end
-else
-  Datadog.configure do |c|
-    c.tracer enabled: false
   end
 end
