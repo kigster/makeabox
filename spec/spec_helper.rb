@@ -6,9 +6,7 @@ require 'rspec/core'
 require 'rspec/its'
 require 'simplecov'
 
-SimpleCov.start do
-  add_filter %r{^/(spec)}
-end
+SimpleCov.start 'rails'
 
 if ENV['CODECOV_TOKEN']
   require 'codecov'
