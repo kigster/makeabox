@@ -32,6 +32,8 @@ if DATADOG_ENABLED
 
     c.use :http, service_name: program + '-http'
 
+    c.use :action_view, service_name: program + '-action-view'
+
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#sidekiq
     # c.use :sidekiq, service_name: program
 

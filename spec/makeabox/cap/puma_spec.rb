@@ -13,11 +13,11 @@ module MakeABox
           @current_path = current_path
           @release_path = release_path
           @env          = env
-          @string_io = StringIO.new
+          @string_io    = StringIO.new
         end
 
         def execute(command)
-          @string_io.puts command
+          @string_io.print command.gsub(/\n/, '; ')
         end
 
         def fetch(key)
@@ -25,7 +25,7 @@ module MakeABox
         end
 
         def output
-          @string_io.string
+          @string_io.string.strip
         end
       end
     end
@@ -34,6 +34,26 @@ module MakeABox
       let(:current_path) { '/app/makeabox/current' }
       let(:release_path) { '/app/makeabox/releases/20200701000000' }
       let(:env) { { RAILS_ENV: 'production', APP: 'makeabox' } }
+
+      let(:script) {
+        <<~BASH.gsub(/\n/, '; ').strip
+          set +e;source ~/.bashrc;cd "/app/makeabox/current">/dev/null
+          export APP=""
+          export RAILS_ENV=""
+          export PID="$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')" 
+          if [[ -n "${PID}" ]] 
+          then echo "Puma Master process detected, PID=$PID"
+               echo "Sending signal USR2 to ${PID}"
+               kill -USR2 ${PID} 2>/dev/null
+          fi
+          exit 0
+          set +e;source ~/.bashrc;cd "/app/makeabox/current">/dev/null
+          export APP=""
+          export RAILS_ENV=""
+          export PID="$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')"
+          echo "hello"
+        BASH
+      }
 
       let(:context) {
         Testing::Context.new(release_path: release_path,
@@ -50,7 +70,7 @@ module MakeABox
       context '#master_pid' do
         subject { context }
         before { command }
-        its(:output) { is_expected.to match /echo "hello"/ }
+        its(:output) { is_expected.to eq script.strip }
       end
     end
   end

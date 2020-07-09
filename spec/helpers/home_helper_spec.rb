@@ -1,14 +1,33 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the HomeHelper. For example:
-#
-# describe HomeHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
-RSpec.describe HomeHelper, type: :helper do
+RSpec.describe HomeHelper,
+               type: :helper do
+  describe '#generate_pdf_filename' do
+    let(:params) {
+      { config: { units: 'in',
+                  page_layout: 'portrait',
+                  width: '10',
+                  height: '15',
+                  depth: '5',
+                  thickness: '0.125',
+                  notch: '',
+                  kerf: '0.0024',
+                  margin: '0.125',
+                  padding: '0.1',
+                  stroke: '0.001',
+                  page_size: '' } }
+    }
+
+    let(:filename) { 'makeabox.io-20200708230205-in-10.0[w]x15.0[h]x5.0[d]-0.125[t]-0.0024[k]-0.001[s].pdf' }
+
+    before do
+      expect(helper).to receive(:params).and_return(params).at_most(10).times
+      helper.create_new_config
+    end
+
+    it 'should generate PDF file' do
+      expect(helper).to receive(:timestamp).and_return('20200708230205')
+      expect(File.basename(helper.generate_pdf_filename)).to eq filename
+    end
+  end
 end

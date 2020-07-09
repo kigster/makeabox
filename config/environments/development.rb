@@ -39,15 +39,5 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.cache_store = :dalli_store, %w[127.0.0.1:11211],
-                       {
-                         socket_timeout: 0.2,
-                         expires_in: 3.minute,
-                         keepalive: true,
-                         compress: true,
-                         failover: true,
-                         pool_size: 8
-                       }
-
-  config.session_store :dalli_store
+  config.cache_store = :dalli_store, %w[127.0.0.1:11211], MakeABox::Application::DALI_CONFIG
 end

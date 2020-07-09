@@ -38,5 +38,5 @@ Rails.application.configure do
   config.logger = ::MakeABox::Logging.logger
   config.log_level = :debug
 
-  config.session_store :dalli_store
+  config.cache_store = :dalli_store, %w[127.0.0.1:11211], MakeABox::Application::DALI_CONFIG
 end

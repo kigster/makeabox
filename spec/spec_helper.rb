@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV['RUBYOPT'] = '-W0'
+
 require 'rspec/core'
 require 'rspec/its'
 require 'simplecov'

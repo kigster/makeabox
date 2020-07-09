@@ -1,11 +1,14 @@
 class ApplicationController < ActionController::Base
+  MUTEX ||= Mutex.new.freeze
+
   include MakeABox::Logging::ControllerHelpers
   around_action :log_incoming_request
 
   cattr_accessor :temp_files
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :null_session
+  protect_from_forgery with: :reset_session
 
   protected
 

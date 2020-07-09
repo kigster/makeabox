@@ -30,6 +30,8 @@
 
 require 'colored2'
 
+set :datadog_api_key, '6601a18dba5da550faf282ab39f66be1'
+
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
 

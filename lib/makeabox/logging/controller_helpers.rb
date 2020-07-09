@@ -79,14 +79,13 @@ module MakeABox
           level = http_map[http_map.keys.find { |range| range.include?(code) }]
         end
 
-        identifier = "#{request.ip} "
-
         message = [
           'x-rqst',
-          sprintf('%40.40s', identifier),
+          sprintf('%-15s', request.ip),
+          sprintf('%32.32s', request.session.id),
           "#{xhr} #{sprintf '%-6s', method.to_s}",
           (response ? response.code.to_s : NIL_RESPONSE),
-          request_path_and_action + (log_params.empty? ? '' : " ◀— params=#{log_params.inspect}")
+          request_path_and_action + (log_params.empty? ? '' : " ◀— params:\n#{log_params.awesome_inspect}")
         ].compact.join(' │ ')
         [level, message]
       end

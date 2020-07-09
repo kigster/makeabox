@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'awesome_print'
 gem 'babel-transpiler'
 gem 'bootsnap'
 gem 'colored2'
@@ -26,6 +27,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
+  gem 'dogapi', require: false
   gem 'rubocop'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
@@ -34,7 +36,6 @@ group :development do
 end
 
 group :test, :development, :demo do
-  gem 'awesome_print'
   gem 'codecov'
   gem 'rspec-its'
   gem 'rspec-rails'

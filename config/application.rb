@@ -10,6 +10,9 @@ require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 require 'newrelic_rpm' if Rails.env.production?
 require 'etc'
+require 'dalli'
+require 'active_support/cache/dalli_store'
+require 'action_dispatch/middleware/session/dalli_store'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -44,9 +47,9 @@ module MakeABox
 
     # Be sure to restart your server when you modify this file.
     # config/application.rb
-    config.middleware.delete ActionDispatch::Cookies
-    config.middleware.delete ActionDispatch::Session::CookieStore
-    config.middleware.delete ActionDispatch::Flash
+    # config.middleware.delete ActionDispatch::Cookies
+    # config.middleware.delete ActionDispatch::Session::CookieStore
+    # config.middleware.delete ActionDispatch::Flash
 
     config.assets.precompile += %w[**.ttf]
 

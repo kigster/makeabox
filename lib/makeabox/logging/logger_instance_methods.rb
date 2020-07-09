@@ -37,14 +37,14 @@ module MakeABox
 
       def create_logger
         rails_env = ::MakeABox::Logging.detect_rails_env
-        logger = ::Logger.new("log/#{rails_env}.log")
+        logger    = ::Logger.new("log/#{rails_env}.log")
 
         logger.formatter = logger_format_proc
 
         level = ENV[LOG_LEVEL_OVERRIDE_ENV].to_sym if ENV[LOG_LEVEL_OVERRIDE_ENV]
         level ||= ::MakeABox::Logging.default_severity[rails_env]
 
-        logger.level = log_level_from_sym(level)
+        logger.level    = log_level_from_sym(level)
         logger.progname = 'rails'
         logger
       end
@@ -59,10 +59,10 @@ module MakeABox
         @logger_format_proc ||= proc do |severity, datetime, _program_name, message|
           # This is only necessary because in some places we call  +Rails.logger+
           # In that case, we must ensure that we are not logging filtered messages.
-          color = ::MakeABox::Logging.severity_colors[severity.downcase.to_sym] || :normal
-          sev = sprintf '%-6.6s', severity
-          date = sprintf '%23.23s ', datetime.strftime('%Y-%m-%d %H:%M:%S.%L')
-          thread = sprintf '%-14s', thread_name
+          color  = ::MakeABox::Logging.severity_colors[severity.downcase.to_sym] || :normal
+          sev    = sprintf '%-6.6s', severity
+          date   = sprintf '%23.23s ', datetime.strftime('%Y-%m-%d %H:%M:%S.%L')
+          thread = sprintf '%-12s', thread_name
           combined_message(severity, sev, thread, color, date, message)
         end
       end
@@ -89,7 +89,7 @@ module MakeABox
           ::Logger.const_get(log_level)
         else
           ::Logger::INFO
-end
+        end
       end
 
       # we use inject to sequentially apply all color modifications
@@ -100,7 +100,7 @@ end
 
       def thread_name
         Thread.current[:name] ||= Thread.current.object_id
-        sprintf ' th-%-9.9s', Thread.current[:name]
+        sprintf ' %-6.6s(thr)', Thread.current[:name]
       end
 
       def logger_log(level, *args, &block)

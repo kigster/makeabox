@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 tag 'makeabox.app'
-workers 6
+workers 7
 log_requests true
 activate_control_app 'tcp://127.0.0.1:9000/puma-ctl', no_token: true
 pidfile 'tmp/pids/puma.pid'
@@ -11,7 +11,7 @@ on_worker_shutdown { puts 'worker shutting down...' }
 worker_timeout 30
 
 if ENV['RAILS_ENV'] == 'production'
-  threads 8, 8
+  threads 2, 4
   prune_bundler true
   preload_app! false
   port 8899
