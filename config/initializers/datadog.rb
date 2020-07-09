@@ -6,7 +6,7 @@ require 'etc'
 
 DATADOG_ENABLED = (
   ENV['DATADOG_ENABLED'] &&
-    Etc.uname[:sysname] =~ /linux/ &&
+    Etc.uname[:sysname] =~ /linux/i &&
     ENV['RAILS_ENV'] == 'production'
 )
 
