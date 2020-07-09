@@ -39,8 +39,8 @@ jobs:
         bundle install --jobs 4 --retry 3
     - name: Run tests
       run: |
-        CODECOV_TOKEN=b13184b3-8e4d-4c6d-b481-afb566cbc4f2 bundle exec rspec --format progress
+        bundle exec rspec --format progress
       env:
         CI: "true"
-        CODECOV_TOKEN: "b13184b3-8e4d-4c6d-b481-afb566cbc4f2"
+        CODECOV_TOKEN: "1b9a67f6-db0e-411b-a731-b8e360bb64ff"
 

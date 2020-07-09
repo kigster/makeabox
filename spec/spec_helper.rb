@@ -6,7 +6,6 @@ require 'rspec/core'
 require 'rspec/its'
 require 'simplecov'
 
-
 if ENV['CODECOV_TOKEN']
   require 'codecov'
   SimpleCov.formatters =
