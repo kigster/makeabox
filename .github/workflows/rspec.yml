@@ -41,6 +41,7 @@ jobs:
       run: |
         bundle exec rspec --format documentation
       env:
-        CI: true
+        CI: "true"
         RUBYOPT: "-W0"
         CODECOV_TOKEN: "b13184b3-8e4d-4c6d-b481-afb566cbc4f2"
+

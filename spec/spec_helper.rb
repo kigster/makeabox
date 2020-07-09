@@ -28,6 +28,8 @@ RSpec.configure do |config|
 
   config.disable_monkey_patching!
 
+  config.example_status_persistence_file_path = './tmp/rspec-examples.txt'
+
   if config.files_to_run.one?
     # Use the documentation formatter for detailed output,
     # unless a formatter has already been configured
@@ -35,9 +37,6 @@ RSpec.configure do |config|
     config.default_formatter = 'doc'
   end
 
-  config.profile_examples = 2
-
   config.order = :random
-
   Kernel.srand config.seed
 end
