@@ -2,7 +2,7 @@ codecov:
   require_ci_to_pass: no
 
   notify:
-    wait_for_ci: yes
+    wait_for_ci: no
 
 parsers:
   v1:
@@ -24,12 +24,8 @@ coverage:
         paths:
           - lib/
           - app/
-          - spec/
-          - config/
 flags:
   makeabox:
     paths:
       - lib/
       - app/
-      - spec/
-      - config/

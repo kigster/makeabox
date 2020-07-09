@@ -6,7 +6,6 @@ require 'rspec/core'
 require 'rspec/its'
 require 'simplecov'
 
-SimpleCov.start 'rails'
 
 if ENV['CODECOV_TOKEN']
   require 'codecov'
@@ -16,6 +15,8 @@ if ENV['CODECOV_TOKEN']
                                                SimpleCov::Formatter::Codecov
                                              ])
 end
+
+SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
