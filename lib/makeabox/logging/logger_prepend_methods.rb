@@ -15,6 +15,7 @@ module MakeABox
           lines.each do |message|
             next if message.empty? || message =~ /^\s*$/
             next if filter_log_arguments?(message)
+
             message = MULTILINE_START_SYMBOL + message if count == 1
             message = MULTILINE_CONTINUE_SYMBOL + message if count > 1
             super(message)

@@ -7,7 +7,6 @@ require 'digest'
 
 module MakeABox
   module Logging
-
     # This module is meant to be included in the +{ApplicationController}+
     module ControllerHelpers
       class << self
@@ -17,9 +16,10 @@ module MakeABox
 
         def validate_context!(base)
           DEPENDS_ON_CONTEXT_METHODS.all? do |method|
-            raise ArgumentError,
-              "#log_incoming_request needs method [#{method}] in the context of #{base.name}" \
-               unless base.respond_to?(method)
+            unless base.respond_to?(method)
+              raise ArgumentError,
+                    "#log_incoming_request needs method [#{method}] in the context of #{base.name}"
+            end
           end
         end
 
@@ -53,9 +53,9 @@ module MakeABox
       def log_incoming_request(&_block)
         level, message = construct_log_message
         log_block(message,
-          level: level,
-          silent_errors: silent_errors,
-          rescue_errors: []) do
+                  level: level,
+                  silent_errors: silent_errors,
+                  rescue_errors: []) do
           yield if block_given?
         end
       end

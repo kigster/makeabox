@@ -2,7 +2,6 @@
 
 module MakeABox
   module Logging
-
     # Module +{MakeABox::Logging::BlockHelpers}+ offers a primary method +log_block+,
     # which takes a message, logging level, a list of exceptions to rescue or to
     # silently ignore, and a block to execute. It then runs the block, measures the time
@@ -40,24 +39,24 @@ module MakeABox
         start = Time.now
         error_message = nil
         yield.tap { message = SUCCESS + SEP + message } if block_given?
-      rescue StandardError => block_error
+      rescue StandardError => e
         # Now deal with errors that should be rescued, or silently ignored:
-        if rescue_errors.find { |error_class| block_error.is_a?(error_class) }
+        if rescue_errors.find { |error_class| e.is_a?(error_class) }
           level = :warn
-          error_message = "rescued: #{block_error.inspect.red}"
+          error_message = "rescued: #{e.inspect.red}"
           message = RESCUED + SEP + message.red
-        elsif silent_errors.find { |error_class| block_error.is_a?(error_class) }
+        elsif silent_errors.find { |error_class| e.is_a?(error_class) }
           # If it's a "silent" error, do not log it at error level, but still re-raise. To
           # swallow this error, add it to both  +{silent_errors}+ and +{rescue_errors}+.
           level = :warn
           error_message = nil
           message = FAILED + SEP + message.red
-          raise block_error
+          raise e
         else
-          error_message = "raised: #{block_error.inspect.red}"
+          error_message = "raised: #{e.inspect.red}"
           level = :error
           message = FAILED + SEP + message.red
-          raise block_error
+          raise e
         end
         nil
       ensure
@@ -76,17 +75,18 @@ module MakeABox
 
       def report_error_to_stderr(message, e)
         return if ENV['CI']
-        STDERR.puts "\n\n"
-        STDERR.puts " EXCEPTION : #{e.message.bold.red} (#{e.to_s.red})\n"
-        STDERR.puts "   CONTEXT : #{self.class.name.bold.yellow}\n"
-        STDERR.puts "   PAYLOAD : #{message.bold.yellow}\n"
+
+        warn "\n\n"
+        warn " EXCEPTION : #{e.message.bold.red} (#{e.to_s.red})\n"
+        warn "   CONTEXT : #{self.class.name.bold.yellow}\n"
+        warn "   PAYLOAD : #{message.bold.yellow}\n"
         if e.backtrace.is_a?(Array)
           top_stack = e.backtrace[0..20]
           if top_stack.present?
             first_stack = top_stack.shift
-            STDERR.puts " STACKTRACE (reversed)\n"
-            STDERR.puts '    ' + top_stack.reverse.join("\n    ").red.italic
-            STDERR.puts '    ' + first_stack.bold.red.italic.underlined
+            warn " STACKTRACE (reversed)\n"
+            warn '    ' + top_stack.reverse.join("\n    ").red.italic
+            warn '    ' + first_stack.bold.red.italic.underlined
             STDERR.puts
           end
         else

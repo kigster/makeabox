@@ -5,5 +5,3 @@ require File.expand_path('../lib/makeabox/logging', __dir__)
 
 # Initialize the Rails application.
 Rails.application.initialize!
-
-

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # see: https://www.mikeperham.com/2018/02/28/ruby-optimization-with-one-magic-comment/
 #
 # We use #freeze here exceedingly because log methods are typically called often and a lot.

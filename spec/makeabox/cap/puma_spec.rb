@@ -9,12 +9,11 @@ module MakeABox
 
         def initialize(current_path: nil,
                        release_path: nil,
-                       env: {}
-        )
+                       env: {})
           @current_path = current_path
           @release_path = release_path
           @env          = env
-          @string_io       = StringIO.new
+          @string_io = StringIO.new
         end
 
         def execute(command)
@@ -28,7 +27,6 @@ module MakeABox
         def output
           @string_io.string
         end
-
       end
     end
 
@@ -37,13 +35,17 @@ module MakeABox
       let(:release_path) { '/app/makeabox/releases/20200701000000' }
       let(:env) { { RAILS_ENV: 'production', APP: 'makeabox' } }
 
-      let(:context) { Testing::Context.new(release_path: release_path,
-                                           current_path: current_path,
-                                           env:          env) }
+      let(:context) {
+        Testing::Context.new(release_path: release_path,
+                             current_path: current_path,
+                             env: env)
+      }
 
-      let(:command) { described_class.master_pid(signals: %i[USR2],
-                                                 context: context,
-                                                 command: 'echo "hello"') }
+      let(:command) {
+        described_class.master_pid(signals: %i[USR2],
+                                   context: context,
+                                   command: 'echo "hello"')
+      }
 
       context '#master_pid' do
         subject { context }

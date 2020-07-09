@@ -21,15 +21,14 @@ module MakeABox
   end
 
   class Application < Rails::Application
-
     DALI_CONFIG = {
       socket_timeout: 0.2,
-      expires_in:     3.minute,
-      keepalive:      true,
-      compress:       true,
-      failover:       true,
-      pool_size:      8
-    }
+      expires_in: 3.minute,
+      keepalive: true,
+      compress: true,
+      failover: true,
+      pool_size: 8
+    }.freeze
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -58,6 +57,5 @@ module MakeABox
       # g.test_framework  :rspec
       # g.orm             :mongoid
     end
-
   end
 end

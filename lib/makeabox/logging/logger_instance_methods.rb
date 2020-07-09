@@ -10,6 +10,7 @@ module MakeABox
     module LoggerInstanceMethods
       def logger
         return @logger if @logger
+
         ::MakeABox::Logging::MUTEX.synchronize do
           @logger = create_logger
         end
@@ -17,6 +18,7 @@ module MakeABox
 
       def logger=(value = nil)
         return @logger if @logger == value
+
         ::MakeABox::Logging::MUTEX.synchronize do
           @logger = value
         end
@@ -83,8 +85,11 @@ module MakeABox
 
       def log_level_from_sym(level)
         log_level = level.to_s.upcase.to_sym
-        ::Logger.const_defined?(log_level) ? ::Logger.const_get(log_level) :
+        if ::Logger.const_defined?(log_level)
+          ::Logger.const_get(log_level)
+        else
           ::Logger::INFO
+end
       end
 
       # we use inject to sequentially apply all color modifications

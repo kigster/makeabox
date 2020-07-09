@@ -25,10 +25,10 @@ if DATADOG_ENABLED
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#rails
     c.use :rails,
-          service_name:        program,
-          controller_service:  program + '-controller',
+          service_name: program,
+          controller_service: program + '-controller',
           distributed_tracing: true,
-          middleware_names:    true
+          middleware_names: true
 
     c.use :http, service_name: program + '-http'
 

@@ -3,7 +3,7 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
-  DEFAULT_PARAMS_KEYS = %w[controller action]
+  DEFAULT_PARAMS_KEYS = %w[controller action].freeze
 
   def index
     create_new_config

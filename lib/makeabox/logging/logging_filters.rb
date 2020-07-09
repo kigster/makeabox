@@ -7,7 +7,6 @@ require 'digest'
 
 module MakeABox
   module Logging
-
     # This module loads a YAML into a Hash, which contains a mapping between
     # Rails environments, and a list of filters (regular expressions) that,
     # if they match the incoming log messages, are then rejected.
@@ -16,9 +15,11 @@ module MakeABox
         attr_accessor :config
 
         def load_config!
-          self.config = defined?(::Rails) ?
-                          YAML.load(File.read(Rails.root + 'config/logging_filters.yml')) :
+          self.config = if defined?(::Rails)
+                          YAML.load(File.read(Rails.root + 'config/logging_filters.yml'))
+                        else
                           YAML.load(File.read(File.expand_path('../../../config/logging_filters.yml', __dir__)))
+end
         end
 
         def all_filters

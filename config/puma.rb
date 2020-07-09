@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 tag 'makeabox.app'
 workers 6
 log_requests true
@@ -20,4 +21,3 @@ else
   preload_app! true
   port 3000
 end
-

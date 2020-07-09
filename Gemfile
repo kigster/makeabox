@@ -1,18 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.2'
 gem 'babel-transpiler'
 gem 'bootsnap'
 gem 'colored2'
 gem 'connection_pool'
-gem 'ddtrace', require: false
 gem 'dalli'
+gem 'ddtrace', require: false
 gem 'haml'
 gem 'jbuilder'
 gem 'laser-cutter', '= 1.0.3'
 gem 'newrelic_rpm'
 gem 'puma'
 gem 'rack-timeout', require: 'rack/timeout/base'
+gem 'rails', '~> 5.2'
 gem 'rb-fsevent'
 gem 'sassc-rails'
 gem 'sdoc', group: :doc
