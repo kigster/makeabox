@@ -24,14 +24,14 @@ export PUMA_DEFUALT_THREAD_COUNT=10
 # ——————————————————————————————————————————————————————————————————————
 
 puma.master-pid() {
-  ps -ef | egrep '[p]uma [0-9]' | awk '{print $2}'
+  ps -ef | grep -e '[p]uma [0-9]' | awk '{print $2}'
 }
 
 puma.num-live-procs() {
   local extra_filter="${1}"; shift
   local extra_flag="${1}"; shift
 
-  printf "%d" "$(ps -ef | egrep '[p]uma[: ]' | egrep ${extra_flag} "${extra_filter}" | grep -v puma-ctl | wc -l | sed 's/\ //g')"
+  printf "%d" "$(ps -ef | grep -e '[p]uma[: ]' | grep -e ${extra_flag} "${extra_filter}" | grep -v puma-ctl | wc -l | sed 's/\ //g')"
 }
 
 puma.is-not-running() {
@@ -78,7 +78,7 @@ puma.status.summary() {
 }
 
 puma.status.listing() {
-  declare -a pumas=("$(ps -ef | egrep [p]uma | egrep -v 'puma-ctl|grep' | grep --color=always puma)")
+  declare -a pumas=("$(ps -ef | grep -e [p]uma | grep -e -v 'puma-ctl|grep' | grep --color=always puma)")
   [[ ${#pumas[@]} -gt 1 ]] && {
     h2 "Currently Active Puma Processes:"
     echo "${pumas[*]}"
@@ -116,7 +116,7 @@ puma.status.tree
 main() {
   local command="$1"; shift
 
-  echo "${command}" | egrep -q 'start|stop|status' && {
+  echo "${command}" | grep -e -q 'start|stop|status' && {
     local func="puma.${command}"
     ${func} "$@"
     return 0
