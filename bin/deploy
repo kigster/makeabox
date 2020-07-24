@@ -1,8 +1,29 @@
 #!/usr/bin/env bash
+# vim: ft=bash
 
 [[ -d ~/.bashmatic ]] || git clone https://github.com/kigster/bashmatic ~/.bashmatic
+
+# SSH key for the "root" or "ubuntu" user 
+MAKEABOX_SSHKEY_FILE="${HOME}/.ssh/makeabox.pem"
+
 source ~/.bashmatic/init.sh
+run.set-next show-output-off abort-on-error
 
-bundle check || bundle install
-bundle exec cap production deploy
+main() {
+  h1 "Starting production deployment of MakeABox Rails App to AWS"
+  run.ui.ask "Are you sure you want to proceed?"
 
+  [[ -f ${MAKEABOX_SSHKEY_FILE} ]] || {
+    error "Please symlink file ${bldgrn}${MAKEABOX_SSHKEY_FILE} so that it can be used?"
+    exit 1
+  }
+
+  info "Found SSH key ${bldred}${MAKEABOX_SSHKEY_FILE}"
+  run "ssh-add ${MAKEABOX_SSHKEY_FILE}"
+  run "bundle check || bundle install"
+
+  run.set-next show-output-on
+  run "bundle exec cap production deploy"
+}
+
+main "$@"

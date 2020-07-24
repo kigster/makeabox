@@ -62,8 +62,29 @@ The job number appears in the square brackets next to "Stopped". If the number i
 
 == Deploying
 
+=== Prerequisites
+
+Before the next step, you need to have the private SSH key that Amazon gave you for your account, so that you can login as the user `ubuntu` and essentially — `root`.
+
+Place this PEM file into a specific location: `${HOME}/.ssh/makeabox.pem` and everything else will be easy.
+
+=== Automatic Deploy
+
+Use the provided shell script:
+
+[source,bash]
 ----
-bundle exec cap production deploy
+bin/deploy
+----
+
+=== Manual Deploy
+
+You can also deploy menually like so:
+
+[source,bash]
+----
+ssh-add ${HOME}/.ssh/makeabox.pem
+bundle exec cap production deploy --trace
 ----
 
 == Previewing in Production Mode
