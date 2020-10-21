@@ -2,7 +2,7 @@ module MakeABox
   module Cap
     module Puma
       def self.master_pid(signals: [], context:, command: nil)
-        pid_command = 'export PID="$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk \'{print $2}\')"'
+        pid_command = 'export PID="$(/bin/ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk \'{print $2}\')"'
         context.instance_eval do
           env_setup = <<~SETUP.gsub(/\n/, '')
             set +e;

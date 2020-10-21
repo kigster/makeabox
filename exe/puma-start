@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#!/usr/bin/env bash
 
 set +e
 
@@ -18,7 +17,7 @@ if [[ -f ${pidfile} ]]; then
 fi
 
 export RAILS_ENV=production
-bundle exec rake assets:precompile 1>/dev/null & 
-bundle exec puma -C config/puma.rb -d --tag makeabox -e ${RAILS_ENV:-production}
+bundle exec rake assets:precompile 1>/dev/null &
+bundle exec puma -C config/puma.rb --tag makeabox -e ${RAILS_ENV:-production} &
 
 

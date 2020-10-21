@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim: ft=bash
+#
+# USAGE:
+#    exe/puma-stop
+#
+# NOTE: this file is not currently used, and has not yet been tested.
+
+set -e
+
+[[ -f exe/lib.bash ]] || {
+  echo "Can't find exe/lib.bash, I am in $(pwd)?"
+  exit 1
+}
+
+source exe/lib.bash
+
+function main() {
+  puma.source-environment
+  pid.kill USR1
+}

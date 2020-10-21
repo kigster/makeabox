@@ -4,6 +4,7 @@ set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/usr/local/bin:$PA
 }
 set :packages, %w(
   build-essential
+  daemonize
   gcc
   git
   git-core

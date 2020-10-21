@@ -22,7 +22,7 @@ common: &default_settings
   # Default is 'auto' which means the agent will install and run only
   # if a valid dispatcher such as Mongrel is running.  This prevents
   # it from running with Rake or the console.  Set to false to
-  # completely turn the agent off regardless of the other settings.
+  # completely turn the agwent off regardless of the other settings.
   # Valid values are true, false and auto.
   #
   # agent_enabled: auto

@@ -1,4 +1,4 @@
-set :ruby_version, '2.7.2p137'
+set :ruby_version, '2.7.2'
 set :target_os, 'linux'
 set :rails_env, 'production'
 

@@ -40,7 +40,7 @@ module MakeABox
           set +e;source ~/.bashrc;cd "/app/makeabox/current">/dev/null
           export APP=""
           export RAILS_ENV=""
-          export PID="$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')" 
+          export PID="$(/bin/ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')" 
           if [[ -n "${PID}" ]] 
           then echo "Puma Master process detected, PID=$PID"
                echo "Sending signal USR2 to ${PID}"
@@ -50,7 +50,7 @@ module MakeABox
           set +e;source ~/.bashrc;cd "/app/makeabox/current">/dev/null
           export APP=""
           export RAILS_ENV=""
-          export PID="$(ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')"
+          export PID="$(/bin/ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')"
           echo "hello"
         BASH
       }
