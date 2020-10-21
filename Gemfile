@@ -10,7 +10,9 @@ gem 'ddtrace', require: false
 gem 'haml'
 gem 'jbuilder'
 gem 'laser-cutter', '= 1.0.3'
+gem 'newrelic-infinite_tracing'
 gem 'newrelic_rpm'
+
 gem 'puma'
 gem 'rack-timeout', require: 'rack/timeout/base'
 gem 'rails', '~> 5.2'
