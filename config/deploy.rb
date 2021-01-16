@@ -71,6 +71,6 @@ before 'bundler:install', 'ruby:bundler:native_config'
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
-  after :publishing, 'puma:restart:phased'
-  after 'puma:restart:phased', 'puma:status'
+  after :publishing, 'puma:start'
+  after 'puma:start', 'puma:status'
 end

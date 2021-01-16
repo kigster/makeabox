@@ -15,6 +15,7 @@ if ENV['RAILS_ENV'] == 'production'
   prune_bundler true
   preload_app! false
   port 8899
+  daemonize
 else
   threads 1, 1
   prune_bundler false

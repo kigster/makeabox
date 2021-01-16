@@ -10,7 +10,7 @@ namespace :puma do
     on roles(:app) do
       MakeABox::Cap::Puma.master_pid(
         context: self,
-        command: "DATADOG_ENABLED=true bundle exec puma -C #{current_path}/config/puma.rb -e #{fetch(:rails_env)} -d"
+        command: "DATADOG_ENABLED=true bundle exec puma -C #{current_path}/config/puma.rb -e #{fetch(:rails_env)}"
       )
     end
   end

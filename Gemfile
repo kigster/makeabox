@@ -22,6 +22,8 @@ gem 'sdoc', group: :doc
 gem 'sprockets'
 gem 'sprockets-rails'
 gem 'tzinfo-data'
+gem 'ed25519'
+gem 'bcrypt_pbkdf'
 
 group :development do
   gem 'airbrussh', require: false
