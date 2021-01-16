@@ -7,14 +7,14 @@ export RAILS_ENV="${RAILS_ENV:-"development"}"
 mkdir -p tmp/pids
 
 puma.boot() {
-  local max_threads=8
+  local max_threads=2
 
   if [[ "${RAILS_ENV}" == "development" ]]; then
     max_threads=1
   fi
 
   bundle exec puma -e "${RAILS_ENV}" -p "3000" \
-    -t${max_threads}:${max_threads} -w 6 -C $(pwd)/config/puma.rb -v \
+    -t${max_threads}:${max_threads} -w 8 -C $(pwd)/config/puma.rb -v \
     --redirect-append "$@"
 }
 

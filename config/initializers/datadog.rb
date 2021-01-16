@@ -4,13 +4,13 @@
 
 require 'etc'
 
-DATADOG_ENABLED = (
-  ENV['DATADOG_ENABLED'] &&
-    Etc.uname[:sysname] =~ /linux/i &&
-    ENV['RAILS_ENV'] == 'production'
-)
+#DATADOG_ENABLED = (
+#  ENV['DATADOG_ENABLED'] &&
+#  Etc.uname[:sysname] =~ /linux/i &&
+#  ENV['RAILS_ENV'] == 'production'
+#)
 
-if DATADOG_ENABLED
+unless ENV.fetch('DATADOG_ENABLED', true)
   require 'ddtrace'
   program = 'makeabox'
 
@@ -18,17 +18,34 @@ if DATADOG_ENABLED
   # with something more sensible in our context. We rename the tracers based on what process
   # they are (i.e. -rails-tasks, or -rails-puma) and whether it's not rails at all, but redis
   # or dalli.
+  f = File.new("log/datadog.log", "w+") # Log messages should go there
+
   Datadog.configure do |c|
-    c.logger = Rails.logger
-    c.tracer enabled: true, port: 9126
+    c.logger = Logger.new(f)
+    c.logger.level = ::Logger::INFO
+    c.tracer enabled: true
+    c.tracer.port = 8126
+    c.tracer.hostname = 'datadog.fossa.link'
+    c.tracer.partial_flush.enabled = true
+    # To enable debug mode:
+    c.diagnostics.debug = true
     c.analytics_enabled = true
+    c.tags = {
+      app: program,
+      language: 'ruby',
+      env: Rails.env.to_s,
+      branch: 'master',
+      revision: `git rev-parse HEAD`,
+      kernel: Etc.uname[:sysname],
+      program_name: File.basename($PROGRAM_NAME),
+    }
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#rails
     c.use :rails,
-          service_name: program,
-          controller_service: program + '-controller',
-          distributed_tracing: true,
-          middleware_names: true
+      service_name: program,
+      controller_service: program + '-controller',
+      distributed_tracing: true,
+      middleware_names: true
 
     c.use :http, service_name: program + '-http'
 
