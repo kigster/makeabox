@@ -68,9 +68,11 @@ set :keep_releases, 5
 
 before 'bundler:install', 'ruby:bundler:native_config'
 
+puma_restart_method = 'puma:restart:phased'
+
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
-  after :publishing, 'puma:start'
-  after 'puma:start', 'puma:status'
+  after :publishing, puma_restart_method
+  after puma_restart_method, 'puma:status'
 end
