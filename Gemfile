@@ -15,7 +15,7 @@ gem 'newrelic_rpm'
 
 gem 'puma', '=4.3.7'
 gem 'rack-timeout', require: 'rack/timeout/base'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 6.0', '>= 6.0.3.5'
 gem 'rb-fsevent'
 gem 'sassc-rails'
 gem 'sdoc', group: :doc
