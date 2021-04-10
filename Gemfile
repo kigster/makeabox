@@ -32,9 +32,9 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'dogapi', require: false
-  gem 'rubocop'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
+  gem 'rubocop', '>= 1.8.1'
+  gem 'rubocop-rails', '>= 2.9.1'
+  gem 'rubocop-rspec', '>= 2.1.0'
   gem 'yard'
   gem 'yard-rspec'
 end
