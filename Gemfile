@@ -13,7 +13,7 @@ gem 'laser-cutter', '= 1.0.3'
 gem 'newrelic-infinite_tracing'
 gem 'newrelic_rpm'
 
-gem 'puma', '=4.3.7'
+gem 'puma', '= 4.3.8'
 gem 'rack-timeout', require: 'rack/timeout/base'
 gem 'rails', '~> 5.2'
 gem 'rb-fsevent'
