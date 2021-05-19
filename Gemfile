@@ -15,12 +15,12 @@ gem 'newrelic_rpm'
 
 gem 'puma', '=4.3.7'
 gem 'rack-timeout', require: 'rack/timeout/base'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 5.2', '>= 5.2.4.4'
 gem 'rb-fsevent'
-gem 'sassc-rails'
+gem 'sassc-rails', '>= 2.1.2'
 gem 'sdoc', group: :doc
 gem 'sprockets'
-gem 'sprockets-rails'
+gem 'sprockets-rails', '>= 3.2.2'
 gem 'tzinfo-data'
 gem 'ed25519'
 gem 'bcrypt_pbkdf'
@@ -42,6 +42,6 @@ end
 group :test, :development, :demo do
   gem 'codecov'
   gem 'rspec-its'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 4.0.2'
   gem 'simplecov'
 end
