@@ -114,7 +114,9 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
-    mimemagic (0.3.5)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
     minitest (5.14.3)
@@ -127,7 +129,7 @@ GEM
       grpc (~> 1.28.0)
       newrelic_rpm (= 6.14.0)
     newrelic_rpm (6.14.0)
-    nio4r (2.5.4)
+    nio4r (2.5.7)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
@@ -138,7 +140,7 @@ GEM
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
-    puma (4.3.7)
+    puma (4.3.8)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -282,7 +284,7 @@ DEPENDENCIES
   laser-cutter (= 1.0.3)
   newrelic-infinite_tracing
   newrelic_rpm
-  puma (= 4.3.7)
+  puma (= 4.3.8)
   rack-timeout
   rails (~> 5.2)
   rb-fsevent
