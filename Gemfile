@@ -18,7 +18,7 @@ gem 'rack-timeout', require: 'rack/timeout/base'
 gem 'rails', '~> 5.2'
 gem 'rb-fsevent'
 gem 'sassc-rails'
-gem 'sdoc', group: :doc
+gem 'sdoc', '>= 2.0.3', group: :doc
 gem 'sprockets'
 gem 'sprockets-rails'
 gem 'tzinfo-data'
