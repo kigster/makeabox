@@ -15,3 +15,8 @@ end
 task :doc do
   puts `bundle exec yardoc -o doc '{lib,app,config,spec}/**/*.rb' - README.adoc`
 end
+
+task :versions do
+  puts "Version of the LaserCutter Library  :  #{Laser::Cutter::VERSION}"
+  puts "Version of MakeABox.io Site         :  #{MakeABox::VERSION}"
+end
