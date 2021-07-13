@@ -29,5 +29,13 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - run: bundle exec rake versions
-    - run: bundle exec rake
+    - name: Waiting on Memcached...
+      run: |
+          until nc -z -v -w30 memcached 11211
+          do
+            sleep 1
+          done
+    - name: Checking Versions
+      run: bundle exec rake versions
+    - name: Run Specs
+      run: CI=true bundle exec rspec --format=progress -p3
