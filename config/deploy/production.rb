@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-set :ruby_version, '2.7.2'
+set :ruby_version, File.read('.ruby-version').strip
 set :target_os, 'linux'
 set :rails_env, 'production'
 
