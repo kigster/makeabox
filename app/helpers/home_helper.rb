@@ -17,7 +17,7 @@ module HomeHelper
 
   def config_form_element(config, field, label, tabindex_start)
     content_tag('p', class: 'form-label-and-element') do
-      name    = "config[#{field}]"
+      name = "config[#{field}]"
       options = input_field_options(tabindex_start)
 
       label_tag(name, label ? field_name(field) : '') +
@@ -37,7 +37,7 @@ module HomeHelper
   def validate_config!
     @config.validate!
     true
-  rescue Laser::Cutter::MissingOption, Laser::Cutter::ZeroValueNotAllowed => e
+  rescue Laser::Cutter::ZeroValueNotAllowed, Laser::Cutter::MissingOption => e
     flash[:error] = self.latest_error = clarify_error(e.message)
     logger.warn e.message
     false
@@ -73,7 +73,7 @@ module HomeHelper
 
     c[:metadata] = !params[:metadata].blank?
 
-    @config         = Laser::Cutter::Configuration.new(c)
+    @config = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
 
     @config['file'] = exported_file_name if %w[width height depth thickness].all? { |f| c[f] }

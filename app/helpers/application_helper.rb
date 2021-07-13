@@ -13,7 +13,10 @@ module ApplicationHelper
 
   def asset_image(path, **opts)
     uri = image_path(path, **opts)
-    uri.gsub!(/^http:/, 'https:') if uri.start_with?('http') && Rails.env.production? && Etc.uname =~ /linux/i
-    uri
+    if uri.start_with?('http') && Rails.env.production? && Etc.uname =~ /linux/i
+      uri.gsub(/^http:/, 'https:')
+    else
+      uri
+    end
   end
 end
