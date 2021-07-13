@@ -8,13 +8,6 @@
 
 .spacer-10
 
-.row.mt-2
-  .col-sm-0.col-md-0.col-lg-3.col-xl-3
-  .col-sm-12.col-md-12.col-lg-6.col-xl-6.ad-content-adsense.d-flex.align-content-center.p-5.google-adsense
-    = render 'home/partials/adsense' if google?
-  .col-sm-0.col-md-0.col-lg-3.col-xl-3
-
-
 = form_tag('/', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
   .row
     .col-sm-0.col-md-0.col-lg-0.col-xl-1
