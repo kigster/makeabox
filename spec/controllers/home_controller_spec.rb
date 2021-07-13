@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
@@ -20,7 +22,7 @@ RSpec.describe HomeController, type: :controller do
     end
 
     context 'with valid params' do
-      let(:params) {
+      let(:params) do
         { utf8: '✓',
           commit: 'true',
           units: 'in',
@@ -36,7 +38,7 @@ RSpec.describe HomeController, type: :controller do
                     padding: '0.1',
                     stroke: '0.001',
                     page_size: '' } }.with_indifferent_access
-      }
+      end
 
       it 'returns generates the PDF' do
         post :index, params: params

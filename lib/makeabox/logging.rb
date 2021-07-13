@@ -30,21 +30,21 @@ module MakeABox
   #      end
   #
   module Logging
-    MUTEX ||= Mutex.new.freeze
+    MUTEX = Mutex.new.freeze
 
     # Right hand side is a list of methods to call on the corresponding
     # string, in the specified order:
-    SEVERITY_COLORS ||= {
-      debug: %i(green),
-      info: %i(blue),
-      warn: %i(yellow),
-      error: %i(red),
-      fatal: %i(red bold italic)
+    SEVERITY_COLORS = {
+      debug: %i[green],
+      info: %i[blue],
+      warn: %i[yellow],
+      error: %i[red],
+      fatal: %i[red bold italic]
     }.freeze
 
     # When the logger is first created, this is the default map based on the
     # Rails environment.
-    DEFAULT_SEVERITY_MAPPING ||= {
+    DEFAULT_SEVERITY_MAPPING = {
       'development' => :debug,
       'staging' => :debug,
       'production' => :info,
@@ -53,17 +53,17 @@ module MakeABox
 
     # This matrix represents the log level used for each type
     # of HTTP response.
-    HTTP_RESPONSE_MAPPING ||= {
+    HTTP_RESPONSE_MAPPING = {
       (0..399) => :info,
       (400..499) => :warn,
       (500..999) => :error
     }.freeze
 
-    ARROW_SYMBOL ||= ' ⤶ '
-    MULTILINE_START_SYMBOL ||= '   ⤷  '
-    MULTILINE_CONTINUE_SYMBOL ||= '    │ '
+    ARROW_SYMBOL = ' ⤶ '
+    MULTILINE_START_SYMBOL = '   ⤷  '
+    MULTILINE_CONTINUE_SYMBOL = '    │ '
 
-    LOG_LEVELS ||= %i(debug info warn error fatal).freeze
+    LOG_LEVELS = %i[debug info warn error fatal].freeze
 
     class << self
       def included(base)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'awesome_print'
@@ -10,33 +12,36 @@ gem 'ddtrace', require: false
 gem 'haml'
 gem 'jbuilder'
 gem 'laser-cutter', '= 1.0.3'
-gem 'newrelic-infinite_tracing'
 gem 'newrelic_rpm'
 
-gem 'puma', '=4.3.7'
-gem 'rack-timeout', require: 'rack/timeout/base'
-gem 'rails', '~> 5.2'
+gem 'puma'
+gem 'puma-daemon'
+# gem 'rack-timeout', require: 'rack/timeout/base'
+gem 'bcrypt_pbkdf'
+gem 'ed25519'
+gem 'rails'
 gem 'rb-fsevent'
 gem 'sassc-rails'
 gem 'sdoc', group: :doc
 gem 'sprockets'
 gem 'sprockets-rails'
 gem 'tzinfo-data'
-gem 'ed25519'
-gem 'bcrypt_pbkdf'
 
 group :development do
   gem 'airbrussh', require: false
-  gem 'asciidoctor'
-  gem 'capistrano'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
+  gem 'asciidoctor', require: false
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
   gem 'dogapi', require: false
-  gem 'rubocop'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
-  gem 'yard'
-  gem 'yard-rspec'
+  gem 'mry', require: false
+  gem 'rubocop', '~> 1.18.3', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'rufo', require: false
+  gem 'solargraph', require: false
+  gem 'yard', require: false
+  gem 'yard-rspec', require: false
 end
 
 group :test, :development, :demo do

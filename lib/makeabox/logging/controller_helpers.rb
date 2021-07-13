@@ -12,7 +12,7 @@ module MakeABox
       class << self
         # This constant lists all methods from the including context that must be
         # available to #log_incoming_request method.
-        DEPENDS_ON_CONTEXT_METHODS ||= %i(action_name params request response session).freeze
+        DEPENDS_ON_CONTEXT_METHODS = %i[action_name params request response session].freeze
 
         def validate_context!(base)
           DEPENDS_ON_CONTEXT_METHODS.all? do |method|
@@ -31,10 +31,10 @@ module MakeABox
 
       # These are error classes that, if thrown inside the log_incoming_request method,
       # are not logged as errors.
-      SILENT_ERRORS_WEB ||= %w(
+      SILENT_ERRORS_WEB = %w[
         ActionController::RoutingError
         ActionController::UnknownFormat
-      ).freeze
+      ].freeze
 
       # @description This method should be called from a Rails "around" action
       # filter. It uses the {request} and {response} objects to log
@@ -81,9 +81,9 @@ module MakeABox
 
         message = [
           'x-rqst',
-          sprintf('%-15s', request.ip),
-          sprintf('%32.32s', request.session.id),
-          "#{xhr} #{sprintf '%-6s', method.to_s}",
+          format('%-15s', request.ip),
+          format('%32.32s', request.session.id),
+          "#{xhr} #{format '%-6s', method.to_s}",
           (response ? response.code.to_s : NIL_RESPONSE),
           request_path_and_action + (log_params.empty? ? '' : " ◀— params:\n#{log_params.awesome_inspect}")
         ].compact.join(' │ ')
@@ -91,11 +91,11 @@ module MakeABox
       end
 
       def sprintf_elapsed_time(elapsed_time)
-        sprintf '%7.3fs', (elapsed_time.to_f / 1000.0)
+        format '%7.3fs', (elapsed_time.to_f / 1000.0)
       end
 
       def request_path_and_action
-        "#{sprintf('%s', request.path_info).magenta.bold} (#{self.class.name.bold.blue}##{action_name.green})"
+        "#{format('%s', request.path_info).magenta.bold} (#{self.class.name.bold.blue}##{action_name.green})"
       end
 
       # This is currently unused, because we aren't able to reliably detect current
@@ -104,10 +104,10 @@ module MakeABox
         LOGGED_OUT
       end
 
-      LOGGED_OUT ||= 'logged-out'
-      HTTP_XHR ||= 'XHR'
-      HTTP_REQ ||= 'REQ'
-      NIL_RESPONSE ||= '---'
+      LOGGED_OUT = 'logged-out'
+      HTTP_XHR = 'XHR'
+      HTTP_REQ = 'REQ'
+      NIL_RESPONSE = '---'
     end
   end
 end

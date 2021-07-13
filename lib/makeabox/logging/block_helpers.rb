@@ -8,10 +8,10 @@ module MakeABox
     # it takes for it to finish, and logs one line per block execution, dealing with
     # any errors or exceptions in consistent and predictable basis.
     module BlockHelpers
-      SUCCESS ||= ' ✔ '.bold.green.freeze
-      FAILED ||= 'ERR'.bold.red.freeze
-      RESCUED ||= 'RES'.bold.yellow.freeze
-      SEP ||= ' │ '
+      SUCCESS = ' ✔ '.bold.green.freeze
+      FAILED = 'ERR'.bold.red.freeze
+      RESCUED = 'RES'.bold.yellow.freeze
+      SEP = ' │ '
 
       # This method is a block helper that can be used to measure
       # execution time of a block and log it to the appropriate application
@@ -61,7 +61,7 @@ module MakeABox
         nil
       ensure
         elapsed_time = Time.now - start
-        final_message = "time: #{'%8.1f' % (1000 * elapsed_time)}ms".cyan.italic + " #{message}"
+        final_message = "time: #{format('%8.1f', (1000 * elapsed_time))}ms".cyan.italic + " #{message}"
         MakeABox::Logging.logger.send(level, final_message)
         MakeABox::Logging.logger.error(error_message) if error_message
         begin
@@ -85,14 +85,14 @@ module MakeABox
           if top_stack.present?
             first_stack = top_stack.shift
             warn " STACKTRACE (reversed)\n"
-            warn '    ' + top_stack.reverse.join("\n    ").red.italic
-            warn '    ' + first_stack.bold.red.italic.underlined
-            STDERR.puts
+            warn "    #{top_stack.reverse.join("\n    ").red.italic}"
+            warn "    #{first_stack.bold.red.italic.underlined}"
+            $stderr.puts
           end
         else
-          STDERR.printf '  (no backtrace available): '.bold.yellow.freeze
+          $stderr.printf '  (no backtrace available): '.bold.yellow.freeze
         end
-        STDERR.puts
+        $stderr.puts
       end
     end
 

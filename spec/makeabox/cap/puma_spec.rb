@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'makeabox/cap/puma'
 
@@ -7,7 +9,8 @@ module MakeABox
       class Context
         attr_reader :current_path, :release_path, :env
 
-        def initialize(current_path: nil,
+        def initialize(
+          current_path: nil,
                        release_path: nil,
                        env: {})
           @current_path = current_path
@@ -35,13 +38,13 @@ module MakeABox
       let(:release_path) { '/app/makeabox/releases/20200701000000' }
       let(:env) { { RAILS_ENV: 'production', APP: 'makeabox' } }
 
-      let(:script) {
+      let(:script) do
         <<~BASH.gsub(/\n/, '; ').strip
           set +e;source ~/.bashrc;cd "/app/makeabox/current">/dev/null
           export APP=""
           export RAILS_ENV=""
-          export PID="$(/bin/ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')" 
-          if [[ -n "${PID}" ]] 
+          export PID="$(/bin/ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')"#{' '}
+          if [[ -n "${PID}" ]]#{' '}
           then echo "Puma Master process detected, PID=$PID"
                echo "Sending signal USR2 to ${PID}"
                kill -USR2 ${PID} 2>/dev/null
@@ -53,19 +56,19 @@ module MakeABox
           export PID="$(/bin/ps -ef | grep [p]uma | grep -v cluster | grep makeabox | awk '{print $2}')"
           echo "hello"
         BASH
-      }
+      end
 
-      let(:context) {
+      let(:context) do
         Testing::Context.new(release_path: release_path,
                              current_path: current_path,
                              env: env)
-      }
+      end
 
-      let(:command) {
+      let(:command) do
         described_class.master_pid(signals: %i[USR2],
                                    context: context,
                                    command: 'echo "hello"')
-      }
+      end
 
       context '#master_pid' do
         subject { context }

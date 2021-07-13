@@ -11,6 +11,7 @@ on_worker_shutdown { puts 'worker shutting down...' }
 worker_timeout 30
 
 if ENV['RAILS_ENV'] == 'production'
+  require 'puma-daemon'
   threads 2, 4
   prune_bundler true
   preload_app! false

@@ -11,11 +11,11 @@ class HomeController < ApplicationController
     handle_units_change
 
     if request.get? && parameter_keys.empty?
-      Rails.cache.fetch('/index', expires_in: 1.hour) do
-        render_index_action
+      Rails.cache.fetch('/index-gets', race_condition_ttl: 10.seconds, expires_in: 1.hour) do
+        render_index_action(request, params)
       end
     else
-      render_index_action
+      render_index_action(request, params)
     end
   end
 
@@ -27,7 +27,7 @@ class HomeController < ApplicationController
     params.keys - DEFAULT_PARAMS_KEYS
   end
 
-  def render_index_action
+  def render_index_action(request, params)
     return(render) if request.get?
 
     validate_config!
@@ -54,7 +54,8 @@ class HomeController < ApplicationController
       ::Datadog.tracer.active_span&.set_tag('pdf.file.status', 2)
       ::Datadog.tracer.active_span&.set_tag('pdf.file.error', e.message)
     end
-    flash[:error] = 'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
+    flash[:error] =
+      'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
     logger.warn "Timeout Error: #{e.message}"
     false
   end

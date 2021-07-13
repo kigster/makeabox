@@ -33,18 +33,18 @@ module MakeABox
       end
 
       # This function always returns a new ::Logger instance.
-      LOG_LEVEL_OVERRIDE_ENV ||= 'MAKEABOX_LOG_LEVEL'
+      LOG_LEVEL_OVERRIDE_ENV = 'MAKEABOX_LOG_LEVEL'
 
       def create_logger
         rails_env = ::MakeABox::Logging.detect_rails_env
-        logger    = ::Logger.new("log/#{rails_env}.log")
+        logger = ::Logger.new("log/#{rails_env}.log")
 
         logger.formatter = logger_format_proc
 
         level = ENV[LOG_LEVEL_OVERRIDE_ENV].to_sym if ENV[LOG_LEVEL_OVERRIDE_ENV]
         level ||= ::MakeABox::Logging.default_severity[rails_env]
 
-        logger.level    = log_level_from_sym(level)
+        logger.level = log_level_from_sym(level)
         logger.progname = 'rails'
         logger
       end
@@ -53,18 +53,19 @@ module MakeABox
 
       # This method returns a proc that is capable of formatting the incoming
       # log message. Freezing strings here is paramount.
-      LOG_FORMAT_SEPARATOR ||= ' ❯❯❯ '.bold.yellow.freeze
+      LOG_FORMAT_SEPARATOR = ' ❯❯❯ '.bold.yellow.freeze
 
       def logger_format_proc
-        @logger_format_proc ||= proc do |severity, datetime, _program_name, message|
-          # This is only necessary because in some places we call  +Rails.logger+
-          # In that case, we must ensure that we are not logging filtered messages.
-          color  = ::MakeABox::Logging.severity_colors[severity.downcase.to_sym] || :normal
-          sev    = sprintf '%-6.6s', severity
-          date   = sprintf '%23.23s ', datetime.strftime('%Y-%m-%d %H:%M:%S.%L')
-          thread = sprintf '%-12s', thread_name
-          combined_message(severity, sev, thread, color, date, message)
-        end
+        @logger_format_proc ||=
+          proc do |severity, datetime, _program_name, message|
+            # This is only necessary because in some places we call  +Rails.logger+
+            # In that case, we must ensure that we are not logging filtered messages.
+            color = ::MakeABox::Logging.severity_colors[severity.downcase.to_sym] || :normal
+            sev = format '%-6.6s', severity
+            date = format '%23.23s ', datetime.strftime('%Y-%m-%d %H:%M:%S.%L')
+            thread = format '%-12s', thread_name
+            combined_message(severity, sev, thread, color, date, message)
+          end
       end
 
       def combined_message(severity, sev, thread, color, date, message)
@@ -72,15 +73,18 @@ module MakeABox
           colorize(sev.to_s[0].upcase, color),
           date.yellow.bold,
           format_pid_ppid,
-          thread.bold.green.italic + LOG_FORMAT_SEPARATOR +
-            (severity == 'INFO' ? message : colorize(message, color)) +
-            "\n"
+          "#{thread.bold.green.italic}#{LOG_FORMAT_SEPARATOR}#{if severity == 'INFO'
+                                                                 message
+                                                               else
+                                                                 colorize(message,
+                                                                          color)
+                                                               end}\n"
         ].join('│')
       end
 
       def format_pid_ppid
-        sprintf(' %5d', Process.pid).magenta.bold +
-          ::MakeABox::Logging::ARROW_SYMBOL + sprintf('%5d ', Process.ppid).blue.bold
+        format(' %5d', Process.pid).magenta.bold +
+          ::MakeABox::Logging::ARROW_SYMBOL + format('%5d ', Process.ppid).blue.bold
       end
 
       def log_level_from_sym(level)
@@ -100,7 +104,7 @@ module MakeABox
 
       def thread_name
         Thread.current[:name] ||= Thread.current.object_id
-        sprintf ' %-6.6s(thr)', Thread.current[:name]
+        format ' %-6.6s(thr)', Thread.current[:name]
       end
 
       def logger_log(level, *args, &block)

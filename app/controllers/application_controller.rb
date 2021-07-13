@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
-  MUTEX ||= Mutex.new.freeze
+  MUTEX = Mutex.new.freeze
 
   include MakeABox::Logging::ControllerHelpers
   around_action :log_incoming_request

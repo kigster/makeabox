@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 set :ruby_version, '2.7.2'
 set :target_os, 'linux'
 set :rails_env, 'production'
