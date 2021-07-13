@@ -25,7 +25,7 @@ module MakeABox
     Rails.env.production? && Etc.uname[:sysname] =~ /linux/i
   end
 
-  VERSION = '1.0.1'.freeze
+  VERSION = '1.0.1'
 
   MEMCACHED_CONFIG = {
     socket_timeout: 0.2,
