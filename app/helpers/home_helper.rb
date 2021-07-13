@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HomeHelper
   FIELD_NAME_MAP = {
     'notch' => 'Tab Width'
@@ -7,15 +9,15 @@ module HomeHelper
     FIELD_NAME_MAP[field] || field.to_s.capitalize
   end
 
-  def config_form_element_group(keys = [], config = {}, label = true, tabindex_start = nil)
+  def config_form_element_group(keys = [], config = {}, label: true, tabindex_start: nil)
     keys.map do |field|
       config_form_element(config, field, label, tabindex_start)
-    end.join('')
+    end.join
   end
 
   def config_form_element(config, field, label, tabindex_start)
     content_tag('p', class: 'form-label-and-element') do
-      name    = "config[#{field}]"
+      name = "config[#{field}]"
       options = input_field_options(tabindex_start)
 
       label_tag(name, label ? field_name(field) : '') +
@@ -35,13 +37,13 @@ module HomeHelper
   def validate_config!
     @config.validate!
     true
-  rescue Laser::Cutter::MissingOption, Laser::Cutter::ZeroValueNotAllowed => e
+  rescue Laser::Cutter::ZeroValueNotAllowed, Laser::Cutter::MissingOption => e
     flash[:error] = self.latest_error = clarify_error(e.message)
     logger.warn e.message
     false
   rescue StandardError => e
     flash[:error] = self.latest_error = e.message
-    logger.error('ERROR: ' + e.inspect + "\n" + e.backtrace.join("\n"))
+    logger.error("ERROR: #{e.inspect}\n#{e.backtrace.join("\n")}")
     false
   end
 
@@ -69,19 +71,20 @@ module HomeHelper
       c[f] = nil if (c[f] == '0') || c[f].blank?
     end
 
-    c[:metadata] = params[:metadata].blank? ? false : true
+    c[:metadata] = !params[:metadata].blank?
 
-    @config         = Laser::Cutter::Configuration.new(c)
+    @config = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
 
     @config['file'] = exported_file_name if %w[width height depth thickness].all? { |f| c[f] }
   end
 
   def populate_form_fields
-    @page_size_options = Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
-      digits = @config.units.eql?('in') ? 1 : 0
-      [format("%s %4.#{digits}f x %4.#{digits}f", *v), format('%s', v[0])]
-    end
+    @page_size_options =
+      Laser::Cutter::PageManager.new(@config.units).page_size_values.map do |v|
+        digits = @config.units.eql?('in') ? 1 : 0
+        [format("%s %4.#{digits}f x %4.#{digits}f", *v), format('%s', v[0])]
+      end
     @page_size_options.insert(0, ['Auto Fit the Box', ''])
   end
 
@@ -92,7 +95,7 @@ module HomeHelper
     end
 
     NUMERIC_FIELDS.each do |field|
-      @config[field] = @config[field].round(5) if @config[field] && @config[field].to_f > 0
+      @config[field] = @config[field].round(5) if @config[field]&.to_f&.positive?
     end
   end
 
@@ -103,8 +106,7 @@ module HomeHelper
      "#{fmt :width}[w]x#{fmt :height}[h]x#{fmt :depth}[d]",
      "#{fmt :thickness, width: '.3'}[t]",
      "#{fmt :kerf, width: '.4'}[k]",
-     "#{fmt :stroke, width: '.3'}[s]" +
-       '.pdf'].join('-')
+     "#{fmt :stroke, width: '.3'}[s].pdf"].join('-')
   end
 
   def pdf_export_folder

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('boot', __dir__)
 
 # Pick the frameworks you want:
@@ -23,16 +25,30 @@ module MakeABox
     Rails.env.production? && Etc.uname[:sysname] =~ /linux/i
   end
 
-  class Application < Rails::Application
-    DALI_CONFIG = {
-      socket_timeout: 0.2,
-      expires_in: 3.minute,
-      keepalive: true,
-      compress: true,
-      failover: true,
-      pool_size: 8
-    }.freeze
+  VERSION = '1.0.1'
 
+  MEMCACHED_CONFIG = {
+    socket_timeout: 0.2,
+    expires_in: 10.minute,
+    keepalive: true,
+    compress: true,
+    pool_size: 10,
+    pool_timeout: 30
+  }.freeze
+
+  MEMCACHED_PORT = ENV.fetch('MEMCACHED_PORT', 11_211)
+  MEMCACHED_HOST = ENV.fetch('MEMCACHED_HOST', 'localhost')
+  MEMCACHED_URL  = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}"
+
+  def self.memcached_options(namespace = nil)
+    opts ||= {}
+    namespace ||= ''
+    namespace = namespace.to_s
+    namespace += ".#{Rails.env}"
+    MEMCACHED_CONFIG.dup.merge(opts.merge({ namespace: namespace }))
+  end
+
+  class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

@@ -1,0 +1,36 @@
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
+
+Style/SingleLineMethods:
+  Enabled: false
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/AccessorGrouping:
+  Enabled: true
+
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+Style/RedundantAssignment:
+  Enabled: true
+

@@ -21,9 +21,9 @@ module MakeABox
     #      TestWorker.prepend(::MakeABox::Logging::SidekiqWorkerHelpers)
     #
     module SidekiqWorkerHelpers
-      SILENT_ERRORS_SIDEKIQ ||= %w(
+      SILENT_ERRORS_SIDEKIQ = %w[
         Adp::UpdateCredentialsWorker::AdpCredsFetcherError
-      ).freeze
+      ].freeze
 
       def perform(*args, &block)
         opts = self.class.respond_to?(:sidekiq_options) ? self.class.sidekiq_options : {}
@@ -49,10 +49,10 @@ module MakeABox
       end
 
       def retry_info(opts)
-        sprintf('r: %-5.5s', (opts['retry'] || ' '))
+        format('r: %-5.5s', (opts['retry'] || ' '))
       end
 
-      QUEUE_COLORS ||= {
+      QUEUE_COLORS = {
         'default' => :green,
         'critical' => :yellow,
         'messaging' => :blue,
@@ -66,7 +66,7 @@ module MakeABox
       def queue_name(opts)
         q = opts['queue'] || 'default'
         color = QUEUE_COLORS[q] || :red
-        sprintf('q: %-10.10s', q).send(color)
+        format('q: %-10.10s', q).send(color)
       end
     end
   end

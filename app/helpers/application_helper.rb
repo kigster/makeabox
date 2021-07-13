@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'etc'
 
 module ApplicationHelper
@@ -12,8 +14,9 @@ module ApplicationHelper
   def asset_image(path, **opts)
     uri = image_path(path, **opts)
     if uri.start_with?('http') && Rails.env.production? && Etc.uname =~ /linux/i
-      uri.gsub! /^http:/, 'https:'
+      uri.gsub(/^http:/, 'https:')
+    else
+      uri
     end
-    uri
   end
 end

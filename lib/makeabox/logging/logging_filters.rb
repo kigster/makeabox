@@ -15,11 +15,13 @@ module MakeABox
         attr_accessor :config
 
         def load_config!
-          self.config = if defined?(::Rails)
-                          YAML.load(File.read(Rails.root + 'config/logging_filters.yml'))
-                        else
-                          YAML.load(File.read(File.expand_path('../../../config/logging_filters.yml', __dir__)))
-end
+          self.config =
+            if defined?(::Rails)
+              YAML.load(File.read("#{Rails.root}/config/logging_filters.yml"))
+            else
+              YAML.load(File.read(File.expand_path('config/logging_filters.yml',
+                                                   Dir.pwd.to_s)))
+            end
         end
 
         def all_filters

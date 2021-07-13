@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -39,11 +41,11 @@ Rails.application.configure do
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :info
-  config.logger = ::MakeABox::Logging.logger
+  config.log_level                    = :info
+  config.logger                       = ::MakeABox::Logging.logger
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -55,9 +57,7 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  if MakeABox.live?
-    config.action_controller.asset_host = 'https://makeabox.io'
-  end
+  config.action_controller.asset_host = 'https://makeabox.io' if MakeABox.live?
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -71,11 +71,11 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Disable automatic flushing of the log to improve performance.
-  # config.autoflush_log = false
+  config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  # config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = ::Logger::Formatter.new
 
-  config.cache_store = :dalli_store, %w[127.0.0.1:11211], MakeABox::Application::DALI_CONFIG
-  config.session_store :dalli_store
+  config.cache_store = :mem_cache_store, MakeABox::MEMCACHED_URL, MakeABox.memcached_options(:cache)
+  config.session_store :mem_cache_store
 end

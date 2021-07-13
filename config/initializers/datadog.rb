@@ -4,11 +4,11 @@
 
 require 'etc'
 
-#DATADOG_ENABLED = (
+# DATADOG_ENABLED = (
 #  ENV['DATADOG_ENABLED'] &&
 #  Etc.uname[:sysname] =~ /linux/i &&
 #  ENV['RAILS_ENV'] == 'production'
-#)
+# )
 
 unless ENV.fetch('DATADOG_ENABLED', true)
   require 'ddtrace'
@@ -18,7 +18,7 @@ unless ENV.fetch('DATADOG_ENABLED', true)
   # with something more sensible in our context. We rename the tracers based on what process
   # they are (i.e. -rails-tasks, or -rails-puma) and whether it's not rails at all, but redis
   # or dalli.
-  f = File.new("log/datadog.log", "w+") # Log messages should go there
+  f = File.new('log/datadog.log', 'w+') # Log messages should go there
 
   Datadog.configure do |c|
     c.logger = Logger.new(f)
@@ -37,19 +37,19 @@ unless ENV.fetch('DATADOG_ENABLED', true)
       branch: 'master',
       revision: `git rev-parse HEAD`,
       kernel: Etc.uname[:sysname],
-      program_name: File.basename($PROGRAM_NAME),
+      program_name: File.basename($PROGRAM_NAME)
     }
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#rails
     c.use :rails,
-      service_name: program,
-      controller_service: program + '-controller',
-      distributed_tracing: true,
-      middleware_names: true
+          service_name: program,
+          controller_service: "#{program}-controller",
+          distributed_tracing: true,
+          middleware_names: true
 
-    c.use :http, service_name: program + '-http'
+    c.use :http, service_name: "#{program}-http"
 
-    c.use :action_view, service_name: program + '-action-view'
+    c.use :action_view, service_name: "#{program}-action-view"
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#sidekiq
     # c.use :sidekiq, service_name: program
@@ -58,7 +58,7 @@ unless ENV.fetch('DATADOG_ENABLED', true)
     # c.use :redis, service_name: program + '-redis'
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#dalli
-    c.use :dalli, service_name: program + '-memcached'
+    c.use :dalli, service_name: "#{program}-memcached"
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#aws
     # c.use :aws, service_name: program + '-aws'

@@ -1,12 +1,17 @@
-inherit_from:
+inherit_from: 
   - .rubocop_todo.yml
-  - .relaxed-rubocop-2.4.yml
+  - .rubocop_makeabox_lint.yml
+  - .rubocop_makeabox_style.yml
+  - .rubocop_makeabox_layout.yml
 
 AllCops:
-  TargetRubyVersion: 2.6
-  UseCache: true
+  TargetRubyVersion: 3
+  NewCops: enable
+  UseCache: false
   DefaultFormatter: progress
   DisplayStyleGuide: true
+  DisplayLintGuide: true
+  DisplayLayoutGuide: true
   DisplayCopNames: true
   Exclude:
     - "external*/**/*"
@@ -25,58 +30,3 @@ AllCops:
     - '**/*.ru'
     - '**/Gemfile'
     - '**/Rakefile'
-
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Style/ExponentialNotation:
-  Enabled: true
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/SlicingWithRange:
-  Enabled: true
-
-Style/SingleLineMethods:
-  Enabled: false
-
-Style/RedundantFetchBlock:
-  Enabled: true
-
-Style/AccessorGrouping:
-  Enabled: true
-
-Style/BisectedAttrAccessor:
-  Enabled: true
-
-Style/RedundantAssignment:
-  Enabled: true
-

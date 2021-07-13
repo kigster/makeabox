@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 at_exit do
   until ApplicationController.temp_files.empty?
     file = ApplicationController.temp_files.pop

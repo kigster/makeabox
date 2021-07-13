@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -21,9 +23,9 @@ Rails.application.configure do
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
-  # config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter              = ::Logger::Formatter.new
 
-  config.logger = ::MakeABox::Logging.logger
+  config.logger    = ::MakeABox::Logging.logger
   config.log_level = :debug
 
   # Debug mode disables concatenation and preprocessing of assets.
@@ -39,5 +41,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.cache_store = :dalli_store, %w[127.0.0.1:11211], MakeABox::Application::DALI_CONFIG
+  config.cache_store = :mem_cache_store, MakeABox::MEMCACHED_URL, MakeABox.memcached_options(:cache)
+  config.session_store :mem_cache_store
 end

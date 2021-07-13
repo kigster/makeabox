@@ -1,5 +1,4 @@
-= MakeABox -- Rails 5.2 Application
-
+= MakeABox -- Rails Application
 :doctype: book
 :toc:
 :sectnums:
@@ -10,6 +9,8 @@ image:https://github.com/kigster/makeabox/workflows/RuboCop/badge.svg[RuboCop, l
 image:https://codecov.io/gh/kigster/makeabox/branch/master/graph/badge.svg?token=FXcBzFsVwv[codecov,link=https://codecov.io/gh/kigster/makeabox]
 
 __This__ is the https://makeabox.io/ application that generates laser-cut path as a downloadable PDF file.
+
+NOTE: It's recently been upgraded to use Rails 6.1 under the hood.
 
 == USAGE
 
@@ -26,7 +27,7 @@ direnv allow .
 
 == Install Dependencies
 
-Use Ruby 2.5+ and a recent bundler:
+Use Ruby 3.0.2 and a recent bundler:
 
 [source, bash]
 ----

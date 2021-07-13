@@ -6,7 +6,7 @@ require 'rspec/core'
 require 'rspec/its'
 require 'simplecov'
 
-if ENV['CODECOV_TOKEN']
+if ENV['CODECOV_TOKEN'] && ENV['CI']
   require 'codecov'
   SimpleCov.formatters =
     SimpleCov::Formatter::MultiFormatter.new([

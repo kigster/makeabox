@@ -4,8 +4,8 @@
     %h1.panel-title Internal Box Dimensions
   .panel-body
     %p.small Please note that dimensions are <strong>internal</strong>, and define the space inside the box.
-    = raw(config_form_element_group(%w(width height depth), @config, true, 1))
-    = raw(config_form_element_group(%w(thickness), @config, true, 4))
+    = raw(config_form_element_group(%w(width height depth), @config, label: true, tabindex_start: 1))
+    = raw(config_form_element_group(%w(thickness), @config, label: true, tabindex_start: 4))
     %p.small
       I.E Thickness of the material that's being cut
     %p.form-label-and-element
