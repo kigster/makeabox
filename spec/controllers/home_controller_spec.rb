@@ -8,6 +8,14 @@ RSpec.describe HomeController, type: :controller do
       get :index
       expect(response).to be_successful
     end
+
+    it 'activate caching: returns http success' do
+      expect(Rails.cache).to receive(:fetch).and_call_original
+      get :index
+      expect(response).to be_successful
+
+      expect(Rails.cache.read('/index-gets')).to_not be_nil
+    end
   end
 
   describe 'POST /' do
