@@ -31,7 +31,9 @@ module MakeABox
             execute <<~BASH
               #{env_setup}
               #{pid_command}
-              #{command}
+              if [[ -n "${PID}" ]]; then
+                #{command || :true} 
+              fi
             BASH
           end
         end
