@@ -36,6 +36,17 @@ module MakeABox
     pool_timeout: 30
   }.freeze
 
+  MEMCACHED_PORT = ENV.fetch('MEMCACHED_PORT', 11_211)
+
+  MEMCACHED_HOST =
+    if ENV['CI']
+      ENV.fetch('MEMCACHED_HOST', 'memcached')
+    else
+      ENV.fetch('MEMCACHED_HOST', 'localhost')
+    end
+
+  MEMCACHED_URL = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}"
+
   def self.memcached_options(namespace = nil)
     opts ||= {}
     namespace ||= ''

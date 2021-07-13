@@ -76,6 +76,6 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.cache_store = :mem_cache_store, '127.0.0.1:11211', MakeABox.memcached_options(:cache)
+  config.cache_store = :mem_cache_store, MakeABox::MEMCACHED_URL, MakeABox.memcached_options(:cache)
   config.session_store :mem_cache_store
 end
