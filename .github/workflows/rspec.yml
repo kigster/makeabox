@@ -37,6 +37,7 @@ jobs:
             sleep 1
             i=$((i + 1))
           done
+          echo "waited about $i seconds..."
     - name: Checking Versions
       run: bundle exec rake versions
     - name: Run Specs
