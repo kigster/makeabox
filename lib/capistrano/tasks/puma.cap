@@ -25,7 +25,7 @@ namespace :puma do
     on(roles(:app)) do
       MakeABox::Cap::Puma.master_pid(
         context: self,
-        command: 'grc ps -o pid,rss,vsz,fname,pcpu,args  -p $PID; echo; grc ps -o pid,rss,vsz,fname,pcpu,args  --ppid $PID --sort \'-%cpu\''
+        command: '/bin/ps -o pid,rss,vsz,fname,pcpu,args -p $PID; echo; /bin/ps -o pid,rss,vsz,fname,pcpu,args --ppid $PID --sort \'-%cpu\' || true'
       )
     end
   end

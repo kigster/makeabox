@@ -9,8 +9,8 @@ module MakeABox
           env_setup = <<~SETUP.gsub(/\n/, '')
             set +e;
             source ~/.bashrc;
-            cd "#{current_path}">/dev/null;#{' '}
-            export APP="#{fetch(:application)}";#{' '}
+            cd "#{current_path}">/dev/null; #{' '}
+            export APP="#{fetch(:application)}"; #{' '}
             export RAILS_ENV="#{fetch(:rails_env)}"
           SETUP
 
@@ -31,9 +31,7 @@ module MakeABox
             execute <<~BASH
               #{env_setup}
               #{pid_command}
-              if [[ -n "${PID}" ]]; then
-                #{command || :true} 
-              fi
+              if [[ -n "${PID}" ]]; then #{command || 'true'}; fi
             BASH
           end
         end
