@@ -32,16 +32,19 @@
 
 require 'colored2'
 
-set :datadog_api_key, ENV['DATADOG_API_KEY']
+CURRENT_BRANCH = `git rev-parse --abbrev-ref HEAD`.chomp.freeze
 
+set :datadog_api_key, ENV['DATADOG_API_KEY']
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
-
+set :branch, `bash -c "source ~/.bashmatic/init.sh; git.branch.current"`
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
+#
 # Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+
+CURRENT_BRANCH == 'master' ? set(:branch, 'master') : ask(:branch, proc { CURRENT_BRANCH })
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
