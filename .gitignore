@@ -38,3 +38,6 @@ doc/
 **/node_modules
 coverage/
 .envrc.local
+.DS_Store/
+.key
+config/commento.sh

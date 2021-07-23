@@ -49,9 +49,12 @@ set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
 # Default value for :format is :pretty
 set :format, :airbrussh
 set :log_level, :info
-set :pty, true
 
-set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
+set :rbenv_type, :system
+set :ruby_version, File.read('.ruby-version').strip
+set :rbenv_map_bins, %w[rake gem bundle ruby rails puma]
+set :rbenv_roles, :all # default value
+set :rbenv_ruby, fetch(:ruby_version)
 set :native_gems, %i[nokogiri]
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
@@ -70,11 +73,11 @@ set :keep_releases, 5
 
 before 'bundler:install', 'ruby:bundler:native_config'
 
-puma_restart_method = 'puma:restart:phased'
-
+# puma_restart_method = 'puma:restart:phased'
+#
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
-  after :publishing, puma_restart_method
-  after puma_restart_method, 'puma:status'
+  #  after :publishing, puma_restart_method
+  #  after puma_restart_method, 'puma:status'
 end
