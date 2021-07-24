@@ -112,6 +112,7 @@ GEM
     docile (1.4.0)
     dogapi (1.29.0)
       multi_json
+    dogstatsd-ruby (5.2.0)
     e2mmap (0.1.0)
     ed25519 (1.2.4)
     erubi (1.10.0)
@@ -333,6 +334,7 @@ DEPENDENCIES
   dalli
   ddtrace
   dogapi (~> 1.29.0)
+  dogstatsd-ruby
   ed25519
   haml
   jbuilder
@@ -361,4 +363,4 @@ DEPENDENCIES
   yard-rspec
 
 BUNDLED WITH
-   2.2.23
+   2.2.24

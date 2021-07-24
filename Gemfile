@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 gem 'ddtrace', require: 'ddtrace/auto_instrument'
+gem 'dogstatsd-ruby'
 
 gem 'awesome_print'
 gem 'babel-transpiler'

@@ -11,6 +11,7 @@ DATADOG_ENABLED = ((ENV["DATADOG_ENABLED"] &&
 if DATADOG_ENABLED
   ENV["DATADOG_ENABLED"] = "1"
   require "ddtrace"
+  require 'datadog/statsd'
   program = "makeabox"
 
   # Here we register Rails services and override automatically generated names by Datadog
@@ -23,9 +24,12 @@ if DATADOG_ENABLED
     c.logger = Logger.new(f)
     c.logger.level = ::Logger::INFO
     c.tracer enabled: true
-    c.tracer.port = 8126
+    c.tracer.port = 9126
     c.tracer.partial_flush.enabled = true
+    
     c.runtime_metrics.enabled = true
+    c.runtime_metrics.statsd = Datadog::Statsd.new
+
     c.sampling.default_rate = 1.0
     # To enable debug mode:
     c.diagnostics.debug = true
