@@ -63,6 +63,7 @@ set :ssh_options, {
   auth_methods: %w[publickey]
 }
 
+set :puma_service_unit_name, 'puma.service'
 set :linked_files, %w[config/secrets.yml]
 set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}

@@ -1,5 +1,12 @@
-require "capistrano/datadog"
-set :datadog_api_key, "0e26092e9895a3b45bea2ed9d1effc44"
+# frozen_string_literal: true
+
+require 'dogapi'
+require 'capistrano/datadog'
+
+set :datadog_api_key, '0e26092e9895a3b45bea2ed9d1effc44'
+
+require 'capistrano/scm/git'
+
 # Load DSL and Setup Up Stages
 require 'airbrussh/capistrano'
 require 'capistrano/setup'
@@ -7,14 +14,8 @@ require 'capistrano/setup'
 # Includes default deployment tasks
 require 'capistrano/deploy'
 require 'capistrano/console'
-
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
-
-require 'capistrano/scm/git'
-
-require 'dogapi'
-require 'capistrano/datadog'
 
 install_plugin Capistrano::SCM::Git
 
