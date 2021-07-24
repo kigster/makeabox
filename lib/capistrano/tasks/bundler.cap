@@ -1,0 +1,36 @@
+# frozen_string_literal: true
+
+require 'colored2'
+
+def install_bundler
+  execute :bash, <<~BASH.gsub(/\s{2,}/, ' ')
+            -c 'source ~/.bashrc; [[ -n "$(gem list | grep bundler)" ]] || gem install bundler --no-ri --no-rdoc '
+  BASH
+end
+
+namespace :ruby do
+  namespace :bundler do
+    desc 'Install bundler'
+    task :install do
+      on roles(:app) do
+        within deploy_to do
+          install_bundler
+        end
+      end
+    end
+
+    before :install, 'ruby:install'
+
+    task :native_config do
+      on roles(:app) do
+        within release_path do
+          fetch(:native_gems).each do |gem|
+            next unless fetch(:gem_config)[gem]
+
+            execute :bash, "-c 'source ~/.bashrc; bundle config --local build.#{gem} #{fetch(:gem_config)[gem]}'"
+          end
+        end
+      end
+    end
+  end
+end

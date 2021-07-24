@@ -34,12 +34,16 @@ require 'colored2'
 
 CURRENT_BRANCH = `git rev-parse --abbrev-ref HEAD`.chomp.freeze
 
+set :direnv_map_bins, %w{rake ruby bundle} # list of executables which should be preceded with direnv prefix
+set :direnv_path, '/usr/bin/direnv'        # path to direnv executable
+set :envrc_path, current_path              # path where .envrc file is stored
+
 set :datadog_api_key, ENV['DATADOG_API_KEY']
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
 set :branch, `bash -c "source ~/.bashmatic/init.sh; git.branch.current"`
 set :bundle_flags, '--jobs=8 --deployment'
-set :bundle_without, 'development test'
+set :bundle_without, 'development,test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 #
 # Default branch is :master
@@ -55,6 +59,7 @@ set :log_level, :info
 
 set :rbenv_type, :system
 set :ruby_version, File.read('.ruby-version').strip
+set :encryption_key, File.read('.key').strip
 set :rbenv_map_bins, %w[rake gem bundle ruby rails puma]
 set :rbenv_roles, :all # default value
 set :rbenv_ruby, fetch(:ruby_version)
@@ -67,7 +72,7 @@ set :ssh_options, {
   auth_methods: %w[publickey]
 }
 
-set :linked_files, %w[config/secrets.yml]
+set :linked_files, %w[config/secrets.yml .key]
 set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}
 
@@ -76,11 +81,8 @@ set :keep_releases, 5
 
 before 'bundler:install', 'ruby:bundler:native_config'
 
-# puma_restart_method = 'puma:restart:phased'
-#
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
-  #  after :publishing, puma_restart_method
-  #  after puma_restart_method, 'puma:status'
+  after :publishing, 'deploy:secrets:decrypt'
 end
