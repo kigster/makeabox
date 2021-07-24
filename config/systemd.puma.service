@@ -1,0 +1,20 @@
+; vim: ft=toml
+[Unit]
+Description=Puma
+After=network.target
+
+[Service]
+Type=simple
+User=kig
+WorkingDirectory="/home/kig/apps/makeabox/current"
+ExecStart="/usr/bin/rbenv exec bundle exec puma -C /home/kig/apps/makeabox/shared/puma.rb"
+ExecReload="/bin/kill -TSTP $(cat /home/kig/apps/makeabox/shared/tmp/pids/puma.pid)"
+StandardOutput="append:/home/kig/apps/makeabox/shared/log/puma_access.log"
+StandardError="append:/home/kig/apps/makeabox/shared/log/puma_error.log"
+Restart=always
+RestartSec=1
+
+SyslogIdentifier=puma-makeabox
+
+[Install]
+WantedBy=multi-user.target

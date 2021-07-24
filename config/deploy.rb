@@ -33,15 +33,13 @@
 require 'colored2'
 
 set :datadog_api_key, ENV['DATADOG_API_KEY']
-
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
-
+set :branch, `bash -c "source ~/.bashmatic/init.sh; git.branch.current"`
 set :bundle_flags, '--jobs=8 --deployment'
-set :bundle_without, 'development test'
+set :bundle_without, 'development,test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
-# Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+set :branch, 'master'
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
@@ -49,9 +47,13 @@ set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
 # Default value for :format is :pretty
 set :format, :airbrussh
 set :log_level, :info
-set :pty, true
 
-set :rbenv, "#{fetch(:user_home)}/.rbenv/bin/rbenv"
+set :rbenv_type, :system
+set :ruby_version, File.read('.ruby-version').strip
+set :encryption_key, File.read('.key').strip
+set :rbenv_map_bins, %w[rake gem bundle ruby rails puma]
+set :rbenv_roles, :all # default value
+set :rbenv_ruby, fetch(:ruby_version)
 set :native_gems, %i[nokogiri]
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
@@ -70,11 +72,8 @@ set :keep_releases, 5
 
 before 'bundler:install', 'ruby:bundler:native_config'
 
-puma_restart_method = 'puma:restart:phased'
-
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
-  after :publishing, puma_restart_method
-  after puma_restart_method, 'puma:status'
+  after :publishing, 'deploy:secrets:decrypt'
 end

@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+# vim: ft=bash
+#
+# Load Bashmatic Framework for ease of development and user interaction.
+# For more information, please run one of the below messages:
+#
+# Read PDF Documentation:
+# • curl -fsSL https://bashmatic-pdf.re1.re/ -o bashmatic.pdf; open bashmatic.pdf
+#
+# Read the Github README:
+# • open https://bashmatic-readme.re1.re
+#
+# © 2015-2021 Konstantin Gredeskoul, MIT License.
+#
+# You can pass many flags to bashmatic-install functions to control its behavior.
+# See https://bashmatic-install.re1.re/ for more info.
+#
+
+[[ -d "${HOME}/.bashmatic" ]] || bash -c "$(curl -fsSL https://bashmatic.re1.re); bashmatic-install -q"
+[[ -f "${HOME}/.bashmatic/init.sh" ]] || {
+  echo "Unable to find Bashmatic's init.sh after an attempted installation."
+  exit 1
+}
+
+# shellcheck disable=SC1090
+. "${HOME}/.bashmatic/init.sh"
+
+export sym="bundle exec sym -AT"
+
+# shellcheck disable=SC2155
+export MAKEABOX_BIN="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+export MAKEABOX_PATH="${MAKEABOX_PATH:-$(dirname "${MAKEABOX_BIN}")}"
+export MAKEABOX_KEY="${MAKEABOX_PATH}/.key"
+
+bashmatic.bash.exit-unless-version-four-or-later
+bashmatic.set-widget-width-to 100
+
+declare -A sensitives
+export d="config/secrets"
+sensitives["${d}/secrets.yml.enc"]="config/secrets.yml"
+sensitives["${d}/master.key.enc"]="config/master.key"
+sensitives["${d}/commento.sh.enc"]="config/commento.sh"
+sensitives["${d}/envrc.local.enc"]=".envrc.local"
+
+set +e
+
+function each-sensitive() {
+  local yield="$1"
+  local code=0
+  local d
+  for e in "${!sensitives[@]}"; do
+    d="${sensitives["$e"]}"
+
+    if [[ -n "${yield}" && ${yield} =~ crypt ]] && is.a-function "${yield}"; then
+      eval "${yield} \"${e}\" \"${d}\""
+      code=$((code + $?))
+    else
+      printf "${bldylw}${yield} ${bldgrn}%30s ${bldpur}<—-> ${bldred}%30s\n" "${d}" "${e}"
+    fi
+  done
+
+  return ${code}
+}
+
+function kryptonize.install-key() {
+  run.ui.ask 'Do you have the key in the clipboard?'
+  local f="$(file.temp)"
+  pbpaste > "${f}"
+  [[ $(file.size "${f}") -eq 45 ]] || {
+    error "The size of the resulting file is $(file.size "${f}") bytes." \
+      "We expected exactly 45 bytes, so the key isn't valid."
+    exit 2
+  }
+}
+
+function kryptonize.validate() {
+  [[ -f "${MAKEABOX_KEY}" ]] || {
+    error "The encryption is nowhere to be found. Please install it." >&2
+    info "To install the key, open 1Password, search for 'MakeaBox' Key," >&2
+    info "copy it to the clipboard and press any key." >&2
+
+    kryptonize.install-key
+  }
+
+  local decrypted_string
+  decrypted_string="$(bundle exe sym -AT -d -f .encryption)"
+
+  while [[ "${decrypted_string}" != "makeabox.io" ]]; do
+    error "Whoops, we attempted to decrypt something encrypted with the" \
+          "actual key, and it didn't work. Please install the encryption key," \
+          "or press Ctrl-C to abort."
+
+          kryptonize.install-key
+  done
+  return 0
+}
+
+function kryptonize.encrypt() {
+  local encrypted="$1"
+  local decrypted="$2"
+  [[ -f ${decrypted} ]] || {
+    error "File ${decrypted} was not found, skipping."
+    return 1
+  }
+  run "${sym} -ef ${decrypted} -o ${encrypted}"
+}
+
+function kryptonize.decrypt() {
+  local encrypted="$1"
+  local decrypted="$2"
+  [[ -f ${encrypted} ]] || {
+    error "File ${encrypted} was not found, skipping."
+    return 1
+  }
+  run "${sym} -df ${encrypted} -o ${decrypted}"
+}
+
+function kryptonize.do.unlock() {
+  (kryptonize.validate) >/dev/null
+  each-sensitive kryptonize.decrypt
+}
+
+function kryptonize.do.lock() {
+  (kryptonize.validate) >/dev/null
+  each-sensitive kryptonize.encrypt
+}
+
+function kryptonize.do.list() {
+  (kryptonize.validate) >/dev/null
+  each-sensitive
+}
+
+is.a-function "kryptonize.do.$1" || {
+  usage-widget 96 "usage: bin/kryptonize [ $(util.functions-starting-with-csv kryptonize.do. | sed 's/,/ | /g; s/  / /g;' | tr -d '\n')]" \
+    "locks (encrypts) or unlocks (decrypts) all sensitive files in the repo." \
+    "®NOTE" \
+    "Encrypted files always have the extension .enc and live in config/secrets"
+  exit 1
+}
+
+eval "kryptonize.do.$1"

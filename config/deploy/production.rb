@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-set :ruby_version, File.read('.ruby-version').strip
+# OVERRIDE PRODUCTION RUBY HERE
+# set :ruby_version, File.read('.ruby-version').strip
 set :target_os, 'linux'
 set :rails_env, 'production'
 
