@@ -31,7 +31,6 @@ group :development do
   gem 'asciidoctor', require: false
   gem 'capistrano', require: false
   gem 'capistrano3-puma', github: 'seuros/capistrano-puma'
-  gem 'capistrano-direnv', require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false

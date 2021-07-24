@@ -18,7 +18,6 @@ install_plugin Capistrano::SCM::Git
 
 require 'capistrano/rbenv'
 require 'capistrano/puma'
-require 'capistrano/direnv'
 
 install_plugin Capistrano::Puma
 install_plugin Capistrano::Puma::Systemd

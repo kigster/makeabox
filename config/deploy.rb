@@ -32,12 +32,6 @@
 
 require 'colored2'
 
-CURRENT_BRANCH = `git rev-parse --abbrev-ref HEAD`.chomp.freeze
-
-set :direnv_map_bins, %w{rake ruby bundle} # list of executables which should be preceded with direnv prefix
-set :direnv_path, '/usr/bin/direnv'        # path to direnv executable
-set :envrc_path, current_path              # path where .envrc file is stored
-
 set :datadog_api_key, ENV['DATADOG_API_KEY']
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
@@ -45,10 +39,7 @@ set :branch, `bash -c "source ~/.bashmatic/init.sh; git.branch.current"`
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development,test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
-#
-# Default branch is :master
-
-CURRENT_BRANCH == 'master' ? set(:branch, 'master') : ask(:branch, proc { CURRENT_BRANCH })
+set :branch, 'master'
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"
@@ -72,7 +63,7 @@ set :ssh_options, {
   auth_methods: %w[publickey]
 }
 
-set :linked_files, %w[config/secrets.yml .key]
+set :linked_files, %w[config/secrets.yml]
 set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}
 

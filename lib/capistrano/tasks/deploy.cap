@@ -18,11 +18,12 @@ namespace :deploy do
       on roles(:app) do
         within release_path do
           execute :rm, '-f config/secrets.yml'
+          execute :bash, '-c', 'command -v direnv >/dev/null && test -f .envrc && direnv allow . '
         end
       end
     end
 
-    before 'symlink:linked_files', 'secrets'
+    before 'deploy:symlink:linked_files', 'secrets'
 
     Rake::Task['deploy:symlink:linked_dirs'].clear_actions
 
