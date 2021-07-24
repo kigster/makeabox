@@ -25,6 +25,7 @@ gem 'sprockets'
 gem 'sprockets-rails'
 gem 'sym'
 gem 'tzinfo-data'
+gem 'dogapi', "~> 1.29.0", require: false
 
 group :development do
   gem 'airbrussh', require: false
@@ -34,7 +35,6 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false
-  gem 'dogapi', require: false
   gem 'mry', require: false
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false

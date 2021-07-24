@@ -1,3 +1,5 @@
+require "capistrano/datadog"
+set :datadog_api_key, "0e26092e9895a3b45bea2ed9d1effc44"
 # Load DSL and Setup Up Stages
 require 'airbrussh/capistrano'
 require 'capistrano/setup'

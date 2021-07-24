@@ -110,7 +110,7 @@ GEM
       msgpack
     diff-lcs (1.4.4)
     docile (1.4.0)
-    dogapi (1.45.0)
+    dogapi (1.29.0)
       multi_json
     e2mmap (0.1.0)
     ed25519 (1.2.4)
@@ -332,7 +332,7 @@ DEPENDENCIES
   connection_pool
   dalli
   ddtrace
-  dogapi
+  dogapi (~> 1.29.0)
   ed25519
   haml
   jbuilder
