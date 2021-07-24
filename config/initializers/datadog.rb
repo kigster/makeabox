@@ -10,7 +10,7 @@ require 'etc'
 #  ENV['RAILS_ENV'] == 'production'
 # )
 
-unless ENV.fetch('DATADOG_ENABLED', true)
+if ENV.fetch('DATADOG_API_KEY', false)
   require 'ddtrace'
   program = 'makeabox'
 
@@ -25,8 +25,8 @@ unless ENV.fetch('DATADOG_ENABLED', true)
     c.logger.level = ::Logger::INFO
     c.tracer enabled: true
     c.tracer.port = 8126
-    c.tracer.hostname = 'datadog.fossa.link'
     c.tracer.partial_flush.enabled = true
+    c.runtime_metrics.enabled = true
     # To enable debug mode:
     c.diagnostics.debug = true
     c.analytics_enabled = true
@@ -45,7 +45,8 @@ unless ENV.fetch('DATADOG_ENABLED', true)
           service_name: program,
           controller_service: "#{program}-controller",
           distributed_tracing: true,
-          middleware_names: true
+          middleware_names: true,
+          log_injection: true
 
     c.use :http, service_name: "#{program}-http"
 
