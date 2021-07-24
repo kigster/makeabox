@@ -25,6 +25,8 @@
 # shellcheck disable=SC1090
 . "${HOME}/.bashmatic/init.sh"
 
+command -v direnv >/dev/null && eval "$(direnv hook bash)"
+
 export sym="bundle exec sym -AT"
 
 # shellcheck disable=SC2155

@@ -8,7 +8,7 @@ DATADOG_ENABLED = ((ENV["DATADOG_ENABLED"] &&
                     Etc.uname[:sysname] =~ /linux/i &&
                     ENV["RAILS_ENV"] == "production") || false).freeze
 
-if DATADOG_ENAGLED
+if DATADOG_ENABLED
   ENV["DATADOG_ENABLED"] = "1"
   require "ddtrace"
   program = "makeabox"
