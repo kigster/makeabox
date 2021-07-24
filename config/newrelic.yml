@@ -3,7 +3,7 @@
 # .NET, PHP, Python, Node, and Go applications with deep visibility and low
 # overhead.  For more information, visit www.newrelic.com.
 #
-# Generated February 11, 2021
+# Generated July 23, 2021
 #
 # This configuration file is custom generated for NewRelic Administration
 #
@@ -12,11 +12,11 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: bca12b3b850fc7a475e1a47bfaea0b95a284NRAL
+  license_key: dadf69381a139f541a4a269effc83fa90e700c57
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: MAKEABOX
+  app_name: MakeABox
 
   distributed_tracing:
     enabled: true
@@ -33,7 +33,7 @@ common: &default_settings
 # If your application has other named environments, configure them here.
 development:
   <<: *default_settings
-  app_name: MAKEABOX (Development)
+  app_name: MakeABox (Development)
 
 test:
   <<: *default_settings
@@ -42,7 +42,7 @@ test:
 
 staging:
   <<: *default_settings
-  app_name: MAKEABOX (Staging)
+  app_name: MakeABox (Staging)
 
 production:
   <<: *default_settings
