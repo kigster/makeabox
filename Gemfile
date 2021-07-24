@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+gem 'ddtrace', require: 'ddtrace/auto_instrument'
 
 gem 'awesome_print'
 gem 'babel-transpiler'
@@ -9,7 +10,6 @@ gem 'bootsnap'
 gem 'colored2'
 gem 'connection_pool'
 gem 'dalli'
-gem 'ddtrace', require: false
 gem 'ed25519'
 gem 'haml'
 gem 'jbuilder'
