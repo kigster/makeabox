@@ -25,7 +25,7 @@ module MakeABox
     Rails.env.production? && Etc.uname[:sysname] =~ /linux/i
   end
 
-  VERSION = '1.0.1'
+  VERSION = '2.0.0'
 
   MEMCACHED_CONFIG = {
     socket_timeout: 0.2,
@@ -73,7 +73,7 @@ module MakeABox
       g.template_engine :haml
 
       # you can also specify a different test framework or ORM here
-      # g.test_framework  :rspec
+      g.test_framework  :rspec
       # g.orm             :mongoid
     end
   end

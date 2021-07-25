@@ -1,9 +1,9 @@
 !!!
-%html{:lang => 'en'}
-  = render 'shared/1_head'
+%html{lang: 'en'}
+  = render 'shared/head'
   %body
     %nav.navbar.navbar-dark.bg-dark.d-flex
-      %a.navbar-brand{href: "/"}
+      %a.navbar-brand{href: '/'}
         = image_tag('logo-with-gray.png', class: 'logo-image')
         %h1.logo.text-center make a box.io
     .container.container-fluid
@@ -11,4 +11,4 @@
   %footer
     .container-fluid
       .spacer-20
-      = render 'shared/4_footer'
+      = render 'shared/footer'

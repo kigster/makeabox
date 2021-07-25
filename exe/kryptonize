@@ -42,6 +42,7 @@ export d="config/secrets"
 sensitives["${d}/secrets.yml.enc"]="config/secrets.yml"
 sensitives["${d}/master.key.enc"]="config/master.key"
 sensitives["${d}/commento.sh.enc"]="config/commento.sh"
+sensitives["${d}/envrc.production.enc"]=".envrc.production"
 sensitives["${d}/envrc.local.enc"]=".envrc.local"
 
 set +e

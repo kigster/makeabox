@@ -1,0 +1,21 @@
+@import "variables";
+
+body {
+  .row {
+    .container {
+      .comments-container{
+        background-color: $main-bg !important;
+        min-height: 2000px;
+        color: $main-fg !important;
+        width: 100%;
+        #commento {
+          border: 10px solid red !important;
+          margin: 20px auto;
+          height:1000px;
+          width:100%;
+          position:relative;
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-gem 'ddtrace', require: 'ddtrace/auto_instrument'
-gem 'dogstatsd-ruby'
+gem 'ddtrace', require: false
+gem 'dogstatsd-ruby', require: false
 
 gem 'awesome_print'
 gem 'babel-transpiler'

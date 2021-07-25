@@ -7,7 +7,8 @@ Rails.application.config.assets.version = '1.1'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-# Rails.application.config.assets.precompile += %w( search.js )
+Rails.application.config.assets.precompile += %w[application.css application.js]
+
 require 'sprockets/babel_processor'
 Rails.application.config.assets.configure do |env|
   babel = Sprockets::BabelProcessor.new(

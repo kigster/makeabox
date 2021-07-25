@@ -12,10 +12,11 @@ ExecStop=/home/kig/.rbenv/shims/bundler exec pumactl -S /home/deploy/apps/shared
 ExecReload=/bin/kill -s USR1 $MAINPID
 PIDFile=/home/kig/apps/makeabox/shared/tmp/pids/puma.pid
 TimeoutSec=15
+Environment=PATH=/home/kig/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/snap/bin
 Environment=RAILS_ENV=production
 Environment=DATADOG_API_KEY=0e26092e9895a3b45bea2ed9d1effc44
 Environment=RUBYOPTS=W0
-Environment=MALLOC_ARENA_MAX='2'
+Environment=MALLOC_ARENA_MAX=2
 Environment=RUBY_GC_HEAP_FREE_SLOTS=300_000
 Environment=RUBY_GC_HEAP_GROWTH_FACTOR=1.03
 Environment=RUBY_GC_HEAP_GROWTH_MAX_SLOTS=100_000
