@@ -2,6 +2,7 @@
 
 require 'dogapi'
 require 'capistrano/datadog'
+require 'new_relic/recipes'
 
 set :datadog_api_key, '0e26092e9895a3b45bea2ed9d1effc44'
 

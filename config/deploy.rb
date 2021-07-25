@@ -72,6 +72,7 @@ set :default_env, {}
 set :keep_releases, 5
 
 before 'bundler:install', 'ruby:bundler:native_config'
+after "deploy:updated", "newrelic:notice_deployment"
 
 namespace :deploy do
   before :starting, 'deploy:setup'
