@@ -12,7 +12,7 @@ module Makeabox
     attr_accessor :thread, :temp_files
 
     extend Forwardable
-    def_delegators :@temp_files, :size, :<<, :pop
+    def_delegators :@temp_files, :size, :<<, :pop, :empty?
 
     def initialize
       self.temp_files = Queue.new
