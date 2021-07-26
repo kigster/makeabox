@@ -5,19 +5,30 @@
 require 'etc'
 
 module Makeabox
-  DATADOG_ENABLED =
-    (
-      ENV['DATADOG_ENABLED'] == '1' &&
-        Etc.uname[:sysname] =~ /linux/i &&
-        ENV['RAILS_ENV'] == 'production'
-    ).freeze
+  DATADOG_ENABLED = (ENV.fetch('DATADOG_ENABLED', false) && Rails.env.production?)
+  Rails.logger.info("DATADOG is #{DATADOG_ENABLED ? 'enabled' : 'disabled'}")
+
+  # @param [Object] ip
+  # @param [Object] port
+  def self.is_port_open?(ip, port)
+    begin
+      Timeout.timeout(1) do
+        s = TCPSocket.new(ip, port)
+        s.close
+        return true
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        return false
+      end
+    rescue Timeout::Error => _e
+    end
+
+    false
+  end
 end
 
 if Makeabox::DATADOG_ENABLED
-  Rails.logger.info('DATADOG is ENABLED')
   require 'ddtrace'
   require 'datadog/statsd'
-
   program = 'makeabox'
 
   # Here we register Rails services and override automatically generated names by Datadog
@@ -25,21 +36,18 @@ if Makeabox::DATADOG_ENABLED
   # they are (i.e. -rails-tasks, or -rails-puma) and whether it's not rails at all, but redis
   # or dalli.
   f = File.new('log/datadog.log', 'w+') # Log messages should go there
-
   Datadog.configure do |c|
-    c.enabled      = true
     c.logger       = Logger.new(f)
     c.logger.level = ::Logger::INFO
     c.tracer enabled: true
-    c.tracer.port                  = 9126
-    c.tracer.partial_flush.enabled = true
+    c.tracer.port = Makeabox.is_port_open?('127.0.0.1', 9126) ? 9126 : 8126
 
     c.runtime_metrics.enabled = true
     c.runtime_metrics.statsd  = Datadog::Statsd.new
 
     c.sampling.default_rate = 1.0
     # To enable debug mode:
-    c.diagnostics.debug = true
+    # c.diagnostics.debug = true
     c.analytics_enabled = true
     c.tags              = {
       app: program,
@@ -60,14 +68,13 @@ if Makeabox::DATADOG_ENABLED
           log_injection: true
 
     c.use :http, service_name: "#{program}-http"
-
     c.use :action_view, service_name: "#{program}-action-view"
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#sidekiq
     # c.use :sidekiq, service_name: program
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#redis
-    c.use :redis, service_name: "#{program}-redis"
+    # $ c.use :redis, service_name: "#{program}-redis"
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#dalli
     c.use :dalli, service_name: "#{program}-memcached"
@@ -75,6 +82,4 @@ if Makeabox::DATADOG_ENABLED
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#aws
     # c.use :aws, service_name: program + '-aws'
   end
-else
-  Rails.logger.info('DATADOG is DISABLED')
 end

@@ -15,7 +15,7 @@ TimeoutSec=15
 EnvironmentFile=/home/kig/apps/makeabox/current/.envrc.production
 Environment=PATH=/home/kig/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/snap/bin
 Environment=RAILS_ENV=production
-Environment=DATADOG_API_KEY=0e26092e9895a3b45bea2ed9d1effc44
+Environment=DATADOG_API_KEY=6601a18dba5da550faf282ab39f66be1
 Environment=RUBYOPTS=W0
 Environment=MALLOC_ARENA_MAX=2
 Environment=RUBY_GC_HEAP_FREE_SLOTS=300_000
