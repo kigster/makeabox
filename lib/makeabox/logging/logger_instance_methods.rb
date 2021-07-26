@@ -5,13 +5,13 @@ require 'logger'
 require 'yaml'
 require 'digest'
 
-module MakeABox
+module Makeabox
   module Logging
     module LoggerInstanceMethods
       def logger
         return @logger if @logger
 
-        ::MakeABox::Logging::MUTEX.synchronize do
+        ::Makeabox::Logging::MUTEX.synchronize do
           @logger = create_logger
         end
       end
@@ -19,7 +19,7 @@ module MakeABox
       def logger=(value = nil)
         return @logger if @logger == value
 
-        ::MakeABox::Logging::MUTEX.synchronize do
+        ::Makeabox::Logging::MUTEX.synchronize do
           @logger = value
         end
       end
@@ -36,13 +36,13 @@ module MakeABox
       LOG_LEVEL_OVERRIDE_ENV = 'MAKEABOX_LOG_LEVEL'
 
       def create_logger
-        rails_env = ::MakeABox::Logging.detect_rails_env
+        rails_env = ::Makeabox::Logging.detect_rails_env
         logger = ::Logger.new("log/#{rails_env}.log")
 
         logger.formatter = logger_format_proc
 
         level = ENV[LOG_LEVEL_OVERRIDE_ENV].to_sym if ENV[LOG_LEVEL_OVERRIDE_ENV]
-        level ||= ::MakeABox::Logging.default_severity[rails_env]
+        level ||= ::Makeabox::Logging.default_severity[rails_env]
 
         logger.level = log_level_from_sym(level)
         logger.progname = 'rails'
@@ -60,7 +60,7 @@ module MakeABox
           proc do |severity, datetime, _program_name, message|
             # This is only necessary because in some places we call  +Rails.logger+
             # In that case, we must ensure that we are not logging filtered messages.
-            color = ::MakeABox::Logging.severity_colors[severity.downcase.to_sym] || :normal
+            color = ::Makeabox::Logging.severity_colors[severity.downcase.to_sym] || :normal
             sev = format '%-6.6s', severity
             date = format '%23.23s ', datetime.strftime('%Y-%m-%d %H:%M:%S.%L')
             thread = format '%-12s', thread_name
@@ -84,7 +84,7 @@ module MakeABox
 
       def format_pid_ppid
         format(' %5d', Process.pid).magenta.bold +
-          ::MakeABox::Logging::ARROW_SYMBOL + format('%5d ', Process.ppid).blue.bold
+          ::Makeabox::Logging::ARROW_SYMBOL + format('%5d ', Process.ppid).blue.bold
       end
 
       def log_level_from_sym(level)

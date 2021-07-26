@@ -56,20 +56,20 @@ class HomeController < ApplicationController
     end
     flash[:error] =
       'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
-    logger.warn "Timeout Error: #{e.message}"
+    logger.warn 'Timeout Error', reason: e.message
     false
   end
 
   def make_pdf(config)
-    logging "making PDF(#{config['file']}" do
+    logging('generating PDF', config: config) do
       Laser::Cutter::Renderer::LayoutRenderer.new(config).render
     end
   end
 
   def send_pdf(config)
-    logging "sending PDF(#{config['file']}" do
-      temp_files << config['file']
+    logging('sending PDF', config: config) do
       send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
+      garbage_collect(config['file'])
       config['file']
     end
   end
@@ -92,7 +92,7 @@ class HomeController < ApplicationController
 
       begin
         # Add some APM tags
-        span.set_tag('pdf.box.count', temp_files.size)
+        span.set_tag('pdf.box.count', ApplicationController.file_cleaner.size)
         span.set_tag('pdf.box.units', config.units)
         span.set_tag('pdf.box.size', "#{config.width}x#{config.height}x#{config.depth} (#{config.thickness})")
         span.set_tag('pdf.box.notch', config.notch)

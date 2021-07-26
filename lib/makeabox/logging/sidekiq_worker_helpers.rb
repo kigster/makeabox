@@ -5,7 +5,7 @@ require 'logger'
 require 'yaml'
 require 'digest'
 
-module MakeABox
+module Makeabox
   module Logging
     # This module should be prepended to the inheritance chain of any +SidekiqWorker+, for example
     #
@@ -18,7 +18,7 @@ module MakeABox
     #         end
     #      end
     #
-    #      TestWorker.prepend(::MakeABox::Logging::SidekiqWorkerHelpers)
+    #      TestWorker.prepend(::Makeabox::Logging::SidekiqWorkerHelpers)
     #
     module SidekiqWorkerHelpers
       SILENT_ERRORS_SIDEKIQ = %w[
@@ -45,7 +45,7 @@ module MakeABox
       private
 
       def silent_errors
-        @silent_errors ||= ::MakeABox::Logging.constantize_array(SILENT_ERRORS_SIDEKIQ)
+        @silent_errors ||= ::Makeabox::Logging.constantize_array(SILENT_ERRORS_SIDEKIQ)
       end
 
       def retry_info(opts)

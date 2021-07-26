@@ -10,7 +10,7 @@ source ~/.bashmatic/init.sh
 run.set-next show-output-off abort-on-error
 
 main() {
-  h1 "Starting production deployment of MakeABox Rails App to AWS"
+  h1 "Starting production deployment of Makeabox Rails App to AWS"
   run.ui.ask "Are you sure you want to proceed?"
 
   [[ -f ${MAKEABOX_SSHKEY_FILE} ]] || {

@@ -5,7 +5,7 @@ require 'logger'
 require 'yaml'
 require 'digest'
 
-module MakeABox
+module Makeabox
   module Logging
     module LoggerPrependMethods
       LOG_LEVELS.each do |level|
@@ -28,7 +28,7 @@ module MakeABox
 
       def filter_log_arguments?(args)
         Array(args).any? do |arg|
-          ::MakeABox::Logging::LoggingFilters.active_filters.any? { |r| arg =~ r }
+          ::Makeabox::Logging::LoggingFilters.active_filters.any? { |r| arg =~ r }
         end
       end
     end

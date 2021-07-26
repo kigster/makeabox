@@ -9,7 +9,7 @@ class FormHandler {
 
   generatePDF() {
     this.status('PDF is now generating... If it takes more than 30 seconds it may time out. Then retry with an empty tab width.');
-    window.MakeABox.GA('Download PDF');
+    window.Makeabox.GA('Download PDF');
     $('input[name=commit]')[0].value = "true";
     $(this.form).submit();
     return true;
@@ -107,4 +107,4 @@ class FormHandler {
   }
 }
 
-window.MakeABox.FormHandler = FormHandler;
+window.Makeabox.FormHandler = FormHandler;

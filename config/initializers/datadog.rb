@@ -4,14 +4,16 @@
 
 require 'etc'
 
-DATADOG_ENABLED =
-  (
-    ENV['DATADOG_ENABLED'] == '1' &&
-    Etc.uname[:sysname] =~ /linux/i &&
-    ENV['RAILS_ENV'] == 'production'
-  )
+module Makeabox
+  DATADOG_ENABLED =
+    (
+      ENV['DATADOG_ENABLED'] == '1' &&
+      Etc.uname[:sysname] =~ /linux/i &&
+      ENV['RAILS_ENV'] == 'production'
+    )
+end
 
-if DATADOG_ENABLED
+if Makeabox::DATADOG_ENABLED
   require 'ddtrace'
   require 'datadog/statsd'
 

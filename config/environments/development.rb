@@ -15,7 +15,7 @@ Rails.application.configure do
   config.sass.inline_source_maps = true
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
@@ -23,9 +23,9 @@ Rails.application.configure do
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
-  config.log_formatter              = ::Logger::Formatter.new
+  # config.log_formatter              = ::Logger::Formatter.new
 
-  config.logger    = ::MakeABox::Logging.logger
+  # config.logger = ::Makeabox::Logging.logger
   config.log_level = :debug
 
   # Debug mode disables concatenation and preprocessing of assets.
@@ -41,6 +41,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.cache_store = :mem_cache_store, MakeABox::MEMCACHED_URL, MakeABox.memcached_options(:cache)
+  config.cache_store = :mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)
   config.session_store :mem_cache_store
 end

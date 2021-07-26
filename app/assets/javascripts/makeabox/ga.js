@@ -1,4 +1,4 @@
-MakeABox.GA = function(label) {
+Makeabox.GA = function(label) {
   if (typeof(ga) !== 'undefined' && ga !== null) {
     return ga('send', {
                 hitType      : 'event',

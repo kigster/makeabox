@@ -7,23 +7,23 @@ $.when($.ready).then(function () {
   setTimeout(hideAlert, 5000);
 
   // Initialize the Units Conversion Handler
-  window.MakeABox.uh = new window.MakeABox.UnitsHandler('input[name="config[units]"]', '#units');
+  window.Makeabox.uh = new window.Makeabox.UnitsHandler('input[name="config[units]"]', '#units');
 
-  if (window.MakeABox.uh.cookieUnits() !== undefined) {
-    if (window.MakeABox.uh.fromCookie()) {
-      window.MakeABox.uh.status('Welcome back! Form units have been restored from the browser cookie.');
+  if (window.Makeabox.uh.cookieUnits() !== undefined) {
+    if (window.Makeabox.uh.fromCookie()) {
+      window.Makeabox.uh.status('Welcome back! Form units have been restored from the browser cookie.');
     }
   }
 
   // Initialize the main Form Handler
-  window.MakeABox.fh = new window.MakeABox.FormHandler('pdf-generator');
+  window.Makeabox.fh = new window.Makeabox.FormHandler('pdf-generator');
 
   let show_thickness_info = () => $('.thickness-info-modal').modal('show');
   let show_advanced_info = () => $('.advanced-info-modal').modal('show');
   let show_introduction = () => $('#introduction-modal').modal('show');
 
   $("#make-pdf").on("click", function (e) {
-    window.MakeABox.fh.generatePDF(e);
+    window.Makeabox.fh.generatePDF(e);
     return false;
   });
 
@@ -33,18 +33,18 @@ $.when($.ready).then(function () {
     return $('.modal').fadeOut("slow");
   });
 
-  $('.numeric').on("keypress", e => window.MakeABox.fh.preventNonNumeric(e));
+  $('.numeric').on("keypress", e => window.Makeabox.fh.preventNonNumeric(e));
 
-  $('#config_page_size').on('change', e => window.MakeABox.fh.updatePageSettings());
+  $('#config_page_size').on('change', e => window.Makeabox.fh.updatePageSettings());
 
   // Drop Down Options
-  $('#clear').on("click", e => window.MakeABox.fh.reset(this));
-  $('#save').on("click", e => window.MakeABox.fh.save(this, true));
-  $('#save-units').on("click", e => window.MakeABox.uh.toCookie(this));
-  $('#restore').on("click", e => window.MakeABox.fh.restore(this));
+  $('#clear').on("click", e => window.Makeabox.fh.reset(this));
+  $('#save').on("click", e => window.Makeabox.fh.save(this, true));
+  $('#save-units').on("click", e => window.Makeabox.uh.toCookie(this));
+  $('#restore').on("click", e => window.Makeabox.fh.restore(this));
   $('#download').on("click", e => {
-    window.MakeABox.fh.save(this, false);
-    window.MakeABox.fh.generatePDF(e);
+    window.Makeabox.fh.save(this, false);
+    window.Makeabox.fh.generatePDF(e);
     return true;
   });
 

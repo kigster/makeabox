@@ -17,7 +17,7 @@ Rails.application.config.assets.configure do |env|
   env.register_transformer 'application/ecmascript-6', 'application/javascript', babel
 end
 
-MakeABox::Application.configure do
+Makeabox::Application.configure do
   config.sass.preferred_syntax = :sass
   config.sass.line_comments = false
   config.sass.cache = true

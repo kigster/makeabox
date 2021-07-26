@@ -4,7 +4,8 @@ require File.expand_path('boot', __dir__)
 
 # Pick the frameworks you want:
 require 'active_model/railtie'
-# require "active_record/railtie"
+
+# require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
 require 'action_view/railtie'
@@ -20,7 +21,7 @@ require 'action_dispatch/middleware/session/dalli_store'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module MakeABox
+module Makeabox
   def self.live?
     Rails.env.production? && Etc.uname[:sysname] =~ /linux/i
   end
@@ -38,13 +39,13 @@ module MakeABox
 
   MEMCACHED_PORT = ENV.fetch('MEMCACHED_PORT', 11_211)
   MEMCACHED_HOST = ENV.fetch('MEMCACHED_HOST', 'localhost')
-  MEMCACHED_URL  = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}"
+  MEMCACHED_URL = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}"
 
   def self.memcached_options(namespace = nil)
     opts ||= {}
     namespace ||= ''
     namespace = namespace.to_s
-    namespace += ".#{Rails.env}"
+    namespace += ".#{Rails.env.to_s[0]}"
     MEMCACHED_CONFIG.dup.merge(opts.merge({ namespace: namespace }))
   end
 
@@ -54,7 +55,7 @@ module MakeABox
     # -- all .rb files in that directory are automatically loaded.
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+    # Run 'rake -D time' for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
@@ -71,10 +72,7 @@ module MakeABox
 
     config.generators do |g|
       g.template_engine :haml
-
-      # you can also specify a different test framework or ORM here
-      g.test_framework  :rspec
-      # g.orm             :mongoid
+      g.test_framework :rspec
     end
   end
 end

@@ -1,3 +1,3 @@
 
-var MakeABox = {};
-window.MakeABox = MakeABox;
+var Makeabox = {};
+window.Makeabox = Makeabox;

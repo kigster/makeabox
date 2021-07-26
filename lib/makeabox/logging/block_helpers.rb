@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module MakeABox
+module Makeabox
   module Logging
-    # Module +{MakeABox::Logging::BlockHelpers}+ offers a primary method +log_block+,
+    # Module +{Makeabox::Logging::BlockHelpers}+ offers a primary method +log_block+,
     # which takes a message, logging level, a list of exceptions to rescue or to
     # silently ignore, and a block to execute. It then runs the block, measures the time
     # it takes for it to finish, and logs one line per block execution, dealing with
@@ -62,8 +62,8 @@ module MakeABox
       ensure
         elapsed_time = Time.now - start
         final_message = "time: #{format('%8.1f', (1000 * elapsed_time))}ms".cyan.italic + " #{message}"
-        MakeABox::Logging.logger.send(level, final_message)
-        MakeABox::Logging.logger.error(error_message) if error_message
+        Makeabox::Logging.logger.send(level, final_message)
+        Makeabox::Logging.logger.error(error_message) if error_message
         begin
           if block_error && !silent_errors.find { |error_class| block_error.is_a?(error_class) }
             report_error_to_stderr(message, block_error)

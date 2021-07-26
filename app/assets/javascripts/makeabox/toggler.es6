@@ -42,4 +42,4 @@ class Toggler {
   }
 }
 
-window.MakeABox.Toggler = Toggler;
+window.Makeabox.Toggler = Toggler;

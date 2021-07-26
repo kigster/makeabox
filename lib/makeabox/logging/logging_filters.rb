@@ -5,7 +5,7 @@ require 'logger'
 require 'yaml'
 require 'digest'
 
-module MakeABox
+module Makeabox
   module Logging
     # This module loads a YAML into a Hash, which contains a mapping between
     # Rails environments, and a list of filters (regular expressions) that,
@@ -29,7 +29,7 @@ module MakeABox
         end
 
         def active_filters
-          config[::MakeABox::Logging.detect_rails_env]['filters'].map do |filter_name|
+          config[::Makeabox::Logging.detect_rails_env]['filters'].map do |filter_name|
             all_filters[filter_name]
           end
         end

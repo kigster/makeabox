@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe MakeABox do
+RSpec.describe Makeabox do
   describe '#memcached_options' do
     let(:type) { :cache }
     let(:rails_env) { 'test' }
-    let(:expected_namespace) { "#{type}.#{rails_env}" }
+    let(:expected_namespace) { "#{type}.#{rails_env[0]}" }
     let(:result) { described_class.memcached_options(argument)[:namespace] }
 
     describe 'non-nil value' do

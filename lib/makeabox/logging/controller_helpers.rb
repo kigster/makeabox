@@ -5,7 +5,7 @@ require 'logger'
 require 'yaml'
 require 'digest'
 
-module MakeABox
+module Makeabox
   module Logging
     # This module is meant to be included in the +{ApplicationController}+
     module ControllerHelpers
@@ -46,7 +46,7 @@ module MakeABox
       # @example
       #
       #      class ApplicationController
-      #         include MakeABox::Logging::ControllerHelpers
+      #         include Makeabox::Logging::ControllerHelpers
       #         around_action :log_incoming_request
       #      end
       #
@@ -63,7 +63,7 @@ module MakeABox
       private
 
       def silent_errors
-        @silent_errors ||= ::MakeABox::Logging.constantize_array(SILENT_ERRORS_WEB)
+        @silent_errors ||= ::Makeabox::Logging.constantize_array(SILENT_ERRORS_WEB)
       end
 
       def construct_log_message
@@ -73,7 +73,7 @@ module MakeABox
         log_params = request.filtered_parameters
         log_params = log_params.respond_to?(:except) ? log_params.except('controller', 'action', 'format') : log_params
 
-        http_map = ::MakeABox::Logging.http_response_mapping
+        http_map = ::Makeabox::Logging.http_response_mapping
         if response&.status
           code = response.status
           level = http_map[http_map.keys.find { |range| range.include?(code) }]

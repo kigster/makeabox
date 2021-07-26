@@ -1,4 +1,4 @@
-= MakeABox -- Rails Application
+= Makeabox -- Rails Application
 :doctype: book
 :toc:
 :sectnums:

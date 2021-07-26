@@ -18,5 +18,5 @@ end
 
 task :versions do
   puts "Version of the LaserCutter Library  :  #{Laser::Cutter::VERSION}"
-  puts "Version of MakeABox.io Site         :  #{MakeABox::VERSION}"
+  puts "Version of Makeabox.io Site         :  #{Makeabox::VERSION}"
 end

@@ -12,18 +12,18 @@ require 'digest'
 
 Colored2.disable! if ENV['DISABLE_LOG_COLORS']
 
-module MakeABox
+module Makeabox
   # This module is meant to be included in a class or a controller to enable effective
   # and colorful logging to the development/staging/production.log
   #
   # Unlike standard Rails Logger, this logger logs timestamps up to milliseconds, making
   # it easy to find bottlenecks in code.
   #
-  # @example You can use it directly, ie. MakeABox::Logging.logger
+  # @example You can use it directly, ie. Makeabox::Logging.logger
   #              or you can include this module
   #
   #      class Foo
-  #         include ::MakeABox::Logging
+  #         include ::Makeabox::Logging
   #         def initialize
   #            info('created new Foo', 'at', Time.now)
   #         end
@@ -71,15 +71,15 @@ module MakeABox
       end
 
       def severity_colors
-        ::MakeABox::Logging::SEVERITY_COLORS
+        ::Makeabox::Logging::SEVERITY_COLORS
       end
 
       def default_severity
-        ::MakeABox::Logging::DEFAULT_SEVERITY_MAPPING
+        ::Makeabox::Logging::DEFAULT_SEVERITY_MAPPING
       end
 
       def http_response_mapping
-        ::MakeABox::Logging::HTTP_RESPONSE_MAPPING
+        ::Makeabox::Logging::HTTP_RESPONSE_MAPPING
       end
 
       def detect_rails_env

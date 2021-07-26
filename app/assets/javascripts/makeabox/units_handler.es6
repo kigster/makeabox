@@ -79,6 +79,6 @@ class UnitsHandler {
 
 }
 
-window.MakeABox.UnitsHandler = UnitsHandler;
+window.Makeabox.UnitsHandler = UnitsHandler;
 
 
