@@ -1,8 +1,8 @@
+#!/usr/bin/env bash
 # vim: ft=bash
 export DATADOG_ENABLED=1
 export RAILS_ENV=production
 export DD_API_KEY="6601a18dba5da550faf282ab39f66be1"
 export DATADOG_API_KEY="6601a18dba5da550faf282ab39f66be1"
 export DD_ENV="$RAILS_ENV"
-export SYM_KEY="$(pwd -P)/.key"
-export SYM_ARGS="-ck ${SYM_KEY} -T "
+export SYM_ARGS="-ck /home/kig/apps/makeabox/current/.key -T "

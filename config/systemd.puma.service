@@ -12,6 +12,7 @@ ExecStop=/home/kig/.rbenv/shims/bundler exec pumactl -S /home/deploy/apps/shared
 ExecReload=/bin/kill -s USR1 $MAINPID
 PIDFile=/home/kig/apps/makeabox/shared/tmp/pids/puma.pid
 TimeoutSec=15
+EnvironmentFile=/home/kig/apps/makeabox/current/.envrc.production
 Environment=PATH=/home/kig/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/snap/bin
 Environment=RAILS_ENV=production
 Environment=DATADOG_API_KEY=0e26092e9895a3b45bea2ed9d1effc44

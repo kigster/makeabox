@@ -8,17 +8,17 @@ module Makeabox
   DATADOG_ENABLED =
     (
       ENV['DATADOG_ENABLED'] == '1' &&
-      Etc.uname[:sysname] =~ /linux/i &&
-      ENV['RAILS_ENV'] == 'production'
-    )
+        Etc.uname[:sysname] =~ /linux/i &&
+        ENV['RAILS_ENV'] == 'production'
+    ).freeze
 end
 
 if Makeabox::DATADOG_ENABLED
+  Rails.logger.info('DATADOG is ENABLED')
   require 'ddtrace'
   require 'datadog/statsd'
 
-  ENV['DATADOG_ENABLED'] = '1'
-  program                = 'makeabox'
+  program = 'makeabox'
 
   # Here we register Rails services and override automatically generated names by Datadog
   # with something more sensible in our context. We rename the tracers based on what process
@@ -75,4 +75,6 @@ if Makeabox::DATADOG_ENABLED
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#aws
     # c.use :aws, service_name: program + '-aws'
   end
+else
+  Rails.logger.info('DATADOG is DISABLED')
 end
