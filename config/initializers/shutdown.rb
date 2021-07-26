@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 at_exit do
-  until ApplicationController.file_cleaner.empty?
-    file = ApplicationController.temp_files.pop
-    warn "Unlinking file #{file}...."
-    begin
+  include Makeabox::WithLogging
+  cleaner = ApplicationController.file_cleaner
+  until cleaner.empty?
+    file = cleaner.pop
+    logging('Shutdown Vacuum:', file: file) do |extra|
       FileUtils.rm_f(file)
+      extra[:message] += ' [✔] removed'
     rescue IOError => e
-      warn e.message
+      extra[:message] += ", error: #{e.message}"
     end
   end
 end

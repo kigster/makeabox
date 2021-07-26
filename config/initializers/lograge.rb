@@ -11,6 +11,7 @@ Rails.application.configure do
     lambda do |event|
       {
         ddsource: 'ruby',
+        ip: event.payload[:request].remote_ip,
         params: event.payload[:params].reject { |k| %w[controller action].include? k }
       }
     end

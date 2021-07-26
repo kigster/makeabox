@@ -11,8 +11,11 @@ class HomeController < ApplicationController
     handle_units_change
 
     if request.get? && parameter_keys.empty?
-      Rails.cache.fetch('/index-gets', race_condition_ttl: 10.seconds, expires_in: 1.hour) do
-        render_index_action(request, params)
+      logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
+        Rails.cache.fetch('/index-gets', race_condition_ttl: 10.seconds, expires_in: 1.hour) do
+          extra[:message] += ', but not this time [ ✖ ]'
+          render_index_action(request, params)
+        end
       end
     else
       render_index_action(request, params)
@@ -61,13 +64,13 @@ class HomeController < ApplicationController
   end
 
   def make_pdf(config)
-    logging('generating PDF', config: config) do
+    logging('generating PDF', config: config, ip: request.remote_ip) do
       Laser::Cutter::Renderer::LayoutRenderer.new(config).render
     end
   end
 
   def send_pdf(config)
-    logging('sending PDF', config: config) do
+    logging('sending PDF', config: config, ip: request.remote_ip) do
       send_file config['file'], type: 'application/pdf; charset=utf-8', status: 200
       garbage_collect(config['file'])
       config['file']
