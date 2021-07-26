@@ -30,15 +30,9 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Waiting on Memcached...
-      run: |
-          i=0
-          until nc -z -v -w30 localhost 11211 || [[ $i -gt 10 ]]
-          do
-            sleep 1
-            i=$((i + 1))
-          done
-          echo "waited about $i seconds..."
+      run: exe/ports-open-check 11211
     - name: Checking Versions
       run: bundle exec rake versions
     - name: Run Specs
       run: CI=true bundle exec rspec --format=progress -p3
+

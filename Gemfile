@@ -11,6 +11,7 @@ gem 'bootsnap'
 gem 'colored2'
 gem 'connection_pool'
 gem 'dalli'
+gem 'dogapi', '~> 1.29.0', require: false
 gem 'ed25519'
 gem 'haml'
 gem 'jbuilder'
@@ -26,7 +27,6 @@ gem 'sprockets'
 gem 'sprockets-rails'
 gem 'sym'
 gem 'tzinfo-data'
-gem 'dogapi', "~> 1.29.0", require: false
 
 group :development do
   gem 'airbrussh', require: false

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# vim: ft=bash
+# shellcheck disable=SC2154
+#
+# @description
+#   Blocks until something starts listening on a given port.
+#
+# @example
+#   bin/listen 5432 && bin/listen 7619 && echo "Ready"
+#
+
+[[ -d "${HOME}/.bashmatic" ]] || bash -c "$(curl -fsSL https://bashmatic.re1.re); bashmatic-install -q"
+[[ -f "${HOME}/.bashmatic/init.sh" ]] || {
+  echo "Unable to find Bashmatic's init.sh after an attempted installation."
+  exit 1
+}
+
+# shellcheck disable=SC1090
+. "${HOME}/.bashmatic/init.sh"
+
+bashmatic.bash.exit-unless-version-four-or-later
+output.constrain-screen-width 100
+
+function ports-open.usage() {
+  usage-widget 92 \
+     "ports-open-check port1 [port2 ...]" \
+     "Validates that ports in the argument list are all open." \
+     "®exit values" \
+     "This script returns 0 (success) if and only if" \
+     "every port in the arguments is open on a local system." \
+     "®example" \
+     "${bldgrn}ports-open-check 80 8080 443 ${bldblk} # => 0"
+  exit 0
+}
+
+function ports-open.main() {
+  local -A status=()
+  local ports_bound=0
+  local ports_not_bound=0
+  local ports_total="${#@}"
+
+  ((ports_total)) || ports-open.usage
+
+  for port in "$@"; do
+    ((DEBUG)) && printf "${bldgrn}Checking port ${bldred}[%5d]" "${port}"
+    local attempts=0
+    local max=3
+
+    until nc -z -v -w30 127.0.0.1 "${port}" 1>&2 2>/dev/null
+    do
+      attempts=$((attempts + 1))
+      [[ ${attempts} -ge ${max} ]] && {
+        status[${port}]=" ✖ (closed)"
+        ports_not_bound=$((ports_not_bound + 1))  ``
+        break
+      }
+    done
+
+    [[ -n ${status[${port}]} ]] || {
+      ports_bound=$(( ports_bound + 1 ))
+      status[${port}]=" ✔ ( open ) "
+    }
+
+    ((DEBUG)) && printf -- " ➔ ${bldylw}%10s${clr}\n" ${status[${port}]}
+  done
+
+  declare -a results
+  results+=("Open Ports • Status Check Results")
+  for i in "${!status[@]}"; do
+    local color="${bldgrn}"
+    [[ ${status[$i]} =~ ✖ ]] && color="${bldred}"
+    results+=("$(printf "Port ${bldylw}[%5d]${clr}, status=${color}%4s" "$i" "${status[$i]}" )")
+  done
+
+  h1 "${results[@]}"
+
+  [[ ${ports_total} -eq ${ports_bound} ]]
+}
+
+ports-open.main "$@"
