@@ -73,6 +73,8 @@ set :keep_releases, 5
 
 before 'bundler:install', 'ruby:bundler:native_config'
 after 'deploy:updated', 'newrelic:notice_deployment'
+before 'puma:restart', 'systemd:daemon-reload'
+after 'puma:restart', 'systemd:status'
 
 namespace :deploy do
   before :starting, 'deploy:setup'

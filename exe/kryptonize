@@ -55,6 +55,12 @@ function each-sensitive() {
     d="${sensitives["$e"]}"
 
     if [[ -n "${yield}" && ${yield} =~ crypt ]] && is.a-function "${yield}"; then
+      if is.a-function "${yield}.is_needed"; then
+        eval "${yield}.is_needed ${e} ${d}" || {
+          printf " ${bldgrn}[ ✔ ] ${txtblu}The target is already up to date: skipping ${yield/kryptonize./}ing ${bldylw}'$(basename ${d})'\n"
+          continue
+        }
+      fi
       eval "${yield} \"${e}\" \"${d}\""
       code=$((code + $?))
     else
@@ -74,6 +80,7 @@ function kryptonize.install-key() {
       "We expected exactly 45 bytes, so the key isn't valid."
     exit 2
   }
+  return 0
 }
 
 function kryptonize.validate() {
@@ -98,6 +105,12 @@ function kryptonize.validate() {
   return 0
 }
 
+function kryptonize.encrypt.is_needed() {
+  local encrypted="$1"
+  local decrypted="$2"
+  file.first-is-newer-than-second "${decrypted}" "${encrypted}"
+}
+
 function kryptonize.encrypt() {
   local encrypted="$1"
   local decrypted="$2"
@@ -106,6 +119,12 @@ function kryptonize.encrypt() {
     return 1
   }
   run "${sym} -ef ${decrypted} -o ${encrypted}"
+}
+
+function kryptonize.decrypt.is_needed() {
+  local encrypted="$1"
+  local decrypted="$2"
+  [[ ! -f "${decrypted}" ]] || file.first-is-newer-than-second "${encrypted}" "${decrypted}"
 }
 
 function kryptonize.decrypt() {

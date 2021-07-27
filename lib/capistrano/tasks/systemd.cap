@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+namespace :systemd do
+  desc 'Reload SystemD Configuration'
+  task :'daemon-reload' do
+    on roles(:app) do
+      sudo :systemctl, 'daemon-reload'
+    end
+  end
+
+  task :status do
+    on roles(:app) do
+      sudo :systemctl, "status #{fetch(:puma_service_unit_name)}"
+    end
+  end
+end
