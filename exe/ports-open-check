@@ -9,7 +9,7 @@
 #   bin/listen 5432 && bin/listen 7619 && echo "Ready"
 #
 
-[[ -d "${HOME}/.bashmatic" ]] || bash -c "$(curl -fsSL https://bashmatic.re1.re); bashmatic-install -q"
+[[ -d "${HOME}/.bashmatic" ]] || bash -c "$(curl -fsSL https://bashmatic.re1.re); bashmatic-install -q -m https"
 [[ -f "${HOME}/.bashmatic/init.sh" ]] || {
   echo "Unable to find Bashmatic's init.sh after an attempted installation."
   exit 1

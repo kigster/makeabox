@@ -12,7 +12,7 @@ class HomeController < ApplicationController
 
     if request.get? && parameter_keys.empty?
       logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
-        Rails.cache.fetch('/index-gets', race_condition_ttl: 10.seconds, expires_in: 1.hour) do
+        Rails.cache.fetch(homepage_cache_key, race_condition_ttl: 10.seconds, expires_in: 1.hour) do
           extra[:message] += ', but not this time [ ✖ ]'
           render_index_action(request, params)
         end
@@ -20,6 +20,12 @@ class HomeController < ApplicationController
     else
       render_index_action(request, params)
     end
+  end
+
+  protected
+
+  def homepage_cache_key
+    create_cache_key("#{controller_name}.#{action_name}.#{request.method}")
   end
 
   private

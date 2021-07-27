@@ -3,6 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
+  describe '#homepage_cache_key' do
+    subject { controller.send(:homepage_cache_key) }
+    it { is_expected.to eq "home..GET.#{controller.send(:git_rev_parse)}" }
+  end
+
   describe 'GET /' do
     it 'returns http success' do
       get :index
@@ -10,11 +15,13 @@ RSpec.describe HomeController, type: :controller do
     end
 
     it 'activate caching: returns http success' do
-      expect(Rails.cache).to receive(:fetch).and_call_original
+      expect(Rails.cache).to receive(:fetch).and_call_original.at_least(2).times
       get :index
-      expect(response).to be_successful
 
-      expect(Rails.cache.read('/index-gets')).to_not be_nil
+      expect(response).to be_successful
+      get :index
+
+      expect(Rails.cache.read(controller.send(:homepage_cache_key))).to_not be_nil
     end
   end
 

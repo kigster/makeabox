@@ -27,6 +27,8 @@ Metrics/AbcSize:
 # IgnoredMethods: refine
 Metrics/BlockLength:
   Max: 47
+  Exclude:
+    - spec/controllers/**/*.rb
 
 # Offense count: 4
 # Configuration parameters: IgnoredMethods.

@@ -34,5 +34,5 @@ jobs:
     - name: Checking Versions
       run: bundle exec rake versions
     - name: Run Specs
-      run: CI=true bundle exec rspec --format=progress -p3
+      run: CI=true bundle exec rspec --format=documentation -p3
 

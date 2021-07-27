@@ -22,8 +22,16 @@ require 'action_dispatch/middleware/session/dalli_store'
 Bundler.require(*Rails.groups)
 
 module Makeabox
-  def self.live?
-    Rails.env.production? && Etc.uname[:sysname] =~ /linux/i
+  class << self
+    def live?
+      Rails.env.production? && Etc.uname[:sysname] =~ /linux/i
+    end
+
+    def datadog_enabled?
+      (ENV.fetch('DATADOG_ENABLED', false) && Rails.env.production?).tap do |result|
+        Rails.logger.info("DATADOG is #{result ? 'enabled' : 'disabled'}")
+      end
+    end
   end
 
   VERSION = '2.0.0'

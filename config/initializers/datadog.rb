@@ -1,32 +1,10 @@
 # frozen_string_literal: true
 
 # config/initializers/datadog.rb
-
+require 'makeabox/host_probe'
 require 'etc'
 
-module Makeabox
-  DATADOG_ENABLED = (ENV.fetch('DATADOG_ENABLED', false) && Rails.env.production?)
-  Rails.logger.info("DATADOG is #{DATADOG_ENABLED ? 'enabled' : 'disabled'}")
-
-  # @param [Object] ip
-  # @param [Object] port
-  def self.is_port_open?(ip, port)
-    begin
-      Timeout.timeout(1) do
-        s = TCPSocket.new(ip, port)
-        s.close
-        return true
-      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-        return false
-      end
-    rescue Timeout::Error => _e
-    end
-
-    false
-  end
-end
-
-if Makeabox::DATADOG_ENABLED
+if Makeabox.datadog_enabled?
   require 'ddtrace'
   require 'datadog/statsd'
   program = 'makeabox'
@@ -40,7 +18,7 @@ if Makeabox::DATADOG_ENABLED
     c.logger       = Logger.new(f)
     c.logger.level = ::Logger::INFO
     c.tracer enabled: true
-    c.tracer.port = Makeabox.is_port_open?('127.0.0.1', 9126) ? 9126 : 8126
+    c.tracer.port = Makeabox::HostPortProbe.new('127.0.0.1', 9126).open? ? 9126 : 8126
 
     c.runtime_metrics.enabled = true
     c.runtime_metrics.statsd  = Datadog::Statsd.new
