@@ -1,4 +1,3 @@
-# vim: ft=systemd
 [Unit]
 Description=puma.makeabox
 After=network.target
@@ -12,7 +11,27 @@ ExecStop=/home/kig/.rbenv/shims/bundler exec pumactl -S /home/deploy/apps/shared
 ExecReload=/bin/kill -s USR1 $MAINPID
 PIDFile=/home/kig/apps/makeabox/shared/tmp/pids/puma.pid
 TimeoutSec=15
-EnvironmentFile=/home/kig/apps/makeabox/current/.envrc.production
+Environment=PATH=/home/kig/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/snap/bin
+Environment=RAILS_ENV=production
+Environment=SYM_ARGS="-ck /home/kig/apps/makeabox/current/.key -T "
+Environment=DD_ENV=production
+Environment=DD_API_KEY="6601a18dba5da550faf282ab39f66be1"
+Environment=DATADOG_API_KEY="6601a18dba5da550faf282ab39f66be1"
+Environment=DATADOG_ENABLED=1
+Environment=DATADOG_API_KEY=6601a18dba5da550faf282ab39f66be1
+Environment=RUBYOPT=W0
+Environment=MALLOC_ARENA_MAX=2
+Environment=RUBY_GC_HEAP_FREE_SLOTS=300_000
+Environment=RUBY_GC_HEAP_GROWTH_FACTOR=1.03
+Environment=RUBY_GC_HEAP_GROWTH_MAX_SLOTS=100_000
+Environment=RUBY_GC_HEAP_INIT_SLOTS=500_000
+Environment=RUBY_GC_HEAP_OLDOBJECT_LIMIT_FACTOR=2.4
+Environment=RUBY_GC_MALLOC_LIMIT=50_000_000
+Environment=RUBY_GC_MALLOC_LIMIT_GROWTH_FACTOR=1.32
+Environment=RUBY_GC_MALLOC_LIMIT_MAX=90_000_000
+Environment=RUBY_GC_OLDMALLOC_LIMIT=10_000_000
+Environment=RUBY_GC_OLDMALLOC_LIMIT_GROWTH_FACTOR=1.2
+Environment=RUBY_GC_OLDMALLOC_LIMIT_MAX=47207045
 SyslogIdentifier=puma.makeabox
 CPUQuota=80%
 MemoryHigh=3G
