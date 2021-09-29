@@ -16,17 +16,17 @@ gem 'ed25519'
 gem 'haml'
 gem 'jbuilder'
 gem 'laser-cutter', '= 1.0.3'
-gem 'lograge'
+gem 'lograge', '>= 0.11.2'
 # gem 'lograge-sql'
 gem 'newrelic_rpm'
 gem 'puma'
 gem 'rack-timeout', require: 'rack/timeout/base'
-gem 'rails'
+gem 'rails', '>= 6.1.4'
 gem 'rb-fsevent'
-gem 'sassc-rails'
+gem 'sassc-rails', '>= 2.1.2'
 gem 'sdoc', group: :doc
 gem 'sprockets'
-gem 'sprockets-rails'
+gem 'sprockets-rails', '>= 3.2.2'
 gem 'sym'
 gem 'tzinfo-data'
 
@@ -43,7 +43,7 @@ group :development do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem 'rufo', require: false
-  gem 'solargraph', require: false
+  gem 'solargraph', '>= 0.42.4', require: false
   gem 'yard', require: false
   gem 'yard-rspec', require: false
 end
@@ -51,6 +51,6 @@ end
 group :test, :development, :demo do
   gem 'codecov'
   gem 'rspec-its'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 5.0.1'
   gem 'simplecov'
 end
