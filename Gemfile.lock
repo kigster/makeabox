@@ -247,7 +247,7 @@ GEM
     rspec-mocks (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
-    rspec-rails (5.0.1)
+    rspec-rails (5.0.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       railties (>= 5.2)
@@ -255,7 +255,7 @@ GEM
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
-    rspec-support (3.10.2)
+    rspec-support (3.10.3)
     rubocop (1.18.4)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -369,7 +369,7 @@ DEPENDENCIES
   haml
   jbuilder
   laser-cutter (= 1.0.3)
-  lograge
+  lograge (>= 0.11.2)
   mry
   newrelic_rpm
   puma
@@ -377,17 +377,17 @@ DEPENDENCIES
   rails (>= 6.1.6.1)
   rb-fsevent
   rspec-its
-  rspec-rails
+  rspec-rails (>= 5.0.1)
   rubocop
   rubocop-rails
   rubocop-rspec
   rufo
-  sassc-rails
+  sassc-rails (>= 2.1.2)
   sdoc
   simplecov
   solargraph
   sprockets
-  sprockets-rails
+  sprockets-rails (>= 3.2.2)
   sym
   tzinfo-data
   yard
