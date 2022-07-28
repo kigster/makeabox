@@ -21,7 +21,7 @@ gem 'lograge', '>= 0.11.2'
 gem 'newrelic_rpm'
 gem 'puma'
 gem 'rack-timeout', require: 'rack/timeout/base'
-gem 'rails', '>= 6.1.4.2'
+gem 'rails', '>= 7.0.3.1'
 gem 'rb-fsevent'
 gem 'sassc-rails', '>= 2.1.2'
 gem 'sdoc', group: :doc
