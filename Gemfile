@@ -1,34 +1,37 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-gem 'ddtrace', require: false
-gem 'dogstatsd-ruby', require: false
 
-gem 'awesome_print'
-gem 'babel-transpiler'
-gem 'bcrypt_pbkdf'
-gem 'bootsnap'
-gem 'colored2'
-gem 'connection_pool'
-gem 'dalli'
-gem 'dogapi', '~> 1.29.0', require: false
-gem 'ed25519'
-gem 'haml'
-gem 'jbuilder'
-gem 'laser-cutter', '= 1.0.3'
-gem 'lograge', '>= 0.11.2'
-# gem 'lograge-sql'
-gem 'newrelic_rpm'
-gem 'puma'
-gem 'rack-timeout', require: 'rack/timeout/base'
-gem 'rails', '>= 6.1.4.2'
-gem 'rb-fsevent'
-gem 'sassc-rails', '>= 2.1.2'
-gem 'sdoc', group: :doc
-gem 'sprockets'
-gem 'sprockets-rails', '>= 3.2.2'
-gem 'sym'
-gem 'tzinfo-data'
+group :default do
+  gem 'matrix'
+  gem 'ddtrace', require: false
+  gem 'dogstatsd-ruby', require: false
+
+  gem 'awesome_print'
+  gem 'babel-transpiler'
+  gem 'bcrypt_pbkdf'
+  gem 'bootsnap'
+  gem 'colored2'
+  gem 'connection_pool'
+  gem 'dalli'
+  gem 'ed25519'
+  gem 'haml'
+  gem 'jbuilder'
+  gem 'laser-cutter', '= 1.0.3'
+  gem 'lograge'
+  # gem 'lograge-sql'
+  gem 'newrelic_rpm'
+  gem 'puma'
+  gem 'rack-timeout', require: 'rack/timeout/base'
+  gem 'rails', '~> 6.1'
+  gem 'rb-fsevent'
+  gem 'sassc-rails', '~> 2'
+  gem 'sdoc', group: :doc
+  gem 'sprockets'
+  gem 'sprockets-rails', '~> 3'
+  gem 'sym'
+  gem 'tzinfo-data'
+end
 
 group :development do
   gem 'airbrussh', require: false
@@ -50,7 +53,8 @@ end
 
 group :test, :development, :demo do
   gem 'codecov'
+  gem 'rspec'
   gem 'rspec-its'
-  gem 'rspec-rails', '>= 5.0.1'
+  gem 'rspec-rails'
   gem 'simplecov'
 end
