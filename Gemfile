@@ -3,9 +3,9 @@
 source 'https://rubygems.org'
 
 group :default do
-  gem 'matrix'
   gem 'ddtrace', require: false
   gem 'dogstatsd-ruby', require: false
+  gem 'matrix'
 
   gem 'awesome_print'
   gem 'babel-transpiler'
@@ -42,9 +42,9 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false
   gem 'mry', require: false
-  gem 'rubocop', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
   gem 'rufo', require: false
   gem 'solargraph', require: false
   gem 'yard', require: false

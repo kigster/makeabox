@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Makeabox
   # This module adds a #logging method that can be used to log a block of execution
   module WithLogging

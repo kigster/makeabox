@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe HomeController, type: :controller do
   describe '#homepage_cache_key' do
     subject { controller.send(:homepage_cache_key) }
+
     it { is_expected.to eq "home..GET.#{controller.send(:git_rev_parse)}" }
   end
 
@@ -15,13 +16,13 @@ RSpec.describe HomeController, type: :controller do
     end
 
     it 'activate caching: returns http success' do
-      expect(Rails.cache).to receive(:fetch).and_call_original.at_least(2).times
+      expect(Rails.cache).to receive(:fetch).and_call_original.at_least(:twice)
       get :index
 
       expect(response).to be_successful
       get :index
 
-      expect(Rails.cache.read(controller.send(:homepage_cache_key))).to_not be_nil
+      expect(Rails.cache.read(controller.send(:homepage_cache_key))).not_to be_nil
     end
   end
 
@@ -30,8 +31,8 @@ RSpec.describe HomeController, type: :controller do
       it 'returns http success' do
         post :index
         expect(response).to be_successful
-        expect(flash).to_not be_empty
-        expect(flash['error']).to_not be_empty
+        expect(flash).not_to be_empty
+        expect(flash['error']).not_to be_empty
         expect(flash['error']).to eq 'width, height, depth, thickness are required, but missing.'
       end
     end

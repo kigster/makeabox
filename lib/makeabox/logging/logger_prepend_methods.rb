@@ -10,7 +10,7 @@ module Makeabox
     module LoggerPrependMethods
       LOG_LEVELS.each do |level|
         send(:define_method, level) do |*args, &_block|
-          lines = args.join.split(/\n/)
+          lines = args.join.split("\n")
           count = 0
           lines.each do |message|
             next if message.empty? || message =~ /^\s*$/

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'forwardable'
 require 'singleton'
 
@@ -37,10 +38,6 @@ module Makeabox
           end
         end
       self.configured = true
-    end
-
-    def <<(file)
-      temp_files << file
     end
 
     def gc!

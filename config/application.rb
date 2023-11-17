@@ -35,7 +35,7 @@ module Makeabox
 
   MEMCACHED_CONFIG = {
     socket_timeout: 0.2,
-    expires_in: 10.minute,
+    expires_in: 10.minutes,
     keepalive: true,
     compress: true,
     pool_size: 10,
@@ -44,7 +44,7 @@ module Makeabox
 
   MEMCACHED_PORT = ENV.fetch('MEMCACHED_PORT', 11_211)
   MEMCACHED_HOST = ENV.fetch('MEMCACHED_HOST', 'localhost')
-  MEMCACHED_URL = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}"
+  MEMCACHED_URL = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}".freeze
 
   def self.memcached_options(namespace = nil)
     opts ||= {}

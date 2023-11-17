@@ -1,5 +1,5 @@
 # Use the barebones version of Ruby 2.2.3.
-FROM ruby:2.4-onbuild
+FROM ruby:3.2.2
 
 RUN apt-get update && \
   apt-get install -qq -y \

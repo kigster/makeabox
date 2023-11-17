@@ -30,7 +30,7 @@ RSpec.describe HomeHelper, type: :helper do
       helper.create_new_config
     end
 
-    it 'should generate PDF file' do
+    it 'generates PDF file' do
       expect(helper).to receive(:timestamp).and_return('20200708230205')
       expect(File.basename(helper.generate_pdf_filename)).to eq filename
     end

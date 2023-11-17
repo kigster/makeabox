@@ -107,8 +107,8 @@ module Makeabox
         format ' %-6.6s(thr)', Thread.current[:name]
       end
 
-      def logger_log(level, *args, &block)
-        logger.send(level, *args, &block) if defined?(Logger)
+      def logger_log(level, ...)
+        logger.send(level, ...) if defined?(Logger)
       end
     end
 
