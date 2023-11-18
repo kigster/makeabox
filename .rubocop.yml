@@ -1,18 +1,15 @@
 inherit_from: 
   - .rubocop_todo.yml
-  - .rubocop_makeabox_lint.yml
-  - .rubocop_makeabox_style.yml
-  - .rubocop_makeabox_layout.yml
+
+require:
+ - rubocop-rspec
+ - rubocop-rails
 
 AllCops:
   TargetRubyVersion: 3
   NewCops: enable
   UseCache: false
   DefaultFormatter: progress
-  DisplayStyleGuide: true
-  DisplayLintGuide: true
-  DisplayLayoutGuide: true
-  DisplayCopNames: true
   Exclude:
     - "external*/**/*"
     - "bazel-*/**/*"

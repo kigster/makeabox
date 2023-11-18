@@ -3,7 +3,7 @@
 at_exit do
   include Makeabox::WithLogging
   cleaner = ApplicationController.file_cleaner
-  until cleaner.empty?
+  while cleaner.present?
     file = cleaner.pop
     logging('Shutdown Vacuum:', file: file) do |extra|
       FileUtils.rm_f(file)

@@ -17,10 +17,10 @@ module Makeabox
         def load_config!
           self.config =
             if defined?(::Rails)
-              YAML.load(File.read("#{Rails.root}/config/logging_filters.yml"))
+              YAML.load_file("#{Rails.root.join('config/logging_filters.yml')}")
             else
-              YAML.load(File.read(File.expand_path('config/logging_filters.yml',
-                                                   Dir.pwd.to_s)))
+              YAML.load_file(File.expand_path('config/logging_filters.yml',
+                                              Dir.pwd.to_s))
             end
         end
 

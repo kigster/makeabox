@@ -9,7 +9,9 @@ RSpec.describe Makeabox do
 
     describe 'non-nil value' do
       subject { result }
+
       let(:argument) { :cache }
+
       it { is_expected.to eq(expected_namespace) }
     end
   end

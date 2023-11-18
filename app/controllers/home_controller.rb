@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  attr_accessor :latest_error
+  attr_accessor :latest_error, :refine_ad_type
 
   DEFAULT_PARAMS_KEYS = %w[controller action].freeze
 
@@ -9,6 +9,10 @@ class HomeController < ApplicationController
     create_new_config
     populate_form_fields
     handle_units_change
+
+    @refine_ad_type = Time.now.to_i.even? ? 'dark' : 'light'
+
+    Rails.logger.info("refine type is #{refine_ad_type}")
 
     if request.get? && parameter_keys.empty?
       logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
@@ -24,6 +28,7 @@ class HomeController < ApplicationController
 
   protected
 
+  # @return [String (frozen)]
   def homepage_cache_key
     create_cache_key("#{controller_name}.#{action_name}.#{request.method}")
   end
@@ -35,6 +40,9 @@ class HomeController < ApplicationController
   def parameter_keys
     params.keys - DEFAULT_PARAMS_KEYS
   end
+
+  PDF_FILE_STATUS = 'pdf.file.status'
+  PDF_FILE_ERROR  = 'pdf.file.error'
 
   def render_index_action(request, params)
     return(render) if request.get?
@@ -60,8 +68,8 @@ class HomeController < ApplicationController
     end
   rescue Rack::Timeout::Error => e
     if defined?(::Datadog)
-      ::Datadog.tracer.active_span&.set_tag('pdf.file.status', 2)
-      ::Datadog.tracer.active_span&.set_tag('pdf.file.error', e.message)
+      ::Datadog.tracer.active_span&.set_tag(PDF_FILE_STATUS, 2)
+      ::Datadog.tracer.active_span&.set_tag(PDF_FILE_ERROR, e.message)
     end
     flash[:error] =
       'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
@@ -110,9 +118,9 @@ class HomeController < ApplicationController
         if config.file && File.exist?(config.file)
           span.set_tag('pdf.file.name', config.file)
           span.set_tag('pdf.file.size', ::File.size(config.file)) if File.exist?(config.file)
-          span.set_tag('pdf.file.status', 0)
+          span.set_tag(PDF_FILE_STATUS, 0)
         else
-          span.set_tag('pdf.file.status', 1)
+          span.set_tag(PDF_FILE_STATUS, 1)
         end
       rescue StandardError => e
         logger.warn("Error processing tags for DataDog: #{e.inspect}")
