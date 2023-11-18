@@ -77,7 +77,7 @@ $.when($.ready).then(function () {
     ga('send', 'event', 'outbound', 'click', url, {
       'transport': 'beacon',
       'hitCallback': function () {
-        document.location = url;
+        window.open(url, '_blank');
       }
     })
   };

@@ -1,9 +1,13 @@
 @import "variables";
 
 body {
-  .modal-dialog {
+  .modal-dialog{
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0 0 60px 20px red !important;
+    border-radius: $default-border-radius;
     min-width: 50%;
   }
+
   .modal-content {
     line-height: 1.1;
     border-radius: $default-border-radius * 1.5;

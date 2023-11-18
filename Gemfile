@@ -6,7 +6,7 @@ group :default do
   gem 'ddtrace', require: false
   gem 'dogstatsd-ruby', require: false
   gem 'matrix'
-
+  gem "dogapi"
   gem 'awesome_print'
   gem 'babel-transpiler'
   gem 'bcrypt_pbkdf'
