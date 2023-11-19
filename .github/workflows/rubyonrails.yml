@@ -26,10 +26,8 @@ jobs:
           bundler-cache: true
       # Add or replace database setup steps here
       # Add or replace test runners here
-      - name: Waiting on Memcached...
-        run: exe/ports-open-check 11211
       - name: Run tests
-        run: bundle exec rspec
+        run: bundle exec rspec 
 
   lint:
     runs-on: ubuntu-latest
