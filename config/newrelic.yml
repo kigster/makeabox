@@ -1,4 +1,3 @@
-#
 # This file configures the New Relic Agent.  New Relic monitors Ruby, Java,
 # .NET, PHP, Python, Node, and Go applications with deep visibility and low
 # overhead.  For more information, visit www.newrelic.com.
@@ -12,17 +11,17 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: dadf69381a139f541a4a269effc83fa90e700c57
+  license_key: "0f98760dc25feedc22a69433b93a6dcbFFFFNRAL"
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: Makeabox
+  app_name: MakeABox
 
   distributed_tracing:
     enabled: true
 
   # To disable the agent regardless of other settings, uncomment the following:
-  # agent_enabled: false
+  agent_enabled: true
 
   # Logging level for log/newrelic_agent.log
   log_level: info
@@ -33,7 +32,7 @@ common: &default_settings
 # If your application has other named environments, configure them here.
 development:
   <<: *default_settings
-  app_name: Makeabox (Development)
+  app_name: MakeABox (Development)
 
 test:
   <<: *default_settings
@@ -42,7 +41,7 @@ test:
 
 staging:
   <<: *default_settings
-  app_name: Makeabox (Staging)
+  app_name: MakeABox (Staging)
 
 production:
   <<: *default_settings

@@ -10,6 +10,7 @@
   = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
 
   %title= content_for?(:title) ? yield(:title) : 'Make A Box: Generate Laser Cutter Templates for Enclosures!'
+  %script{src: 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js', async: true, crossorigin: "anonymous"}
 
   = javascript_include_tag 'application'
 

@@ -32,14 +32,13 @@
 
 require 'colored2'
 
-set :datadog_api_key, ENV.fetch('DATADOG_API_KEY', nil)
 set :application, 'makeabox'
-set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
+set :repo_url, 'git@github.com:kigster/makeabox.git'
 set :branch, `bash -c "source ~/.bashmatic/init.sh; git.branch.current"`
 set :bundle_flags, '--jobs=8 --deployment'
 set :bundle_without, 'development,test'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
-set :branch, 'master'
+set :branch, 'main'
 
 set :user_home, '/home/kig'
 set :deploy_to, "#{fetch(:user_home)}/apps/makeabox"

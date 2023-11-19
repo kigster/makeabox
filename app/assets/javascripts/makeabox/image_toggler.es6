@@ -1,25 +1,22 @@
+
 class ImageSwapper {
-  constructor(div_array, image_url_array, duration_array = [], effectDelay = 1500) {
-    this.divs           = div_array;
-    this.divs_count     = this.divs.length;
-    this.images         = image_url_array;
-    this.durations      = duration_array;
-    this.effectDuration = 1500;
+  constractor(div_array, image_url_array, effectDelay = 500) {
+    this.divs              = div_array
+    this.images            = image_url_array
+    this.effectiveDelay    = effectDelay
+    this.interaction_count = 0
 
     const myself = this;
-
     this.delay(10, function() { myself.toggle(0) });
   }
 
-  delay(ms, func) {
-    return setTimeout(func, ms);
-  }
+  delay = (ms, func) => setTimeout(func, ms);
 
-  toggle(currentIndex) {
-    let nextIndex = this.nextIndex(currentIndex);
+  toggle = currentIndex => {
+    const nextIndex = this.nextIndex(currentIndex);
 
-    let _curr = $(this.divs[ currentIndex ]);
-    let _next = $(this.divs[ nextIndex ]);
+    const _curr = $(this.divs[ currentIndex ]);
+    constz _next   = $(this.divs[ nextIndex ]);
 
     const myself = this;
 
@@ -34,7 +31,7 @@ class ImageSwapper {
     });
 
     return true;
-  }
+  };
 
   nextIndex(index) {
     index++;

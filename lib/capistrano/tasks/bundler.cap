@@ -4,13 +4,13 @@ require 'colored2'
 
 def install_bundler
   execute :bash, <<~BASH.gsub(/\s{2,}/, ' ')
-            -c 'source ~/.bash_profile; [[ -n "$(gem list | grep bundler)" ]] || gem install bundler --no-ri --no-rdoc '
+    -c 'source ~/.bash_profile; [[ -n "$(gem list | grep bundler)" ]] || gem install bundler --no-ri --no-rdoc '
   BASH
 end
 
 namespace :ruby do
   namespace :bundler do
-    desc 'Install bundler'
+    desc 'Installs Bundler itself if its not found or incompatible.'
     task :install do
       on roles(:app) do
         within deploy_to do

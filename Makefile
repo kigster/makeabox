@@ -23,21 +23,28 @@ clear		:= \033[0m
 help:		## Prints help message auto-generated from the comments.
 		@grep -E '^[a-zA-Z_-]+:.*?##.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?##"}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-start-prod:	## Starts server in production mode
+build:		## Builds and pre-compiles assets.
+		@bash -c " \
+			export RAILS_ENV=production; \
+			bundle exec rake assets:precompile; \
+			"
+
+boot:		build ## First builds, then starts the Puma App.
 		@bash -c " \
 			export RAILS_ENV=production; \
 			bundle exec rake assets:precompile; \
 			bundle exec rake puma-ctl start \
 			"
 
-setup:
+test:           ## Installs dependencies and starts the app
+		@bin/setup
+		@echo "Running RSpecs..." >&2
+		@bundle exec rspec --format progress --color
 
-start:          ## Installs dependencies and starts the app
-		@bin/setup	
-		@echo "Checking RSpecs..." >&2
-		@RAILS_ENV= bundle exec rspec --format progress --color
+lint: 	 	## Lint using Rubocop the code
 		@echo "Running Rubocop..." >&2
-		@RAILS_ENV= bundle exec rubocop --color
-
-
+		@bash -c ' \
+			bundle exec rubocop --color || bundle exec rubocop -A --color; \
+			echo "Re-running Rubocop" ; \
+			bundle exec rubocop --color  && bundle exec rspec '
 

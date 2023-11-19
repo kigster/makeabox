@@ -4,6 +4,8 @@
 require 'fileutils'
 include FileUtils
 
+[[ -n "$(command -v npm >/dev/null)" ]]  npm install npm@latest
+
 # path to your application root.
 APP_ROOT = File.expand_path('..', __dir__)
 

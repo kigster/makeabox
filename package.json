@@ -3,7 +3,7 @@
   "repository": "git@github.com:kigster/makeabox",
   "author": "Konstantin Gredeskoul",
   "license":  "MIT",
-  "language",
+  "language": "nodejs",
   "version": "1.0.0",
   "scripts" : {
     "preinstall": "bundle install --path vendor/bundle",

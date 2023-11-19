@@ -30,4 +30,5 @@ doc/
 log/**
 mkmf.log
 results/
-tmp
+.fleet
+.envrc.secrets
