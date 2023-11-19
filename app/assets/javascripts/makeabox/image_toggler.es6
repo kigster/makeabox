@@ -1,6 +1,5 @@
-
 class ImageSwapper {
-  constractor(div_array, image_url_array, effectDelay = 500) {
+  constructor(div_array, image_url_array, effectDelay = 500) {
     this.divs              = div_array
     this.images            = image_url_array
     this.effectiveDelay    = effectDelay
@@ -16,7 +15,7 @@ class ImageSwapper {
     const nextIndex = this.nextIndex(currentIndex);
 
     const _curr = $(this.divs[ currentIndex ]);
-    constz _next   = $(this.divs[ nextIndex ]);
+    const _next = $(this.divs[ nextIndex ]);
 
     const myself = this;
 
