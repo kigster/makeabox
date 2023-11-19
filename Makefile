@@ -30,5 +30,14 @@ start-prod:	## Starts server in production mode
 			bundle exec rake puma-ctl start \
 			"
 
+setup:
+
+start:          ## Installs dependencies and starts the app
+		@bin/setup	
+		@echo "Checking RSpecs..." >&2
+		@RAILS_ENV= bundle exec rspec --format progress --color
+		@echo "Running Rubocop..." >&2
+		@RAILS_ENV= bundle exec rubocop --color
+
 
 
