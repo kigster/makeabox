@@ -37,10 +37,11 @@ group :test, :development, :demo do
   gem 'airbrussh', require: false
   gem 'asciidoctor', require: false
   gem 'capistrano', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-puma'
+  gem 'capistrano-newrelic', require: false
+  gem 'capistrano-puma', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false
+  gem 'capistrano-service', require: false
   gem 'codecov'
   gem 'mry', require: false
   gem 'relaxed-rubocop'

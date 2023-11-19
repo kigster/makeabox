@@ -10,9 +10,11 @@ class HomeController < ApplicationController
     populate_form_fields
     handle_units_change
 
-    @refine_ad_type = Time.now.to_i.even? ? 'dark' : 'light'
+    # let's roll the coin. Get the dark or the light.
 
-    Rails.logger.info("refine type is #{refine_ad_type}")
+    @refine_ad_type =
+
+      Rails.logger.info("refine type is #{refine_ad_type}")
 
     if request.get? && parameter_keys.empty?
       logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
@@ -27,6 +29,11 @@ class HomeController < ApplicationController
   end
 
   protected
+
+  # @return [Array<String>]
+  def ad_card_random_color
+    `/usr/bin/env ruby -e 'puts (rand(1000) * Time.now.to_i).even? ? \'DARK\' : \'LIGHT\''`
+  end
 
   # @return [String (frozen)]
   def homepage_cache_key
