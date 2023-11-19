@@ -16,7 +16,7 @@ if Makeabox.datadog_enabled?
   f = File.new('log/datadog.log', 'w+') # Log messages should go there
   Datadog.configure do |c|
     c.logger       = Logger.new(f)
-    c.logger.level = ::Logger::INFO
+    c.logger.level = Logger::INFO
     c.tracer enabled: true
     c.tracer.port = Makeabox::HostPortProbe.new('127.0.0.1', 9126).open? ? 9126 : 8126
 

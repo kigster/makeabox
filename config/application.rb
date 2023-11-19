@@ -13,9 +13,6 @@ require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 require 'newrelic_rpm' if Rails.env.production?
 require 'etc'
-require 'dalli'
-require 'active_support/cache/dalli_store'
-require 'action_dispatch/middleware/session/dalli_store'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -38,7 +35,7 @@ module Makeabox
 
   MEMCACHED_CONFIG = {
     socket_timeout: 0.2,
-    expires_in: 10.minute,
+    expires_in: 10.minutes,
     keepalive: true,
     compress: true,
     pool_size: 10,
@@ -47,7 +44,7 @@ module Makeabox
 
   MEMCACHED_PORT = ENV.fetch('MEMCACHED_PORT', 11_211)
   MEMCACHED_HOST = ENV.fetch('MEMCACHED_HOST', 'localhost')
-  MEMCACHED_URL = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}"
+  MEMCACHED_URL = "#{MEMCACHED_HOST}:#{MEMCACHED_PORT}".freeze
 
   def self.memcached_options(namespace = nil)
     opts ||= {}

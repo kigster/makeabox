@@ -71,7 +71,7 @@ module Makeabox
         xhr = request.xhr? ? HTTP_XHR : HTTP_REQ
         method = request.method.to_s.upcase
         log_params = request.filtered_parameters
-        log_params = log_params.respond_to?(:except) ? log_params.except('controller', 'action', 'format') : log_params
+        log_params = log_params.except('controller', 'action', 'format') if log_params.respond_to?(:except)
 
         http_map = ::Makeabox::Logging.http_response_mapping
         if response&.status

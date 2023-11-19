@@ -32,7 +32,7 @@
 
 require 'colored2'
 
-set :datadog_api_key, ENV['DATADOG_API_KEY']
+set :datadog_api_key, ENV.fetch('DATADOG_API_KEY', nil)
 set :application, 'makeabox'
 set :repo_url, 'git@github.com:kigster/make-a-box.io.git'
 set :branch, `bash -c "source ~/.bashmatic/init.sh; git.branch.current"`

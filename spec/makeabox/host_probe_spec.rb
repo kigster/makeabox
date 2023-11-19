@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 require 'makeabox/host_probe'
 
@@ -15,8 +16,8 @@ RSpec.describe Makeabox::HostPortProbe do
         expect(nc).not_to be_nil
       end
 
-      it 'should be closed before the server is started' do
-        expect(`#{nc_command}`).to match /Connection refused/
+      it 'is closed before the server is started' do
+        expect(`#{nc_command}`).to match(/Connection refused/)
       end
     end
   end

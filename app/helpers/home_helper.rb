@@ -50,7 +50,7 @@ module HomeHelper
   def clarify_error(message)
     m = message.gsub(/,? ?notch,?/i, '')
     if m.split(',').size == 2
-      m.gsub(/are required/, 'is required')
+      m.gsub('are required', 'is required')
     else
       m
     end
@@ -71,7 +71,7 @@ module HomeHelper
       c[f] = nil if (c[f] == '0') || c[f].blank?
     end
 
-    c[:metadata] = !params[:metadata].blank?
+    c[:metadata] = params[:metadata].present?
 
     @config = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
@@ -110,7 +110,7 @@ module HomeHelper
   end
 
   def pdf_export_folder
-    "#{Rails.root}/tmp/pdfs"
+    "#{Rails.root.join('tmp/pdfs')}"
   end
 
   def fmt(field, type: 'f', width: '.1')
