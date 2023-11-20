@@ -40,7 +40,7 @@ set :rbenv_roles, :all # default value
 set :native_gems, %i[nokogiri]
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
-set :puma_service_unit_name, 'puma.service'
+set :puma_service_unit_name, 'puma.makeabox.service'
 set :linked_files, %w[config/secrets.yml]
 set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}

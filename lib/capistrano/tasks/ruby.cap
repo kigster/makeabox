@@ -9,11 +9,11 @@ namespace :ruby do
     on roles(:app) do
       within fetch(:user_home) do
         execute :bash, <<~RBENV.gsub(/\n\s{2,}/, ' ')
-        -c '
-           [[ -d #{home}/.rbenv ]] || git clone https://github.com/rbenv/rbenv.git #{home}/.rbenv >/dev/null ;
-           [[ -d #{home}/.rbenv/plugins/ruby-build ]] || git clone https://github.com/rbenv/ruby-build.git #{home}/.rbenv/plugins/ruby-build >/dev/null ;
-           [[ -d #{home}/.rbenv/plugins/rbenv-gem-rehash ]] || git clone https://github.com/rbenv/rbenv-gem-rehash.git #{home}/.rbenv/plugins/rbenv-gem-rehash/ > /dev/null
-        '
+          -c '
+             [[ -d #{home}/.rbenv ]] || git clone https://github.com/rbenv/rbenv.git #{home}/.rbenv >/dev/null ;
+             [[ -d #{home}/.rbenv/plugins/ruby-build ]] || git clone https://github.com/rbenv/ruby-build.git #{home}/.rbenv/plugins/ruby-build >/dev/null ;
+             [[ -d #{home}/.rbenv/plugins/rbenv-gem-rehash ]] || git clone https://github.com/rbenv/rbenv-gem-rehash.git #{home}/.rbenv/plugins/rbenv-gem-rehash/ > /dev/null
+          '
         RBENV
         execute :bash, "-c '[[ -d #{deploy_to} ]] || mkdir -p #{deploy_to}'"
       end
