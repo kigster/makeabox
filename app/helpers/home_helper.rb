@@ -75,7 +75,6 @@ module HomeHelper
 
     @config = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
-
     @config['file'] = exported_file_name if %w[width height depth thickness].all? { |f| c[f] }
   end
 

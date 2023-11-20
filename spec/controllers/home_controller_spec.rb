@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
+  render_views
+
   describe '#homepage_cache_key' do
     subject { controller.send(:homepage_cache_key) }
 

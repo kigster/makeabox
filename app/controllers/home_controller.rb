@@ -3,6 +3,8 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
+  ActionController::Parameters.permit_all_parameters = true
+
   DEFAULT_PARAMS_KEYS = %w[controller action].freeze
 
   def index
@@ -17,11 +19,11 @@ class HomeController < ApplicationController
       logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
         Rails.cache.fetch(homepage_cache_key, race_condition_ttl: 10.seconds, expires_in: 1.hour) do
           extra[:message] += ', but not this time [ ✖ ]'
-          render_index_action(request, params)
+          render
         end
       end
     else
-      render_index_action(request, params)
+      render_index_action(params)
     end
   end
 
@@ -45,9 +47,7 @@ class HomeController < ApplicationController
     params.keys - DEFAULT_PARAMS_KEYS
   end
 
-  def render_index_action(request, params)
-    return(render) if request.get?
-
+  def render_index_action(params)
     validate_config!
 
     if params['commit'].eql?('true')
