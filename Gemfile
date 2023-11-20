@@ -17,7 +17,7 @@ group :default do
   gem 'lograge'
   gem 'matrix'
   gem 'newrelic_rpm'
-  gem 'puma'
+  gem 'puma', '~> 6'
   gem 'rack-timeout', require: 'rack/timeout/base'
   gem 'rails', '~> 6.1'
   gem 'rb-fsevent'
@@ -35,7 +35,7 @@ group :development do
   gem 'airbrussh'
   gem 'asciidoctor'
   gem 'capistrano'
-  gem 'capistrano3-puma'
+  gem 'capistrano3-puma', github: "seuros/capistrano-puma"
   gem 'capistrano-newrelic'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
@@ -44,7 +44,7 @@ group :development do
   gem 'solargraph'
 end
 
-group :test, :development, :demo do
+group :test, :development do
   gem 'codecov'
   gem 'mry', require: false
   gem 'relaxed-rubocop'

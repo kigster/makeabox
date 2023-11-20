@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/seuros/capistrano-puma.git
+  revision: 2cc11846540489edda10d83e026c9bea04e6fab1
+  specs:
+    capistrano3-puma (6.0.0.beta.1)
+      capistrano (~> 3.7)
+      capistrano-bundler
+      puma (>= 5.1, < 7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -98,10 +107,6 @@ GEM
       capistrano (>= 3.9.0)
       capistrano-bundler
       sidekiq (>= 6.0)
-    capistrano3-puma (5.2.0)
-      capistrano (~> 3.7)
-      capistrano-bundler
-      puma (>= 4.0, < 6.0)
     codecov (0.6.0)
       simplecov (>= 0.15, < 0.22)
     colored (1.2)
@@ -192,7 +197,7 @@ GEM
       ttfunk (~> 1.7)
     psych (5.1.1.1)
       stringio
-    puma (5.6.7)
+    puma (6.4.0)
       nio4r (~> 2.0)
     racc (1.7.3)
     rack (2.2.8)
@@ -388,7 +393,7 @@ DEPENDENCIES
   capistrano-rbenv
   capistrano-service
   capistrano-sidekiq
-  capistrano3-puma
+  capistrano3-puma!
   codecov
   colored2
   connection_pool
@@ -401,7 +406,7 @@ DEPENDENCIES
   matrix
   mry
   newrelic_rpm
-  puma
+  puma (~> 6)
   rack-timeout
   rails (~> 6.1)
   rb-fsevent
