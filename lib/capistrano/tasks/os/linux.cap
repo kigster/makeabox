@@ -24,7 +24,7 @@ set :packages, %w[
   zlib1g-dev
   libcurl4-openssl-dev
   libxml2-dev
-  libxslt1-dev
+  libxslt-dev
   libyaml-dev
   nodejs
 ]

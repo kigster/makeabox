@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  attr_accessor :latest_error, :refine_ad_type
+  attr_accessor :latest_error
 
   DEFAULT_PARAMS_KEYS = %w[controller action].freeze
 
@@ -10,12 +10,9 @@ class HomeController < ApplicationController
     populate_form_fields
     handle_units_change
 
+    @refine_ad_type = ad_card_random_color
+
     # let's roll the coin. Get the dark or the light.
-
-    @refine_ad_type =
-
-      Rails.logger.info("refine type is #{refine_ad_type}")
-
     if request.get? && parameter_keys.empty?
       logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
         Rails.cache.fetch(homepage_cache_key, race_condition_ttl: 10.seconds, expires_in: 1.hour) do
@@ -30,9 +27,9 @@ class HomeController < ApplicationController
 
   protected
 
-  # @return [Array<String>]
+  # @return [String]
   def ad_card_random_color
-    `/usr/bin/env ruby -e 'puts (rand(1000) * Time.now.to_i).even? ? \'DARK\' : \'LIGHT\''`
+    %w[dark light].sample || 'dark'
   end
 
   # @return [String (frozen)]
@@ -48,9 +45,6 @@ class HomeController < ApplicationController
     params.keys - DEFAULT_PARAMS_KEYS
   end
 
-  PDF_FILE_STATUS = 'pdf.file.status'
-  PDF_FILE_ERROR  = 'pdf.file.error'
-
   def render_index_action(request, params)
     return(render) if request.get?
 
@@ -64,20 +58,10 @@ class HomeController < ApplicationController
       end
 
       not_cacheable!
-
       flash.clear
-
-      if validate_config!
-        defined?(::Datadog) ? trace_make_and_send_pdf(@config) : make_and_send_pdf(@config)
-      else
-        render
-      end
+      render
     end
   rescue Rack::Timeout::Error => e
-    if defined?(::Datadog)
-      ::Datadog.tracer.active_span&.set_tag(PDF_FILE_STATUS, 2)
-      ::Datadog.tracer.active_span&.set_tag(PDF_FILE_ERROR, e.message)
-    end
     flash[:error] =
       'Your request exceeded the maximum of 30 seconds allowed. Please reduce tab width parameter, or leave it empty.'
     logger.warn 'Timeout Error', reason: e.message
@@ -100,39 +84,5 @@ class HomeController < ApplicationController
 
   def make_and_send_pdf(config)
     %i[make_pdf send_pdf].each { |m| send(m, config) }
-  end
-
-  def trace_make_and_send_pdf(config)
-    Datadog.tracer.trace('web.request.pdf', service: 'makeabox', resource: 'POST /') do |span|
-      # Trace the activerecord call
-      Datadog.tracer.trace('pdf.render') do
-        make_pdf(config)
-      end
-
-      # Trace the template rendering
-      Datadog.tracer.trace('pdf.sendfile') do
-        send_pdf(config)
-      end
-
-      begin
-        # Add some APM tags
-        span.set_tag('pdf.box.count', ApplicationController.file_cleaner.size)
-        span.set_tag('pdf.box.units', config.units)
-        span.set_tag('pdf.box.size', "#{config.width}x#{config.height}x#{config.depth} (#{config.thickness})")
-        span.set_tag('pdf.box.notch', config.notch)
-        span.set_tag('pdf.box.kerf', config.kerf)
-
-        if config.file && File.exist?(config.file)
-          span.set_tag('pdf.file.name', config.file)
-          span.set_tag('pdf.file.size', ::File.size(config.file)) if File.exist?(config.file)
-          span.set_tag(PDF_FILE_STATUS, 0)
-        else
-          span.set_tag(PDF_FILE_STATUS, 1)
-        end
-      rescue StandardError => e
-        logger.warn("Error processing tags for DataDog: #{e.inspect}")
-        logger.warn("Config: #{config.inspect}")
-      end
-    end
   end
 end

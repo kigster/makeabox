@@ -1,20 +1,32 @@
 @import "variables";
 
-@mixin refine-vertical-light {
-  height: 600px;
-  width: 334px;
-  background-image: url("ads/refine-portrait-light.jpg");
-  background-repeat: no-repeat;
-  border: 5px solid #222;
-  border-radius: $default-border-radius;
+@mixin refine-ad-image {
+  img {
+    border-radius: $default-border-radius;
+    box-shadow: 0 0 25px #000;
+    opacity: 100%;
+    border: 50px solid $refine-ad-hover-color;
+  }
 }
 
 @mixin refine-vertical-dark {
+  padding: 10px !important;
   height: 600px;
   width: 334px;
-  background-image: url("ads/refine-portrait-dark.jpg") ;
-  border: 5px solid #222;
-  border-radius: $default-border-radius;
+  background-image: url("ads/refine-portrait-dark.jpg");
+  overflow: hidden !important;
+  @include refine-ad-image;
+}
+
+@mixin refine-vertical-light {
+  padding: 10px !important;
+  height: 600px;
+  width: 334px;
+  background-image: url("ads/refine-portrait-light.jpg");
+  overflow: hidden !important;
+  background-repeat: no-repeat;
+
+  @include refine-ad-image;
 }
 
 body {
@@ -119,34 +131,39 @@ body {
           position: relative;
           z-index: 0;
 
-          .light {
-            @include refine-vertical-light;
-          }
-
-          .dark {
-            @include refine-vertical-dark;
-          }
-
           a.refine-link {
+            overflow: hidden !important;
+            height: 600px;
+            width: 334px;
 
+
+            &:hover {
+              border: 5px solid $refine-ad-hover-color;
+              box-shadow: 0 0 25px #999;
+            }
+
+            &:active {
+              border: 5px solid $refine-ad-active-color;
+              box-shadow: 0 0 25px #999;
+            }
+
+            div.refine-ad-image.light {
+              @include refine-vertical-light;
+            }
+
+            div.refine-ad-image.dark {
+              @include refine-vertical-dark;
+            }
+
+            border-radius: $default-border-radius;
+            border: 6px solid $panel-bg;
             padding: 0 !important;
             display: block;
             position: relative;
-            border: 1px solid white;
 
             background-repeat: no-repeat;
             background-position-x: center;
             background-position-y: center;
-
-            &:hover {
-              border: 1px solid #c9302c;
-              box-shadow: 0 0 25px #333;
-            }
-
-            &:active {
-              border: 1px solid #c9302c;
-              box-shadow: 0 0 10px #222;
-            }
           }
         }
       }
@@ -154,24 +171,18 @@ body {
   }
 }
 
-@media all and (min-width: 2001px) {
+@media all and (min-width: 990px) {
   body {
     .ad-panel {
       .refine-ad {
-        a.refine-link {
-          @include refine-vertical-dark;
-        }
-      }
-    }
-  }
-}
+        .refine-link {
+          div.refine-ad-image.light {
+            @include refine-vertical-light;
+          }
 
-@media all and (min-width: 0px) and (max-width: 2000px) {
-  body {
-    .ad-panel {
-      .refine-ad {
-        a.refine-link {
-          @include refine-vertical-dark;
+          div.refine-ad-image.dark {
+            @include refine-vertical-dark;
+          }
         }
       }
     }
@@ -181,6 +192,18 @@ body {
 @media all and (min-width: 0px) and (max-width: 990px) {
   body {
     .ad-panel {
+      .refine-ad {
+        .refine-link {
+          div.refine-ad-image.light {
+            @include refine-vertical-light;
+          }
+
+          div.refine-ad-image.dark {
+            @include refine-vertical-dark;
+          }
+        }
+      }
+
       .paypal-logo {
         float: none;
         padding: 0;
