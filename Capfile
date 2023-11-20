@@ -13,6 +13,7 @@ require 'capistrano/bundler'
 require 'capistrano/rails/assets'
 require 'capistrano/puma'
 require 'capistrano/service'
+require 'capistrano/newrelic'
 
 # Default puma tasks
 install_plugin Capistrano::Puma
