@@ -3,9 +3,6 @@
 source 'https://rubygems.org'
 
 group :default do
-  # A  gem 'ddtrace', require: false
-  #  gem 'dogapi'
-  #  gem 'dogstatsd-ruby', require: false
   gem 'awesome_print'
   gem 'babel-transpiler'
   gem 'bcrypt_pbkdf'
@@ -26,6 +23,7 @@ group :default do
   gem 'rb-fsevent'
   gem 'sassc-rails', '~> 2'
   gem 'sdoc', group: :doc
+  gem 'sidekiq'
   gem 'sprockets'
   gem 'sprockets-rails', '~> 3'
   gem 'sym'
@@ -33,15 +31,20 @@ group :default do
   gem 'yard', require: false
 end
 
+group :development do
+  gem 'airbrussh'
+  gem 'asciidoctor'
+  gem 'capistrano'
+  gem 'capistrano3-puma'
+  gem 'capistrano-newrelic'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-service'
+  gem 'capistrano-sidekiq'
+  gem 'solargraph'
+end
+
 group :test, :development, :demo do
-  gem 'airbrussh', require: false
-  gem 'asciidoctor', require: false
-  gem 'capistrano', require: false
-  gem 'capistrano-newrelic', require: false
-  gem 'capistrano-puma', require: false
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-rbenv', require: false
-  gem 'capistrano-service', require: false
   gem 'codecov'
   gem 'mry', require: false
   gem 'relaxed-rubocop'
@@ -55,6 +58,5 @@ group :test, :development, :demo do
   gem 'rubocop-rspec'
   gem 'rufo', require: false
   gem 'simplecov'
-  gem 'solargraph', require: false
   gem 'yard-rspec', require: false
 end
