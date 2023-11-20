@@ -10,13 +10,13 @@ on_worker_shutdown { puts 'worker shutting down...' }
 worker_timeout 30
 
 if ENV['RAILS_ENV'] == 'production'
-  workers 4
-  threads 2, 4
+  workers 9
+  threads 4, 4
   prune_bundler true
   preload_app! false
   port 8899
 else
-  workers 2
+  workers 1
   threads 1, 1
   prune_bundler false
   preload_app! true

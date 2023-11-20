@@ -100,3 +100,10 @@ preview
 bin/preview
 ----
 
+
+== NewRelic and Datadog Monitoring
+
+* [NewRelic](https://one.newrelic.com/nr1-core?account=779492&filters=%28domain%20IN%20%28%27APM%27%2C%20%27EXT%27%29%20AND%20type%20IN%20%28%27APPLICATION%27%2C%20%27SERVICE%27%29%29&state=706dd394-d459-8b6d-4d64-7d26931f0082)
+
+* [Datadog]
+

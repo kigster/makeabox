@@ -3,10 +3,6 @@
 source 'https://rubygems.org'
 
 group :default do
-  gem 'ddtrace', require: false
-  gem 'dogstatsd-ruby', require: false
-  gem 'matrix'
-
   gem 'awesome_print'
   gem 'babel-transpiler'
   gem 'bcrypt_pbkdf'
@@ -19,7 +15,7 @@ group :default do
   gem 'jbuilder'
   gem 'laser-cutter', '= 1.0.3'
   gem 'lograge'
-  # gem 'lograge-sql'
+  gem 'matrix'
   gem 'newrelic_rpm'
   gem 'puma'
   gem 'rack-timeout', require: 'rack/timeout/base'
@@ -27,34 +23,40 @@ group :default do
   gem 'rb-fsevent'
   gem 'sassc-rails', '~> 2'
   gem 'sdoc', group: :doc
+  gem 'sidekiq'
   gem 'sprockets'
   gem 'sprockets-rails', '~> 3'
   gem 'sym'
   gem 'tzinfo-data'
+  gem 'yard', require: false
 end
 
 group :development do
-  gem 'airbrussh', require: false
-  gem 'asciidoctor', require: false
-  gem 'capistrano', require: false
-  gem 'capistrano3-puma', github: 'seuros/capistrano-puma'
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-rbenv', require: false
-  gem 'mry', require: false
-  gem 'rubocop'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
-  gem 'rufo', require: false
-  gem 'solargraph', require: false
-  gem 'yard', require: false
-  gem 'yard-rspec', require: false
+  gem 'airbrussh'
+  gem 'asciidoctor'
+  gem 'capistrano'
+  gem 'capistrano3-puma'
+  gem 'capistrano-newrelic'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-service'
+  gem 'capistrano-sidekiq'
+  gem 'solargraph'
 end
 
 group :test, :development, :demo do
   gem 'codecov'
+  gem 'mry', require: false
+  gem 'relaxed-rubocop'
   gem 'rspec'
   gem 'rspec-its'
   gem 'rspec-rails'
+  gem 'rspec-rake'
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-rake'
+  gem 'rubocop-rspec'
+  gem 'rufo', require: false
   gem 'simplecov'
+  gem 'yard-rspec', require: false
 end

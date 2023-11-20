@@ -1,8 +1,9 @@
-set :rbenv, "/usr/bin/rbenv"
-set :default_env, { PATH:            "#{fetch(:ruby_bin_dir)}:/usr/local/bin:$PATH",
-                    MAKE_OPTS:       '-j48'
-}
-set :packages, %w(
+# frozen_string_literal: true
+
+set :rbenv, '/usr/bin/rbenv'
+set :default_env, { PATH: "#{fetch(:ruby_bin_dir)}:/usr/local/bin:$PATH",
+                    MAKE_OPTS: '-j48' }
+set :packages, %w[
   build-essential
   daemonize
   gcc
@@ -26,10 +27,10 @@ set :packages, %w(
   libxslt1-dev
   libyaml-dev
   nodejs
-)
+]
 
 namespace :linux do
-  task init: [ :packages ]
+  task init: [:packages]
 
   desc 'Install Linux package dependencies'
   task :packages do

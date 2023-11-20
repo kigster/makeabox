@@ -1,9 +1,12 @@
-inherit_from: 
+inherit_gem:
+  relaxed-rubocop: .rubocop.yml
+
+inherit_from:
   - .rubocop_todo.yml
 
 require:
- - rubocop-rspec
- - rubocop-rails
+  - rubocop-rspec
+  - rubocop-rails
 
 AllCops:
   TargetRubyVersion: 3
@@ -11,12 +14,7 @@ AllCops:
   UseCache: false
   DefaultFormatter: progress
   Exclude:
-    - "external*/**/*"
-    - "bazel-*/**/*"
-    - "**/examples/**/*"
-    - "**/BUILD"
-    - "**/*.bazel"
-    - "**/*.bzl"
+    - "bin/*"
     - "**/rubocop"
     - "**/vendor/bundle/**/*"
   Include:
@@ -27,3 +25,7 @@ AllCops:
     - '**/*.ru'
     - '**/Gemfile'
     - '**/Rakefile'
+
+Metrics/BlockLength:
+  Exclude:
+    - Gemfile
