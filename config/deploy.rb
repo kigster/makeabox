@@ -45,7 +45,7 @@ set :linked_files, %w[config/secrets.yml]
 set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}
 
-set :maintenance_template_path, Rails.root.join('app/views/system/maintenance.html.erb').to_s
+set :maintenance_template_path, File.expand_path('../app/views/system/maintenance.html.erb', __dir__)
 
 before 'bundler:install', 'ruby:bundler:native_config'
 after 'deploy:updated', 'newrelic:notice_deployment'
