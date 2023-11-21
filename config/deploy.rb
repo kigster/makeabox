@@ -45,12 +45,19 @@ set :linked_files, %w[config/secrets.yml]
 set :linked_dirs, %w[bin log tmp/pdfs tmp/pids tmp/cache tmp/sockets vendor/bundle public/system]
 set :default_env, {}
 
+# New Relic Application Name to deploy to.  Default to :application if no value set
+set :newrelic_appname, "MakeABox"
+set :newrelic_env, fetch(:stage, fetch(:rack_env, fetch(:rails_env, 'production')))
+set :newrelic_deploy_user, fetch(:user)
+
 set :maintenance_template_path, File.expand_path('../app/views/system/maintenance.html.erb', __dir__)
 
 before 'bundler:install', 'ruby:bundler:native_config'
 after 'deploy:updated', 'newrelic:notice_deployment'
 before 'puma:restart', 'systemd:daemon-reload'
-after 'puma:restart', 'systemd:status'
+after 'puma:restart', 'systemd:restart'
+after 'systemd:restart', 'systemd:status'
+after 'systemd:status', 'maintenance:disable'
 
 namespace :deploy do
   before :starting, 'deploy:setup'

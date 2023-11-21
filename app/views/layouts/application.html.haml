@@ -5,9 +5,12 @@
     %nav.navbar.navbar-dark.bg-dark.d-flex
       %a.navbar-brand{href: '/'}
         = image_tag('logo-with-gray.png', class: 'logo-image')
-        %h1.logo.text-center make a box.io
+        %h1.logo.text-center Make A Box
+        = "v#{Makeabox::VERSION}"
     .container.container-fluid
       = yield
+    .container-fluid
+      = render 'shared/disqus'
   %footer
     .container-fluid
       .spacer-20

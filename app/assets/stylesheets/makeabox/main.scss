@@ -104,13 +104,13 @@ body {
   }
 
   #disqus_thread {
-    margin: 40px 30px 40px 30px;
+    margin: 40px auto;
     padding: 10px;
     position: relative;
     max-height: 1500px;
     overflow: scroll;
     height: 1500px;
-    width: 100%;
+    width: 100% !important;
   }
 
   #save-settings-group {
