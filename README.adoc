@@ -1,20 +1,20 @@
 = Makeabox -- Rails Application
+
 :doctype: book
 :toc:
 :sectnums:
 :toclevels: 4
+:icons: font
 
-image:https://github.com/kigster/makeabox/workflows/RSpec/badge.svg[RSpec, link=https://github.com/kigster/makeabox/actions?query=workflow%3ARSpec]
-image:https://github.com/kigster/makeabox/workflows/RuboCop/badge.svg[RuboCop, link=https://github.com/kigster/makeabox/actions?query=workflow%3ARuboCop]
-image:https://codecov.io/gh/kigster/makeabox/branch/master/graph/badge.svg?token=FXcBzFsVwv[codecov,link=https://codecov.io/gh/kigster/makeabox]
+image:https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml/badge.svg[Unit Tests,link=https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml]
 
-__This__ is the https://makeabox.io/ application that generates laser-cut path as a downloadable PDF file.
+__This__ is the link:https://makeabox.io/[makeabox application] that generates laser-cut path as a downloadable PDF file.
 
-NOTE: It's recently been upgraded to use Rails 6.1 under the hood.
+INFO: It's recently been upgraded to use Rails 7.1 under the hood.
 
 == USAGE
 
-NOTE: `direnv` is recommended.
+=== Setting up `direnv` is highly recommended:
 
 [source, bash]
 ----
@@ -25,19 +25,37 @@ source ~/.bashrc
 direnv allow .
 ----
 
-== Install Dependencies
+=== Install Dependencies
 
-Use Ruby 3.0.2 and a recent bundler:
+==== Ruby 3.2.2
+
+We prefer to use `rbenv` to manage our rubies.`
+
+[source,bash]
+----
+brew install rbenv ruby-build
+brew upgrade rbenv ruby-build
+rbenv install -s 3.2.2
+rbenv global 3.2.2
+cd makeabox
+bundle install -j 12
+yarn install -j 12
+----
+
+Once you get all the gems installed, its time to verify:
 
 [source, bash]
 ----
-bundle install
+# run the specs
 bundle exec rspec
+
+# run rubocop
+bundle exec rubocop
 ----
 
-== Run Locally
+== Run and Test MakeABox Locally
 
-You can start Puma via `rails s`, but we prefer using a wrapper script:
+You can totally start Puma via `bundle rails s`, but we prefer using a wrapper script:
 
 [source, bash]
 ----
@@ -71,39 +89,15 @@ Place this PEM file into a specific location: `${HOME}/.ssh/makeabox.pem` and ev
 
 === Automatic Deploy
 
-Use the provided shell script:
+Deploy is provided with Capistrano.
 
 [source,bash]
 ----
-bin/deploy
-----
-
-=== Manual Deploy
-
-You can also deploy menually like so:
-
-[source,bash]
-----
-ssh-add ${HOME}/.ssh/makeabox.pem
 bundle exec cap production deploy --trace
 ----
 
-== Previewing in Production Mode
+== NewRelic Monitoring
 
-This script shows you the site in a local but production mode:
+* https://one.newrelic.com/nr1-core?account=779492&filters=%28domain%20IN%20%28%27APM%27%2C%20%27EXT%27%29%20AND%20type%20IN%20%28%27APPLICATION%27%2C%20%27SERVICE%27%29%29&state=706dd394-d459-8b6d-4d64-7d26931f0082)
 
-[source,bash]
-----
-direnv allow . # just once
-preview
-# or
-bin/preview
-----
-
-
-== NewRelic and Datadog Monitoring
-
-* [NewRelic](https://one.newrelic.com/nr1-core?account=779492&filters=%28domain%20IN%20%28%27APM%27%2C%20%27EXT%27%29%20AND%20type%20IN%20%28%27APPLICATION%27%2C%20%27SERVICE%27%29%29&state=706dd394-d459-8b6d-4d64-7d26931f0082)
-
-* [Datadog]
 

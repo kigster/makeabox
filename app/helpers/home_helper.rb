@@ -1,9 +1,27 @@
 # frozen_string_literal: true
 
 module HomeHelper
+  class << self
+    def included(base)
+      base.instance_eval do
+        attr_accessor :latest_error
+      end
+    end
+  end
+
   FIELD_NAME_MAP = {
     'notch' => 'Tab Width'
   }.freeze
+
+  def permitted_params
+    params.permit(%w[utf8 commit units authenticity_token metadata], config: {})
+    # {"units"=>"in", "page_layout"=>"portrait", "width"=>"3", "height"=>"5", "depth"=>"4", "thickness"=>"0.245", "notch"=>"", "kerf"=>"0.0024", "margin"=>"0.125", "padding"=>"0.1", "stroke"=>"0.001", "page_size"=>""}}
+  end
+
+  # @return [Boolean] true if the file exists and is a PDF
+  def pdf?(file)
+    File.exist?(file) && File.binread(file, 5) == "%PDF-"
+  end
 
   def field_name(field)
     FIELD_NAME_MAP[field] || field.to_s.capitalize
@@ -27,9 +45,9 @@ module HomeHelper
 
   def input_field_options(tabindex_start)
     {
-      min: 0.0,
-      step: 0.01,
-      class: 'numeric',
+      min:      0.0,
+      step:     0.01,
+      class:    'numeric',
       tabindex: tabindex_start
     }
   end
@@ -56,27 +74,22 @@ module HomeHelper
     end
   end
 
-  def handle_cache_control
-    # if request.get? && params[:config].nil?
-    #   expires_in 15.minutes, :public => true, must_validate: true
-    # end
-  end
-
   NUMERIC_FIELDS = %w[width height depth thickness notch page_size kerf].freeze
 
   def create_new_config
-    c = params[:config] || {}
+    c = permitted_params[:config] || {}
 
     NUMERIC_FIELDS.each do |f|
       c[f] = nil if (c[f] == '0') || c[f].blank?
     end
 
-    c[:metadata] = params[:metadata].present?
+    c[:metadata] = permitted_params[:metadata].present?
 
     @config = Laser::Cutter::Configuration.new(c)
     @config['file'] = '/tmp/temporary'
-
     @config['file'] = exported_file_name if %w[width height depth thickness].all? { |f| c[f] }
+
+    Rails.logger.warn("Laser::Cutter::Configuration: #{@config}")
   end
 
   def populate_form_fields
@@ -89,13 +102,13 @@ module HomeHelper
   end
 
   def handle_units_change
-    if params['units'] && params['units'] != @config.units
-      @config.units = params['units']
-      @config.change_units(params['units'] == 'in' ? 'mm' : 'in')
+    if permitted_params['units'] && permitted_params['units'] != @config.units
+      @config.units = permitted_params['units']
+      @config.change_units(permitted_params['units'] == 'in' ? 'mm' : 'in')
     end
 
     NUMERIC_FIELDS.each do |field|
-      @config[field] = @config[field].round(5) if @config[field]&.to_f&.positive?
+      @config[field] = Float(@config[field]).round(5) if @config[field].present? && Float(@config[field])&.positive?
     end
   end
 

@@ -28,22 +28,22 @@ if Makeabox.datadog_enabled?
     # c.diagnostics.debug = true
     c.analytics_enabled = true
     c.tags              = {
-      app: program,
-      language: 'ruby',
-      env: Rails.env.to_s,
-      branch: 'master',
-      revision: `git rev-parse HEAD`,
-      kernel: Etc.uname[:sysname],
+      app:          program,
+      language:     'ruby',
+      env:          Rails.env.to_s,
+      branch:       'master',
+      revision:     `git rev-parse HEAD`,
+      kernel:       Etc.uname[:sysname],
       program_name: File.basename($PROGRAM_NAME)
     }
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#rails
     c.use :rails,
-          service_name: program,
-          controller_service: "#{program}-controller",
+          service_name:        program,
+          controller_service:  "#{program}-controller",
           distributed_tracing: true,
-          middleware_names: true,
-          log_injection: true
+          middleware_names:    true,
+          log_injection:       true
 
     c.use :http, service_name: "#{program}-http"
     c.use :action_view, service_name: "#{program}-action-view"

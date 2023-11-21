@@ -57,6 +57,7 @@ Rails.application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.action_controller.asset_host = 'https://makeabox.io' if Makeabox.live?
+  config.action_controller.permit_all_parameters = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -73,7 +74,7 @@ Rails.application.configure do
   config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  # config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   config.cache_store = :mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)
   config.session_store :mem_cache_store

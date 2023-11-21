@@ -1,36 +1,33 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  attr_accessor :latest_error
-
-  DEFAULT_PARAMS_KEYS = %w[controller action].freeze
-
   def index
     create_new_config
     populate_form_fields
     handle_units_change
 
-    @refine_ad_type = ad_card_random_color
+    Rails.logger.info("config: #{@config}")
+
+    @refine_ad_type = proc { %w[dark light].sample }.call
 
     # let's roll the coin. Get the dark or the light.
-    if request.get? && parameter_keys.empty?
+    if request.get? && permitted_params.empty?
       logging('index from the cache [ ✔ ]', ip: request.remote_ip) do |extra|
         Rails.cache.fetch(homepage_cache_key, race_condition_ttl: 10.seconds, expires_in: 1.hour) do
           extra[:message] += ', but not this time [ ✖ ]'
-          render_index_action(request, params)
+          render
         end
       end
-    else
-      render_index_action(request, params)
+    elsif request.post?
+      if validate_config!
+        render_box_pdf_template!
+      else
+        render
+      end
     end
   end
 
   protected
-
-  # @return [String]
-  def ad_card_random_color
-    %w[dark light].sample || 'dark'
-  end
 
   # @return [String (frozen)]
   def homepage_cache_key
@@ -41,25 +38,22 @@ class HomeController < ApplicationController
 
   include HomeHelper
 
-  def parameter_keys
-    params.keys - DEFAULT_PARAMS_KEYS
-  end
+  def render_box_pdf_template!
+    validate_config!.tap do |result|
+      Rails.logger.info("configuration validation returned: #{result}")
+    end || return
 
-  def render_index_action(request, params)
-    return(render) if request.get?
-
-    validate_config!
-
-    if params['commit'].eql?('true')
+    if permitted_params['commit'].eql?('true')
       if latest_error
         flash.now[:error] = latest_error
         @error            = latest_error
-        return(render)
+        render
+      else
+        not_cacheable!
+        flash.clear
+        make_pdf(@config)
+        send_pdf(@config)
       end
-
-      not_cacheable!
-      flash.clear
-      render
     end
   rescue Rack::Timeout::Error => e
     flash[:error] =
@@ -83,6 +77,7 @@ class HomeController < ApplicationController
   end
 
   def make_and_send_pdf(config)
-    %i[make_pdf send_pdf].each { |m| send(m, config) }
+    make_pdf(config)
+    send_pdf(config)
   end
 end

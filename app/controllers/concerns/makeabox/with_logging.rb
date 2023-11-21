@@ -10,20 +10,15 @@ module Makeabox
     # Therefore the block is able to alter the log message post execution.
     # @param *args Array arguments are joined with a command stringified
     # @param **opts Hash arguments are passed into the JSON logger as is
-    def logging(*args, **opts)
-      extra  = { message: args.join('. ') }
-      t1     = Time.now
-      result = yield(extra)
-      t2     = Time.now - t1
-      Rails.logger.info(
-        JSON.dump(
-          level: 'INFO',
-          message: extra[:message],
-          duration: format('%.2fms', (t2 * 1000)),
-          **opts
-        )
-      )
-      result
+    def logging(*args, **_opts)
+      extra = { message: args.join('. ') }
+      start_time = Time.now.to_f
+
+      yield(extra).tap do |_result|
+        duration = start_time - Time.now.to_f
+
+        Rails.logger.info("duration ➜ #{format('%.2fs', duration)}sec | #{extra[:message]}")
+      end
     end
   end
 end

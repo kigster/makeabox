@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Load the Rails application.
-# require File.expand_path('../lib/makeabox/logging', __dir__)
+# noinspection RubyMismatchedArgumentType
 require File.expand_path('application', __dir__)
 
 # Initialize the Rails application.
