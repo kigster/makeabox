@@ -74,7 +74,7 @@ Rails.application.configure do
   config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  # config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   config.cache_store = :mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)
   config.session_store :mem_cache_store

@@ -3,8 +3,6 @@
 class HomeController < ApplicationController
   attr_accessor :latest_error
 
-  ActionController::Parameters.permit_all_parameters = true
-
   DEFAULT_PARAMS_KEYS = %w[controller action].freeze
 
   def index

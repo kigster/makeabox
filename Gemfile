@@ -14,18 +14,17 @@ group :default do
   gem 'haml'
   gem 'jbuilder'
   gem 'laser-cutter', '= 1.0.3'
-  gem 'lograge'
   gem 'matrix'
   gem 'newrelic_rpm'
   gem 'puma', '~> 6'
   gem 'rack-timeout', require: 'rack/timeout/base'
-  gem 'rails', '~> 6.1'
+  gem 'rails'
   gem 'rb-fsevent'
-  gem 'sassc-rails', '~> 2'
+  gem 'sassc-rails'
   gem 'sdoc', group: :doc
   gem 'sidekiq'
   gem 'sprockets'
-  gem 'sprockets-rails', '~> 3'
+  gem 'sprockets-rails'
   gem 'sym'
   gem 'tzinfo-data'
   gem 'yard', require: false
@@ -36,6 +35,7 @@ group :development do
   gem 'asciidoctor'
   gem 'capistrano'
   gem 'capistrano3-puma', github: "seuros/capistrano-puma"
+  gem 'capistrano-maintenance', '~> 1.2', require: false
   gem 'capistrano-newrelic'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'
