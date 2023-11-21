@@ -4,14 +4,14 @@ set :application, 'makeabox'
 set :user, 'ubuntu'
 
 set :ssh_options, {
-  auth_methods: %w[publickey],
+  auth_methods:  %w[publickey],
   forward_agent: true,
-  user: fetch(:user),
-  keys: %W[#{Dir.home}/.ssh/id_ed25519 #{Dir.home}/.ssh/makeabox.pem], # #{Dir.home}/.ssh/aws.reinvent1.pem
+  user:          fetch(:user),
+  keys:          %W[#{Dir.home}/.ssh/id_ed25519 #{Dir.home}/.ssh/makeabox.pem], # #{Dir.home}/.ssh/aws.reinvent1.pem
 }
 
 server "makeabox.io",
-       user: fetch(:user),
+       user:  fetch(:user),
        roles: %w[web app]
 
 set :repo_url, 'git@github.com:kigster/makeabox.git'

@@ -36,7 +36,7 @@ module Makeabox
         ].join(' │ ')
 
         log_block(msg,
-                  level: :info,
+                  level:         :info,
                   silent_errors: silent_errors) do
           super(*args, &block)
         end

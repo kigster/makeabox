@@ -12,11 +12,11 @@ module Makeabox
 
   MEMCACHED_CONFIG = {
     socket_timeout: 0.2,
-    expires_in: 10.minutes,
-    keepalive: true,
-    compress: true,
-    pool: {
-      sizes: 10,
+    expires_in:     10.minutes,
+    keepalive:      true,
+    compress:       true,
+    pool:           {
+      sizes:   10,
       timeout: 30
     },
   }.freeze

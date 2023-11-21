@@ -53,7 +53,7 @@ module Makeabox
       def log_incoming_request(&_block)
         level, message = construct_log_message
         log_block(message,
-                  level: level,
+                  level:         level,
                   silent_errors: silent_errors,
                   rescue_errors: []) do
           yield if block_given?

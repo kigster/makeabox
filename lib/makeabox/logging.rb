@@ -36,8 +36,8 @@ module Makeabox
     # string, in the specified order:
     SEVERITY_COLORS = {
       debug: %i[green],
-      info: %i[blue],
-      warn: %i[yellow],
+      info:  %i[blue],
+      warn:  %i[yellow],
       error: %i[red],
       fatal: %i[red bold italic]
     }.freeze

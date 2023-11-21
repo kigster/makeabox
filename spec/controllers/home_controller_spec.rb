@@ -41,27 +41,29 @@ RSpec.describe HomeController, type: :controller do
 
     context 'with valid params' do
       let(:params) do
-        { utf8: '✓',
+        { utf8:   '✓',
           commit: 'true',
-          units: 'in',
-          config: { units: 'in',
+          units:  'in',
+          config: { units:       'in',
                     page_layout: 'portrait',
-                    width: '2',
-                    height: '3',
-                    depth: '4',
-                    thickness: '0.125',
-                    notch: '',
-                    kerf: '0.0028',
-                    margin: '0.125',
-                    padding: '0.1',
-                    stroke: '0.001',
-                    page_size: '' } }.with_indifferent_access
+                    width:       '2',
+                    height:      '3',
+                    depth:       '4',
+                    thickness:   '0.125',
+                    notch:       '',
+                    kerf:        '0.0028',
+                    margin:      '0.125',
+                    padding:     '0.1',
+                    stroke:      '0.001',
+                    page_size:   '' } }.with_indifferent_access
       end
 
       it 'returns generates the PDF' do
         post :index, params: params
+
         expect(response).to be_successful
         expect(flash).to be_empty
+        expect(response.headers['Content-Type']).to eq 'application/pdf; charset=utf-8'
       end
     end
   end
