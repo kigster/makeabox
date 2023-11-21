@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def index
     create_new_config
     populate_form_fields

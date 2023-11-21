@@ -162,6 +162,11 @@ GEM
       colored
       hashie
       prawn
+    lograge (0.14.0)
+      actionpack (>= 4)
+      activesupport (>= 4)
+      railties (>= 4)
+      request_store (~> 1.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -205,8 +210,7 @@ GEM
     prawn (2.4.0)
       pdf-core (~> 0.9.0)
       ttfunk (~> 1.7)
-    psych (5.1.1.1)
-      stringio
+    psych (3.1.0)
     puma (6.4.0)
       nio4r (~> 2.0)
     racc (1.7.3)
@@ -252,14 +256,15 @@ GEM
     rake (13.1.0)
     rb-fsevent (0.11.2)
     rbs (2.8.4)
-    rdoc (6.6.0)
-      psych (>= 4.0.0)
+    rdoc (6.3.3)
     redis-client (0.18.0)
       connection_pool
     regexp_parser (2.8.2)
     relaxed-rubocop (2.5)
     reline (0.4.0)
       io-console (~> 0.5)
+    request_store (1.5.1)
+      rack (>= 1.4)
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.6)
@@ -369,7 +374,6 @@ GEM
     sshkit (1.21.6)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stringio (3.0.9)
     sym (3.0.2)
       activesupport
       colored2 (~> 3)
@@ -420,9 +424,11 @@ DEPENDENCIES
   haml
   jbuilder
   laser-cutter (= 1.0.3)
+  lograge
   matrix
   mry
   newrelic_rpm
+  psych (~> 3.1.0)
   puma (~> 6)
   rack-timeout
   rails

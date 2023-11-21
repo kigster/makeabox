@@ -15,13 +15,9 @@ module Makeabox
         attr_accessor :config
 
         def load_config!
-          self.config =
-            if defined?(::Rails)
-              YAML.load_file("#{Rails.root.join('config/logging_filters.yml')}")
-            else
-              YAML.load_file(File.expand_path('config/logging_filters.yml',
-                                              Dir.pwd.to_s))
-            end
+          # rubocop:disable Style/YAMLFileRead
+          self.config = YAML.safe_load(File.read("#{Rails.root.join('config/logging_filters.yml')}"), permitted_classes: [Regexp, String, Symbol])
+          # rubocop:enable Style/YAMLFileRead
         end
 
         def all_filters

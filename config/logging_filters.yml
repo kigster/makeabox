@@ -1,4 +1,4 @@
-# This file is used by the HomeBase::Logging::Filter
+---
 filters:
   active_record_all: !ruby/regexp /.*(SELECT|UPDATE|INSERT|DELETE|ALTER|SAVEPOINT|TRUNCATE|BEGIN|COMMIT|ROLLBACK|information_schema).*/
   active_record_alter: !ruby/regexp /.*ALTER.*/

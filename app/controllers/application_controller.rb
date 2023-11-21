@@ -3,6 +3,8 @@
 require 'json'
 
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :null_session
+
   class << self
     attr_accessor :file_cleaner
 
@@ -10,10 +12,6 @@ class ApplicationController < ActionController::Base
   end
 
   self.file_cleaner = Makeabox::FileCleaner.configured_instance
-
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :reset_session
 
   include Makeabox::WithLogging
   include Makeabox::Cacheable
