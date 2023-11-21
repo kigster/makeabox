@@ -34,7 +34,7 @@ group :development do
   gem 'airbrussh'
   gem 'asciidoctor'
   gem 'capistrano'
-  gem 'capistrano3-puma', github: "seuros/capistrano-puma"
+  # gem 'capistrano3-puma', github: "seuros/capistrano-puma"
   gem 'capistrano-maintenance', '~> 1.2', require: false
   gem 'capistrano-newrelic'
   gem 'capistrano-rails'

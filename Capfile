@@ -11,15 +11,14 @@ install_plugin Capistrano::SCM::Git
 require 'capistrano/rbenv'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
-require 'capistrano/puma'
+# require 'capistrano/puma'
 require 'capistrano/service'
 require 'capistrano/newrelic'
 require 'capistrano/maintenance'
 
-# Default puma tasks
-install_plugin Capistrano::Puma
-install_plugin Capistrano::Puma::Systemd
-# install_plugin Capistrano::Puma, load_hooks: false  # Default puma tasks without hooks
+# # Default puma tasks
+# install_plugin Capistrano::Puma, load_hooks: false# Default puma tasks without hooks
+# install_plugin Capistrano::Puma::Systemd
 
 # require 'capistrano/sidekiq'
 # install_plugin Capistrano::Sidekiq
