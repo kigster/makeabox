@@ -8,7 +8,7 @@ module Makeabox
     end
   end
 
-  VERSION = '3.0.1'
+  VERSION = '3.0.2'
 
   MEMCACHED_CONFIG = {
     socket_timeout: 0.2,

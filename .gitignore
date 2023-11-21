@@ -32,3 +32,5 @@ mkmf.log
 results/
 .fleet
 .envrc.secrets
+**/.ruby-lsp
+vendor/bundle
