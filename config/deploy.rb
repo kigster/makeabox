@@ -54,12 +54,14 @@ set :newrelic_deploy_user, fetch(:user)
 set :maintenance_template_path, File.expand_path('../app/views/system/maintenance.html.erb', __dir__)
 
 before 'bundler:install', 'ruby:bundler:native_config'
-after 'deploy:updated', 'systemd:restart'
-after 'systemd:restart', 'systemd:status'
-after 'systemd:status', 'maintenance:disable'
 
 namespace :deploy do
   before :starting, 'deploy:setup'
   namespace(:assets) { after :precompile, 'deploy:permissions' }
   after :publishing, 'deploy:secrets:decrypt'
 end
+
+after 'deploy:secrets:decrypt', 'systemd:daemon-reload'
+after 'systemd:daemon-reload', 'systemd:restart'
+after 'systemd:restart', 'systemd:status'
+after 'systemd:status', 'maintenance:disable'

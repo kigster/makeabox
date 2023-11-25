@@ -19,8 +19,13 @@ module HomeHelper
   end
 
   # @return [Boolean] true if the file exists and is a PDF
-  def pdf?(file)
+  def pdf_file?(file)
     File.exist?(file) && File.binread(file, 5) == "%PDF-"
+  end
+
+  # @return [Boolean] true if the file exists and is a PDF
+  def pdf_string?(binary)
+    binary[0..4] == "%PDF-"
   end
 
   def field_name(field)

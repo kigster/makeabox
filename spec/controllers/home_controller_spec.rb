@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
+  include HomeHelper
+
   render_views
 
   describe '#homepage_cache_key' do
@@ -45,18 +47,20 @@ RSpec.describe HomeController, type: :controller do
           commit: 'true',
           units:  'in',
           config: { units:       'in',
-                    page_layout: 'portrait',
+                    #page_layout: 'portrait',
                     width:       '2',
                     height:      '3',
                     depth:       '4',
-                    thickness:   '0.125',
+                    thickness:   '0.250',
                     notch:       '',
-                    kerf:        '0.0028',
+                    kerf:        '0.0024',
                     margin:      '0.125',
-                    padding:     '0.1',
-                    stroke:      '0.001',
-                    page_size:   '' } }.with_indifferent_access
+                    #padding:     '0.1',
+                    stroke:      '0.001'} }
+        #page_size:   '' } }.wi th_indifferent_access
       end
+
+      let(:fixture) { Rails.root.join('spec', 'fixtures', 'makeabox.io-20231118104548-in-2.0[w]x3.0[h]x4.0[d]-0.250[t]-0.0024[k]-0.001[s].pdf').read }
 
       it 'returns generates the PDF' do
         post :index, params: params
@@ -64,6 +68,9 @@ RSpec.describe HomeController, type: :controller do
         expect(response).to be_successful
         expect(flash).to be_empty
         expect(response.headers['Content-Type']).to eq 'application/pdf; charset=utf-8'
+
+        expect(response.body.size).to eq fixture.size
+        expect(pdf_string?(response.body)).to be_truthy
       end
     end
   end
