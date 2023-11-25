@@ -46,21 +46,21 @@ RSpec.describe HomeController, type: :controller do
         { utf8:   '✓',
           commit: 'true',
           units:  'in',
-          config: { units:       'in',
-                    #page_layout: 'portrait',
-                    width:       '2',
-                    height:      '3',
-                    depth:       '4',
-                    thickness:   '0.250',
-                    notch:       '',
-                    kerf:        '0.0024',
-                    margin:      '0.125',
-                    #padding:     '0.1',
-                    stroke:      '0.001'} }
-        #page_size:   '' } }.wi th_indifferent_access
+          config: { units:     'in',
+                    # page_layout: 'portrait',
+                    width:     '2',
+                    height:    '3',
+                    depth:     '4',
+                    thickness: '0.250',
+                    notch:     '',
+                    kerf:      '0.0024',
+                    margin:    '0.125',
+                    # padding:     '0.1',
+                    stroke:    '0.001' } }
+        # page_size:   '' } }.wi th_indifferent_access
       end
 
-      let(:fixture) { Rails.root.join('spec', 'fixtures', 'makeabox.io-20231118104548-in-2.0[w]x3.0[h]x4.0[d]-0.250[t]-0.0024[k]-0.001[s].pdf').read }
+      let(:fixture) { Rails.root.join("spec/fixtures/makeabox.io-20231118104548-in-2.0[w]x3.0[h]x4.0[d]-0.250[t]-0.0024[k]-0.001[s].pdf").read }
 
       it 'returns generates the PDF' do
         post :index, params: params
