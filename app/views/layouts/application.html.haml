@@ -6,11 +6,10 @@
       %a.navbar-brand{href: '/'}
         = image_tag('logo-with-gray.png', class: 'logo-image')
         %h1.logo.text-center Make A Box
-        = "v#{Makeabox::VERSION}"
+        .version.text-center.p-3.mt-2
+          = "v#{Makeabox::VERSION}"
     .container.container-fluid
       = yield
-    .container-fluid
-      = render 'shared/disqus'
   %footer
     .container-fluid
       .spacer-20

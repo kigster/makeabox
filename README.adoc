@@ -12,72 +12,62 @@ __This__ is the link:https://makeabox.io/[makeabox application] that generates l
 
 INFO: It's recently been upgraded to use Rails 7.1 under the hood.
 
-== USAGE
+== Prerequisites
 
-=== Setting up `direnv` is highly recommended:
-
-[source, bash]
-----
-brew install direnv
-# If using BASH:
-echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-source ~/.bashrc
-direnv allow .
-----
-
-=== Install Dependencies
-
-==== Ruby 3.2.2
-
-We prefer to use `rbenv` to manage our rubies.`
+Assuming you develop on OS-X, it should be pretty trivial to get MakeABOX runnign locally using the provided Makefile:
 
 [source,bash]
 ----
-brew install rbenv ruby-build
-brew upgrade rbenv ruby-build
-rbenv install -s 3.2.2
-rbenv global 3.2.2
-cd makeabox
-bundle install -j 12
-yarn install -j 12
+ make help
+
+  brew          Installs Homebrew if on OS-X
+  bundle        Run the local test suite
+  deploy-quick  Deploy makeabox to production using Capistrano, skips tests and git status
+  deploy        Deploy makeabox to production using Capistrano
+  git-status    Ensures the local repo is clean
+  help          Prints help message auto-generated from the comments.
+  lint-fix-all  Runs rubocop with a more dangerous auto-correct
+  lint-fix      Runs rubocop with auto-correct
+  lint          Runs rubocop
+  pre-commit    Runs rspec and rubocop before the commit
+  ruby          Installs Ruby if needed
+  test          Run the local test suite
 ----
 
-Once you get all the gems installed, its time to verify:
+=== Setup
 
-[source, bash]
+If you don't have `make` in your system, you should run `xcode-select --install` to install the XCode command line tools, which will install `make` for you, as well as `git`.
+
+After that, you can try running:
+
+[source,bash]
 ----
-# run the specs
-bundle exec rspec
-
-# run rubocop
-bundle exec rubocop
+make test
 ----
 
-== Run and Test MakeABox Locally
+Running RSpecs via the Makefile depends on having `bundle install` ran, which in turn depends on having Ruby installed.
 
-You can totally start Puma via `bundle rails s`, but we prefer using a wrapper script:
+Ruby is installed via `rbenv`, which is installed via `brew` on OS-X, and via `apt` on Linux.
+
+Finally, `make pre-commit` will run both specs and rubocop to ensure your changes are green on CI.
+
+== Run the App Locally
+
+To run the app locally, run it via `make`:
+
+[source,bash]
+----
+make puma
+----
+
+This should start Puma, and open a browser window to https://localhost:3000/ where you can see the app running.
+
+You can also start puma via:
 
 [source, bash]
 ----
 ❯ bin/puma-start
-[71761] Puma starting in cluster mode...
-...
-[71761] * Process workers: 6
-[71761] * Phased restart available
-[71761] * Listening on tcp://0.0.0.0:3000
-[71761] Use Ctrl-C to stop
 ----
-
-If the Puma process does not respond to `Ctrl-C`, use `Ctrl-Z` to push it to the background, and then `kill -9 %1` where `%1` is the job ID given during the suspend event.
-
-[source, bash]
-----
-^Z
-[1]+  Stopped                 bin/puma-start
-❯ kill -9 %1
-----
-
-The job number appears in the square brackets next to "Stopped". If the number is greater than one, it means you have other background jobs running. Run `jobs -l` to see them.
 
 == Deploying
 
@@ -93,10 +83,28 @@ Deploy is provided with Capistrano.
 
 [source,bash]
 ----
+make deploy
+----
+
+OR, if you have locally modified changes you don't want to check in yet, then:
+
+[source,bash]
+----
+make deploy-quick
+----
+
+=== Manual Deploy
+
+You can, of course, drive Capistrano by hand:
+
+[source,bash]
+----
 bundle exec cap production deploy --trace
 ----
 
 == NewRelic Monitoring
+
+We use NewRelic to monitor the application. The NewRelic dashboard is available here:
 
 * https://one.newrelic.com/nr1-core?account=779492&filters=%28domain%20IN%20%28%27APM%27%2C%20%27EXT%27%29%20AND%20type%20IN%20%28%27APPLICATION%27%2C%20%27SERVICE%27%29%29&state=706dd394-d459-8b6d-4d64-7d26931f0082)
 

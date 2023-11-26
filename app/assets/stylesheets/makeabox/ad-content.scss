@@ -147,14 +147,6 @@ body {
               box-shadow: 0 0 25px #999;
             }
 
-            div.refine-ad-image.light {
-              @include refine-vertical-light;
-            }
-
-            div.refine-ad-image.dark {
-              @include refine-vertical-dark;
-            }
-
             border-radius: $default-border-radius;
             border: 6px solid $panel-bg;
             padding: 0 !important;
@@ -191,6 +183,20 @@ body {
 
 @media all and (min-width: 0px) and (max-width: 990px) {
   body {
+    .navbar {
+      height: 80px;
+      padding: 5px;
+      margin-bottom: 20px;
+      h1.logo {
+        font-size: 30pt !important;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      .version {
+        font-size: 15pt !important;
+        margin-top: -10px !important;
+      }
+    }
     .ad-panel {
       .refine-ad {
         .refine-link {
@@ -218,6 +224,10 @@ body {
 
     #second-paypal {
       display: none;
+    }
+
+    #first-refine {
+      display: none !important;
     }
   }
 }

@@ -4,29 +4,37 @@ set :rbenv, '/usr/bin/rbenv'
 set :default_env, { PATH: "#{fetch(:ruby_bin_dir)}:/usr/local/bin:$PATH",
                     MAKE_OPTS: '-j48' }
 set :packages, %w[
+  autoconf
   build-essential
-  daemonize
+  curl
   gcc
   git
   git-core
   htop
   libbz2-dev
+  libcurl4-openssl-dev
+  libdb-dev
   libffi-dev
+  libgdbm-dev
+  libgdbm6
+  libgmp-dev
   libmagickwand-dev
   libmemcached-dev
+  libncurses5-dev
   libpq-dev
-  libreadline-dev
+  libreadline6-dev
   libssl-dev
-  make
-  postgresql-client
-  wget
-  curl
-  zlib1g-dev
-  libcurl4-openssl-dev
   libxml2-dev
   libxslt-dev
   libyaml-dev
+  make
   nodejs
+  patch
+  postgresql-client
+  rustc
+  uuid-dev
+  wget
+  zlib1g-dev
 ]
 
 namespace :linux do

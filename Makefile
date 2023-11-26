@@ -1,50 +1,97 @@
 # vim: ft=make
-# vim: ts=8
-# vim: sw=8
-#
-# This Makefile is provided as a complement to the scripts in the ./bin folder.
-#
-# WARNING: remember to use actual tabs in this file, not spaces, otherwise
-# the Makefile will not be valid.
-
-.PHONY: 	help start
+# vim: tabstop=8
+# vim: shiftwidth=8
+# vim: noexpandtab
 
 
-BIN_PATH	:= $(shell pwd)/bin
-MAKEABOX_HOME	:= $(shell if [[ -d ${HOME}/.MAKEABOX ]]; then echo ${HOME}/.MAKEABOX; else echo ${MAKEABOX_HOME}; fi)
-PATH 		:= $(PATH):$(BIN_PATH)
+.PHONY:  clean dd-start-agent dd-stop-agent dd-mac-setup dd-launchd-verify fixtures generate-local generate help test-debug test
 
-red		:= \033[0;31m
-yellow		:= \033[0;33m
-blue 		:= \033[0;34m
-green		:= \033[0;35m
-clear		:= \033[0m
 
-help:		## Prints help message auto-generated from the comments.
-		@grep -E '^[a-zA-Z_-]+:.*?##.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?##"}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+SHELL 		:= $(shell if [[ -x /opt/homebrew/bin/bash ]]; then echo "/opt/homebrew/bin/bash"; else echo "/bin/bash"; fi)
+CURRENT_OS	:= $(shell uname -s | tr '[:upper:]' '[:lower:]')
+CURRENT_PATH	:= $(shell dirname "$(MAKEFILE_PATH)")
+CURRENT_DIR 	:= $(notdir $(patsubst %/,%,$(dir $(MAKEFILE_PATH))))
+HOSTNAME	:= $(shell hostname -f)
+DD_API_KEY	:= $(shell echo $(DD_API_KEY))
+GIT_SHA		:= $(shell git rev-parse --short HEAD)
+GIT_BRANCH	:= $(shell git branch --show-current)
+HOME		:= $(shell echo $(HOME))
+ENVRC		:= $(shell echo $(CURRENT_PATH)/.envrc)
+RAILS_ENV	:= $(shell echo $(RAILS_ENV))
+RUBY_VERSION    := $(shell cat .ruby-version | tr -d '\n')
 
-build:		## Builds and pre-compiles assets.
-		@bash -c " \
-			export RAILS_ENV=production; \
-			bundle exec rake assets:precompile; \
+PFX="─────────────────────────────━━━┫ "
+YLW=\e[0;30;43m ▶︎
+GRN=\e[0;30;42m ▶︎
+RED=\e[0;37;41m ▶︎
+BLU=\e[0;37;44m ▶︎
+CLR=\e[0m\n
+FMT=%80.80s
+
+ifndef RAILS_ENV
+RAILS_ENV := "development"
+endif
+
+##—— TASKS ————————————————————————————————————————————————————————————————————————————————————
+
+help:	   	## Prints help message auto-generated from the comments.
+		@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "	\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+brew: 		## Installs Homebrew if on OS-X
+		@command -v brew >/dev/null || /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		@command -v brew >/dev/null && { \
+			printf "$(BLU)$(FMT)$(CLR)" "Please wait while we ensure your brew packages are up to date..."; \
+  			brew install --quiet openssl@3 libyaml gmp rbenv ruby-build openssl readline sqlite3 xz zlib rust >/dev/null; }
+
+ruby: 		brew ## Installs Ruby if needed
+		@bash -c "\
+			if [[ -d $(HOME)/.rbenv/versions/$(RUBY_VERSION) ]] ; then \
+				printf \"$(GRN)$(FMT)$(CLR)\" \"Ruby $(RUBY_VERSION) is already installed.\";  \
+			else \
+				printf \"$(BLU)$(FMT)$(CLR)\" \"Installing Ruby $(RUBY_VERSION) with YJIT enabled.\"; \
+				ruby-build $(RUBY_VERSION) $(HOME)/.rbenv/versions/$(RUBY_VERSION) -- --enable-yjit; \
+			fi; \
+			rbenv global $(RUBY_VERSION); \
 			"
 
-boot:		build ## First builds, then starts the Puma App.
-		@bash -c " \
-			export RAILS_ENV=production; \
-			bundle exec rake assets:precompile; \
-			bundle exec rake puma-ctl start \
-			"
+bundle: 	ruby ## Run the local test suite
+		@printf "$(YLW)$(FMT)$(CLR)" "Installing bundled gems..."
+		@bundle check || bundle install -j 12 --quiet
 
-test:           ## Installs dependencies and starts the app
-		@bin/setup
-		@echo "Running RSpecs..." >&2
-		@bundle exec rspec --format progress --color
+test: 		bundle ## Run the local test suite
+		@printf "$(YLW)$(FMT)$(CLR)" "Running RSpecs..."
+		@bundle exec rspec --force-color
 
-lint: 	 	## Lint using Rubocop the code
-		@echo "Running Rubocop..." >&2
-		@bash -c ' \
-			bundle exec rubocop --color || bundle exec rubocop -A --color; \
-			echo "Re-running Rubocop" ; \
-			bundle exec rubocop --color  && bundle exec rspec '
+lint: 		bundle ## Runs rubocop
+		@printf "$(YLW)$(FMT)$(CLR)" "Running Rubocop..."
+		@bash -c "bundle exec rubocop --color"
 
+lint-fix: 	bundle ## Runs rubocop with auto-correct
+		@bash -c "bundle exec rubocop -a --color; @bundle exec rspec --force-color"
+
+lint-fix-all: 	bundle ## Runs rubocop with a more dangerous auto-correct
+		bundle exec rubocop -A --color; @bundle exec rspec
+
+
+pre-commit: 	test lint  ## Runs rspec and rubocop before the commit
+
+git-status:	## Ensures the local repo is clean
+		@bash -c "\
+			if [[ -n \"$$(git status --porcelain)\" ]]; then \
+ 				printf \"$(RED)$(FMT)$(CLR)\" \"Your local repo is not clean. Please commit or stash your changes.\"; \
+ 				exit 1; \
+			else \
+ 				printf \"$(GRN)$(FMT)$(CLR)\" \"Your local repo is clean.\"; \
+			fi"
+deploy:		bundle pre-commit git-status ## Deploy makeabox to production using Capistrano
+		@printf "$(YLW)$(FMT)$(CLR)" "Deploying makeabox to production..."
+		@bash -c "bundle exec cap production deploy"
+
+deploy-quick:	bundle ## Deploy makeabox to production using Capistrano, skips tests and git status
+		@printf "$(YLW)$(FMT)$(CLR)" "Deploying makeabox to production..."
+		@bash -c "bundle exec cap production deploy"
+
+puma:		bundle ## Start the local Puma server and the browser to localhost:3000
+		@printf "$(YLW)$(FMT)$(CLR)" "Starting Puma..."
+		@bash -c "sleep 5; open http://localhost:3000" &
+		@bash -c "bundle exec puma -C config/puma.rb"

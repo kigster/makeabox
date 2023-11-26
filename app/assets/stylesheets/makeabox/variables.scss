@@ -25,12 +25,12 @@ $header-hover: #FF6559;
 $logo-text-shadow: 5px 5px 10px #444;
 $header-text-shadow: 1px 1px 3px #3b1714;
 // panel itself
-$header-box-shadow: 2px 2px 5px #767a6a;
+$header-box-shadow: 0px 0px 10px rgba(63, 21, 21, 0.61);
 
 $button-font-family: "K2D", "HelveticaNeue-CondensedBold", "Oswald", "Impact", "Arial", sans-serif;
 $button-font-size: 20pt;
 $button-font-weight: 600;
-$button-text-shadow: 2px 2px 5px #767a6a;
+$button-text-shadow: 2px 2px 5px #898383;
 
 $panel-bg: rgb(255, 229, 214);
 $panel-fg: rgb(119, 119, 119);
@@ -47,10 +47,10 @@ $form-input-box-shadow: 0 0 0;
 
 $radio-selected-bg: rgba(107, 176, 64, 0.57);
 
-$default-border-radius: 15px;
+$default-border-radius: 20px;
 
-$panel-header-text-padding: 10px 20px;
-$panel-padding: 20px;
+$panel-header-text-padding: 10px 10px;
+$panel-padding: 40px 20px;
 $panel-header-text-margin: 5px;
 
 $modal-fg: #777;

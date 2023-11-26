@@ -60,7 +60,7 @@ RSpec.describe HomeController, type: :controller do
         # page_size:   '' } }.wi th_indifferent_access
       end
 
-      let(:fixture) { Rails.root.join("spec/fixtures/makeabox.io-20231118104548-in-2.0[w]x3.0[h]x4.0[d]-0.250[t]-0.0024[k]-0.001[s].pdf").read }
+      let(:fixture) { File.read(File.expand_path("../fixtures/makeabox-generated.pdf", __dir__)) }
 
       it 'returns generates the PDF' do
         post :index, params: params

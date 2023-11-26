@@ -4,7 +4,7 @@
   background-color: #403D3B;
   height: 80px;
   padding: 5px;
-
+  margin-bottom: 50px;
   .logo-image {
     margin: 0 auto;
     width: 50px;
@@ -16,17 +16,25 @@
     width: auto;
     position: relative;
     margin: 0 auto;
-    padding:0;
-    margin-top: -10px;
+    padding: 0;
+    margin-top: -5px;
     color: $header-fg;
     font-family: $header-h1-font-family;
     font-weight: $header-font-weight;
-    font-size: 55pt;
+    font-size: 45pt;
     text-shadow: $logo-text-shadow;
 
     &:hover {
       color: $header-hover;
       text-decoration: underline;
     }
+
+  }
+
+  .version {
+    font-size: 20pt;
+    font-weight: 300;
+    color: white !important;
+    text-shadow: $logo-text-shadow;
   }
 }
