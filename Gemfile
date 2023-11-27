@@ -11,7 +11,9 @@ group :default do
   gem 'connection_pool'
   gem 'dalli'
   gem 'ed25519'
+  gem 'foreman'
   gem 'haml'
+  gem 'hiredis-client'
   gem 'jbuilder'
   gem 'laser-cutter', '= 1.0.3'
   gem 'lograge'
@@ -22,12 +24,16 @@ group :default do
   gem 'rack-timeout', require: 'rack/timeout/base'
   gem 'rails'
   gem 'rb-fsevent'
+  gem 'redis'
   gem 'sassc-rails'
+  gem 'scss_lint', require: false
   gem 'sdoc', group: :doc
   gem 'sidekiq'
+  gem 'sidekiq-unique-jobs'
   gem 'sprockets'
   gem 'sprockets-rails'
   gem 'sym'
+  gem 'turbo-rails'
   gem 'tzinfo-data'
   gem 'yard', require: false
 end

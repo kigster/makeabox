@@ -41,7 +41,17 @@ brew: 		## Installs Homebrew if on OS-X
 		@command -v brew >/dev/null || /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 		@command -v brew >/dev/null && { \
 			printf "$(BLU)$(FMT)$(CLR)" "Please wait while we ensure your brew packages are up to date..."; \
-  			brew install --quiet openssl@3 libyaml gmp rbenv ruby-build openssl readline sqlite3 xz zlib rust >/dev/null; }
+			brew bundle --no-upgrade ; }
+		@printf "$(YLW)$(FMT)$(CLR)" "Starting Redis..."
+		@brew services start redis
+		@printf "$(YLW)$(FMT)$(CLR)" "Starting Memcached..."
+		@brew services start memcached
+		@bash -c "\
+			if [[ $$( ps -ef | egrep 'redis|memcached' | grep -c -v grep ) -eq 2 ]]; then \
+				printf \"$(GRN)$(FMT)$(CLR)\" \"Redis and Memcached are OK.\" ; \
+			else \
+				printf \"$(RED)$(FMT)$(CLR)\" \"Either Redis or Memcached did not start.\"; \
+			fi "
 
 ruby: 		brew ## Installs Ruby if needed
 		@bash -c "\
@@ -94,4 +104,13 @@ deploy-quick:	bundle ## Deploy makeabox to production using Capistrano, skips te
 puma:		bundle ## Start the local Puma server and the browser to localhost:3000
 		@printf "$(YLW)$(FMT)$(CLR)" "Starting Puma..."
 		@bash -c "sleep 5; open http://localhost:3000" &
-		@bash -c "bundle exec puma -C config/puma.rb"
+		@bash -c "bundle exec rails s"
+
+sidekiq:	bundle ## Start the local Puma server and the browser to localhost:3000
+		@printf "$(YLW)$(FMT)$(CLR)" "Starting Sidekiq..."
+		bundle exec sidekiq -C config/sidekiq.yml
+
+app: 		bundle ## Starts the entire app
+		@printf "$(YLW)$(FMT)$(CLR)" "Starting Puma and Sidekiq via Foreman..."
+		@bundle exec foreman start -f Procfile
+

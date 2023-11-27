@@ -20,5 +20,9 @@ module Makeabox
         Rails.logger.info("duration ➜ #{format('%.2fs', duration)}sec | #{extra[:message]}")
       end
     end
+
+    def info(msg)
+      Rails.logger.info(msg)
+    end
   end
 end
