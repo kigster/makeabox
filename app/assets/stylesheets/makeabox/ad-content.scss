@@ -1,8 +1,12 @@
 @import "variables";
 
+@mixin refine-ad-image-visibility {
+  display: none !important;
+}
+
 @mixin refine-ad-image {
   img {
-    display: none;
+    @include refine-ad-image-visibility;
     border-radius: $default-border-radius;
     box-shadow: 0 0 25px #000;
     opacity: 100%;
@@ -17,6 +21,7 @@
   background-image: url("ads/refine-portrait-dark.jpg");
   overflow: hidden !important;
   @include refine-ad-image;
+  @include refine-ad-image-visibility;
 }
 
 @mixin refine-vertical-light {
@@ -28,6 +33,7 @@
   background-repeat: no-repeat;
 
   @include refine-ad-image;
+  @include refine-ad-image-visibility;
 }
 
 body {
@@ -169,6 +175,7 @@ body {
     .ad-panel {
       .refine-ad {
         display: none !important;
+
         .refine-link {
           div.refine-ad-image.light {
             @include refine-vertical-light;
@@ -189,17 +196,22 @@ body {
       height: 80px;
       padding: 5px;
       margin-bottom: 20px;
+
       h1.logo {
         font-size: 30pt !important;
         padding-bottom: 0;
         margin-bottom: 0;
       }
+
       .version {
         font-size: 15pt !important;
         margin-top: -10px !important;
       }
     }
+
     .ad-panel {
+      @include refine-ad-image-visibility;
+
       .refine-ad {
         .refine-link {
           div.refine-ad-image.light {
