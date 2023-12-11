@@ -60,8 +60,6 @@ RSpec.describe HomeController, type: :controller do
         # page_size:   '' } }.wi th_indifferent_access
       end
 
-      let(:fixture) { File.read(File.expand_path("../fixtures/makeabox-generated.pdf", __dir__)) }
-
       it 'returns generates the PDF' do
         post :index, params: params
 
@@ -69,7 +67,7 @@ RSpec.describe HomeController, type: :controller do
         expect(flash).to be_empty
         expect(response.headers['Content-Type']).to eq 'application/pdf; charset=utf-8'
 
-        expect(response.body.size).to eq fixture.size
+        expect(response.body.size).to eq 12_410
         expect(pdf_string?(response.body)).to be_truthy
       end
     end

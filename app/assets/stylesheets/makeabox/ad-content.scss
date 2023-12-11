@@ -2,6 +2,7 @@
 
 @mixin refine-ad-image {
   img {
+    display: none;
     border-radius: $default-border-radius;
     box-shadow: 0 0 25px #000;
     opacity: 100%;
@@ -167,6 +168,7 @@ body {
   body {
     .ad-panel {
       .refine-ad {
+        display: none !important;
         .refine-link {
           div.refine-ad-image.light {
             @include refine-vertical-light;
