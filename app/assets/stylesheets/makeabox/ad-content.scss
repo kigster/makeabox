@@ -2,7 +2,7 @@
 
 @mixin refine-ad-image-visibility {
   // set to none to disable the ads
-  display: block;
+  display: block !important;
 }
 
 @mixin refine-ad-image {
@@ -144,7 +144,6 @@ body {
             overflow: hidden !important;
             height: 600px;
             width: 334px;
-
 
             &:hover {
               border: 5px solid $refine-ad-hover-color;
