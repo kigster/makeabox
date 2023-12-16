@@ -1,7 +1,8 @@
 @import "variables";
 
 @mixin refine-ad-image-visibility {
-  display: none !important;
+  // set to none to disable the ads
+  display: block;
 }
 
 @mixin refine-ad-image {
@@ -132,6 +133,7 @@ body {
         .refine-ad {
           display: block;
           height: 660px;
+          min-width: 334px;
           margin: 10px auto;
           overflow: hidden;
           padding: 10px !important;
@@ -195,17 +197,17 @@ body {
     .navbar {
       height: 80px;
       padding: 5px;
-      margin-bottom: 20px;
-
-      h1.logo {
-        font-size: 30pt !important;
-        padding-bottom: 0;
-        margin-bottom: 0;
-      }
 
       .version {
-        font-size: 15pt !important;
-        margin-top: -10px !important;
+        margin-top: -30px;
+        font-size: 14pt !important;
+        right: 5pt;
+      }
+
+      h1.logo {
+        font-size: 40pt !important;
+        padding-bottom: 0;
+        margin-bottom: 0;
       }
     }
 

@@ -4,12 +4,21 @@
   background-color: #403D3B;
   height: 80px;
   padding: 5px;
-  margin-bottom: 50px;
+
   .logo-image {
     margin: 0 auto;
     width: 50px;
     float: left;
     box-shadow: 0 0 10px #222;
+  }
+
+  .version {
+    margin-top: -40px;
+    font-size: 20pt;
+    font-weight: 300;
+    color: white !important;
+    text-shadow: $logo-text-shadow;
+    float: right;
   }
 
   h1.logo {
@@ -28,13 +37,6 @@
       color: $header-hover;
       text-decoration: underline;
     }
-
   }
 
-  .version {
-    font-size: 20pt;
-    font-weight: 300;
-    color: white !important;
-    text-shadow: $logo-text-shadow;
-  }
 }

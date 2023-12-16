@@ -1,10 +1,15 @@
 .panel.footer-panel
-  .panel-body
+  .panel-body{style: 'text-align: center;'}
     %p
       %span{style: 'font-size: 13pt;'} &#169;
-      %strong.panel-title 2014-2020 Konstantin Gredeskoul
-      of
-      %a{href: 'https://reinvent.one/'} ReinventONE, Inc.
+      %strong.panel-title
+        = "2014-#{Time.now.year}"
+        %a{href: 'https://reinvent.one/', style: 'font-size: 15pt;'}
+          ReinventONE, Inc.
+        %br
+        %span{style: 'font-size: 11pt;'}
+          Written by
+          %a{href: "https://kig.re"}Konstantin Gredeskoul
     %p
       This site is a front-end to the
       %a{href: 'https://github.com/kigster/laser-cutter'} laser-cutter ruby gem

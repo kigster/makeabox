@@ -2,13 +2,14 @@
 %html{lang: 'en'}
   = render 'shared/head'
   %body
-    %nav.navbar.navbar-dark.bg-dark.d-flex
+    %nav.navbar.navbar-dark.bg-dark.d-flex.fixed-top.mb-5
       %a.navbar-brand{href: '/'}
         = image_tag('logo-with-gray.png', class: 'logo-image')
-        %h1.logo.text-center Make A Box
-        .version.text-center.p-3.mt-2
+        %h1.logo.text-center
+          Make A Box
+        %span.version
           = "v#{Makeabox::VERSION}"
-    .container.container-fluid
+    .container-fluid.mt-5.pt-5
       = yield
   %footer
     .container-fluid

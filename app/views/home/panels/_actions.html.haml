@@ -1,7 +1,7 @@
 
 .panel-actions
-  .btn-group{:role => 'group', 'aria-label': 'Action Group'}
-    %button#save-settings-group.btn-lg.btn-info.d-flex.flex-wrap.dropdown-toggle{'aria-expanded': false, 'aria-haspopup' => 'true', 'data-toggle' =>    'dropdown', :type => 'button'}
+  .btn-group{:role => 'group', 'aria-label': 'Action Group', style: 'flex-wrap: wrap;'}
+    %button#save-settings-group.mt-2.btn-lg.btn-info.d-flex.flex-wrap.dropdown-toggle{'aria-expanded': false, 'aria-haspopup' => 'true', 'data-toggle' =>    'dropdown', :type => 'button'}
       Actions...
     .dropdown-menu{'aria-labelledby' => 'save-settings-group'}
       %a.dropdown-item{:href => '#', id: 'save'}
@@ -17,5 +17,5 @@
       %a.dropdown-item{:href => '#', id: 'save-units'}
         Set the Default Units to Currently Selected
       %a.dropdown-item.divider{role: 'separator'}
-    %button#make-pdf.btn-success.text-center.btn-lg{ tabindex: 5, type: 'submit' }
+    %button#make-pdf.btn-success.text-center.btn-lg.mt-2{ tabindex: 5, type: 'submit' }
       Download PDF
