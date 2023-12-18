@@ -22,7 +22,6 @@
   background-image: url("ads/refine-portrait-dark.jpg");
   overflow: hidden !important;
   @include refine-ad-image;
-  @include refine-ad-image-visibility;
 }
 
 @mixin refine-vertical-light {
@@ -34,7 +33,6 @@
   background-repeat: no-repeat;
 
   @include refine-ad-image;
-  @include refine-ad-image-visibility;
 }
 
 body {
@@ -175,8 +173,6 @@ body {
   body {
     .ad-panel {
       .refine-ad {
-        display: none !important;
-
         .refine-link {
           div.refine-ad-image.light {
             @include refine-vertical-light;
