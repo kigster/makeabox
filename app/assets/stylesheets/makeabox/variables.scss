@@ -1,3 +1,4 @@
+@use 'sass:color';
 
 $main-font-family: 'Kanit', 'DIN Alternate', 'Corbel', 'HelveticaNeue', 'Arial', sans-serif;
 $main-font-family-monospaced: 'Ubuntu Mono','Monaco', 'Courier', sans-serif;
@@ -54,6 +55,8 @@ $panel-padding: 40px 20px;
 $panel-header-text-margin: 5px;
 
 $modal-fg: #777;
+$modal-fg-darker: darken($modal-fg, 20%);
+
 
 $refine-ad-hover-color: #9e740c;
 $refine-ad-active-color: #ffc634;

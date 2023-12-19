@@ -49,7 +49,7 @@ if Makeabox.datadog_enabled?
     c.use :action_view, service_name: "#{program}-action-view"
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#sidekiq
-    # c.use :sidekiq, service_name: program
+    # c.use :workers, service_name: program
 
     # https://github.com/DataDog/dd-trace-rb/blob/master/docs/GettingStarted.md#redis
     # $ c.use :redis, service_name: "#{program}-redis"

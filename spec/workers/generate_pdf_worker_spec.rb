@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PdfGeneratorJob, type: :job do
+RSpec.describe GeneratePDFWorker, type: :job do
   let(:job) { described_class.new }
 
   it 'is instantiated' do

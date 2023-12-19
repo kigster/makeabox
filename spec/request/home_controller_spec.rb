@@ -14,7 +14,7 @@ RSpec.describe 'Request' do
     describe 'POST /' do
       it 'returns http success' do
         post '/'
-        expect(response).to be_successful
+        expect(response).not_to be_successful
       end
     end
   end

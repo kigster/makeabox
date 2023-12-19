@@ -1,21 +1,16 @@
 #!/usr/bin/env bash
-
+# vim: ft=bash
 # https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/
+
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export RAILS_ENV="${RAILS_ENV:-"development"}"
 
 mkdir -p tmp/pids
 
 puma.boot() {
-  local max_threads=2
-
-  if [[ "${RAILS_ENV}" == "development" ]]; then
-    max_threads=1
-  fi
-
-  bundle exec puma -e "${RAILS_ENV}" -p "3000" \
-    -t${max_threads}:${max_threads} -w 8 -C $(pwd)/config/puma.rb -v \
-    --redirect-append "$@"
+  set -ex 
+  bundle exec puma -e "${RAILS_ENV}" -C $(pwd)/config/puma.rb --redirect-append "$@" &
+  set +x
 }
 
 puma.boot "$@"

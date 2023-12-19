@@ -20,7 +20,7 @@ require 'capistrano/maintenance'
 # install_plugin Capistrano::Puma, load_hooks: false# Default puma tasks without hooks
 # install_plugin Capistrano::Puma::Systemd
 
-# require 'capistrano/sidekiq'
+# require 'capistrano/workers'
 # install_plugin Capistrano::Sidekiq
 # install_plugin Capistrano::Sidekiq::Systemd
 

@@ -74,8 +74,8 @@ module Makeabox
         log_params = log_params.except('controller', 'action', 'format') if log_params.respond_to?(:except)
 
         http_map = ::Makeabox::Logging.http_response_mapping
-        if response&.status
-          code = response.status
+        if response&.generation_status
+          code = response.generation_status
           level = http_map[http_map.keys.find { |range| range.include?(code) }]
         end
 

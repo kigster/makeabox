@@ -43,4 +43,7 @@ Rails.application.configure do
 
   config.cache_store = :mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)
   config.session_store :mem_cache_store
+
+  # @see https://github.com/sass/sassc-rails#inline-source-maps
+  config.sass.inline_source_maps = true
 end

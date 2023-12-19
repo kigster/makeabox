@@ -13,7 +13,6 @@
 *.rbc
 *.so
 **/.DS_Store
-**/*.pdf
 **/*.swp
 **/node_modules
 /.bundle
@@ -34,3 +33,4 @@ results/
 .envrc.secrets
 **/.ruby-lsp
 vendor/bundle
+.sass-cache
