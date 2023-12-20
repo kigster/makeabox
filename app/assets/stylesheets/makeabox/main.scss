@@ -115,7 +115,7 @@ body {
 
   #save-settings-group {
     margin-right: 20px;
-    flex-wrap: auto;
+    flex-wrap: wrap;
   }
 
   #action-status {
@@ -136,22 +136,17 @@ body {
   }
 
   .panel-actions {
-    //position: absolute;
-    //top: -70px;
     width: 100% !important;
-    //margin: 0 auto;
     text-align: center;
     .dropdown-menu {
-      //position: absolute;
-      //margin-left: 190px;
       .divider {
-        border-bottom: 0px solid white !important;
+        border-bottom: 0 solid white !important;
       }
       .dropdown-item {
         padding-top: 7px;
         border-bottom: 1px dashed #DDDDDD;
         &:last-child {
-          border-bottom: 0px solid white;
+          border-bottom: 0 solid white;
         }
 
       }
@@ -165,36 +160,9 @@ body {
     }
 
     #make-pdf, #save-settings-group {
-      //min-width: 150px !important;
       height: 50px !important;
       font-size: 13pt;
     }
-  }
-
-  @media all and (max-width: 992px) {
-    //.panel-actions {
-    //  position: relative !important;
-    //  top: 10px;
-    //  width: 100%;
-    //  left: auto;
-    //  right: auto;
-    //}
-  }
-  @media all and (max-width: 600px) {
-    .panel-actions {
-      //width: 100% !important;
-      //margin: 0px;
-      //#make-pdf, #save-settings-group {
-      //  width: 160px !important;
-      //  height: 40px !important;
-      //}
-      //#action-status {
-      //  width: 50%;
-      //  left: 25%;
-      //  right: 25%;
-      //}
-    }
-
   }
 
   .page-footer {

@@ -1,0 +1,99 @@
+@import "variables";
+@import "ad-content";
+
+@media all and (min-width: 990px) {
+  body {
+    .ad-panel {
+      .refine-ad {
+        .refine-link {
+          div.refine-ad-image.light {
+            @include refine-vertical-light;
+          }
+
+          div.refine-ad-image.dark {
+            @include refine-vertical-dark;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media all and (min-width: 0px) and (max-width: 990px) {
+  body {
+    .navbar {
+      height: 80px;
+      padding: 5px;
+
+      .version {
+        margin-top: -30px;
+        font-size: 14pt !important;
+        right: 5pt;
+      }
+
+      h1.logo {
+        display: block;
+        text-align: center;
+        width: 60%;
+        white-space: nowrap;
+        font-size: 40pt !important;
+      }
+    }
+
+    .ad-panel {
+      @include refine-ad-image-visibility;
+
+      .refine-ad {
+        .refine-link {
+          div.refine-ad-image.light {
+            @include refine-vertical-light;
+          }
+
+          div.refine-ad-image.dark {
+            @include refine-vertical-dark;
+          }
+        }
+      }
+
+      .paypal-logo {
+        float: none;
+        padding: 0;
+        margin: 0 auto;
+        min-height: 100px;
+      }
+    }
+
+    .panel {
+      margin-top: 30px !important;
+    }
+
+    #second-paypal {
+      display: none;
+    }
+
+    #first-refine {
+      display: none !important;
+    }
+  }
+}
+
+
+@media all and (min-width: 0px) and (max-width: 500px) {
+  body {
+    .navbar {
+      .version {
+        margin-top: -20px;
+        font-size: 12pt !important;
+        right: 5pt;
+      }
+
+      h1.logo {
+        display: block;
+        text-align: center;
+        width: 60%;
+        white-space: nowrap;
+        font-size: 24pt !important;
+      }
+    }
+  }
+}

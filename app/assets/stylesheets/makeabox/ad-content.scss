@@ -8,26 +8,27 @@
 @mixin refine-ad-image {
   img {
     @include refine-ad-image-visibility;
-    border-radius: $default-border-radius;
-    box-shadow: 0 0 25px #000;
+    //border-radius: $default-border-radius;
+    //box-shadow: 0 0 25px #000;
     opacity: 100%;
-    border: 50px solid $refine-ad-hover-color;
   }
 }
 
 @mixin refine-vertical-dark {
   padding: 10px !important;
-  height: 600px;
-  width: 334px;
+  height: 688px;
+  width: 344px;
   background-image: url("ads/refine-portrait-dark.jpg");
+  background-repeat: no-repeat;
   overflow: hidden !important;
+
   @include refine-ad-image;
 }
 
 @mixin refine-vertical-light {
   padding: 10px !important;
-  height: 600px;
-  width: 334px;
+  height: 688px;
+  width: 344px;
   background-image: url("ads/refine-portrait-light.jpg");
   overflow: hidden !important;
   background-repeat: no-repeat;
@@ -65,10 +66,10 @@ body {
 
       .ad-panel {
         color: $panel-fg;
-        width: 100%;
         padding: 0;
         display: block;
         position: relative;
+        height: 718px;
 
         .paypal-logo {
           padding-top: 50px;
@@ -130,118 +131,50 @@ body {
 
         .refine-ad {
           display: block;
-          height: 660px;
-          min-width: 334px;
-          margin: 10px auto;
-          overflow: hidden;
-          padding: 10px !important;
+          height: 678px;
+          width: 354px;
+          margin: 0 auto;
+          overflow-x: hidden;
+          padding: 0 !important;
           position: relative;
-          z-index: 0;
+          z-index: 100;
 
           a.refine-link {
-            overflow: hidden !important;
-            height: 600px;
-            width: 334px;
-
-            &:hover {
-              border: 5px solid $refine-ad-hover-color;
-              box-shadow: 0 0 25px #999;
-            }
-
-            &:active {
-              border: 5px solid $refine-ad-active-color;
-              box-shadow: 0 0 25px #999;
-            }
-
-            border-radius: $default-border-radius;
-            border: 6px solid $panel-bg;
-            padding: 0 !important;
             display: block;
             position: relative;
+            z-index: 200;
 
-            background-repeat: no-repeat;
-            background-position-x: center;
-            background-position-y: center;
+            .refine-ad-image {
+              border-radius: $default-border-radius;
+              border: 5px solid $panel-bg;
+              z-index: 150;
+              overflow-x: hidden !important;
+              height: 668px;
+              width: 344px;
+              padding: 0;
+              margin: 0;
+
+              display: block;
+              position: relative;
+
+              background-repeat: repeat-y !important;
+              background-position-x: center;
+              background-position-y: center;
+
+
+              &:hover {
+                border: 5px solid $refine-ad-hover-color;
+                box-shadow: 0 0 25px #999;
+              }
+
+              &:active {
+                border: 5px solid $refine-ad-active-color;
+                box-shadow: 0 0 25px #999;
+              }
+            }
           }
         }
       }
     }
   }
 }
-
-@media all and (min-width: 990px) {
-  body {
-    .ad-panel {
-      .refine-ad {
-        .refine-link {
-          div.refine-ad-image.light {
-            @include refine-vertical-light;
-          }
-
-          div.refine-ad-image.dark {
-            @include refine-vertical-dark;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media all and (min-width: 0px) and (max-width: 990px) {
-  body {
-    .navbar {
-      height: 80px;
-      padding: 5px;
-
-      .version {
-        margin-top: -30px;
-        font-size: 14pt !important;
-        right: 5pt;
-      }
-
-      h1.logo {
-        font-size: 40pt !important;
-        padding-bottom: 0;
-        margin-bottom: 0;
-      }
-    }
-
-    .ad-panel {
-      @include refine-ad-image-visibility;
-
-      .refine-ad {
-        .refine-link {
-          div.refine-ad-image.light {
-            @include refine-vertical-light;
-          }
-
-          div.refine-ad-image.dark {
-            @include refine-vertical-dark;
-          }
-        }
-      }
-
-      .paypal-logo {
-        float: none;
-        padding: 0;
-        margin: 0 auto;
-        min-height: 100px;
-      }
-    }
-
-    .panel {
-      margin-top: 30px !important;
-    }
-
-    #second-paypal {
-      display: none;
-    }
-
-    #first-refine {
-      display: none !important;
-    }
-  }
-}
-
-
-
