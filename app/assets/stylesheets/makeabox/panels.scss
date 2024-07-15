@@ -24,7 +24,7 @@ body {
       max-width: 100% !important;
       margin-left: 5px;
       font-size: $main-font-size - 3;
-      color: $panel-fg + 50;
+      color: lighten($panel-fg, 60%);
     }
 
     .panel {

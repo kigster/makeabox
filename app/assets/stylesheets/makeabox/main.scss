@@ -81,14 +81,14 @@ body {
     color: #ff5e5e;
   }
 
-  #fork-me {
+  img#fork-me {
     z-index: 10000;
     position: absolute;
     top: 0;
     right: 0;
     border: 0;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
   }
 
   #disqus_thread {

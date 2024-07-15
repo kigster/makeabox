@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 directory                  "/usr/src/app"
 daemonize                  false
@@ -14,5 +15,4 @@ raise_exception_on_sigterm true
 
 environment ENV["RAILS_ENV"] || "development"
 
-#stdout_redirect(stdout = "/dev/stdout", stderr = "/dev/stderr", append = true)
-
+# stdout_redirect(stdout = "/dev/stdout", stderr = "/dev/stderr", append = true)

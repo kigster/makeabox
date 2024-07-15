@@ -1,11 +1,57 @@
 !!!
-%html{:lang => 'en'}
-  = render 'shared/1_head'
+%html{ lang: 'en', 'data-bs-theme': 'light' }
+  %head
+    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{content: "width=device-width,initial-scale=1", name: "viewport"}/
+    %meta{content: "yes", name: "apple-mobile-web-app-capable"}/
+    %link{href: "/icons/nav-bar-logo.png", rel: "shortcut icon", type: "image/png"}/
+    %link{href: "https://fonts.googleapis.com", rel: "preconnect"}/
+    %link{crossorigin: "", href: "https://fonts.gstatic.com", rel: "preconnect"}/
+    %link{href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap", rel: "stylesheet"}/
+
+    %title
+      - if content_for?(:title)
+        = yield(:title)
+      - else
+        MakeABox
+
+    = csrf_meta_tags
+    = csp_meta_tag
+    = yield :heads
+
+    -# %link{:href => "/manifest.json", :rel => "manifest"}/
+
+    // Stripe
+    -# %script{:src => "https://js.stripe.com/v3/"}
+    = turbo_include_tags
+
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_include_tag "application", "data-turbo-track": "reload", type: "module", defer: true
+
+    = render 'shared/1_head'
   %body
+    .container
+      %turbo-frame#flash_container{"data-controller": "flash", "data-flash-target": "flash"}
+        = render "shared/alert"
+
     .container-fluid
       = render '/shared/2_nav_bar_logo'
+
     .container.container-fluid
-      = yield
+      - if current_user
+        = yield
+      - else
+        .conainer-fluid.w-50.m-auto#authentication
+          .row.m-5.p-2.border-black.bg-light-subtle
+            .col-sm-4.col-md-4.col-lg-4.col-xl-4.m-0.p-0
+            .col-sm-4.col-md-4.col-lg-4.col-xl-4.m-0.p-0
+            .card.bg-body-tertiary.m-0.p-0
+              .card-title.bg-secondary-subtle.m-0.p-2
+                %h1 Authentication
+              .card-text.bg-dark-subtle.m-0.p-2
+                = yield
+            .col-sm-4.col-md-4.col-lg-0.col-xl-1.m-0.p-0
+
   %footer
     .container-fluid
       .spacer-20

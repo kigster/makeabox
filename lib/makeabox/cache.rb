@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'forwardable'
 require 'singleton'
 
@@ -5,13 +7,11 @@ module Makeabox
   class Cache
     def initialize!
       memcached
-    rescue
-
-
+    rescue StandardError
     end
 
     def memcached
-      @memcached ||= ConnectionPool.new(size:    config.pool_size,
+      @memcached ||= ConnectionPool.new(size: config.pool_size,
                                         timeout: config.timeout) do
         Dalli::Client.new(*config.hosts, **config.dalli.to_h)
       end
@@ -46,10 +46,8 @@ module Makeabox
       with_cache { |client| client.write(key) }
     end
 
-    def with_cache
-      instance.memcached.with do |client|
-        yield(client)
-      end
+    def with_cache(&block)
+      instance.memcached.with(&block)
     end
 
     def cache

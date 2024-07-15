@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 load "lib/capistrano/tasks/os/#{fetch(:target_os).downcase}.cap"
 #
 # if fetch(:ruby_version)
@@ -5,5 +7,3 @@ load "lib/capistrano/tasks/os/#{fetch(:target_os).downcase}.cap"
 # else
 #   set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 # end
-
-

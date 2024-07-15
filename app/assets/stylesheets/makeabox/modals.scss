@@ -95,7 +95,7 @@ body {
           margin-top: -10px;
           font-weight: bold;
           font-family: $header-h1-font-family;
-          color: $modal-fg - 40;
+          color: darken($modal-fg, 60%);
         }
         dd {
           margin-top: 10px;

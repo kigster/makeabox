@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'hiredis' unless RUBY_PLATFORM == "java"
 require 'redis'
 require 'connection_pool'
@@ -22,10 +24,8 @@ module Makeabox
   end
 
   class << self
-    def with_redis
-      ConfigureRedis.redis.with do |redis_client|
-        yield(redis_client)
-      end
+    def with_redis(&block)
+      ConfigureRedis.redis.with(&block)
     end
   end
 end

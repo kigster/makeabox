@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 root = Dir.getwd
 
 tag                        'makeabox'
@@ -12,7 +14,7 @@ bind                       "tcp://0.0.0.0:3000"
 pidfile                    'tmp/pids/puma.pid'
 rackup                     "#{root}/config.ru"
 
-#stdout_redirect            'log/puma.stdout', 'log/puma.stderr', false
+# stdout_redirect            'log/puma.stdout', 'log/puma.stderr', false
 
 on_restart do
   puts 'Restarting'

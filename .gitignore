@@ -34,6 +34,14 @@ mkmf.log
 log/**
 results/
 
+config/master.key
+
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+
+spec/examples.txt
+@import "./vendor/font-awesome.min";
+/node_modules
+/app/assets/builds/*
+/config/credentials.yml

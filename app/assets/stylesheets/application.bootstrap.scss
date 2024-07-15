@@ -1,0 +1,47 @@
+/*
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+* or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the bottom of the
+* compiled file so the styles you add here take precedence over styles defined in any styles
+* defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+* file per style scope.
+*
+*= require_self
+*/
+
+//*= require_tree .
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/type";
+@import 'bootstrap/scss/bootstrap';
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css");
+
+@import url("bootstrap/dist/css/bootstrap-grid.min.css");
+@import url("bootstrap/dist/css/bootstrap-reboot.min.css");
+@import url("bootstrap/dist/css/bootstrap-utilities.min.css");
+@import url("bootstrap/dist/css/bootstrap.min.css");
+
+// Hide navbar text for small screens
+
+@import "./vendor/jquery-ui";
+@import "./vendor/jquery-ui.theme";
+@import "./vendor/tether.min";
+@import "./vendor/tether-theme-arrows-dark.min";
+
+@import "./makeabox/variables";
+@import "./makeabox/navbar";
+@import "./makeabox/form";
+@import "./makeabox/ad-content";
+@import "./makeabox/resolution-overrides";
+@import "./makeabox/modals";
+@import "./makeabox/main";
+@import "./makeabox/panels";

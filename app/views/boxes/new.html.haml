@@ -1,0 +1,44 @@
+= render 'boxes/modals/advanced_info'
+= render 'boxes/modals/introduction'
+= render 'boxes/modals/thickness'
+= render 'shared/alert'
+
+#action-status.ui-widget-content.ui-corner-all
+
+= form_tag('/boxes', method: 'post', novalidate: true, remote: true, id: 'pdf-generator') do
+  .row
+    .col-sm-0.col-md-0.col-lg-0.col-xl-1
+    .col-sm-12.col-md-6.col-lg-4.col-xl-3
+      = render 'boxes/panels/units'
+    .col-sm-12.col-md-6.col-lg-4.col-xl-4
+      = render 'boxes/panels/dimensions'
+    .col-sm-12.col-md-12.col-lg-4.col-xl-3
+      = render 'boxes/panels/advanced'
+    .col-sm-0.col-md-0.col-lg-0.col-xl-1
+
+.row#ad-content-donate{style: 'display: none;'}
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
+    = render 'boxes/panels/donate'
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+
+.row#ad-content-refine{style: 'display: none;'}
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
+    = render 'boxes/panels/refine'
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+
+.row#ad-content-adsense
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+  .col-sm-12.col-md-12.col-lg-10.col-xl-8.text-center.ad-panel
+    = render 'shared/adsense' if Rails.env.production?
+  .col-sm-0.col-md-0.col-lg-1.col-xl-2
+
+.spacer-50
+
+.row
+  .col-sm-0.col-md-1.col-lg-2.col-xl-2
+  .col-sm-12.col-md-10.col-lg-8.col-xl-8
+    #disqus_thread
+      = render 'shared/disqus_js' if Rails.env.production?
+  .col-sm-0.col-md-1.col-lg-2.col-xl-2

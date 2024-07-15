@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tty-logger'
 module Makeabox
   # This is the module you include to get :info, :error, etc methods.
@@ -20,7 +22,7 @@ module Makeabox
       warn
       error
       fatal
-    )
+    ).freeze
 
     extend Forwardable
     def_delegators :logger, *LOGGING_METHODS
@@ -49,45 +51,43 @@ module Makeabox
                      result: BlockResult.new(:info))
       result.value = yield
       elapsed_time = Time.now - start
-      logger.send("(#{"%9.2f" % (1000 * elapsed_time)}ms) #{message} #{result.message}")
+      logger.send("(#{'%9.2f' % (1000 * elapsed_time)}ms) #{message} #{result.message}")
       result.value
     rescue *swallow_exceptions => e
       elapsed_time = Time.now - start
-      logger.warn "(#{"%9.2f" % (1000 * elapsed_time)}ms) warning: #{e.message} for #{message} #{result.message}"
+      logger.warn "(#{'%9.2f' % (1000 * elapsed_time)}ms) warning: #{e.message} for #{message} #{result.message}"
     rescue StandardError => e
-      logger.error "(#{"%9.2f" % (1000 * elapsed_time)}ms) error: #{e.message} for #{message}"
+      logger.error "(#{'%9.2f' % (1000 * elapsed_time)}ms) error: #{e.message} for #{message}"
     end
   end
 
   module LoggingWrapper
     def self.logger
-      @logger ||= TTY::Logger.new(fields: { app: 'makeabox', 'env': Rails.env.to_s}) do |config|
+      @logger ||= TTY::Logger.new(fields: { app: 'makeabox', env: Rails.env.to_s }) do |config|
         config.metadata = [:pid, :date, :time],
-        config.types    = {
-            thanks: { level: :info },
-            done:   { level: :info }
-        }
+                          config.types = {
+                            thanks: { level: :info },
+                            done: { level: :info }
+                          }
         config.handlers = [
-            [:console, {
-                styles: {
-                    thanks: {
-                        symbol:   "❤️ ",
-                        label:    "thanks",
-                        color:    :magenta,
-                        levelpad: 0
-                    },
-                    done:   {
-                        symbol:   "!!",
-                        label:    "done",
-                        color:    :green,
-                        levelpad: 2
-                    }
-                }
-            }]
+          [:console, {
+            styles: {
+              thanks: {
+                symbol: "❤️ ",
+                label: "thanks",
+                color: :magenta,
+                levelpad: 0
+              },
+              done: {
+                symbol: "!!",
+                label: "done",
+                color: :green,
+                levelpad: 2
+              }
+            }
+          }]
         ]
       end
     end
   end
-
 end
-

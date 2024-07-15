@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # config valid only for Capistrano 3.1
 # lock '3.1.0'
-
 
 require 'colored2'
 
@@ -14,10 +15,10 @@ set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 # Default branch is :master
 local_branch = `git rev-parse --abbrev-ref HEAD`
 
-if local_branch != 'master'
-  ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-else
+if local_branch == 'master'
   set :branch, 'master'
+else
+  ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 end
 
 set :user_home, '/home/kig'
@@ -33,9 +34,9 @@ set :native_gems, %i(nokogiri)
 set :ruby_bin_dir, "#{fetch(:user_home)}/.rbenv/shims"
 
 set :ssh_options, {
-   keys: %w(/Users/kig/.ssh/id_rsa),
-   forward_agent: false,
-   auth_methods: %w(publickey)
+  keys: %w(/Users/kig/.ssh/id_rsa),
+  forward_agent: false,
+  auth_methods: %w(publickey)
 }
 
 set :linked_files, %w{config/secrets.yml}
@@ -44,6 +45,8 @@ set :default_env, {}
 
 # Default value for keep_releases is 5
 set :keep_releases, 5
+
+set :migration_role, :app
 
 before 'bundler:install', 'ruby:bundler:native_config'
 

@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'sidekiq'
 require 'dalli'
 require 'hiredis' unless RUBY_PLATFORM == "java"
 require 'redis'
 
-require 'sidekiq'
 require 'sidekiq-unique-jobs'
 require 'connection_pool'
 
@@ -11,7 +12,7 @@ module Makeabox
   module ConfigureSidekiq
     class << self
       def initialize!
-        ::Sidekiq.default_worker_options = { :backtrace => true }
+        ::Sidekiq.default_worker_options = { backtrace: true }
 
         Sidekiq.configure_server do |config|
           config.redis = redis_pool_proc[]
@@ -35,8 +36,10 @@ module Makeabox
       end
 
       def redis_pool_proc
-        proc { ::ConnectionPool.new(size: config.pool_size,
-                                    &redis_connection_proc) }
+        proc {
+          ::ConnectionPool.new(size: config.pool_size,
+                                    &redis_connection_proc)
+        }
       end
     end
   end
