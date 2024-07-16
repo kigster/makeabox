@@ -52,7 +52,7 @@ class BoxesController < ApplicationController
       return redirect_to :root_path
     end
 
-    file = request.session[:box][:generated_file]
+    file = request.session[:box][:file]
 
     if file.blank?
       flash.now[:error] = 'File name was not defined'
@@ -67,7 +67,7 @@ class BoxesController < ApplicationController
   end
 
   def show
-    file = request.session[:box][:generated_file]
+    file = request.session[:box][:file]
     if file && File.exist?(file)
       send_file file, type: 'application/pdf; charset=utf-8', status: 200
       redirect_to :new_boxes
