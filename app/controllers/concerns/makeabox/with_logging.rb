@@ -15,9 +15,9 @@ module Makeabox
       start_time = Time.now.to_f
 
       yield(extra).tap do |_result|
-        duration = start_time - Time.now.to_f
+        duration = Time.now.to_f - start_time
 
-        Rails.logger.info("duration ➜ #{format('%.2fs', duration)}sec | #{extra[:message]}")
+        Rails.logger.info("duration ➜ #{format('%.2f', duration)}s | #{extra[:message]}")
       end
     end
   end
