@@ -45,7 +45,7 @@ RSpec.describe BoxRequest do
     it 'rejects an optional setting that is not a number' do
       box = described_class.new(params.merge('notch' => 'wide', 'kerf' => '-1'))
       expect(box).not_to be_valid
-      expect(box.errors).to eq ['Tab width needs a number, or leave it blank.', 'Kerf needs a number, or leave it blank.']
+      expect(box.errors).to eq ['Notch length needs a number, or leave it blank.', 'Kerf needs a number, or leave it blank.']
     end
 
     it 'rejects a page size laser-cutter does not know' do
@@ -67,6 +67,34 @@ RSpec.describe BoxRequest do
         allow(described_class).to receive(:lids_supported?).and_return(true)
         expect(box).to be_valid
       end
+    end
+  end
+
+  describe 'notch length' do
+    # The shortest side is 3 in, so a notch may be 0.4 to 1 in.
+    { '0.4' => true, '1' => true, '0.39' => false, '1.01' => false }.each do |notch, allowed|
+      it "#{allowed ? 'accepts' : 'refuses'} #{notch} in" do
+        expect(described_class.new(params.merge('notch' => notch)).valid?).to be allowed
+      end
+    end
+
+    it 'says what the range is' do
+      box = described_class.new(params.merge('notch' => '2'))
+      box.valid?
+      expect(box.errors).to eq ['Notch length has to be between 0.4 and 1 in, or blank.']
+    end
+
+    it 'works in millimetres, from 10 mm' do
+      mm = { 'width' => '300', 'height' => '90', 'depth' => '120', 'thickness' => '3', 'units' => 'mm' }
+      expect(described_class.new(mm.merge('notch' => '30'))).to be_valid
+      expect(described_class.new(mm.merge('notch' => '9'))).not_to be_valid
+      expect(described_class.new(mm.merge('notch' => '31'))).not_to be_valid
+    end
+
+    it 'lets a small box go below the usual minimum' do
+      small = params.merge('width' => '1', 'height' => '0.9', 'depth' => '1', 'thickness' => '0.1')
+      expect(described_class.new(small.merge('notch' => '0.3'))).to be_valid
+      expect(described_class.new(small.merge('notch' => '0.4'))).not_to be_valid
     end
   end
 

@@ -12,6 +12,7 @@ describe("making a box", () => {
 
     field("width").clear().type("8")
     cy.get(".stage svg .dim text").first().should("have.text", "8 in")
+    cy.scrollTo("top")
     cy.screenshot("home", { capture: "viewport" })
   })
 
@@ -45,14 +46,14 @@ describe("making a box", () => {
     field("depth").should("have.value", "190.5")
     cy.get('[name="box[units]"][value="mm"]').should("be.checked")
 
-    cy.contains("button", "Tabs, kerf, page").click()
+    cy.contains("button", "Kerf, page, margins").click()
     cy.contains("button", "Reset everything to defaults").click()
     field("depth").should("have.value", "4")
     cy.get('[name="box[units]"][value="in"]').should("be.checked")
   })
 
   it("offers the optional settings with the gem's defaults as placeholders", () => {
-    cy.contains("button", "Tabs, kerf, page").click()
+    cy.contains("button", "Kerf, page, margins").click()
     field("kerf").should("have.attr", "placeholder", "0.0024")
     field("page_size").find("option").should("have.length.greaterThan", 10)
     cy.screenshot("settings", { capture: "viewport" })
@@ -74,6 +75,23 @@ describe("making a box", () => {
     cy.contains("button", "Download SVG").click()
     cy.get("dialog.cut").should("not.have.attr", "open")
     cy.readFile("tmp/cypress/downloads/makeabox-5x3x4in-0.245t.svg").should("contain", "<svg")
+  })
+
+  it("keeps the notch length between 0.4 in and a third of the shortest side", () => {
+    cy.get(".field.notch .range").should("have.text", "0.4 to 1 in")
+    field("notch").type("2")
+    cy.get(".hint").should("contain", "Notch length has to be between 0.4 and 1 in")
+    cy.get(".go").should("be.disabled")
+
+    field("notch").clear().type("0.5")
+    cy.get(".hint").should("be.empty")
+    field("notch").type("{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}{uparrow}")
+    field("notch").should("have.value", "1")
+
+    field("notch").clear().type("{uparrow}")
+    field("notch").should("have.value", "0.785")
+    cy.get(".go").click()
+    cy.contains("dialog.cut dd", "0.785 in")
   })
 
   it("cuts a lid that lifts off", () => {

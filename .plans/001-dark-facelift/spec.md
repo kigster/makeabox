@@ -20,7 +20,7 @@ Someone lands on makeabox.io, types the inside dimensions of a box, watches it t
 | Decomposition           | Three specs, facelift first                                                                       |
 | Gem                     | laser-cutter 2.0.1 from GitHub, pinned to commit `bf2b831`, until 2.0.1 is on RubyGems; then back to `'~> 2.0'` |
 | Stack                   | Rails 8.1, Propshaft, importmap, Stimulus, hand-written CSS, HAML. No Node in the app             |
-| Visual direction        | "Lid down": dark honeycomb bed, a plywood box lit by the beam, controls in a strip at the bottom  |
+| Visual direction        | "Lid down": dark honeycomb bed, a plywood box, controls in a strip at the bottom (the beam over the preview was removed: it meant nothing) |
 | Form                    | Easy to fill in, and the preview redraws instantly                                                |
 | Flow                    | Generate opens a dialog with the SVG; Download SVG or Download PDF; the dialog then closes        |
 | Progress                | Real line counts from the gem, plus a laser tracing the drawing                                   |
@@ -46,6 +46,7 @@ Each of these is a judgement call that can be reversed.
 | Help                            | One "How the tabs work" section replaces three modals                                                      | Same content, no dialog to dismiss                                                                    |
 | Typeface                        | Archivo, variable, self-hosted (SIL OFL)                                                                   | One file covers every weight and width; no request to Google Fonts                                    |
 | giscus without its ids          | The page links to GitHub Discussions until `GISCUS_REPO_ID` and `GISCUS_CATEGORY_ID` are set               | The ids only exist once Discussions and the giscus app are enabled on the repository                  |
+| Notch length                    | On the main form, blank for automatic. When filled in it must be between 10 mm (0.4 in) and a third of the shortest side; on a box too small for both, the third wins | Konstantin set the range. It is sent to laser-cutter as `notch`, the gem's own name |
 | Thickness rule                  | Thickness must be smaller than the shortest side                                                           | The old app had no check; this is the loosest rule that still stops nonsense                          |
 | `config/secrets.yml`            | Still read, for `secret_key_base`, by `config/application.rb`                                              | Rails 8 ignores the file, and the deploy still ships it                                               |
 | Cypress                         | Added, with Node as a development-only dependency                                                          | The global rule asks for an end-to-end suite on every web app                                         |

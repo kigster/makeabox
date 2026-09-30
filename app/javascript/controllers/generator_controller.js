@@ -10,7 +10,9 @@ const STOCK = {
   in: [["1/8″", 0.125], ["3/16″", 0.1875], ["1/4″", 0.25]],
   mm: [["3 mm", 3], ["4.5 mm", 4.5], ["6 mm", 6]]
 }
-const STEP = { in: { side: 0.25, thickness: 0.005 }, mm: { side: 5, thickness: 0.1 } }
+const STEP = { in: { side: 0.25, thickness: 0.005, notch: 0.05 }, mm: { side: 5, thickness: 0.1, notch: 1 } }
+// The narrowest tab worth cutting. The widest is a third of the shortest side.
+const NOTCH_MIN = { in: 0.4, mm: 10 }
 const TRACE_MS = 1500
 
 const clean = (number) => Number(number.toFixed(4))
@@ -20,7 +22,7 @@ const label = (key) => (key === "thickness" ? "Thickness" : key[0].toUpperCase()
 // The box form: keeps the preview in step with the fields, remembers the
 // settings in this browser, and runs the Generate dialog.
 export default class extends Controller {
-  static targets = ["preview", "form", "hint", "number", "unit", "chips", "units", "lid", "settings", "optional", "pageSize",
+  static targets = ["preview", "form", "hint", "number", "unit", "chips", "range", "units", "lid", "settings", "optional", "pageSize",
                     "go", "cut", "cutTitle", "cutMaterial", "drawing", "specs", "phase", "count", "bar", "download"]
   static values = { settings: Object, streamUrl: String, downloadUrl: String }
 
@@ -61,7 +63,31 @@ export default class extends Controller {
   problem() {
     for (const key of [...SIDES, "thickness"]) if (!(this.number(key) > 0)) return `${label(key)} needs a number above zero.`
     if (this.number("thickness") >= Math.min(...SIDES.map((key) => this.number(key)))) return "Thickness has to be smaller than the shortest side of the box."
+    if (this.notchProblem()) return `Notch length has to be between ${this.notchRange().join(" and ")} ${this.unit}, or blank to let makeabox choose.`
     return ""
+  }
+
+  // [narrowest, widest] tab, rounded down so that both ends are allowed.
+  notchRange() {
+    const digits = this.unit === "mm" ? 10 : 100
+    const widest = Math.floor((Math.min(...SIDES.map((key) => this.number(key))) / 3) * digits + 1e-6) / digits
+    return [Math.min(NOTCH_MIN[this.unit], widest), widest]
+  }
+
+  notchProblem() {
+    if (String(this.fields.notch ?? "").trim() === "") return false
+    const [narrowest, widest] = this.notchRange()
+    return !(this.number("notch") >= narrowest && this.number("notch") <= widest)
+  }
+
+  // Where a nudge or a drag starts from, and how far it may go.
+  start(key) {
+    return this.number(key) || (key === "notch" ? 3 * this.number("thickness") : 0)
+  }
+
+  clamp(key, value) {
+    const [low, high] = key === "notch" ? this.notchRange() : [this.step(key), Infinity]
+    return clean(Math.min(high, Math.max(low, value)))
   }
 
   // ── field events ──
@@ -86,19 +112,19 @@ export default class extends Controller {
     event.preventDefault()
     const key = event.target.closest("[data-key]").dataset.key
     const by = this.step(key) * (event.shiftKey ? 4 : 1) * (event.key === "ArrowUp" ? 1 : -1)
-    event.target.value = clean(Math.max(this.step(key), this.number(key) + by))
+    event.target.value = this.clamp(key, this.start(key) + by)
     this.refresh()
   }
 
   // Dragging a label left or right changes its number.
   scrub(event) {
     const label = event.currentTarget, key = label.closest("[data-key]").dataset.key, input = this.input(key)
-    const from = event.clientX, base = this.number(key)
+    const from = event.clientX, base = this.start(key)
     event.preventDefault()
     label.setPointerCapture(event.pointerId)
     this.hot = key
     const move = (drag) => {
-      input.value = clean(Math.max(this.step(key), base + Math.round((drag.clientX - from) / 6) * this.step(key)))
+      input.value = this.clamp(key, base + Math.round((drag.clientX - from) / 6) * this.step(key))
       this.refresh()
     }
     label.addEventListener("pointermove", move)
@@ -130,7 +156,7 @@ export default class extends Controller {
   }
 
   step(key) {
-    return STEP[this.unit][key === "thickness" ? "thickness" : "side"]
+    return STEP[this.unit][key in STEP[this.unit] ? key : "side"]
   }
 
   // ── dialogs ──
@@ -174,6 +200,8 @@ export default class extends Controller {
     })
     this.pageSizes(unit)
     this.numberTargets.forEach((input) => input.closest(".field").classList.toggle("bad", !(parseFloat(input.value) > 0)))
+    this.rangeTarget.textContent = this.notchRange()[1] > 0 ? `${this.notchRange().join(" to ")} ${unit}` : ""
+    this.rangeTarget.closest(".field").classList.toggle("bad", this.notchProblem())
 
     const problem = this.problem()
     this.hintTarget.textContent = problem
@@ -197,7 +225,7 @@ export default class extends Controller {
       notch: this.number("notch"), units: this.unit, lid: this.lidTarget.value, hot: this.hot
     })
     this.previewTarget.setAttribute("viewBox", viewBox)
-    this.previewTarget.classList.toggle("hot-thickness", this.hot === "thickness")
+    this.previewTarget.classList.toggle("hot-thickness", this.hot === "thickness" || this.hot === "notch")
     this.previewTarget.innerHTML = markup // numbers and fixed class names only, see iso_box.js
   }
 
@@ -260,7 +288,7 @@ export default class extends Controller {
     const tab = this.number("notch") ? `${this.number("notch")} ${unit}` : `auto, about ${clean(3 * this.number("thickness"))} ${unit}`
     this.cutTitleTarget.textContent = `${sides} ${unit} box`
     this.cutMaterialTarget.textContent = `${this.number("thickness")} ${unit} material`
-    const rows = [["Inside", `${sides} ${unit}`], ["Material", `${this.number("thickness")} ${unit}`], ["Tab width", tab],
+    const rows = [["Inside", `${sides} ${unit}`], ["Material", `${this.number("thickness")} ${unit}`], ["Notch length", tab],
                   ["Top", this.lidTarget.selectedOptions[0].textContent], ["Page", this.pageSizeTarget.value || "fits the box"]]
     this.specsTarget.replaceChildren(...rows.flatMap(([term, detail]) => {
       const dt = document.createElement("dt"), dd = document.createElement("dd")

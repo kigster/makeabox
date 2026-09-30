@@ -29,12 +29,12 @@
 .panel {
   position: relative; margin: 0;
   background: var(--panel); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--rule);
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.5fr) minmax(0, 1.35fr) minmax(150px, 1.2fr);
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr) minmax(0, 1.2fr) minmax(0, 1.3fr) minmax(140px, 1.1fr);
 }
 .hint { position: absolute; left: var(--gutter); bottom: calc(100% + 10px); margin: 0; font-size: 14px; color: var(--alarm); }
 
 .field { position: relative; padding: 16px clamp(12px, 1.5vw, 22px) 14px; border-right: 1px solid var(--rule); display: grid; gap: 10px; align-content: start; }
-.field > label { font-size: 13px; color: var(--mute); font-stretch: 110%; cursor: ew-resize; user-select: none; touch-action: none; display: flex; justify-content: space-between; gap: 8px; }
+.field > label { font-size: 13px; color: var(--mute); font-stretch: 110%; cursor: ew-resize; user-select: none; touch-action: none; display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; overflow: hidden; }
 .field > label i { font-style: normal; opacity: 0; transition: opacity 0.15s; white-space: nowrap; }
 .field:hover > label i, .field:focus-within > label i { opacity: 0.7; }
 .num { display: flex; align-items: baseline; gap: 6px; }
@@ -44,6 +44,8 @@
   font-variant-numeric: tabular-nums; caret-color: var(--amber);
 }
 .num span { font-size: 14px; color: var(--mute); }
+.num input::placeholder { color: var(--mute); opacity: 0.7; }
+.range { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
 .field::after { content: ""; position: absolute; inset: auto 0 0 0; height: 3px; background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform 0.18s ease-out; }
 .field:focus-within::after { transform: scaleX(1); }
 .field:focus-within .num input { color: var(--amber); }
@@ -82,7 +84,9 @@
   .hero { grid-template-columns: 1fr; padding-top: 8px; }
   .stage { height: 44vh; }
   .panel { grid-template-columns: repeat(3, 1fr); }
-  .field.thickness, .side, .go { grid-column: span 3; border-top: 1px solid var(--rule); }
+  .field.thickness { grid-column: span 2; }
+  .side, .go { grid-column: span 3; }
+  .field.thickness, .field.notch, .side, .go { border-top: 1px solid var(--rule); }
   .side { grid-auto-flow: column; justify-content: start; align-items: center; gap: 10px 14px; grid-auto-flow: row; }
   .go { padding: 18px; }
   .hint { position: static; grid-column: span 3; padding: 8px var(--gutter) 0; }

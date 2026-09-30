@@ -16,7 +16,11 @@ class BoxRequest
   # 'plain' is a rectangle that lies on top. The last two lift off.
   LIDS = %w[full back plain].freeze
 
-  LABELS = { notch: 'Tab width' }.freeze
+  LABELS = { notch: 'Notch length' }.freeze
+
+  # The narrowest tab worth cutting, per unit. The widest is a third of the
+  # shortest side, and wins when the box is too small for both.
+  NOTCH_MIN = { 'in' => 0.4, 'mm' => 10.0 }.freeze
 
   class << self
     # laser-cutter 2.0.0 draws only the full lid. Releases that draw the
@@ -52,6 +56,7 @@ class BoxRequest
     @errors = []
     check_dimensions
     check_optional
+    check_notch if errors.empty?
     check_choices
     errors.empty?
   end
@@ -129,6 +134,16 @@ class BoxRequest
 
       errors << "#{label(key)} needs a number, or leave it blank." unless number(key) && !number(key).negative?
     end
+  end
+
+  def check_notch
+    return if @params[:notch].blank?
+
+    widest = DIMENSIONS.first(3).map { |key| number(key) }.min / 3
+    narrowest = [NOTCH_MIN.fetch(units), widest].min
+    return if number(:notch).between?(narrowest - 1e-6, widest + 1e-6)
+
+    errors << "Notch length has to be between #{trim(narrowest)} and #{trim(widest)} #{units}, or blank."
   end
 
   def check_choices
