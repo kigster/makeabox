@@ -11,7 +11,9 @@
   --bed: #151b21;      /* the honeycomb bed */
   --cell: #222b33;
   --panel: #0d1115;    /* the machine's control panel */
-  --sheet: #10151a;    /* dialogs */
+  --sheet: #222c36;    /* dialogs: lighter than the bed, so they stand off it */
+  --sheet-edge: #52616f;
+  --well: #141a20;     /* inputs inside a dialog */
   --rule: #28323b;
   --edge: #36424d;
   --ink: #f1ede4;

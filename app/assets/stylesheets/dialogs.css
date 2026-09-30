@@ -1,7 +1,7 @@
 /* The "More settings" sheet and the Generate dialog. */
 .sheet {
-  background: var(--sheet); color: var(--ink); border: 1px solid var(--edge); border-radius: 10px; padding: 0;
-  width: min(580px, 94vw); box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+  background: var(--sheet); color: var(--ink); border: 1px solid var(--sheet-edge); border-top: 3px solid var(--amber); border-radius: 10px; padding: 0;
+  width: min(580px, 94vw); box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75);
 }
 .sheet::backdrop { background: rgba(8, 10, 13, 0.72); backdrop-filter: blur(3px); }
 .sheet-head { display: flex; align-items: baseline; gap: 14px; padding: 18px 22px 0; }
@@ -11,9 +11,9 @@
 .sheet .x:hover { color: var(--ink); }
 
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; padding: 18px 22px 8px; }
-.grid2 label { display: grid; gap: 3px; font-size: 13px; color: var(--mute); align-content: start; }
-.grid2 input, .grid2 select { background: #0a0e12; border: 1px solid var(--edge); border-radius: 6px; padding: 8px 10px; font-size: 17px; color: var(--ink); min-width: 0; width: 100%; }
-.grid2 small { color: #6f7c88; line-height: 1.35; }
+.grid2 label { display: grid; gap: 3px; font-size: 13px; color: var(--soft); align-content: start; }
+.grid2 input, .grid2 select { background: var(--well); border: 1px solid var(--sheet-edge); border-radius: 6px; padding: 8px 10px; font-size: 17px; color: var(--ink); min-width: 0; width: 100%; }
+.grid2 small { color: var(--mute); line-height: 1.35; }
 .sheet-foot { display: flex; justify-content: space-between; align-items: center; padding: 12px 22px 20px; }
 .sheet-foot .link { background: none; border: 0; padding: 0; color: var(--mute); text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; font-size: 14px; }
 .sheet-foot .link:hover { color: var(--ink); }
