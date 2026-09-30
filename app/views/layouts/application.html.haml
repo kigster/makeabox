@@ -4,7 +4,9 @@
   %body
     = render 'shared/bed'
     %header.site-header
-      %a.mark{href: root_path} makeabox
+      %a.mark{href: root_path}
+        = image_tag 'mark.svg', alt: '', width: 34, height: 34
+        makeabox
       %nav{'aria-label': 'Sections'}
         %a{href: '#how'} How the tabs work
         %a{href: '#discussion'} Discussion

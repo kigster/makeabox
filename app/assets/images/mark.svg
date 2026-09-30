@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="makeabox">
+  <defs>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#ff5a2b" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#ff5a2b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- three plywood panels of a box, seen from a corner -->
+  <path fill="#efd9aa" d="M16 2.5 27.7 9.25 16 16 4.3 9.25z"/>
+  <path fill="#e2c48f" d="M4.3 9.25 16 16v13.5L4.3 22.75z"/>
+  <path fill="#c4a269" d="M16 16 27.7 9.25v13.5L16 29.5z"/>
+  <!-- finger joints: the burnt ends of the neighbouring panel -->
+  <g fill="#3d2614">
+    <path d="M16 19v3l-1.91-1.1v-3zM16 25v3l-1.91-1.1v-3z"/>
+    <path d="M13.4 14.5 10.8 13l1.91-1.1 2.6 1.5zM8.2 11.5 5.6 10l1.91-1.1 2.6 1.5z"/>
+    <path d="M18.6 14.5 21.2 13v2.2l-2.6 1.5zM23.8 11.5 26.4 10v2.2l-2.6 1.5z"/>
+  </g>
+  <!-- the laser, where the three panels meet -->
+  <circle cx="16" cy="16" r="6" fill="url(#glow)"/>
+  <circle cx="16" cy="16" r="1.5" fill="#fff"/>
+</svg>

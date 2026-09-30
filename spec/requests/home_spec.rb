@@ -10,6 +10,10 @@ RSpec.describe 'Home page' do
     expect(response.body).to include('data-controller="generator"', 'Boxes that snap together')
   end
 
+  it 'shows the logo next to the name' do
+    expect(response.body).to match(%r{<a class="mark" href="/">\s*<img[^>]*src="/assets/mark-[^"]+\.svg"[^>]*>\s*makeabox})
+  end
+
   it 'works as a plain form without JavaScript' do
     expect(response.body).to include('action="/box/download.pdf"', 'name="box[width]"', 'name="box[thickness]"')
   end

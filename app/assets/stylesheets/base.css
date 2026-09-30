@@ -28,7 +28,7 @@ a:hover { color: var(--amber); }
   display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px);
   padding: 20px var(--gutter); font-size: 15px;
 }
-.site-header .mark { font-stretch: 125%; font-weight: 800; font-size: 21px; letter-spacing: 0.01em; text-decoration: none; color: var(--ink); }
+.site-header .mark { display: flex; align-items: center; gap: 10px; font-stretch: 125%; font-weight: 800; font-size: 21px; letter-spacing: 0.01em; text-decoration: none; color: var(--ink); }
 .site-header nav { margin-left: auto; display: flex; gap: inherit; }
 .site-header nav a { color: #aeb8c1; text-decoration: none; }
 .site-header nav a:hover { color: var(--ink); }
