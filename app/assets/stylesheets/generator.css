@@ -21,13 +21,10 @@
 .stage .finger { fill: var(--char); opacity: 0.9; }
 .stage .hot-thickness .finger { fill: var(--amber); opacity: 1; }
 .stage .shadow { fill: #000; opacity: 0.42; filter: blur(14px); }
-.stage .beam { stroke: var(--beam); }
-.stage .spot { fill: #fff; filter: drop-shadow(0 0 10px var(--beam)) drop-shadow(0 0 26px var(--beam)); animation: pulse 1.8s ease-in-out infinite; }
 .stage .dim line { stroke: #5f6c78; stroke-width: 1.4; }
 .stage .dim text { fill: var(--mute); font-stretch: 110%; text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: var(--bed); stroke-width: 8px; }
 .stage .dim.hot line { stroke: var(--amber); stroke-width: 3; }
 .stage .dim.hot text { fill: var(--amber); font-weight: 600; }
-@keyframes pulse { 50% { opacity: 0.65; } }
 
 .panel {
   position: relative; margin: 0;

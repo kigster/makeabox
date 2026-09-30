@@ -1,5 +1,5 @@
 // Draws the isometric preview of the box: three visible faces with finger
-// joints, the dimensions, and the beam. Pure geometry, no state.
+// joints and the dimensions. Pure geometry, no state.
 
 const COS30 = Math.cos(Math.PI / 6)
 const SCALE = 100
@@ -95,12 +95,6 @@ export function isoBox(box) {
   dimension("width", [0, D, 0], [W, D, 0], [0, 1.6], W)
   dimension("depth", [W, 0, 0], [W, D, 0], [1.6, 0], D)
   dimension("height", [0, D, 0], [0, D, H], [-1.2, 0], H)
-
-  const spot = at(faces.top, W * 0.62, D - t)
-  const source = [spot[0] + unit * 8, spot[1] - unit * SCALE * 1.15]
-  points.push([source[0], spot[1] - unit * SCALE * 0.5])
-  markup += `<line class="beam" x1="${source[0].toFixed(1)}" y1="${source[1].toFixed(1)}" x2="${spot[0].toFixed(1)}" y2="${spot[1].toFixed(1)}" stroke-width="${(unit * 0.6).toFixed(1)}"/>` +
-    `<circle class="spot" cx="${spot[0].toFixed(1)}" cy="${spot[1].toFixed(1)}" r="${(unit * 1.5).toFixed(1)}"/>`
 
   const xs = points.map((p) => p[0]), ys = points.map((p) => p[1]), pad = unit * 6
   const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad
