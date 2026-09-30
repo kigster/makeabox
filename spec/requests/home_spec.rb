@@ -18,6 +18,10 @@ RSpec.describe 'Home page' do
     expect(response.body).to include('<canvas aria-hidden="true" class="sparks" data-controller="particles">')
   end
 
+  it 'names both dialogs for a screen reader' do
+    expect(response.body).to include('aria-labelledby="settings_title"', 'id="settings_title"', 'aria-labelledby="cut_title"', 'id="cut_title"')
+  end
+
   it 'works as a plain form without JavaScript' do
     expect(response.body).to include('action="/box/download.pdf"', 'method="get"', 'name="box[width]"', 'name="box[thickness]"')
   end

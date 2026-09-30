@@ -1,6 +1,6 @@
-%dialog.sheet{data: {generator_target: 'settings', action: 'click->generator#backdrop'}}
+%dialog.sheet{'aria-labelledby': 'settings_title', data: {generator_target: 'settings', action: 'click->generator#backdrop'}}
   .sheet-head
-    %h2 More settings
+    %h2#settings_title More settings
     %span all optional
     %button.x{type: 'button', 'aria-label': 'Close', data: {action: 'generator#close'}} &times;
   .grid2

@@ -220,7 +220,7 @@ export default class extends Controller {
     const problem = this.problem()
     this.hintTarget.textContent = problem
     this.goTarget.disabled = Boolean(problem)
-    if (!problem) this.draw()
+    this.draw()
     this.save()
   }
 
@@ -233,7 +233,10 @@ export default class extends Controller {
     select.dataset.unit = unit
   }
 
+  // Only a box that passes problem() is drawn: the rest would be nonsense, or
+  // so many notches that building the preview stalls the page.
   draw() {
+    if (this.problem()) return
     const { viewBox, markup } = isoBox({
       width: this.number("width"), height: this.number("height"), depth: this.number("depth"), thickness: this.number("thickness"),
       notch: this.number("notch"), units: this.unit, lid: this.lidTarget.value, hot: this.hot

@@ -72,6 +72,9 @@ describe("making a box", () => {
     field("thickness").clear().type("0.05")
     cy.get(".hint").should("contain", "669 notches along the longest side")
     cy.get(".go").should("be.disabled")
+    // The preview keeps the last box it could draw, even when a field takes focus.
+    field("width").focus()
+    cy.get(".stage svg polygon.finger").its("length").should("be.lessThan", 1500)
   })
 
   it("starts from the defaults when what was saved is unusable", () => {
@@ -108,7 +111,8 @@ describe("making a box", () => {
   })
 
   it("says what went wrong, and recovers on the next try", () => {
-    cy.intercept("GET", "/box/stream*", { headers: { "content-type": "text/event-stream" }, body: 'event: failed\ndata: {"message":"laser-cutter could not draw this box: no luck"}\n\n' }).as("stream")
+    // Once only: the second Generate goes to the real server, untouched.
+    cy.intercept({ method: "GET", url: "/box/stream*", times: 1 }, { headers: { "content-type": "text/event-stream" }, body: 'event: failed\ndata: {"message":"laser-cutter could not draw this box: no luck"}\n\n' }).as("stream")
     cy.get(".go").click()
     cy.wait("@stream")
     cy.get("dialog.cut").should("have.class", "failed")
@@ -116,7 +120,6 @@ describe("making a box", () => {
     cy.contains("button", "Download SVG").should("be.disabled")
     cy.get("dialog.cut .x").click()
 
-    cy.intercept("GET", "/box/stream*", (request) => request.continue())
     cy.get(".go").click()
     cy.contains("dialog.cut .progress", "Ready", { timeout: 10000 })
     cy.get("dialog.cut").should("not.have.class", "failed")
