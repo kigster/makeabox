@@ -1,0 +1,13 @@
+%section#support.band.support
+  .prose
+    %h2 Keep makeabox running
+    %p
+      Thousands of boxes are drawn here every day, and have been since 2015. The site is free and has no ads.
+      It does cost money to run, so if it saved you an evening, a donation of any size is appreciated.
+    %form{action: 'https://www.paypal.com/cgi-bin/webscr', method: 'post', target: '_blank'}
+      %input{name: 'cmd', type: 'hidden', value: '_s-xclick'}
+      %input{name: 'hosted_button_id', type: 'hidden', value: 'Y4XR246KD644W'}
+      %button.donate{type: 'submit'} Donate with PayPal
+    %p.sign
+      Konstantin Gredeskoul,
+      %a{href: 'https://kig.re'} kig.re

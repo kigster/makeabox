@@ -2,16 +2,13 @@
 %html{lang: 'en'}
   = render 'shared/head'
   %body
-    %nav.navbar.navbar-dark.bg-dark.d-flex.fixed-top.mb-5
-      %a.navbar-brand{href: '/'}
-        = image_tag('logo-with-gray.png', class: 'logo-image')
-        %h1.logo
-          Make A Box
-        %span.version
-          = "v#{Makeabox::VERSION}"
-    .container-fluid.mt-5.pt-5
-      = yield
-  %footer
-    .container-fluid
-      .spacer-20
-      = render 'shared/footer'
+    = render 'shared/bed'
+    %header.site-header
+      %a.mark{href: root_path} makeabox
+      %nav{'aria-label': 'Sections'}
+        %a{href: '#how'} How the tabs work
+        %a{href: '#discussion'} Discussion
+        %a{href: 'https://github.com/kigster/laser-cutter'} GitHub
+        %a{href: '#support'} Donate
+    = yield
+    = render 'shared/footer'

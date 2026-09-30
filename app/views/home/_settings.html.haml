@@ -1,0 +1,44 @@
+%dialog.sheet{data: {generator_target: 'settings', action: 'click->generator#backdrop'}}
+  .sheet-head
+    %h2 More settings
+    %span all optional
+    %button.x{type: 'button', 'aria-label': 'Close', data: {action: 'generator#close'}} &times;
+  .grid2
+    %label
+      Tab width
+      %input{name: 'box[notch]', inputmode: 'decimal', placeholder: 'auto', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small A guide, not an exact size. Blank means three times the thickness.
+    %label
+      Kerf
+      %input{name: 'box[kerf]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small The width of the laser's cut.
+    %label
+      Margin
+      %input{name: 'box[margin]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small From the edge of the page.
+    %label
+      Padding
+      %input{name: 'box[padding]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small Space between the panels.
+    %label
+      Stroke
+      %input{name: 'box[stroke]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small Line width in the file.
+    %label
+      Page size
+      %select{name: 'box[page_size]', data: {generator_target: 'pageSize', action: 'change->generator#edit'}}
+        %option{value: ''} Fit the box
+      %small A fixed size can split the drawing across pages. PDF only.
+    %label
+      Page layout
+      %select{name: 'box[page_layout]', data: {action: 'change->generator#edit'}}
+        %option{value: 'portrait'} Portrait
+        %option{value: 'landscape'} Landscape
+    %label
+      Info block
+      %select{name: 'box[metadata]', data: {action: 'change->generator#edit'}}
+        %option{value: '1'} Print the box settings on the page
+        %option{value: '0'} Leave it off
+  .sheet-foot
+    %button.link{type: 'button', data: {action: 'generator#reset'}} Reset everything to defaults
+    %button.done{type: 'button', data: {action: 'generator#close'}} Done

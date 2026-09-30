@@ -1,0 +1,24 @@
+%dialog.sheet.cut{data: {generator_target: 'cut', action: 'click->generator#backdrop close->generator#stop'}}
+  .sheet-head
+    %h2{data: {generator_target: 'cutTitle'}} Your box
+    %span{data: {generator_target: 'cutMaterial'}}
+    %button.x{type: 'button', 'aria-label': 'Close', data: {action: 'generator#close'}} &times;
+  .cut-body
+    .cut-bed
+      %svg{role: 'img', 'aria-label': 'The panels of your box', data: {generator_target: 'drawing'}}
+    .cut-side
+      %dl.specs{data: {generator_target: 'specs'}}
+      .progress
+        %p
+          %span{data: {generator_target: 'phase'}, role: 'status'} Drawing…
+          %span{data: {generator_target: 'count'}}
+        .bar
+          %i{data: {generator_target: 'bar'}}
+      .downloads
+        %button{type: 'button', disabled: true, data: {generator_target: 'download', action: 'generator#downloadSvg'}}
+          Download SVG
+          %small for LightBurn, Inkscape
+        %button.alt{type: 'button', disabled: true, data: {generator_target: 'download', action: 'generator#downloadPdf'}}
+          Download PDF
+          %small for Illustrator, CorelDRAW
+      %p.fine Both files hold the same drawing. Your settings are remembered in this browser.

@@ -1,0 +1,11 @@
+-# The honeycomb bed of the laser cutter, behind everything.
+%svg.bed{'aria-hidden': 'true'}
+  %defs
+    %pattern#hex{width: 28, height: 48.5, patternUnits: 'userSpaceOnUse'}
+      %path{d: 'M14 0l14 8.08v16.17L14 32.33 0 24.25V8.08zM14 48.5l14-8.08M14 48.5L0 40.42M14 32.33V48.5', fill: 'none', stroke: '#222b33', 'stroke-width': 1.6}
+    %radialGradient#glow{cx: '68%', cy: '40%', r: '55%'}
+      %stop{offset: 0, 'stop-color': '#ff5a2b', 'stop-opacity': 0.2}
+      %stop{offset: 0.55, 'stop-color': '#ff5a2b', 'stop-opacity': 0.04}
+      %stop{offset: 1, 'stop-color': '#151b21', 'stop-opacity': 0}
+  %rect{width: '100%', height: '100%', fill: 'url(#hex)'}
+  %rect{width: '100%', height: '100%', fill: 'url(#glow)'}

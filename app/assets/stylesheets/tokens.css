@@ -1,0 +1,29 @@
+/* Colours and type for the whole site: the inside of a laser cutter with the lid down. */
+@font-face {
+  font-family: "Archivo";
+  src: url("archivo-variable-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+
+:root {
+  --bed: #151b21;      /* the honeycomb bed */
+  --cell: #222b33;
+  --panel: #0d1115;    /* the machine's control panel */
+  --sheet: #10151a;    /* dialogs */
+  --rule: #28323b;
+  --edge: #36424d;
+  --ink: #f1ede4;
+  --soft: #c3cbd3;
+  --mute: #93a0ab;
+  --beam: #ff5a2b;     /* the laser */
+  --amber: #ffb53d;    /* whatever is being edited */
+  --alarm: #ff7a6b;
+  --birch: #e2c48f;    /* plywood */
+  --birch-light: #efd9aa;
+  --birch-dark: #c4a269;
+  --char: #3d2614;     /* burnt edge */
+  --gutter: clamp(18px, 3vw, 40px);
+  color-scheme: dark;
+}
