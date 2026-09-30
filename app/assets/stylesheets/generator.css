@@ -6,6 +6,15 @@
   padding: 12px var(--gutter) 28px; min-height: 0;
 }
 .hero h1 { font-stretch: 118%; font-weight: 800; font-size: clamp(34px, 4.3vw, 62px); line-height: 0.98; margin: 0 0 20px; letter-spacing: -0.02em; }
+/* The heading drifts between orange and light sky blue. The gradient is two
+   headings wide and ends where it starts, so one full shift loops unseen. */
+.hero h1 {
+  background: linear-gradient(100deg, #ff8a3d, #ffb53d, #87cefa, #c6e9ff, #87cefa, #ffb53d, #ff8a3d) 0 0 / 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-bottom: 0.12em; margin-bottom: calc(20px - 0.12em);
+  animation: drift 16s linear infinite;
+}
+@keyframes drift { to { background-position: 200% 0; } }
 .hero p { font-size: clamp(15px, 1.35vw, 18px); color: var(--soft); margin: 0; max-width: 31ch; font-stretch: 96%; }
 
 .stage { height: min(62vh, 640px); min-height: 300px; }

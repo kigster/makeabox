@@ -14,6 +14,10 @@ RSpec.describe 'Home page' do
     expect(response.body).to match(%r{<a class="mark" href="/">\s*<img[^>]*src="/assets/mark-[^"]+\.svg"[^>]*>\s*makeabox})
   end
 
+  it 'puts the particle canvas behind the page' do
+    expect(response.body).to include('<canvas aria-hidden="true" class="sparks" data-controller="particles">')
+  end
+
   it 'works as a plain form without JavaScript' do
     expect(response.body).to include('action="/box/download.pdf"', 'name="box[width]"', 'name="box[thickness]"')
   end

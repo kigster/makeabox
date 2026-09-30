@@ -16,6 +16,14 @@ describe("making a box", () => {
     cy.screenshot("home", { capture: "viewport" })
   })
 
+  it("animates the background and the heading", () => {
+    cy.get("canvas.sparks").should(($canvas) => {
+      const pixels = $canvas[0].getContext("2d").getImageData(0, 0, $canvas[0].width, $canvas[0].height).data
+      expect(pixels.some((value) => value > 0)).to.eq(true)
+    })
+    cy.get(".hero h1").should("have.css", "animation-name", "drift")
+  })
+
   it("converts every number when the units change", () => {
     cy.contains(".seg span", "mm").click()
     field("width").should("have.value", "127")
