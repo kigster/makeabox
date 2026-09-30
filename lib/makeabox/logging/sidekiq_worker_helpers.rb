@@ -25,7 +25,7 @@ module Makeabox
         Adp::UpdateCredentialsWorker::AdpCredsFetcherError
       ].freeze
 
-      def perform(*args, &block)
+      def perform(*args, &)
         opts = self.class.respond_to?(:sidekiq_options) ? self.class.sidekiq_options : {}
         extra_opts = opts.except('queue', 'retry')
         msg = [
@@ -38,7 +38,7 @@ module Makeabox
         log_block(msg,
                   level:         :info,
                   silent_errors: silent_errors) do
-          super(*args, &block)
+          super(*args, &)
         end
       end
 
@@ -49,7 +49,7 @@ module Makeabox
       end
 
       def retry_info(opts)
-        format('r: %-5.5s', (opts['retry'] || ' '))
+        format('r: %-5.5s', opts['retry'] || ' ')
       end
 
       QUEUE_COLORS = {

@@ -61,7 +61,7 @@ module Makeabox
         nil
       ensure
         elapsed_time = Time.now - start
-        final_message = "time: #{format('%8.1f', (1000 * elapsed_time))}ms".cyan.italic + " #{message}"
+        final_message = "time: #{format('%8.1f', 1000 * elapsed_time)}ms".cyan.italic + " #{message}"
         Makeabox::Logging.logger.send(level, final_message)
         Makeabox::Logging.logger.error(error_message) if error_message
         begin
