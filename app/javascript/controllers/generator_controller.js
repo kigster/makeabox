@@ -345,6 +345,12 @@ export default class extends Controller {
     this.barTarget.style.width = "0"
   }
 
+  // The dialog's `close` event arrives a moment after it closes. By then the
+  // next Generate may have reopened it, and that run must not be stopped.
+  closed() {
+    if (!this.cutTarget.open) this.stop()
+  }
+
   stop() {
     this.source?.close()
     this.cancelTrace?.()
