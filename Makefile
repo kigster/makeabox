@@ -73,6 +73,13 @@ lint-fix-all: 	bundle ## Runs rubocop with a more dangerous auto-correct
 		bundle exec rubocop -A --color; @bundle exec rspec
 
 
+e2e: 		bundle ## Runs the Cypress suite against a local server on port 3055 (start it with: make server)
+		@npm install --silent
+		@npx cypress run
+
+server:		bundle ## Starts the app on http://127.0.0.1:3055, the address the Cypress suite expects
+		@bundle exec puma -p 3055 -e development -w 0 -t 1:4 config.ru
+
 pre-commit: 	test lint  ## Runs rspec and rubocop before the commit
 
 git-status:	## Ensures the local repo is clean
