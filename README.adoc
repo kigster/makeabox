@@ -10,7 +10,7 @@ image:https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml/badg
 
 __This__ is the link:https://makeabox.io/[makeabox application] that generates laser-cut path as a downloadable PDF file.
 
-INFO: It's recently been upgraded to use Rails 7.1 under the hood.
+INFO: It runs on Rails 8.1 and Ruby 4.0, and draws with the link:https://github.com/kigster/laser-cutter[laser-cutter] gem, version 2. The front end is Propshaft, importmap and Stimulus with hand-written CSS, so the app itself needs no Node. The design notes are in `.plans/001-dark-facelift/spec.md`.
 
 == Prerequisites
 
@@ -60,7 +60,7 @@ To run the app locally, run it via `make`:
 make puma
 ----
 
-This should start Puma, and open a browser window to https://localhost:3000/ where you can see the app running.
+This should start Puma, and open a browser window to http://localhost:3000/ where you can see the app running.
 
 You can also start puma via:
 
@@ -68,6 +68,20 @@ You can also start puma via:
 ----
 ❯ bin/puma-start
 ----
+
+== End-to-End Tests
+
+The Cypress suite drives the real page: the live preview, the settings that are remembered in the browser, and the Generate dialog with its downloads. Node is needed for this and for nothing else.
+
+[source,bash]
+----
+make server   # the app on http://127.0.0.1:3055, in one terminal
+make e2e      # the Cypress suite, in another
+----
+
+== Discussion Widget
+
+The discussion section embeds link:https://giscus.app[giscus] once GitHub Discussions is enabled on the repository and the giscus app is installed. giscus.app then shows two ids; set them as `GISCUS_REPO_ID` and `GISCUS_CATEGORY_ID` in the environment of the server. Without them the section links to GitHub Discussions instead.
 
 == Deploying
 
