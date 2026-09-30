@@ -18,9 +18,10 @@ RSpec.describe 'Home page' do
     expect(response.body).to include('&quot;kerf&quot;:0.0024', 'LETTER')
   end
 
-  it 'offers the lids, disabled until laser-cutter can draw them' do
-    expect(response.body).to match(/<option[^>]*disabled[^>]*value="plain"|<option[^>]*value="plain"[^>]*disabled/)
-    expect(response.body).to include('Lids arrive with the next laser-cutter release.')
+  it 'offers the lids' do
+    expect(response.body).to include('value="back"', 'value="plain"')
+    expect(response.body).not_to match(/<option[^>]*disabled/)
+    expect(response.body).not_to include('Lids arrive with the next laser-cutter release.')
   end
 
   it 'links to GitHub Discussions until giscus is configured' do
@@ -32,14 +33,15 @@ RSpec.describe 'Home page' do
     expect(response.body).not_to include('googletagmanager')
   end
 
-  context 'when laser-cutter can draw lids' do
+  context 'when the installed laser-cutter cannot draw lids' do
     before do
-      allow(BoxRequest).to receive(:lids_supported?).and_return(true)
+      allow(BoxRequest).to receive(:lids_supported?).and_return(false)
       get '/'
     end
 
-    it 'enables them' do
-      expect(response.body).not_to include('Lids arrive with the next laser-cutter release.')
+    it 'shows them disabled, with a note' do
+      expect(response.body).to match(/<option[^>]*disabled[^>]*value="plain"|<option[^>]*value="plain"[^>]*disabled/)
+      expect(response.body).to include('Lids arrive with the next laser-cutter release.')
     end
   end
 

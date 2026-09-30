@@ -76,6 +76,16 @@ describe("making a box", () => {
     cy.readFile("tmp/cypress/downloads/makeabox-5x3x4in-0.245t.svg").should("contain", "<svg")
   })
 
+  it("cuts a lid that lifts off", () => {
+    field("lid").find("option:disabled").should("not.exist")
+    field("lid").select("plain")
+    cy.get(".go").click()
+    cy.contains("dialog.cut .progress", "Ready", { timeout: 10000 })
+    cy.get("dialog.cut .progress").should("contain", "248 of 248 lines")
+    cy.contains("dialog.cut dd", "Lid, no tabs")
+    cy.screenshot("lid", { capture: "viewport" })
+  })
+
   it("serves the PDF for the same settings", () => {
     cy.request("/box/download.pdf?box[width]=5&box[height]=3&box[depth]=4&box[thickness]=0.245&box[units]=in").then((response) => {
       expect(response.status).to.eq(200)

@@ -1,3 +1,26 @@
+GIT
+  remote: https://github.com/kigster/laser-cutter.git
+  revision: bf2b831f610f64c5ebc2a5d023dde2b133ab19d3
+  ref: bf2b831
+  specs:
+    laser-cutter (2.0.1)
+      dry-cli (~> 1.4.1)
+      dry-cli-autocomplete
+      dry-cli-help
+      dry-cli-ui
+      hashie
+      matrix
+      pastel
+      prawn
+      tty-cursor
+      tty-progressbar
+      tty-prompt
+      tty-screen
+      tty-spinner
+      tty-table
+      victor
+      zeitwerk
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -178,23 +201,6 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     language_server-protocol (3.17.0.6)
-    laser-cutter (2.0.0)
-      dry-cli (~> 1.4.1)
-      dry-cli-autocomplete
-      dry-cli-help
-      dry-cli-ui
-      hashie
-      matrix
-      pastel
-      prawn
-      tty-cursor
-      tty-progressbar
-      tty-prompt
-      tty-screen
-      tty-spinner
-      tty-table
-      victor
-      zeitwerk
     lint_roller (1.1.0)
     logger (1.7.0)
     lograge (0.15.1)
@@ -555,7 +561,7 @@ DEPENDENCIES
   ed25519
   haml
   importmap-rails
-  laser-cutter (~> 2.0)
+  laser-cutter!
   lograge
   matrix
   mry
@@ -648,7 +654,7 @@ CHECKSUMS
   kramdown (2.5.2) sha256=1ba542204c66b6f9111ff00dcc26075b95b220b07f2905d8261740c82f7f02fa
   kramdown-parser-gfm (1.1.0) sha256=fb39745516427d2988543bf01fc4cf0ab1149476382393e0e9c48592f6581729
   language_server-protocol (3.17.0.6) sha256=5ef2c0c138f8267e1bc631d3328347d354f96724b0af22f2c79516120443b7f0
-  laser-cutter (2.0.0) sha256=2aa1788120271b45f650659575f942d3cd010b3d1c68797f5c86b1a1c104316b
+  laser-cutter (2.0.1)
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   lograge (0.15.1) sha256=b8a6b3d45f15855f3b038ce01019317e783fa9ddf774eb20818c751438c5c761

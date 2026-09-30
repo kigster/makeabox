@@ -29,6 +29,13 @@ RSpec.describe 'Boxes' do
       expect(events[-2].last).to eq('done' => 376, 'total' => 376)
     end
 
+    it 'draws a lid that lifts off' do
+      get '/box/stream', params: { box: box.merge(lid: 'back') }
+
+      expect(events[-2].last).to eq('done' => 284, 'total' => 284)
+      expect(events.last.first).to eq 'drawn'
+    end
+
     it 'never sends more than a few dozen progress events' do
       get '/box/stream', params: { box: box.merge(width: 20, height: 20, depth: 20, thickness: 0.125) }
 

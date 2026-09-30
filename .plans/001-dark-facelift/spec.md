@@ -18,7 +18,7 @@ Someone lands on makeabox.io, types the inside dimensions of a box, watches it t
 | ----------------------- | ------------------------------------------------------------------------------------------------- |
 | Scope                   | New look, new stack and the new gem together                                                      |
 | Decomposition           | Three specs, facelift first                                                                       |
-| Gem                     | `gem 'laser-cutter', '~> 2.0'` from RubyGems                                                      |
+| Gem                     | laser-cutter 2.0.1 from GitHub, pinned to commit `bf2b831`, until 2.0.1 is on RubyGems; then back to `'~> 2.0'` |
 | Stack                   | Rails 8.1, Propshaft, importmap, Stimulus, hand-written CSS, HAML. No Node in the app             |
 | Visual direction        | "Lid down": dark honeycomb bed, a plywood box lit by the beam, controls in a strip at the bottom  |
 | Form                    | Easy to fill in, and the preview redraws instantly                                                |
@@ -42,7 +42,7 @@ Each of these is a judgement call that can be reversed.
 | Downloads                       | `GET /box/download.pdf` and `.svg`; the SVG button saves the copy already in the browser                   | GET needs no CSRF token and no session, and the form works without JavaScript                         |
 | Temporary files                 | `Tempfile`, deleted as soon as the bytes are read                                                          | Replaces the `FileCleaner` thread and the shutdown hook                                               |
 | Page cache and sessions         | Gone. Development and test no longer need memcached                                                        | The page is static; the form state lives in the browser                                               |
-| Lids before the gem has them    | The two lid options are shown disabled with a note, and switch on when the installed gem defines `Laser::Cutter::Box::LIDS` | The names `full`, `back` and `plain` and the `lid:` key come from laser-cutter PR 21, which is not released yet |
+| Lids on an older gem            | The two lid options are shown disabled with a note unless the installed gem defines `Laser::Cutter::Box::LIDS` | The names `full`, `back` and `plain` and the `lid:` key come from laser-cutter PR 21. The bundled gem has them, so the options are on |
 | Help                            | One "How the tabs work" section replaces three modals                                                      | Same content, no dialog to dismiss                                                                    |
 | Typeface                        | Archivo, variable, self-hosted (SIL OFL)                                                                   | One file covers every weight and width; no request to Google Fonts                                    |
 | giscus without its ids          | The page links to GitHub Discussions until `GISCUS_REPO_ID` and `GISCUS_CATEGORY_ID` are set               | The ids only exist once Discussions and the giscus app are enabled on the repository                  |
@@ -86,7 +86,8 @@ The output is byte for byte the same. `Makeabox::SvgRenderer` subclasses the gem
 
 ## Open questions
 
-- [x] **Lids.** Settled by laser-cutter PR 21 (version 2.0.1, unreleased): `lid:` is `full`, `back` or `plain`. The form uses the same words, and `BoxRequest.lids_supported?` looks for `Laser::Cutter::Box::LIDS`. Checked against that branch: all three lids draw, and the memoized SVG renderer still matches the gem's output.
+- [x] **Lids.** Settled by laser-cutter PR 21 (version 2.0.1, merged, not yet on RubyGems): `lid:` is `full`, `back` or `plain`. The form uses the same words, and `BoxRequest.lids_supported?` looks for `Laser::Cutter::Box::LIDS`. The Gemfile takes the gem from GitHub at the merge commit, so all three lids work now; specs and Cypress cover them.
+- [ ] **Back to RubyGems.** When laser-cutter 2.0.1 is released, replace the `github:` line in the Gemfile with `gem 'laser-cutter', '~> 2.0'`.
 - [ ] **The Ruby API.** The gem is gaining a public entry point that takes every option as a typed object and returns the document without a file. Once released, `BoxRequest#render` should call it, and the `Tempfile` and probably `Makeabox::SvgRenderer` can go.
 - [ ] **Close the dialog after a download?** Built as asked. Anyone wanting both files has to generate twice.
 - [ ] **giscus.** Enable Discussions on `kigster/makeabox`, install the giscus app, and set the two ids on the server.

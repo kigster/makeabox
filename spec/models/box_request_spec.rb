@@ -116,13 +116,17 @@ RSpec.describe BoxRequest do
       expect(box.configuration('/tmp/box.pdf')).to include(notch: 0.5, page_size: 'A4', page_layout: 'landscape', metadata: false)
     end
 
-    it 'keeps the lid to itself until laser-cutter can draw one' do
-      expect(described_class.new(params.merge('lid' => 'plain')).configuration('/tmp/box.pdf')).not_to have_key(:lid)
+    it 'falls back to the full lid when laser-cutter cannot draw another' do
+      allow(described_class).to receive(:lids_supported?).and_return(false)
+      expect(described_class.new(params.merge('lid' => 'plain')).configuration('/tmp/box.pdf')).to include(lid: 'full')
     end
 
-    it 'passes the lid on once laser-cutter can draw one' do
-      allow(described_class).to receive(:lids_supported?).and_return(true)
+    it 'passes the lid on' do
       expect(described_class.new(params.merge('lid' => 'plain')).configuration('/tmp/box.pdf')).to include(lid: 'plain')
+    end
+
+    it 'asks for the full lid by default' do
+      expect(described_class.new(params.merge('lid' => 'full')).configuration('/tmp/box.pdf')).to include(lid: 'full')
     end
   end
 
@@ -138,6 +142,14 @@ RSpec.describe BoxRequest do
       expect(svg).to include('<svg', '<line')
       expect(counts.first).to eq [1, 376]
       expect(counts.last).to eq [376, 376]
+    end
+
+    { 'full' => 376, 'back' => 284, 'plain' => 248 }.each do |lid, lines|
+      it "draws the #{lid} lid in #{lines} lines" do
+        total = nil
+        described_class.new(params.merge('lid' => lid)).render('svg') { |_, count| total = count }
+        expect(total).to eq lines
+      end
     end
 
     it 'leaves no file behind' do
