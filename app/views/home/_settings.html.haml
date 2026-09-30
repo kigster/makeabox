@@ -30,11 +30,13 @@
       %select{name: 'box[page_layout]', data: {action: 'change->generator#edit'}}
         %option{value: 'portrait'} Portrait
         %option{value: 'landscape'} Landscape
+      %small PDF only.
     %label
       Info block
       %select{name: 'box[metadata]', data: {action: 'change->generator#edit'}}
         %option{value: '1'} Print the box settings on the page
         %option{value: '0'} Leave it off
+      %small PDF only.
   .sheet-foot
     %button.link{type: 'button', data: {action: 'generator#reset'}} Reset everything to defaults
     %button.done{type: 'button', data: {action: 'generator#close'}} Done

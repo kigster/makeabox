@@ -12,7 +12,7 @@ group :default do
   gem 'ed25519'
   gem 'haml'
   gem 'importmap-rails'
-  # Lids are merged but not on RubyGems yet; go back to '~> 2.0' once 2.0.1 is released.
+  # Lids are merged but not on RubyGems yet; once 2.0.1 is released, go back to '~> 2.0', '>= 2.0.1'.
   gem 'laser-cutter', github: 'kigster/laser-cutter', ref: 'bf2b831'
   gem 'lograge'
   gem 'matrix'

@@ -29,7 +29,7 @@ export function chain(lines, limit = 4000) {
 }
 
 // Reads the <line> elements out of laser-cutter's SVG and rebuilds them inside
-// `target`, hidden. Only numbers are copied across, never markup.
+// `target`, hidden. Only numbers and the viewBox are copied across, never markup.
 export function load(target, source) {
   const parsed = new DOMParser().parseFromString(source, "image/svg+xml").documentElement
   const lines = chain([...parsed.querySelectorAll("line")].map((line) => ["x1", "y1", "x2", "y2"].map((name) => Number(line.getAttribute(name)))))

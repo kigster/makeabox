@@ -54,7 +54,7 @@ ruby: 		brew ## Installs Ruby if needed
 			rbenv global $(RUBY_VERSION); \
 			"
 
-bundle: 	ruby ## Run the local test suite
+bundle: 	ruby ## Installs the gems
 		@printf "$(YLW)$(FMT)$(CLR)" "Installing bundled gems..."
 		@bundle check || bundle install -j 12 --quiet
 
@@ -66,7 +66,7 @@ lint: 		bundle ## Runs rubocop
 		@printf "$(YLW)$(FMT)$(CLR)" "Running Rubocop..."
 		@bash -c "bundle exec rubocop --color"
 
-lint-fix: 	bundle ## Runs rubocop with auto-correct
+lint-fix: 	bundle ## Runs rubocop with auto-correct, then the specs
 		@bash -c "bundle exec rubocop -a --color; @bundle exec rspec --force-color"
 
 lint-fix-all: 	bundle ## Runs rubocop with a more dangerous auto-correct

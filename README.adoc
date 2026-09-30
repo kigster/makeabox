@@ -8,7 +8,7 @@
 
 image:https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml/badge.svg[Unit Tests,link=https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml]
 
-__This__ is the link:https://makeabox.io/[makeabox application] that generates laser-cut path as a downloadable PDF file.
+__This__ is the link:https://makeabox.io/[makeabox application] that generates laser-cut paths as a downloadable SVG or PDF file.
 
 INFO: It runs on Rails 8.1 and Ruby 4.0, and draws with the link:https://github.com/kigster/laser-cutter[laser-cutter] gem, version 2.0.1, taken from GitHub until that version is on RubyGems. The front end is Propshaft, importmap and Stimulus with hand-written CSS, so the app itself needs no Node. The design notes are in `.plans/001-dark-facelift/spec.md`.
 
@@ -21,16 +21,18 @@ Assuming you develop on OS-X, it should be pretty trivial to get MakeABOX runnig
  make help
 
   brew          Installs Homebrew if on OS-X
-  bundle        Run the local test suite
+  bundle        Installs the gems
   deploy-quick  Deploy makeabox to production using Capistrano, skips tests and git status
   deploy        Deploy makeabox to production using Capistrano
+  e2e           Runs the Cypress suite against a local server on port 3055
   git-status    Ensures the local repo is clean
   help          Prints help message auto-generated from the comments.
   lint-fix-all  Runs rubocop with a more dangerous auto-correct
-  lint-fix      Runs rubocop with auto-correct
+  lint-fix      Runs rubocop with auto-correct, then the specs
   lint          Runs rubocop
   pre-commit    Runs rspec and rubocop before the commit
   ruby          Installs Ruby if needed
+  server        Starts the app on http://127.0.0.1:3055
   test          Run the local test suite
 ----
 
