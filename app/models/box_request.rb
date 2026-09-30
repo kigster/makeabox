@@ -11,19 +11,18 @@ class BoxRequest
   LAYOUTS    = %w[portrait landscape].freeze
   FORMATS    = { 'pdf' => 'application/pdf', 'svg' => 'image/svg+xml' }.freeze
 
-  # 'closed' is the six-sided box. The other two are lids laser-cutter is
-  # still growing: one with tabs along a single side, one with none at all.
-  LIDS = %w[closed notched plain].freeze
-
-  # The first laser-cutter release expected to draw lids. Until the installed
-  # gem reaches it, only 'closed' is accepted.
-  LID_GEM_VERSION = Gem::Version.new('2.1.0')
+  # How the top panel joins the walls, in laser-cutter's own words: 'full' is
+  # notched on all four sides, 'back' only where it meets the back wall, and
+  # 'plain' is a rectangle that lies on top. The last two lift off.
+  LIDS = %w[full back plain].freeze
 
   LABELS = { notch: 'Tab width' }.freeze
 
   class << self
+    # laser-cutter 2.0.0 draws only the full lid. Releases that draw the
+    # others say so with Laser::Cutter::Box::LIDS.
     def lids_supported?
-      Gem::Version.new(Laser::Cutter::VERSION) >= LID_GEM_VERSION
+      Laser::Cutter::Box.const_defined?(:LIDS)
     end
 
     # @return [Hash] what the gem fills in when a field is left blank, per unit

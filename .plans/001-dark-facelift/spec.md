@@ -42,7 +42,7 @@ Each of these is a judgement call that can be reversed.
 | Downloads                       | `GET /box/download.pdf` and `.svg`; the SVG button saves the copy already in the browser                   | GET needs no CSRF token and no session, and the form works without JavaScript                         |
 | Temporary files                 | `Tempfile`, deleted as soon as the bytes are read                                                          | Replaces the `FileCleaner` thread and the shutdown hook                                               |
 | Page cache and sessions         | Gone. Development and test no longer need memcached                                                        | The page is static; the form state lives in the browser                                               |
-| Lids before the gem has them    | The two lid options are shown disabled with a note, and switch on when laser-cutter reaches 2.1.0          | The gem has no lid code yet, so the option name and the version are guesses. See "Open questions"     |
+| Lids before the gem has them    | The two lid options are shown disabled with a note, and switch on when the installed gem defines `Laser::Cutter::Box::LIDS` | The names `full`, `back` and `plain` and the `lid:` key come from laser-cutter PR 21, which is not released yet |
 | Help                            | One "How the tabs work" section replaces three modals                                                      | Same content, no dialog to dismiss                                                                    |
 | Typeface                        | Archivo, variable, self-hosted (SIL OFL)                                                                   | One file covers every weight and width; no request to Google Fonts                                    |
 | giscus without its ids          | The page links to GitHub Discussions until `GISCUS_REPO_ID` and `GISCUS_CATEGORY_ID` are set               | The ids only exist once Discussions and the giscus app are enabled on the repository                  |
@@ -86,7 +86,8 @@ The output is byte for byte the same. `Makeabox::SvgRenderer` subclasses the gem
 
 ## Open questions
 
-- [ ] **Lids.** What will laser-cutter call the option, what values will it take, and in which version? `BoxRequest::LIDS`, `LID_GEM_VERSION` and the `lid:` key passed to `Configuration` are placeholders.
+- [x] **Lids.** Settled by laser-cutter PR 21 (version 2.0.1, unreleased): `lid:` is `full`, `back` or `plain`. The form uses the same words, and `BoxRequest.lids_supported?` looks for `Laser::Cutter::Box::LIDS`. Checked against that branch: all three lids draw, and the memoized SVG renderer still matches the gem's output.
+- [ ] **The Ruby API.** The gem is gaining a public entry point that takes every option as a typed object and returns the document without a file. Once released, `BoxRequest#render` should call it, and the `Tempfile` and probably `Makeabox::SvgRenderer` can go.
 - [ ] **Close the dialog after a download?** Built as asked. Anyone wanting both files has to generate twice.
 - [ ] **giscus.** Enable Discussions on `kigster/makeabox`, install the giscus app, and set the two ids on the server.
 - [ ] **Dead code.** `lib/makeabox/logging/` (about 250 lines) is not referenced anywhere. It is why total line coverage reads 42%; everything this change added is covered.

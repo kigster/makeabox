@@ -14,4 +14,5 @@
 - [x] Production build checked: `assets:precompile` and `secret_key_base` from `config/secrets.yml`
 - [ ] Deploy (Konstantin): Ruby 4.0.6 on the server, `cap production deploy`, check that nginx does not buffer `/box/stream`
 - [ ] Fix the SVG renderer in laser-cutter, then delete `Makeabox::SvgRenderer`
-- [ ] Wire the real lid option once laser-cutter ships it
+- [x] Use the gem's lid names (`full`, `back`, `plain`); they switch on with the release that has them
+- [ ] Move `BoxRequest#render` to the gem's public Ruby API once it is released

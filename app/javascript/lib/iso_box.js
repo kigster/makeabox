@@ -19,7 +19,7 @@ export function tabCount(length, notch) {
 export function isoBox(box) {
   const { width: W, height: H, depth: D, thickness: t } = box
   const notch = box.notch || 3 * t
-  const open = box.lid !== "closed"
+  const open = box.lid === "back" || box.lid === "plain"
   const unit = Math.max(W, H, D)
   const lift = open ? Math.max(0.35 * H, 0.18 * unit) : 0
   const points = []
@@ -75,12 +75,12 @@ export function isoBox(box) {
     polygon("face right", face([W, 0, H + lift - t], [0, 1, 0], D, [0, 0, 1], t), 0, 0, D, t)
   }
   polygon("face top", faces.top, 0, 0, W, D)
-  if (box.lid === "closed") {
+  if (!open) {
     fingers(faces.top, "u1", 0); fingers(faces.left, "u1", 1)
     fingers(faces.top, "v1", 0); fingers(faces.right, "u1", 1)
     fingers(faces.top, "u0", 1); fingers(faces.top, "v0", 1)
-  } else if (box.lid === "notched") {
-    fingers(faces.top, "u1", 0); fingers(faces.left, "u1", 1)
+  } else if (box.lid === "back") {
+    fingers(faces.top, "u0", 1) // the far edge, where the lid meets the back wall
   }
 
   const offset = 0.1 * unit, size = unit * SCALE * 0.052

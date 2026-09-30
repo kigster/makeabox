@@ -71,19 +71,22 @@ RSpec.describe BoxRequest do
   end
 
   describe '.lids_supported?' do
-    it 'follows the installed laser-cutter version' do
-      stub_const('Laser::Cutter::VERSION', '2.0.0')
+    it 'is off for a laser-cutter that only draws the full lid' do
+      hide_const('Laser::Cutter::Box::LIDS')
       expect(described_class.lids_supported?).to be false
-      stub_const('Laser::Cutter::VERSION', '2.1.0')
+    end
+
+    it 'is on once laser-cutter lists its lids' do
+      stub_const('Laser::Cutter::Box::LIDS', %i[full back plain])
       expect(described_class.lids_supported?).to be true
     end
   end
 
   describe '#units and #lid' do
-    it 'fall back to inches and a closed box for anything unknown' do
+    it 'fall back to inches and the full lid for anything unknown' do
       box = described_class.new(params.merge('units' => 'furlongs', 'lid' => 'dome'))
       expect(box.units).to eq 'in'
-      expect(box.lid).to eq 'closed'
+      expect(box.lid).to eq 'full'
     end
   end
 
