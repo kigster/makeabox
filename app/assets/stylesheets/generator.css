@@ -37,7 +37,7 @@
 
 .panel {
   position: relative; margin: 0;
-  background: var(--panel); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--rule);
+  background: var(--panel); border-top: 3px solid var(--amber); border-bottom: 1px solid var(--rule);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr) minmax(0, 1.2fr) minmax(0, 1.3fr) minmax(140px, 1.1fr);
 }
 .hint { position: absolute; left: var(--gutter); bottom: calc(100% + 10px); margin: 0; font-size: 14px; color: var(--alarm); }
