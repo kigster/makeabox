@@ -19,7 +19,7 @@ RSpec.describe 'Home page' do
   end
 
   it 'works as a plain form without JavaScript' do
-    expect(response.body).to include('action="/box/download.pdf"', 'name="box[width]"', 'name="box[thickness]"')
+    expect(response.body).to include('action="/box/download.pdf"', 'method="get"', 'name="box[width]"', 'name="box[thickness]"')
   end
 
   it 'hands the gem defaults and page sizes to the page' do
@@ -29,7 +29,7 @@ RSpec.describe 'Home page' do
   it 'offers the lids' do
     expect(response.body).to include('value="back"', 'value="plain"')
     expect(response.body).not_to match(/<option[^>]*disabled/)
-    expect(response.body).not_to include('Lids arrive with the next laser-cutter release.')
+    expect(response.body).not_to include('Lids need laser-cutter 2.0.1 or newer.')
   end
 
   it 'links to GitHub Discussions until giscus is configured' do
@@ -49,7 +49,7 @@ RSpec.describe 'Home page' do
 
     it 'shows them disabled, with a note' do
       expect(response.body).to match(/<option[^>]*disabled[^>]*value="plain"|<option[^>]*value="plain"[^>]*disabled/)
-      expect(response.body).to include('Lids arrive with the next laser-cutter release.')
+      expect(response.body).to include('Lids need laser-cutter 2.0.1 or newer.')
     end
   end
 

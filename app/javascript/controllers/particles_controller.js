@@ -4,7 +4,7 @@ const COLORS = ["255, 138, 61", "135, 206, 250"] // orange and light sky blue, a
 const LINK = 140       // px within which two particles are joined by a line
 const DENSITY = 15000  // px² of window per particle
 const MOST = 120
-const SPEED = 0.35     // px per frame, at most
+const SPEED = 0.35     // px per frame along each axis, at most
 
 // Slow particles drifting over the bed, joined when they come close. Drawn on
 // a fixed canvas behind the page. Stands still for anyone who asked for less
@@ -12,6 +12,7 @@ const SPEED = 0.35     // px per frame, at most
 export default class extends Controller {
   connect() {
     this.pen = this.element.getContext("2d")
+    if (!this.pen) return // no canvas, no particles; the page is fine without them
     this.still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     this.resize = this.resize.bind(this)
     this.tick = this.tick.bind(this)
@@ -23,6 +24,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (!this.pen) return
     this.stop()
     window.removeEventListener("resize", this.resize)
     document.removeEventListener("visibilitychange", this.visibility)

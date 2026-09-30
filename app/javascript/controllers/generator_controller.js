@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { isoBox } from "lib/iso_box"
+import { isoBox, tabCount } from "lib/iso_box"
 import { load, trace } from "lib/laser_trace"
 
 const STORAGE_KEY = "makeabox:settings:v1"
@@ -11,11 +11,24 @@ const STOCK = {
   mm: [["3 mm", 3], ["4.5 mm", 4.5], ["6 mm", 6]]
 }
 const STEP = { in: { side: 0.25, thickness: 0.005, notch: 0.05 }, mm: { side: 5, thickness: 0.1, notch: 1 } }
-// The narrowest tab worth cutting. The widest is a third of the shortest side.
+// The narrowest notch worth cutting. The widest is a third of the shortest
+// side; on a box too small for both, the narrowest is half the widest. Both
+// ends are rounded down to NOTCH_SCALE, exactly as BoxRequest does.
 const NOTCH_MIN = { in: 0.4, mm: 10 }
+const NOTCH_SCALE = { in: 100, mm: 10 }
+const MAX_NOTCHES = 150 // BoxRequest::MAX_NOTCHES
 const TRACE_MS = 1500
 
 const clean = (number) => Number(number.toFixed(4))
+// Reads a number the way the server does: a decimal comma is fine, "5 in" is not.
+const parse = (text) => {
+  const trimmed = String(text ?? "").trim().replace(",", ".")
+  const value = trimmed === "" ? NaN : Number(trimmed)
+  return Number.isFinite(value) ? value : NaN
+}
+// What an event from the stream carries. The server is ours, but a proxy in between is not.
+const payload = (message) => { try { return JSON.parse(message.data) || {} } catch (error) { return {} } }
+const STOPPED = "makeabox stopped answering. Try again in a moment."
 const short = (name) => name.replace(/^box\[(.+)\]$/, "$1")
 const label = (key) => (key === "thickness" ? "Thickness" : key[0].toUpperCase() + key.slice(1))
 
@@ -46,8 +59,7 @@ export default class extends Controller {
   }
 
   number(key) {
-    const value = parseFloat(String(this.fields[key] ?? "").replace(",", "."))
-    return Number.isFinite(value) ? value : 0
+    return parse(this.fields[key]) || 0
   }
 
   input(key) {
@@ -64,20 +76,22 @@ export default class extends Controller {
     for (const key of [...SIDES, "thickness"]) if (!(this.number(key) > 0)) return `${label(key)} needs a number above zero.`
     if (this.number("thickness") >= Math.min(...SIDES.map((key) => this.number(key)))) return "Thickness has to be smaller than the shortest side of the box."
     if (this.notchProblem()) return `Notch length has to be between ${this.notchRange().join(" and ")} ${this.unit}, or blank to let makeabox choose.`
+    const notches = tabCount(Math.max(...SIDES.map((key) => this.number(key))), this.number("notch") || 3 * this.number("thickness"))
+    if (notches > MAX_NOTCHES) return `That is ${notches} notches along the longest side, and ${MAX_NOTCHES} is the most we draw. Use thicker material or a longer notch.`
     return ""
   }
 
-  // [narrowest, widest] tab, rounded down so that both ends are allowed.
+  // [narrowest, widest] notch, the same numbers as BoxRequest#notch_range.
   notchRange() {
-    const digits = this.unit === "mm" ? 10 : 100
-    const widest = Math.floor((Math.min(...SIDES.map((key) => this.number(key))) / 3) * digits + 1e-6) / digits
-    return [Math.min(NOTCH_MIN[this.unit], widest), widest]
+    const scale = NOTCH_SCALE[this.unit], down = (value) => Math.floor(value * scale + 1e-6) / scale
+    const widest = down(Math.min(...SIDES.map((key) => this.number(key))) / 3)
+    return [Math.min(NOTCH_MIN[this.unit], down(widest / 2)), widest]
   }
 
   notchProblem() {
     if (String(this.fields.notch ?? "").trim() === "") return false
     const [narrowest, widest] = this.notchRange()
-    return !(this.number("notch") >= narrowest && this.number("notch") <= widest)
+    return !(this.number("notch") >= narrowest - 1e-9 && this.number("notch") <= widest + 1e-9)
   }
 
   // Where a nudge or a drag starts from, and how far it may go.
@@ -147,7 +161,7 @@ export default class extends Controller {
     if (to === this.unit) return
     const factor = to === "mm" ? MM_PER_INCH : 1 / MM_PER_INCH, digits = to === "mm" ? 2 : 4
     for (const input of [...this.numberTargets, ...this.optionalTargets]) {
-      const value = parseFloat(input.value)
+      const value = parse(input.value)
       if (Number.isFinite(value)) input.value = Number((value * factor).toFixed(digits))
     }
     this.unit = to
@@ -199,7 +213,7 @@ export default class extends Controller {
       if (fallback !== undefined) input.placeholder = fallback
     })
     this.pageSizes(unit)
-    this.numberTargets.forEach((input) => input.closest(".field").classList.toggle("bad", !(parseFloat(input.value) > 0)))
+    this.numberTargets.forEach((input) => input.closest(".field").classList.toggle("bad", !(parse(input.value) > 0)))
     this.rangeTarget.textContent = this.notchRange()[1] > 0 ? `${this.notchRange().join(" to ")} ${unit}` : ""
     this.rangeTarget.closest(".field").classList.toggle("bad", this.notchProblem())
 
@@ -236,6 +250,7 @@ export default class extends Controller {
   restore() {
     let saved = {}
     try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") } catch (error) { return }
+    if (!saved || typeof saved !== "object") return
     const unit = saved.units === "mm" ? "mm" : "in"
     this.unitsTargets.forEach((radio) => { radio.checked = radio.value === unit })
     this.pageSizes(unit) // the saved page size needs its option to exist first
@@ -243,7 +258,7 @@ export default class extends Controller {
       const field = this.input(key)
       if (!field || key === "units") continue
       field.value = value
-      // A lid this laser-cutter cannot draw yet falls back to the closed box.
+      // A saved choice that is gone or disabled (a lid, a page size) falls back to the first one.
       if (field.tagName === "SELECT" && (field.selectedIndex < 0 || field.selectedOptions[0].disabled)) field.selectedIndex = 0
     }
   }
@@ -264,23 +279,31 @@ export default class extends Controller {
 
     this.source = new EventSource(`${this.streamUrlValue}?${this.query}`)
     this.source.addEventListener("progress", (message) => {
-      const { done, total } = JSON.parse(message.data)
-      this.progress("Working out the tabs…", done, total)
+      const { done, total } = payload(message)
+      if (total) this.progress("Working out the tabs…", done, total)
     })
     this.source.addEventListener("drawn", (message) => {
-      const { svg, filename } = JSON.parse(message.data)
+      const { svg, filename } = payload(message)
       this.source.close()
+      if (!svg) return this.fail(STOPPED)
       this.svg = svg
       this.filename = filename
-      const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      this.cancelTrace = trace(load(this.drawingTarget, svg), {
-        duration: still ? 0 : TRACE_MS,
-        onStep: (done, total) => this.progress("Cutting…", done, total),
-        onDone: () => this.ready()
-      })
+      try {
+        const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        this.cancelTrace = trace(load(this.drawingTarget, svg), {
+          duration: still ? 0 : TRACE_MS,
+          onStep: (done, total) => this.progress("Cutting…", done, total),
+          onDone: () => this.ready()
+        })
+      } catch (error) {
+        // The files are fine even when the picture of them is not.
+        console.error(error)
+        this.ready("Ready. The drawing could not be shown here, but the files are good.")
+      }
     })
-    this.source.addEventListener("failed", (message) => this.fail(JSON.parse(message.data).message))
-    this.source.onerror = () => { if (!this.svg) this.fail("Lost the connection to makeabox. Check your network and generate again.") }
+    this.source.addEventListener("failed", (message) => this.fail(payload(message).message || STOPPED))
+    // Reached for a server that is down, a gateway error, or a stream cut short.
+    this.source.onerror = () => { if (!this.svg) this.fail(STOPPED) }
   }
 
   describe() {
@@ -304,13 +327,14 @@ export default class extends Controller {
     this.barTarget.style.width = total ? `${(done / total) * 100}%` : "0"
   }
 
-  ready() {
-    this.phaseTarget.textContent = "Ready"
+  ready(text = "Ready") {
+    this.phaseTarget.textContent = text
     this.downloadTargets.forEach((button) => { button.disabled = false })
     this.downloadTargets[0].focus()
   }
 
   fail(message) {
+    console.error(`makeabox: ${message}`)
     this.stop()
     this.cutTarget.classList.add("failed")
     this.phaseTarget.textContent = message
@@ -326,18 +350,34 @@ export default class extends Controller {
 
   // The drawing is already in the browser, so the SVG is saved from memory.
   downloadSvg() {
-    const link = document.createElement("a")
-    link.href = URL.createObjectURL(new Blob([this.svg], { type: "image/svg+xml" }))
-    link.download = this.filename
-    link.click()
-    setTimeout(() => URL.revokeObjectURL(link.href), 1000)
+    this.hand(new Blob([this.svg], { type: "image/svg+xml" }), this.filename)
     this.finish("svg")
   }
 
-  // The PDF is drawn again on the server from the same settings.
-  downloadPdf() {
-    window.location.assign(`${this.downloadUrlValue}.pdf?${this.query}`)
-    this.finish("pdf")
+  // The PDF is drawn again on the server from the same settings. It is fetched
+  // rather than navigated to, so a refusal shows in the dialog and not on a bare page.
+  async downloadPdf(event) {
+    const button = event.currentTarget
+    button.disabled = true
+    try {
+      const response = await fetch(`${this.downloadUrlValue}.pdf?${this.query}`)
+      if (!response.ok) return this.fail(response.status === 422 ? await response.text() : STOPPED)
+      this.hand(await response.blob(), this.filename.replace(/\.svg$/, ".pdf"))
+      this.finish("pdf")
+    } catch (error) {
+      this.fail(STOPPED)
+    } finally {
+      button.disabled = false
+    }
+  }
+
+  // Hands the browser a file to save.
+  hand(blob, filename) {
+    const link = document.createElement("a")
+    link.href = URL.createObjectURL(blob)
+    link.download = filename
+    link.click()
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000)
   }
 
   finish(format) {

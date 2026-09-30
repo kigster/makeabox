@@ -19,7 +19,7 @@ RSpec.describe Makeabox::SvgRenderer do
   it 'works out the size of the page once, not once per line' do
     config = Laser::Cutter::Configuration.new(width: 5, height: 3, depth: 4, thickness: 0.245, units: 'in', file: File::NULL)
     renderer = described_class.new(config)
-    expect(renderer.subject).to receive(:enclosure).at_most(4).times.and_call_original
+    expect(renderer.subject).to receive(:enclosure).at_least(:once).at_most(4).times.and_call_original
 
     renderer.render
   end

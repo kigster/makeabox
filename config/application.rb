@@ -31,7 +31,12 @@ module Makeabox
     # (see lib/capistrano/tasks/secrets.cap), so the key is read from it here.
     secrets_file = Rails.root.join('config/secrets.yml')
     if ENV['SECRET_KEY_BASE'].blank? && secrets_file.exist?
-      config.secret_key_base = YAML.safe_load_file(secrets_file, aliases: true).dig(Rails.env, 'secret_key_base')
+      secret = YAML.safe_load_file(secrets_file, aliases: true)&.dig(Rails.env, 'secret_key_base')
+      if secret.blank? && Rails.env.production? && ENV['SECRET_KEY_BASE_DUMMY'].blank?
+        raise 'config/secrets.yml has no production secret_key_base. Add one, or set SECRET_KEY_BASE.'
+      end
+
+      config.secret_key_base = secret if secret.present?
     end
 
     # Design sources, not something to publish.

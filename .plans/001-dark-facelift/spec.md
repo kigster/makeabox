@@ -38,7 +38,7 @@ Each of these is a judgement call that can be reversed.
 | Question                        | Decision                                                                                                   | Why                                                                                                   |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Progress transport              | Server-sent events from `GET /box/stream`, through `ActionController::Live`                                | No Redis, no Action Cable, no job queue. One request, one response                                    |
-| Two phases on one bar           | "Working out the tabs" shows the gem's real count, then "Cutting" shows the trace                          | A typical box is drawn in 40 ms, so the real count alone would never be seen                          |
+| Two phases on one bar           | "Working out the tabs" shows the gem's real count, then "Cutting" shows the trace                          | A typical box is drawn in well under 50 ms, so the real count alone would never be seen                          |
 | Downloads                       | `GET /box/download.pdf` and `.svg`; the SVG button saves the copy already in the browser                   | GET needs no CSRF token and no session, and the form works without JavaScript                         |
 | Temporary files                 | `Tempfile`, deleted as soon as the bytes are read                                                          | Replaces the `FileCleaner` thread and the shutdown hook                                               |
 | Page cache and sessions         | Gone. Development and test no longer need memcached                                                        | The page is static; the form state lives in the browser                                               |
@@ -46,8 +46,10 @@ Each of these is a judgement call that can be reversed.
 | Help                            | One "How the tabs work" section replaces three modals                                                      | Same content, no dialog to dismiss                                                                    |
 | Typeface                        | Archivo, variable, self-hosted (SIL OFL)                                                                   | One file covers every weight and width; no request to Google Fonts                                    |
 | giscus without its ids          | The page links to GitHub Discussions until `GISCUS_REPO_ID` and `GISCUS_CATEGORY_ID` are set               | The ids only exist once Discussions and the giscus app are enabled on the repository                  |
-| Notch length                    | On the main form, blank for automatic. When filled in it must be between 10 mm (0.4 in) and a third of the shortest side; on a box too small for both, the third wins | Konstantin set the range. It is sent to laser-cutter as `notch`, the gem's own name |
+| Notch length                    | On the main form, blank for automatic. When filled in it must be between 10 mm (0.4 in) and a third of the shortest side; on a box too small for both, the lower limit drops to half the upper one. Both limits are rounded down (0.01 in, 0.1 mm) identically in the browser and in `BoxRequest` | Konstantin set the range. It is sent to laser-cutter as `notch`, the gem's own name |
 | Background and heading          | Particles drift over the bed on a canvas (`particles_controller.js`, about 90 lines, no library); the heading's colour drifts between orange and light sky blue in CSS | Vanta.js needs three.js, several hundred kilobytes for the same effect. Both stand still under `prefers-reduced-motion` |
+| Size limit                      | At most 150 notches along the longest side, checked in the browser and in `BoxRequest`; rendering also has a 20 second deadline | Found in review: a huge box in thin material drew for minutes. `Rack::Timeout` cannot stop it, because `ActionController::Live` draws on its own thread |
+| Errors                          | A refusal (bad input, laser-cutter's own error, the deadline) reaches the page as a sentence, from the stream and from the PDF download, which is fetched so the dialog stays open. Anything else is reported as our fault and sent to `Rails.error`. Unknown units, lids or layouts are refused, not replaced by a default | Found in review: several failures used to show as a lost connection, and `units=MM` drew the box in inches |
 | Thickness rule                  | Thickness must be smaller than the shortest side                                                           | The old app had no check; this is the loosest rule that still stops nonsense                          |
 | `config/secrets.yml`            | Still read, for `secret_key_base`, by `config/application.rb`                                              | Rails 8 ignores the file, and the deploy still ships it                                               |
 | Cypress                         | Added, with Node as a development-only dependency                                                          | The global rule asks for an end-to-end suite on every web app                                         |
@@ -73,9 +75,9 @@ generator_controller.js
 
 - **`BoxRequest`** (`app/models/box_request.rb`) owns everything about one box: reading the parameters, the validation messages, the file name, and the call into laser-cutter. Both controller actions go through it.
 - **`Makeabox::SvgRenderer`** (`lib/makeabox/svg_renderer.rb`) is a workaround. See below.
-- **`generator_controller.js`** is the only Stimulus controller. The preview and the trace are plain modules under `app/javascript/lib` with no state of their own.
+- **`generator_controller.js`** runs the form and the dialogs; `particles_controller.js` only paints the background. The preview and the trace are plain modules under `app/javascript/lib` with no state of their own.
 
-## A bug found in laser-cutter 2.0.0
+## A bug found in laser-cutter 2.0.0, still in 2.0.1
 
 `Laser::Cutter::Renderer::SvgRenderer` works out the page size again for every line it writes. Measured on this machine:
 
@@ -93,7 +95,7 @@ The output is byte for byte the same. `Makeabox::SvgRenderer` subclasses the gem
 - [ ] **The Ruby API.** The gem is gaining a public entry point that takes every option as a typed object and returns the document without a file. Once released, `BoxRequest#render` should call it, and the `Tempfile` and probably `Makeabox::SvgRenderer` can go.
 - [ ] **Close the dialog after a download?** Built as asked. Anyone wanting both files has to generate twice.
 - [ ] **giscus.** Enable Discussions on `kigster/makeabox`, install the giscus app, and set the two ids on the server.
-- [ ] **Dead code.** `lib/makeabox/logging/` (about 250 lines) is not referenced anywhere. It is why total line coverage reads 42%; everything this change added is covered.
+- [ ] **Dead code.** `lib/makeabox/logging/` (about 590 lines with `logging.rb`) is not referenced anywhere. It is why total line coverage reads 42%; everything this change added is covered.
 
 ## Third parties (R5)
 

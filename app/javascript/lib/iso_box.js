@@ -1,5 +1,6 @@
 // Draws the isometric preview of the box: three visible faces with finger
-// joints and the dimensions. Pure geometry, no state.
+// joints, the dimensions, and for a lid that lifts off, the open box with the
+// lid floating above it. Pure geometry, no state.
 
 const COS30 = Math.cos(Math.PI / 6)
 const SCALE = 100
@@ -7,10 +8,12 @@ const SCALE = 100
 const project = (x, y, z) => [(x - y) * COS30 * SCALE, ((x + y) * 0.5 - z) * SCALE]
 const pair = (point) => point.map((n) => n.toFixed(1)).join(",")
 
-// laser-cutter cuts an odd number of tabs per edge, three at least.
+// How many notches laser-cutter cuts along an edge: the notch length is a
+// guide, rounded so that the count is odd and at least three. The gem measures
+// the inside of the edge and allows for kerf, so its count can differ by two.
 export function tabCount(length, notch) {
-  const count = Math.max(3, Math.floor(length / notch))
-  return count % 2 ? count : count - 1
+  const count = Math.ceil(Number((length / notch).toFixed(6))) + 1
+  return Math.max(3, Math.floor(count / 2) * 2 + 1)
 }
 
 // box: { width, height, depth, thickness, notch, units, lid, hot }

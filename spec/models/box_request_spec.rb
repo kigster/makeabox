@@ -60,7 +60,7 @@ RSpec.describe BoxRequest do
       it 'is refused while the installed laser-cutter cannot draw lids' do
         allow(described_class).to receive(:lids_supported?).and_return(false)
         expect(box).not_to be_valid
-        expect(box.errors).to eq ['This lid needs a newer laser-cutter than the one installed.']
+        expect(box.errors).to eq ['This lid needs laser-cutter 2.0.1 or newer.']
       end
 
       it 'is accepted once it can' do
@@ -91,10 +91,84 @@ RSpec.describe BoxRequest do
       expect(described_class.new(mm.merge('notch' => '31'))).not_to be_valid
     end
 
-    it 'lets a small box go below the usual minimum' do
+    # A third of 0.9 in is 0.3, below the usual 0.4: the range becomes 0.15 to 0.3.
+    it 'lets a small box go below the usual minimum, down to half the maximum' do
       small = params.merge('width' => '1', 'height' => '0.9', 'depth' => '1', 'thickness' => '0.1')
-      expect(described_class.new(small.merge('notch' => '0.3'))).to be_valid
-      expect(described_class.new(small.merge('notch' => '0.4'))).not_to be_valid
+      { '0.3' => true, '0.15' => true, '0.2' => true, '0.14' => false, '0.31' => false, '0.4' => false }.each do |notch, allowed|
+        expect(described_class.new(small.merge('notch' => notch)).valid?).to be(allowed), "notch #{notch}"
+      end
+    end
+
+    # The page shows both limits rounded down, so those must be accepted here.
+    context 'when a third of the side is not a round number' do
+      let(:cube) { params.merge('width' => '1', 'height' => '1', 'depth' => '1', 'thickness' => '0.1') }
+
+      it 'accepts the rounded limits the page shows' do
+        expect(described_class.new(cube.merge('notch' => '0.33'))).to be_valid
+        expect(described_class.new(cube.merge('notch' => '0.16'))).to be_valid
+      end
+
+      it 'names those limits when it refuses' do
+        box = described_class.new(cube.merge('notch' => '0.34'))
+        box.valid?
+        expect(box.errors).to eq ['Notch length has to be between 0.16 and 0.33 in, or blank.']
+      end
+
+      it 'rounds millimetres to a tenth' do
+        mm = { 'width' => '25', 'height' => '25', 'depth' => '25', 'thickness' => '3', 'units' => 'mm' }
+        expect(described_class.new(mm.merge('notch' => '8.3'))).to be_valid
+        expect(described_class.new(mm.merge('notch' => '8.4'))).not_to be_valid
+      end
+    end
+
+    it 'refuses zero' do
+      box = described_class.new(params.merge('notch' => '0'))
+      box.valid?
+      expect(box.errors).to eq ['Notch length has to be above zero, or leave it blank.']
+    end
+  end
+
+  describe 'size limits' do
+    it 'refuses more than 150 notches along the longest side' do
+      box = described_class.new(params.merge('width' => '100', 'thickness' => '0.05'))
+      box.valid?
+      expect(box.errors).to eq ['That is 669 notches along the longest side, and 150 is the most we draw. Use thicker material or a longer notch.']
+    end
+
+    it 'counts with the notch length when one is given' do
+      thin = params.merge('width' => '60', 'height' => '6', 'depth' => '6', 'thickness' => '0.05')
+      expect(described_class.new(thin)).not_to be_valid
+      expect(described_class.new(thin.merge('notch' => '2'))).to be_valid
+    end
+
+    it 'refuses numbers that are not finite' do
+      box = described_class.new(params.merge('width' => '1e999', 'height' => '1e999', 'depth' => '1e999'))
+      box.valid?
+      expect(box.errors).to eq(%w[Width Height Depth].map { |name| "#{name} needs a number above zero." })
+    end
+
+    it 'refuses a zero stroke, which laser-cutter cannot draw' do
+      box = described_class.new(params.merge('stroke' => '0'))
+      box.valid?
+      expect(box.errors).to eq ['Stroke has to be above zero, or leave it blank.']
+    end
+
+    it 'refuses a setting larger than the box' do
+      box = described_class.new(params.merge('padding' => '1e300', 'kerf' => '6'))
+      box.valid?
+      expect(box.errors).to eq ['Kerf cannot be larger than the box.', 'Padding cannot be larger than the box.']
+    end
+
+    { 'units' => 'MM', 'lid' => 'dome', 'page_layout' => 'sideways' }.each do |key, value|
+      it "refuses #{key}=#{value} instead of guessing" do
+        box = described_class.new(params.merge(key => value))
+        expect(box).not_to be_valid
+        expect(box.errors.first).to start_with("#{value} is not one of ")
+      end
+    end
+
+    it 'allows zero kerf, margin and padding' do
+      expect(described_class.new(params.merge('kerf' => '0', 'margin' => '0', 'padding' => '0'))).to be_valid
     end
   end
 

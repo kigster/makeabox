@@ -57,7 +57,7 @@
           %option{value: 'back', disabled: !@settings[:lidsSupported]} Lid, tabs along the back
           %option{value: 'plain', disabled: !@settings[:lidsSupported]} Lid, no tabs
       - unless @settings[:lidsSupported]
-        %small.soon Lids arrive with the next laser-cutter release.
+        %small.soon Lids need laser-cutter 2.0.1 or newer.
       %button.more{type: 'button', data: {action: 'generator#openSettings'}} Kerf, page, margins…
 
     %button.go{type: 'submit', data: {generator_target: 'go'}}
