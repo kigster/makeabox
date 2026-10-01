@@ -1,0 +1,7 @@
+-# Boxes downloaded since makeabox began, kept current by counter_controller.js.
+- total = Makeabox::BoxCounter.total
+.counter{role: 'img', 'aria-label': counter_label(total), title: counter_label(total),
+         data: {controller: 'counter', counter_url_value: downloads_path, counter_total_value: total}}
+  .caption.before boxes downloaded
+  .lcd{data: {counter_target: 'digits'}}= counter_digits(total)
+  .caption.after since 2015

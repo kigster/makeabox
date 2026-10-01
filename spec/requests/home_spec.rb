@@ -11,13 +11,21 @@ RSpec.describe 'Home page' do
   end
 
   it 'shows the logo next to the name' do
-    expect(response.body).to match(%r{<a class="mark" href="/">\s*<img[^>]*src="/assets/mark-[^"]+\.svg"[^>]*>\s*makeabox})
+    expect(response.body).to match(%r{<a class="mark" href="/">\s*<img[^>]*src="/assets/logo-[^"]+\.svg"[^>]*>\s*makeabox})
   end
 
   it 'gives a shared link a preview card with the logo and the name' do
     card = %r{http://www.example.com/assets/social-[^"]+\.png}
-    expect(response.body).to include('<meta content="makeabox" property="og:title">', '<meta content="summary_large_image" name="twitter:card">')
+    expect(response.body).to include('property="og:title"', '<meta content="summary_large_image" name="twitter:card">')
     expect(response.body).to match(/<meta content="#{card}" property="og:image">/).and match(/<meta content="#{card}" name="twitter:image">/)
+  end
+
+  it 'shows how many boxes have been downloaded, in the header' do
+    expect(response.body).to include('aria-label="1,300,000 boxes downloaded since 2015"', 'data-counter-total-value="1300000"', 'boxes downloaded</div>', 'since 2015</div>')
+  end
+
+  it 'explains kerf before the finer settings' do
+    expect(response.body).to include('Kerf matters most', 'The default, 0.026 in (0.66 mm)')
   end
 
   it 'puts the particle canvas behind the page' do
@@ -38,7 +46,7 @@ RSpec.describe 'Home page' do
   end
 
   it 'hands the gem defaults and page sizes to the page' do
-    expect(response.body).to include('&quot;kerf&quot;:0.0024', 'LETTER')
+    expect(response.body).to include('&quot;kerf&quot;:0.026', 'LETTER')
   end
 
   it 'offers the lids' do

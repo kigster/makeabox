@@ -3,40 +3,53 @@
     %h2#settings_title More settings
     %span all optional
     %button.x{type: 'button', 'aria-label': 'Close', data: {action: 'generator#close'}} &times;
+  %p.intro
+    Fine-tune your template here. Kerf matters most: it is the width of material the laser burns away,
+    and the drawing makes up for it so the tabs fit snugly. The default, 0.026 in (0.66 mm), suits most
+    wood; the colour of the slider shows how the box will likely fit, from loose enough to need glue or
+    screws to too tight to put together.
+  -# Two columns, filled top to bottom: the kerf slider, kerf, padding and page size on the left.
   .grid2
+    %label.kerf-adjust
+      Kerf adjustment:
+      %input{type: 'range', min: 0, max: 0.1, step: 0.0005, 'aria-describedby': 'kerf_fit',
+             data: {generator_target: 'kerfSlider', action: 'input->generator#slideKerf'}}
+      %small#kerf_fit{data: {generator_target: 'kerfFit'}}
     %label
       Kerf
       %input{name: 'box[kerf]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
       %small The width of the laser's cut.
     %label
-      Margin
-      %input{name: 'box[margin]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
-      %small From the edge of the page.
-    %label
       Padding
       %input{name: 'box[padding]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
       %small Space between the panels.
-    %label
-      Stroke
-      %input{name: 'box[stroke]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
-      %small Line width in the file.
     %label
       Page size
       %select{name: 'box[page_size]', data: {generator_target: 'pageSize', action: 'change->generator#edit'}}
         %option{value: ''} Fit the box
       %small A fixed size can split the drawing across pages. PDF only.
     %label
+      Margin
+      %input{name: 'box[margin]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small From the edge of the page.
+    %label
+      Stroke
+      %input{name: 'box[stroke]', inputmode: 'decimal', data: {generator_target: 'optional', action: 'input->generator#edit'}}
+      %small Line width in the file.
+    %label
       Page layout
       %select{name: 'box[page_layout]', data: {action: 'change->generator#edit'}}
         %option{value: 'portrait'} Portrait
         %option{value: 'landscape'} Landscape
       %small PDF only.
-    %label
-      Info block
-      %select{name: 'box[metadata]', data: {action: 'change->generator#edit'}}
-        %option{value: '1'} Print the box settings on the page
-        %option{value: '0'} Leave it off
-      %small PDF only.
+    .check
+      -# Unticked, the hidden 0 is what the form sends; ticked, the 1 after it wins.
+      %input{type: 'hidden', name: 'box[metadata]', value: '0'}
+      %label
+        Include box dimensions?
+        %input{type: 'checkbox', name: 'box[metadata]', value: '1', checked: true,
+               data: {generator_target: 'metadata', action: 'change->generator#edit'}}
+      %small Printed on the page. PDF only.
   .sheet-foot
     %button.link{type: 'button', data: {action: 'generator#reset'}} Reset everything to defaults
     %button.done{type: 'button', data: {action: 'generator#close'}} Done

@@ -5,14 +5,15 @@
     = render 'shared/bed'
     %header.site-header{data: {controller: 'menu'}}
       %a.mark{href: root_path}
-        = image_tag 'mark.svg', alt: '', width: 54, height: 54
+        = image_tag 'logo.svg', alt: '', width: 44, height: 44
         makeabox
+      = render 'shared/counter'
       -# Shown only on a phone, where the nav becomes a drop-down.
       %button.burger{type: 'button', 'aria-label': 'Menu', 'aria-expanded': 'false', 'aria-controls': 'site_nav',
                      data: {menu_target: 'button', action: 'menu#toggle'}}
         %span
       %nav#site_nav{'aria-label': 'Sections'}
-        %a{href: '#how', data: {action: 'panels#open menu#close', panels_name_param: 'how'}} How the tabs work
+        %a{href: '#how', data: {action: 'panels#open menu#close', panels_name_param: 'how'}} How the sides join
         %a{href: '#discussion', data: {action: 'panels#open menu#close', panels_name_param: 'discussion'}} Discussion
         %a{href: 'https://github.com/kigster/laser-cutter', target: "_blank", data: {action: 'menu#close'}} GitHub
         %a{href: '#support', data: {action: 'panels#open menu#close', panels_name_param: 'support'}} Donate

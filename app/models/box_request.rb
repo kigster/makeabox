@@ -13,7 +13,7 @@ class BoxRequest
 
   # How the top panel joins the walls, in laser-cutter's own words: 'full' is
   # notched on all four sides, 'back' only where it meets the back wall, and
-  # 'plain' is a rectangle that lies on top. The last two lift off.
+  # 'plain' is a rectangle that lies on top. The last two lift off.log
   LIDS = %w[full back plain].freeze
 
   LABELS = { notch: 'Notch length' }.freeze
@@ -22,12 +22,16 @@ class BoxRequest
   # shortest side. On a box too small for both, the narrowest drops to half
   # the widest. Both ends are rounded down to NOTCH_DIGITS decimals, exactly
   # as generator_controller.js does, so the page and the server agree.
-  NOTCH_MIN    = { 'in' => 0.4, 'mm' => 10.0 }.freeze
+  NOTCH_MIN    = { 'in' => 0.2, 'mm' => 5.0 }.freeze
   NOTCH_DIGITS = { 'in' => 2, 'mm' => 1 }.freeze
 
   # More notches than this along one edge is a drawing of tens of thousands
   # of lines that takes seconds to make and no laser cuts well.
   MAX_NOTCHES = 150
+
+  # makeabox's kerf when the field is blank. laser-cutter's own, 0.0024 in,
+  # leaves most boxes loose; this one suits most wood.
+  KERF_DEFAULT = { 'in' => 0.026, 'mm' => 0.66 }.freeze
 
   class << self
     # laser-cutter 2.0.0 draws only the full lid. Releases that draw the
@@ -39,7 +43,7 @@ class BoxRequest
     # @return [Hash] what the gem fills in when a field is left blank, per unit
     def defaults
       gem_defaults = Laser::Cutter::Configuration.defaults
-      UNITS.index_with { |unit| gem_defaults[unit].to_h.transform_values { |value| value.round(4) } }
+      UNITS.index_with { |unit| gem_defaults[unit].to_h.transform_values { |value| value.round(4) }.merge('kerf' => KERF_DEFAULT.fetch(unit)) }
     end
 
     # @return [Hash] page sizes per unit, as [name, width, height]
@@ -103,6 +107,7 @@ class BoxRequest
     options = { units: units, file: file, metadata: @params[:metadata] != '0',
                 page_layout: LAYOUTS.include?(@params[:page_layout]) ? @params[:page_layout] : LAYOUTS.first }
     (DIMENSIONS + OPTIONAL).each { |key| options[key] = number(key) if number(key) }
+    options[:kerf] ||= KERF_DEFAULT.fetch(units)
     options[:page_size] = @params[:page_size] if @params[:page_size].present?
     options[:lid] = lid if self.class.lids_supported? && lid != LIDS.first
     Laser::Cutter::Configuration.new(options).tap(&:validate!)

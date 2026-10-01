@@ -17,6 +17,10 @@
 .support .sign { color: var(--mute); font-size: 15px; }
 .giscus { margin-top: 18px; }
 
+/* How the tabs work: text on 60% of the panel, the photo filling the other 40%. */
+#how .band { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+#how .band img { max-width: none; border: 1px solid #000; box-shadow: 0 0 20px rgb(0 0 0 / 0.5); }
+
 /* The discussion sits in a centred column, wide enough for code in a comment. */
 #discussion .band { grid-template-columns: minmax(0, 1fr); }
 #discussion .prose { width: 100%; max-width: 980px; margin-inline: auto; }
@@ -25,7 +29,7 @@
 
 /* The panels: pinned to the bottom, reaching up to the header, 95% opaque, slid up by .up (see panels_controller.js). */
 .rise {
-  position: fixed; inset: auto 0 0 0; z-index: 3; margin: 0; width: 100%; max-width: none; height: calc(100svh - 62px); max-height: none;
+  position: fixed; inset: auto 0 0 0; z-index: 3; margin: 0; width: 100%; max-width: none; height: calc(100svh - var(--header)); max-height: none;
   padding: 0; border: 0; border-top: 3px solid var(--amber); border-radius: 16px 16px 0 0;
   background: rgb(34 44 54 / 0.95); color: var(--ink); overflow-y: auto; overscroll-behavior: contain;
   box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.55);
@@ -40,5 +44,5 @@
 .rise .x:hover { color: var(--ink); border-color: var(--ink); }
 
 @media (max-width: 900px) {
-  .band { grid-template-columns: 1fr; }
+  .band, #how .band { grid-template-columns: 1fr; }
 }

@@ -14,7 +14,16 @@
   font-display: swap;
 }
 
+/* Seven-segment digits for the download counter. DSEG by keshikan, SIL OFL. */
+@font-face {
+  font-family: "DSEG7";
+  src: url("dseg7-classic-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: block;
+}
+
 :root {
+  --header: 72px;      /* the sticky header's height; base.css raises it on a phone */
   --bed: #151b21;      /* the honeycomb bed */
   --panel: #0d1115;    /* the machine's control panel */
   --sheet: #222c36;    /* dialogs and the sections below the fold: lighter than the bed */

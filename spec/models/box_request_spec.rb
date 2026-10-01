@@ -10,8 +10,8 @@ RSpec.describe BoxRequest do
   describe '.defaults' do
     it 'reports what laser-cutter assumes for each unit' do
       expect(described_class.defaults).to include(
-        'in' => include('kerf' => 0.0024, 'margin' => 0.125),
-        'mm' => include('kerf' => 0.061)
+        'in' => include('kerf' => 0.026, 'margin' => 0.125),
+        'mm' => include('kerf' => 0.66)
       )
     end
   end
@@ -71,8 +71,8 @@ RSpec.describe BoxRequest do
   end
 
   describe 'notch length' do
-    # The shortest side is 3 in, so a notch may be 0.4 to 1 in.
-    { '0.4' => true, '1' => true, '0.39' => false, '1.01' => false }.each do |notch, allowed|
+    # The shortest side is 3 in, so a notch may be 0.2 to 1 in.
+    { '0.2' => true, '1' => true, '0.19' => false, '1.01' => false }.each do |notch, allowed|
       it "#{allowed ? 'accepts' : 'refuses'} #{notch} in" do
         expect(described_class.new(params.merge('notch' => notch)).valid?).to be allowed
       end
@@ -81,17 +81,18 @@ RSpec.describe BoxRequest do
     it 'says what the range is' do
       box = described_class.new(params.merge('notch' => '2'))
       box.valid?
-      expect(box.errors).to eq ['Notch length has to be between 0.4 and 1 in, or blank.']
+      expect(box.errors).to eq ['Notch length has to be between 0.2 and 1 in, or blank.']
     end
 
-    it 'works in millimetres, from 10 mm' do
+    it 'works in millimetres, from 5 mm' do
       mm = { 'width' => '300', 'height' => '90', 'depth' => '120', 'thickness' => '3', 'units' => 'mm' }
       expect(described_class.new(mm.merge('notch' => '30'))).to be_valid
-      expect(described_class.new(mm.merge('notch' => '9'))).not_to be_valid
+      expect(described_class.new(mm.merge('notch' => '5'))).to be_valid
+      expect(described_class.new(mm.merge('notch' => '4.9'))).not_to be_valid
       expect(described_class.new(mm.merge('notch' => '31'))).not_to be_valid
     end
 
-    # A third of 0.9 in is 0.3, below the usual 0.4: the range becomes 0.15 to 0.3.
+    # A third of 0.9 in is 0.3, and half that is below the usual 0.2: the range becomes 0.15 to 0.3.
     it 'lets a small box go below the usual minimum, down to half the maximum' do
       small = params.merge('width' => '1', 'height' => '0.9', 'depth' => '1', 'thickness' => '0.1')
       { '0.3' => true, '0.15' => true, '0.2' => true, '0.14' => false, '0.31' => false, '0.4' => false }.each do |notch, allowed|
@@ -210,7 +211,7 @@ RSpec.describe BoxRequest do
     end
 
     it 'leaves blank settings to the defaults of the gem' do
-      expect(config).to include(kerf: 0.0024, notch: 0.735, page_layout: 'portrait', metadata: true)
+      expect(config).to include(kerf: 0.026, notch: 0.735, page_layout: 'portrait', metadata: true)
     end
 
     it 'passes the optional settings through' do

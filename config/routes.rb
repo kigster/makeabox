@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   get 'box/stream', to: 'boxes#stream', as: :box_stream
   # The same box as a file: /box/download.pdf or /box/download.svg
   get 'box/download', to: 'boxes#download', as: :box_download
+  # How many boxes have been downloaded, and the page reporting an SVG it saved.
+  resource :downloads, only: %i[show create]
 end

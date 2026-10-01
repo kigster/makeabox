@@ -2,28 +2,67 @@
   .prose
     %h2 How the tabs work
     %p
-      You give the inside dimensions of the box, the empty space it has to hold, and the thickness of the material.
-      Makeabox draws six panels whose edges are cut into tabs, also called notches or teeth, so each side snaps into its neighbours.
+      You enter three things. The inside width, depth and height of the box, which is the empty space it has to hold,
+      and the thickness of your material. Makeabox draws the six panels of a closed box and cuts every edge into tabs.
+      Where one panel has a tab, its neighbour has a gap of the same size, so the panels lock together at every corner.
+      Woodworkers call this a finger joint or box joint. Some people say notches or teeth.
     %p
-      Every edge is divided into an odd number of equal sections. That keeps each panel symmetric, which is what makes these
-      boxes easy to put together: a closed box has only three different panels, and none of them can go in backwards.
-      A lid that lifts off adds a fourth.
+      Because you give inside dimensions, the outside of the box is one material thickness larger on each side.
+      A 100 mm cube cut from 3 mm plywood measures 106 mm across.
+
+    %h3 Why every edge has an odd number of tabs
+    %p
+      Makeabox splits each edge into an odd number of equal sections and alternates tab, gap, tab. With an odd count,
+      both ends of an edge start the same way, so the edge looks the same from either end. Turn a panel around and it
+      still fits.
+    %p
+      That is why these boxes are easy to put together. A closed box has only three different panels. The top matches
+      the bottom, the front matches the back, and the two sides match each other. No panel can go in backwards or
+      upside down. A lid that lifts off adds a fourth shape.
+
     %h3 Thickness
     %p
-      Measure your sheet with calipers instead of trusting the label. Plywood sold as 1/4&Prime; is often closer to 0.2&Prime;,
-      and the tabs are exactly as deep as the number you enter.
+      Measure the sheet with calipers in a few places instead of trusting the label. Plywood sold as 1/4&Prime; is often
+      closer to 0.2&Prime;, and acrylic varies from sheet to sheet.
+    %p
+      Tabs are exactly as deep as the thickness you enter. Enter too little and they stop short of the outside face,
+      leaving a step at every joint. Enter too much and they stick out past it. Tabs that stick out sand flush in a
+      minute. Short ones can't be fixed, so if your readings disagree, use the largest.
+
     %h3 Notch length
     %p
-      Left blank, tabs are about three times the thickness. A value you enter is a guide: the width is adjusted so that
-      a whole, odd number of tabs fits each edge. It can be anything from 10 mm (0.4 in) up to a third of the shortest side; on a very small box the lower limit drops to half the upper one.
+      Leave it blank and each tab is about three times the material thickness, which suits most boxes. If you enter a
+      length, Makeabox treats it as a target and adjusts it so a whole, odd number of tabs fills each edge exactly.
+      The tabs you get may be a little longer or shorter than the number you typed.
+    %p
+      The length can be anything from 5 mm, about 0.2&Prime;, up to a third of the shortest side. That upper limit
+      means every edge gets at least three tabs. On a very small box the lower limit drops to half the upper one.
+
     %h3 Kerf
     %p
-      The laser burns away a thin line of material. Kerf is the width of that line, and the drawing is widened by it so
-      the tabs fit tightly. Cut a small test box first, then raise the kerf if the fit is loose.
+      A laser doesn't cut a line of zero width. It burns away a thin strip of material, usually 0.1 to 0.2 mm on a CO2
+      laser, and the width of that strip is the kerf. Cut a drawing exactly as drawn and every tab comes out a little
+      narrow and every gap a little wide, so the joints rattle.
     %p
-      The drawing opens in LightBurn, Inkscape, Illustrator or CorelDRAW, where you can add holes and engraving before
-      sending it to the cutter.
+      Makeabox enlarges the drawing by the kerf you enter, so after the laser burns its line the parts come out the size
+      you need. A higher kerf gives a tighter fit. Wood handles a snug press fit well. Acrylic is brittle and cracks if
+      you force it, so aim for panels that slide together under firm hand pressure, then glue them.
+
+    %h3 Cut a test box first
+    %p
+      Before you cut a large box, cut a small one from the same sheet with the same settings. If the panels fall apart,
+      raise the kerf a little and cut again. If you need a mallet to close them, lower it. Small steps of a few
+      hundredths of a millimetre make a visible difference. Write down the value that works for each material and
+      laser, and next time you can skip the test.
+
+    %h3 After you download
+    %p
+      The drawing opens in LightBurn, Inkscape, Illustrator and CorelDRAW. Add holes for cables, switches or hinges, or
+      engraving, before you send it to the cutter. Keep holes clear of the tabs, because a hole that cuts into a tab
+      weakens the joint.
+    %p
+      If you want to check the math, the
       = succeed '.' do
-        %a{href: 'https://github.com/kigster/laser-cutter'} The code that draws it is open source
+        %a{href: 'https://github.com/kigster/laser-cutter'} code that draws every box is open source
   %figure
     = image_tag 'notched-boxes.jpg', alt: 'A laser-cut acrylic enclosure held together by notched edges', loading: 'lazy'

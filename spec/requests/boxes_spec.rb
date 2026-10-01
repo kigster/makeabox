@@ -125,6 +125,14 @@ RSpec.describe 'Boxes' do
       expect(response.body).to start_with('%PDF-')
     end
 
+    it 'counts the box it sends' do
+      expect { get '/box/download.pdf', params: { box: box } }.to change(Makeabox::BoxCounter, :total).by(1)
+    end
+
+    it 'does not count a box it refuses' do
+      expect { get '/box/download.pdf', params: { box: box.merge(width: 0) } }.not_to change(Makeabox::BoxCounter, :total)
+    end
+
     it 'sends the SVG as a file' do
       get '/box/download.svg', params: { box: box }
 

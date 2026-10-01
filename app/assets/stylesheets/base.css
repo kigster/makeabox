@@ -25,15 +25,16 @@ a:hover { color: var(--amber); }
 .site-header, .bench, .band, .site-footer { position: relative; z-index: 1; }
 
 /* Pinned to the top, over everything: the page and the panels slide under it. */
+/* Three columns: the name on the left, the counter in the middle, the nav on the right. */
 .site-header {
   position: sticky; top: 0; z-index: 4;
-  display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: clamp(14px, 2.4vw, 30px);
   padding: 14px var(--gutter); font-size: 15px;
   background: rgb(21 27 33 / 0.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .site-header .mark { display: flex; align-items: center; gap: 10px; font-stretch: 125%; font-weight: 800; font-size: 21px; letter-spacing: 0.01em; text-decoration: none; color: var(--ink); }
-.site-header nav { margin-left: auto; display: flex; gap: inherit; }
-.site-header nav a { font: 600 19px/1 "Barlow Condensed", "Archivo", sans-serif; letter-spacing: 0.02em; text-transform: uppercase; color: #aeb8c1; text-decoration: none; }
+.site-header nav { justify-self: end; display: flex; gap: inherit; }
+.site-header nav a { font: 600 19px/1 "Barlow Condensed", "Archivo", sans-serif; white-space: nowrap; letter-spacing: 0.02em; text-transform: uppercase; color: #aeb8c1; text-decoration: none; }
 .site-header nav a { position: relative; padding-bottom: 4px; }
 /* On hover an orange-to-amber underline grows in from the left and keeps shimmering. */
 .site-header nav a::after {
@@ -45,13 +46,37 @@ a:hover { color: var(--amber); }
 .site-header nav a:hover::after { transform: scaleX(1); animation: shimmer 1.6s linear infinite; }
 @keyframes shimmer { to { background-position: 150% 0; } }
 
+/* The download counter: lit amber segments over faint unlit eights, like an old alarm clock. */
+.counter { display: flex; align-items: center; gap: 10px; }
+.counter .lcd {
+  display: flex; gap: 0.32em; padding: 7px 10px 6px; border-radius: 6px;
+  font: 700 19px/1 "DSEG7", monospace; color: var(--amber);
+  background: #07090b; border: 1px solid var(--rule); box-shadow: inset 0 2px 8px rgb(0 0 0 / 0.7);
+}
+.counter .group { position: relative; }
+.counter .off { color: rgb(255 181 61 / 0.07); }
+.counter .on { position: absolute; inset: 0; text-shadow: 0 0 4px rgb(255 181 61 / 0.75), 0 0 12px rgb(255 120 40 / 0.4); }
+.counter .caption { font: 600 13px/1.05 "Barlow Condensed", "Archivo", sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mute); }
+.counter .before { width: 5.6em; text-align: right; }
+.counter .after { width: 3em; }
+.counter.tick .on { animation: lit 1.2s ease-out; }
+@keyframes lit { from { color: #fff1d0; text-shadow: 0 0 6px #ffd27a, 0 0 22px rgb(255 140 40 / 0.9); } }
+
+/* Too narrow to centre it exactly: the counter takes the room between the name and the nav. */
+@media (max-width: 1180px) {
+  .site-header { grid-template-columns: auto 1fr auto; }
+  .counter { justify-self: center; }
+  .counter .caption { display: none; }
+}
+
 /* One line, wrapping only when the window is too narrow for it. */
-.site-footer { background: var(--panel); border-top: 1px solid var(--rule); padding: 16px var(--gutter); color: var(--mute); font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px 22px; }
+.site-footer { background: var(--panel); border-top: 1px solid var(--rule); padding: 16px var(--gutter); color: var(--mute); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; text-align: center; }
 .site-footer p { margin: 0; }
-.site-footer a { color: var(--soft); }
+.site-footer a { color: #ff5a2b; text-decoration: none; }
+.site-footer a:hover { color: #ff5a2b; text-decoration: underline; }
 
 /* The hamburger: three bars, the middle one is the span, the others its shadows. */
-.burger { display: none; margin-left: auto; width: 44px; height: 44px; padding: 0; border: 1px solid var(--rule); border-radius: 8px; background: transparent; cursor: pointer; }
+.burger { display: none; width: 44px; height: 44px; padding: 0; border: 1px solid var(--rule); border-radius: 8px; background: transparent; cursor: pointer; }
 .burger span, .burger span::before, .burger span::after { display: block; width: 20px; height: 2px; margin: auto; border-radius: 1px; background: var(--ink); transition: transform 0.2s, background 0.2s; }
 .burger span { position: relative; }
 .burger span::before, .burger span::after { content: ""; position: absolute; left: 0; }
@@ -61,9 +86,9 @@ a:hover { color: var(--amber); }
 .site-header.open .burger span::before { transform: translateY(6px) rotate(45deg); }
 .site-header.open .burger span::after { transform: translateY(-6px) rotate(-45deg); }
 
-/* On a phone the nav drops down under the header, one link per row. */
-@media (max-width: 640px) {
-  .burger { display: block; }
+/* Narrow windows fold the nav into a drop-down under the header, one link per row. */
+@media (max-width: 860px) {
+  .burger { display: block; justify-self: end; }
   .site-header nav {
     display: none; position: absolute; top: 100%; left: 0; right: 0;
     flex-direction: column; gap: 0; padding: 6px var(--gutter) 12px;
@@ -73,6 +98,19 @@ a:hover { color: var(--amber); }
   .site-header nav a { padding: 14px 0; font-size: 21px; border-bottom: 1px solid var(--rule); }
   .site-header nav a:last-child { border-bottom: 0; }
   .site-header nav a::after { display: none; }
+}
+
+/* On a phone the counter sits beside the hamburger, 20px to its left, in smaller digits. */
+@media (max-width: 640px) {
+  .site-header { grid-template-columns: 1fr auto auto; column-gap: 12px; }
+  .site-header .mark { gap: 8px; font-size: 18px; }
+  .site-header .mark img { width: 36px; height: 36px; }
+  .counter { justify-self: end; margin-right: 8px; }
+  .counter .lcd { font-size: 12px; padding: 6px 7px 5px; gap: 0.28em; }
+}
+/* The smallest phones keep the logo but drop the name beside it. */
+@media (max-width: 359px) {
+  .site-header .mark { font-size: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
