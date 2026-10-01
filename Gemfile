@@ -19,7 +19,7 @@ group :default do
   gem 'matrix'
   gem 'newrelic_rpm'
   gem 'propshaft'
-  gem 'puma', '~> 6'
+  gem 'puma', '~> 7'
   gem 'rack-timeout', require: 'rack/timeout/base'
   gem 'rails', '~> 8.1'
   gem 'sdoc', group: :doc
