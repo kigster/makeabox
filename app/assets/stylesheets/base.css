@@ -24,17 +24,30 @@ a:hover { color: var(--amber); }
 
 .site-header, .bench, .band, .site-footer { position: relative; z-index: 1; }
 
+/* Pinned to the top, over everything: the page and the panels slide under it. */
 .site-header {
+  position: sticky; top: 0; z-index: 4;
   display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px);
-  padding: 20px var(--gutter); font-size: 15px;
+  padding: 14px var(--gutter); font-size: 15px;
+  background: rgb(21 27 33 / 0.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .site-header .mark { display: flex; align-items: center; gap: 10px; font-stretch: 125%; font-weight: 800; font-size: 21px; letter-spacing: 0.01em; text-decoration: none; color: var(--ink); }
 .site-header nav { margin-left: auto; display: flex; gap: inherit; }
-.site-header nav a { color: #aeb8c1; text-decoration: none; }
+.site-header nav a { font: 600 19px/1 "Barlow Condensed", "Archivo", sans-serif; letter-spacing: 0.02em; text-transform: uppercase; color: #aeb8c1; text-decoration: none; }
+.site-header nav a { position: relative; padding-bottom: 4px; }
+/* On hover an orange-to-amber underline grows in from the left and keeps shimmering. */
+.site-header nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: linear-gradient(90deg, var(--beam), var(--amber), #ffe08a, var(--beam)) 0 0 / 300% 100%;
+  transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease-out;
+}
 .site-header nav a:hover { color: var(--ink); }
+.site-header nav a:hover::after { transform: scaleX(1); animation: shimmer 1.6s linear infinite; }
+@keyframes shimmer { to { background-position: 150% 0; } }
 
-.site-footer { background: var(--panel); border-top: 1px solid var(--rule); padding: 28px var(--gutter) 40px; color: var(--mute); font-size: 14px; }
-.site-footer p { margin: 0 0 6px; max-width: 80ch; }
+/* One line, wrapping only when the window is too narrow for it. */
+.site-footer { background: var(--panel); border-top: 1px solid var(--rule); padding: 16px var(--gutter); color: var(--mute); font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px 22px; }
+.site-footer p { margin: 0; }
 .site-footer a { color: var(--soft); }
 
 @media (max-width: 640px) {

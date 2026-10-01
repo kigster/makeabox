@@ -10,10 +10,10 @@ on_restart { puts 'restarting' }
 worker_timeout 30
 
 if ENV['RAILS_ENV'] == 'production'
-  workers 9
-  threads 4, 4
+  workers 8
+  threads 2, 4
 else
-  workers 1
+  workers 2
   threads 1, 1
 end
 prune_bundler false

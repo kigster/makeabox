@@ -7,7 +7,7 @@ RSpec.describe 'Home page' do
 
   it 'renders the generator' do
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('data-controller="generator"', 'Boxes that snap together')
+    expect(response.body).to include('data-controller="generator"', 'boxes that snap together')
   end
 
   it 'shows the logo next to the name' do
@@ -20,6 +20,11 @@ RSpec.describe 'Home page' do
 
   it 'names both dialogs for a screen reader' do
     expect(response.body).to include('aria-labelledby="settings_title"', 'id="settings_title"', 'aria-labelledby="cut_title"', 'id="cut_title"')
+  end
+
+  it 'keeps the sections in panels that slide up over the controls' do
+    expect(response.body).to include('data-controller="panels"', '<dialog aria-label="How the tabs work" class="rise"', 'id="discussion"', 'id="support"')
+    expect(response.body).to include('data-panels-name-param="how"')
   end
 
   it 'works as a plain form without JavaScript' do
@@ -36,7 +41,14 @@ RSpec.describe 'Home page' do
     expect(response.body).not_to include('Lids need laser-cutter 2.0.1 or newer.')
   end
 
-  it 'links to GitHub Discussions until giscus is configured' do
+  it 'embeds the discussion' do
+    expect(response.body).to include('https://giscus.app/client.js', "data-repo-id=\"#{ApplicationHelper::GISCUS_REPO_ID}\"",
+                                     "data-category-id=\"#{ApplicationHelper::GISCUS_CATEGORY_ID}\"")
+  end
+
+  it 'links to GitHub Discussions when giscus is off' do
+    allow_any_instance_of(ApplicationHelper).to receive(:giscus?).and_return(false) # rubocop:disable RSpec/AnyInstance
+    get '/'
     expect(response.body).to include('https://github.com/kigster/makeabox/discussions')
     expect(response.body).not_to include('giscus.app')
   end
@@ -54,17 +66,6 @@ RSpec.describe 'Home page' do
     it 'shows them disabled, with a note' do
       expect(response.body).to match(/<option[^>]*disabled[^>]*value="plain"|<option[^>]*value="plain"[^>]*disabled/)
       expect(response.body).to include('Lids need laser-cutter 2.0.1 or newer.')
-    end
-  end
-
-  context 'when giscus is configured' do
-    before do
-      stub_const('ENV', ENV.to_h.merge('GISCUS_REPO_ID' => 'R_123', 'GISCUS_CATEGORY_ID' => 'DIC_456'))
-      get '/'
-    end
-
-    it 'embeds the discussion' do
-      expect(response.body).to include('https://giscus.app/client.js', 'data-repo-id="R_123"', 'data-category-id="DIC_456"')
     end
   end
 end

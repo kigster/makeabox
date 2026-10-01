@@ -1,4 +1,7 @@
 = render 'generator'
-= render 'how'
-= render 'support'
-= render 'discussion'
+
+-# Each section below is a panel that slides up over the controls. See panels_controller.js.
+- { how: 'How the tabs work', support: 'Keep makeabox running', discussion: 'Discussion' }.each do |name, title|
+  %dialog.rise{id: name, 'aria-label': title, tabindex: -1, data: {panels_target: 'panel'}}
+    %button.x{type: 'button', 'aria-label': 'Close', data: {action: 'panels#close'}} &times;
+    = render name.to_s

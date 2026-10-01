@@ -1,10 +1,8 @@
-/* Everything below the first screen. */
+/* Everything below the first screen, each section in a panel that slides up over it. */
 .band {
-  background: var(--sheet); border-top: 1px solid var(--rule);
   padding: clamp(40px, 6vw, 80px) var(--gutter);
   display: grid; grid-template-columns: minmax(0, 62ch) minmax(0, 1fr); gap: clamp(24px, 5vw, 72px); align-items: start;
 }
-.band:nth-of-type(even) { background: var(--panel); }
 .prose h2 { font-stretch: 116%; font-weight: 800; font-size: clamp(26px, 2.6vw, 36px); line-height: 1.05; margin: 0 0 16px; letter-spacing: -0.015em; }
 .prose h3 { font-stretch: 110%; font-weight: 700; font-size: 17px; margin: 26px 0 4px; color: var(--amber); }
 .prose p { margin: 0 0 12px; color: var(--soft); font-size: 17px; line-height: 1.55; }
@@ -18,6 +16,27 @@
 .support .donate:hover { background: #ffc666; }
 .support .sign { color: var(--mute); font-size: 15px; }
 .giscus { margin-top: 18px; }
+
+/* The discussion runs the width of its panel. */
+#discussion .band { grid-template-columns: minmax(0, 1fr); }
+#discussion .prose { max-width: none; }
+#discussion .prose p { max-width: 62ch; }
+
+/* The panels: pinned to the bottom, reaching up to the header, 95% opaque, slid up by .up (see panels_controller.js). */
+.rise {
+  position: fixed; inset: auto 0 0 0; z-index: 3; margin: 0; width: 100%; max-width: none; height: calc(100svh - 62px); max-height: none;
+  padding: 0; border: 0; border-top: 3px solid var(--amber); border-radius: 16px 16px 0 0;
+  background: rgb(34 44 54 / 0.95); color: var(--ink); overflow-y: auto; overscroll-behavior: contain;
+  box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.55);
+  transform: translateY(100%); transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rise.up { transform: none; }
+.rise .x {
+  position: sticky; top: 14px; float: right; margin: 0 var(--gutter) 0 0; z-index: 1;
+  background: rgb(34 44 54 / 0.95); border: 1px solid var(--sheet-edge); border-radius: 99px; width: 38px; height: 38px;
+  color: var(--soft); font-size: 24px; line-height: 1; cursor: pointer;
+}
+.rise .x:hover { color: var(--ink); border-color: var(--ink); }
 
 @media (max-width: 900px) {
   .band { grid-template-columns: 1fr; }
