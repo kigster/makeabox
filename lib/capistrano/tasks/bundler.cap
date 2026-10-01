@@ -28,6 +28,7 @@ namespace :ruby do
             next unless fetch(:gem_config)[gem]
 
             execute :bash, "-c 'source ~/.bash_profile; bundle config --local build.#{gem} #{fetch(:gem_config)[gem]}'"
+            execute :bash, "-c 'source ~/.bash_profile; bundle config set without 'development,test'"
           end
         end
       end

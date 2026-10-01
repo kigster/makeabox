@@ -16,7 +16,7 @@ server "makeabox.io",
 
 set :repo_url, 'git@github.com:kigster/makeabox.git'
 set :branch, 'main'
-set :bundle_flags, '--jobs=8 --without development,test'
+set :bundle_flags, '--jobs=8'
 set :bundle_env_variables, { nokogiri_use_system_libraries: 1 }
 
 set :user_home, '/home/kig'

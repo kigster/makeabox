@@ -1,26 +1,3 @@
-GIT
-  remote: https://github.com/kigster/laser-cutter.git
-  revision: bf2b831f610f64c5ebc2a5d023dde2b133ab19d3
-  ref: bf2b831
-  specs:
-    laser-cutter (2.0.1)
-      dry-cli (~> 1.4.1)
-      dry-cli-autocomplete
-      dry-cli-help
-      dry-cli-ui
-      hashie
-      matrix
-      pastel
-      prawn
-      tty-cursor
-      tty-progressbar
-      tty-prompt
-      tty-screen
-      tty-spinner
-      tty-table
-      victor
-      zeitwerk
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -168,7 +145,28 @@ GEM
       tty-screen (~> 0.8)
       tty-spinner (~> 0.9)
       tty-table (~> 0.12)
+    dry-core (1.2.0)
+      concurrent-ruby (~> 1.0)
+      logger
+      zeitwerk (~> 2.6)
     dry-inflector (1.3.1)
+    dry-logic (1.6.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-struct (1.8.1)
+      dry-core (~> 1.1)
+      dry-types (~> 1.8, >= 1.8.2)
+      ice_nine (~> 0.11)
+      zeitwerk (~> 2.6)
+    dry-types (1.9.1)
+      bigdecimal (>= 3.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
     ed25519 (1.4.0)
     erb (6.0.7)
     erubi (1.13.1)
@@ -184,6 +182,7 @@ GEM
     highline (3.0.1)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
+    ice_nine (0.11.2)
     importmap-rails (2.2.3)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -201,6 +200,24 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     language_server-protocol (3.17.0.6)
+    laser-cutter (2.0.1)
+      dry-cli (~> 1.4.1)
+      dry-cli-autocomplete
+      dry-cli-help
+      dry-cli-ui
+      dry-struct (~> 1.6)
+      hashie
+      matrix
+      pastel
+      prawn
+      tty-cursor
+      tty-progressbar
+      tty-prompt
+      tty-screen
+      tty-spinner
+      tty-table
+      victor
+      zeitwerk
     lint_roller (1.1.0)
     logger (1.7.0)
     lograge (0.15.1)
@@ -561,7 +578,7 @@ DEPENDENCIES
   ed25519
   haml
   importmap-rails
-  laser-cutter!
+  laser-cutter
   lograge
   matrix
   mry
@@ -637,7 +654,11 @@ CHECKSUMS
   dry-cli-autocomplete (0.5.0) sha256=de35e6f43cbbc02c027ea0aa3584c806a82c46bdb0cf11861df99ab4c786dbcd
   dry-cli-help (0.5.1) sha256=b08a09bed8c36d9ab4c60f20bd17aeefc5615c4cca41e64e1bcc5845a55e83b5
   dry-cli-ui (0.5.1) sha256=ea3db7dbe128c290219a924892785e07a58c2f07839641a83af5b27bf147e01c
+  dry-core (1.2.0) sha256=0cc5a7da88df397f153947eeeae42e876e999c1e30900f3c536fb173854e96a1
   dry-inflector (1.3.1) sha256=7fb0c2bb04f67638f25c52e7ba39ab435d922a3a5c3cd196120f63accb682dcc
+  dry-logic (1.6.0)
+  dry-struct (1.8.1)
+  dry-types (1.9.1)
   ed25519 (1.4.0) sha256=16e97f5198689a154247169f3453ef4cfd3f7a47481fde0ae33206cdfdcac506
   erb (6.0.7) sha256=c5ca6dc25b0ef974a44dc8f59fe847577122483b1968a38dec305c60bf91ee92
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
@@ -646,6 +667,7 @@ CHECKSUMS
   hashie (5.1.0) sha256=c266471896f323c446ea8207f8ffac985d2718df0a0ba98651a3057096ca3870
   highline (3.0.1) sha256=ca18b218fd581b1fae832f89bfeaf2b34d3a93429c44fd4411042ffce286f009
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
+  ice_nine (0.11.2) sha256=5d506a7d2723d5592dc121b9928e4931742730131f22a1a37649df1c1e2e63db
   importmap-rails (2.2.3) sha256=7101be2a4dc97cf1558fb8f573a718404c5f6bcfe94f304bf1f39e444feeb16a
   io-console (0.9.4) sha256=a403304f32928ee85e56d457b4612ca43f2703b561a3258844992bd24085fbb1
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
