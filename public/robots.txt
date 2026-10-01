@@ -1,5 +1,10 @@
-# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+# https://www.rfc-editor.org/rfc/rfc9309
 #
-# To ban all spiders from the entire site uncomment the next two lines:
-# User-agent: *
-# Disallow: /
+# The page is open to every crawler. /box/ draws a box on the server for
+# every request, from any combination of settings, so it is not for indexing.
+
+User-agent: *
+Allow: /
+Disallow: /box/
+
+Sitemap: https://makeabox.io/sitemap.xml

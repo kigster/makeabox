@@ -8,8 +8,23 @@
 
   %title= content_for?(:title) ? yield(:title) : 'Make A Box: laser cutter templates for notched boxes'
   %meta{content: 'Enter the inside dimensions of a box and the thickness of your material. Get a free SVG or PDF your laser cutter can cut, with tabs that snap together. Wood, acrylic, anything a laser cuts.', name: 'description'}/
-  %meta{content: 'Free SVG and PDF templates for laser-cut boxes of any size, with tabs that snap together.', property: 'twitter:description'}/
   %meta{content: 'laser cutter,boxmaker,notches,laser-cut box,box maker,make-a-box,PDF,SVG,box designer', name: 'keywords'}/
+
+  -# The card shown when a link to makeabox is shared.
+  - teaser = 'Free SVG and PDF templates for laser-cut boxes of any size, with tabs that snap together.'
+  %meta{content: 'website', property: 'og:type'}/
+  %meta{content: 'makeabox', property: 'og:site_name'}/
+  %meta{content: 'makeabox', property: 'og:title'}/
+  %meta{content: teaser, property: 'og:description'}/
+  %meta{content: root_url, property: 'og:url'}/
+  %meta{content: image_url('social.png'), property: 'og:image'}/
+  %meta{content: '1200', property: 'og:image:width'}/
+  %meta{content: '630', property: 'og:image:height'}/
+  %meta{content: 'The makeabox logo and name', property: 'og:image:alt'}/
+  %meta{content: 'summary_large_image', name: 'twitter:card'}/
+  %meta{content: 'makeabox', name: 'twitter:title'}/
+  %meta{content: teaser, name: 'twitter:description'}/
+  %meta{content: image_url('social.png'), name: 'twitter:image'}/
 
   = favicon_link_tag 'favicon.ico', rel: 'shortcut icon'
   = preload_link_tag 'archivo-variable-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous'
