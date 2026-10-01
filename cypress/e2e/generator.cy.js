@@ -231,6 +231,18 @@ describe("making a box", () => {
     cy.readFile("tmp/cypress/downloads/makeabox-6x3x4in-0.245t.pdf", "latin1").should("match", /^%PDF-/)
   })
 
+  it("counts each click on a download button in Google Analytics", () => {
+    cy.window().then((win) => { win.gtag = cy.stub().as("gtag") })
+    cy.intercept("GET", "/box/download.pdf*", { statusCode: 422, body: "Stroke has to be above zero, or leave it blank." })
+    cy.get(".go").click()
+    cy.contains("dialog.cut .progress", "Ready", { timeout: 10000 })
+
+    cy.contains("button", "Download PDF").click()
+    cy.get("@gtag").should("have.been.calledWith", "event", "pdf_download", { file_name: "makeabox-5x3x4in-0.245t.pdf" })
+    cy.contains("button", "Download SVG").click()
+    cy.get("@gtag").should("have.been.calledWith", "event", "svg_download", { file_name: "makeabox-5x3x4in-0.245t.svg" })
+  })
+
   it("keeps the dialog open and says why when the PDF is refused", () => {
     cy.get(".go").click()
     cy.contains("dialog.cut .progress", "Ready", { timeout: 10000 })

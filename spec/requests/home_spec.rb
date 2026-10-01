@@ -14,6 +14,12 @@ RSpec.describe 'Home page' do
     expect(response.body).to match(%r{<a class="mark" href="/">\s*<img[^>]*src="/assets/mark-[^"]+\.svg"[^>]*>\s*makeabox})
   end
 
+  it 'gives a shared link a preview card with the logo and the name' do
+    card = %r{http://www.example.com/assets/social-[^"]+\.png}
+    expect(response.body).to include('<meta content="makeabox" property="og:title">', '<meta content="summary_large_image" name="twitter:card">')
+    expect(response.body).to match(/<meta content="#{card}" property="og:image">/).and match(/<meta content="#{card}" name="twitter:image">/)
+  end
+
   it 'puts the particle canvas behind the page' do
     expect(response.body).to include('<canvas aria-hidden="true" class="sparks" data-controller="particles">')
   end

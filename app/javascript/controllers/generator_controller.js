@@ -359,20 +359,23 @@ export default class extends Controller {
 
   // The drawing is already in the browser, so the SVG is saved from memory.
   downloadSvg() {
+    this.track("svg_download", this.filename)
     this.hand(new Blob([this.svg], { type: "image/svg+xml" }), this.filename)
-    this.finish("svg")
+    this.finish()
   }
 
   // The PDF is drawn again on the server from the same settings. It is fetched
   // rather than navigated to, so a refusal shows in the dialog and not on a bare page.
   async downloadPdf(event) {
+    const filename = this.filename.replace(/\.svg$/, ".pdf")
+    this.track("pdf_download", filename)
     const button = event.currentTarget
     button.disabled = true
     try {
       const response = await fetch(`${this.downloadUrlValue}.pdf?${this.query}`)
       if (!response.ok) return this.fail(response.status === 422 ? await response.text() : STOPPED)
-      this.hand(await response.blob(), this.filename.replace(/\.svg$/, ".pdf"))
-      this.finish("pdf")
+      this.hand(await response.blob(), filename)
+      this.finish()
     } catch (error) {
       this.fail(STOPPED)
     } finally {
@@ -389,8 +392,13 @@ export default class extends Controller {
     setTimeout(() => URL.revokeObjectURL(link.href), 1000)
   }
 
-  finish(format) {
-    window.gtag?.("event", "download", { event_category: "box", event_label: format })
+  finish() {
     this.cutTarget.close()
+  }
+
+  // Counts a click on a download button in Google Analytics, when it is loaded.
+  // GA4 event names allow only letters, digits and underscores.
+  track(name, filename) {
+    window.gtag?.("event", name, { file_name: filename })
   }
 }
