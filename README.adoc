@@ -6,7 +6,7 @@
 :toclevels: 4
 :icons: font
 
-image:https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml/badge.svg[Unit Tests,link=https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml]
+image:https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml/badge.svg[Unit Tests,link=https://github.com/kigster/makeabox/actions/workflows/rubyonrails.yml] image:docs/badges/coverage_badge.svg[Coverage]
 
 __This__ is the link:https://makeabox.io/[makeabox application] that generates laser-cut paths as a downloadable SVG or PDF file.
 

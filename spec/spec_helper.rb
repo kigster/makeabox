@@ -5,17 +5,28 @@ ENV['RUBYOPT'] = '-W0'
 require 'rspec/core'
 require 'rspec/its'
 require 'simplecov'
+require "coverage/badge"
+require "fileutils"
+require "stringio"
 
-if ENV['CODECOV_TOKEN'] && ENV['CI']
-  require 'codecov'
-  SimpleCov.formatters =
-    SimpleCov::Formatter::MultiFormatter.new([
-                                               SimpleCov::Formatter::HTMLFormatter,
-                                               SimpleCov::Formatter::Codecov
-                                             ])
+$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
+
+SimpleCov.start "rails" do
+  skip "/spec/"
+  enable_coverage :line
+  minimum_coverage 50
+
+  self.formatters = [SimpleCov::Formatter::HTMLFormatter,
+                     Coverage::Badge::Formatter]
 end
 
-SimpleCov.start 'rails'
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+  # rubocop: disable-next RSpec/Output
+  puts "Coverage: #{SimpleCov.result.covered_percent.round(2)}%"
+  FileUtils.mkdir_p("docs/badges")
+  FileUtils.mv("coverage/badge.svg", "docs/badges/coverage_badge.svg")
+end
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -40,3 +51,4 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 end
+

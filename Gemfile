@@ -45,7 +45,7 @@ group :development do
 end
 
 group :test, :development do
-  gem 'codecov'
+  gem 'coverage-badge'
   gem 'mry', require: false
   gem 'relaxed-rubocop'
   gem 'rspec'
