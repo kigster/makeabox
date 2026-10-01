@@ -2,7 +2,7 @@
 
 module ApplicationHelper
   GISCUS_REPO_ID = "MDEwOlJlcG9zaXRvcnkyNDUyMTQzNg=="
-  GISCUS_CATEGORY_ID = "52110578"
+  GISCUS_CATEGORY_ID = "DIC_kwDOAXYq3M4DGyTy"
 
   # Analytics and the New Relic browser agent only make sense on the live site.
   def tracking?
