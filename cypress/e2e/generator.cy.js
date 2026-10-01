@@ -274,4 +274,29 @@ describe("making a box", () => {
     cy.get("body").should(($body) => expect($body[0].scrollWidth).to.be.at.most(390))
     cy.screenshot("phone", { capture: "viewport" })
   })
+
+  it("folds the nav into a hamburger menu on a phone, with every link in it", () => {
+    cy.viewport(390, 844)
+    cy.get(".site-header nav").should("not.be.visible")
+    cy.get(".burger").should("have.attr", "aria-expanded", "false").click()
+    cy.get(".burger").should("have.attr", "aria-expanded", "true")
+    for (const name of ["How the tabs work", "Discussion", "GitHub", "Donate"]) cy.contains(".site-header nav a", name).should("be.visible")
+    cy.screenshot("phone-menu", { capture: "viewport" })
+
+    cy.contains(".site-header nav a", "Donate").click()
+    cy.get(".site-header nav").should("not.be.visible")
+    cy.get("dialog#support").should("have.class", "up")
+
+    cy.get(".burger").click()
+    cy.get("body").type("{esc}")
+    cy.get(".site-header nav").should("not.be.visible")
+    cy.get(".burger").click()
+    cy.get(".bench").click("topLeft", { force: true })
+    cy.get(".site-header nav").should("not.be.visible")
+  })
+
+  it("keeps the nav in the header on a wide screen", () => {
+    cy.get(".burger").should("not.be.visible")
+    cy.contains(".site-header nav a", "Donate").should("be.visible")
+  })
 })

@@ -50,8 +50,29 @@ a:hover { color: var(--amber); }
 .site-footer p { margin: 0; }
 .site-footer a { color: var(--soft); }
 
+/* The hamburger: three bars, the middle one is the span, the others its shadows. */
+.burger { display: none; margin-left: auto; width: 44px; height: 44px; padding: 0; border: 1px solid var(--rule); border-radius: 8px; background: transparent; cursor: pointer; }
+.burger span, .burger span::before, .burger span::after { display: block; width: 20px; height: 2px; margin: auto; border-radius: 1px; background: var(--ink); transition: transform 0.2s, background 0.2s; }
+.burger span { position: relative; }
+.burger span::before, .burger span::after { content: ""; position: absolute; left: 0; }
+.burger span::before { top: -6px; }
+.burger span::after { top: 6px; }
+.site-header.open .burger span { background: transparent; }
+.site-header.open .burger span::before { transform: translateY(6px) rotate(45deg); }
+.site-header.open .burger span::after { transform: translateY(-6px) rotate(-45deg); }
+
+/* On a phone the nav drops down under the header, one link per row. */
 @media (max-width: 640px) {
-  .site-header nav a:nth-child(n + 2) { display: none; }
+  .burger { display: block; }
+  .site-header nav {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0; padding: 6px var(--gutter) 12px;
+    background: var(--bed); border-top: 2px solid var(--amber); box-shadow: 0 12px 24px rgb(0 0 0 / 0.4);
+  }
+  .site-header.open nav { display: flex; }
+  .site-header nav a { padding: 14px 0; font-size: 21px; border-bottom: 1px solid var(--rule); }
+  .site-header nav a:last-child { border-bottom: 0; }
+  .site-header nav a::after { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
