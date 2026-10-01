@@ -1,9 +1,14 @@
 /* The first screen: pitch, live preview, and the control strip. */
-.bench { display: grid; grid-template-rows: 1fr auto; min-height: calc(100svh - 62px); }
+.bench { display: grid; grid-template-rows: 1fr auto; min-height: calc(100svh - var(--header)); }
 
 .hero {
   display: grid; grid-template-columns: minmax(280px, 36fr) 64fr; align-items: center;
   padding: 12px var(--gutter) 28px; min-height: 0;
+}
+.hero h1 .short { display: none; }
+@media (max-width: 640px) {
+  .hero h1 .long { display: none; }
+  .hero h1 .short { display: inline; }
 }
 .hero h1 { font-stretch: 118%; font-weight: 800; font-size: clamp(34px, 4.3vw, 62px); line-height: 0.98; margin: 0 0 20px; letter-spacing: -0.02em; }
 /* The heading drifts between orange and light sky blue. The gradient is two
@@ -67,6 +72,7 @@
   font-size: 13px; color: var(--soft); cursor: pointer;
 }
 .chips button:hover, .more:hover, .pick select:hover { border-color: var(--soft); }
+.field .restart { justify-self: start; white-space: nowrap; }
 .chips button[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
 
 .side { padding: 14px clamp(12px, 1.5vw, 22px); border-right: 1px solid var(--rule); display: grid; gap: 8px; align-content: center; justify-items: start; }
@@ -90,8 +96,10 @@
 
 @media (max-width: 900px) {
   .bench { min-height: 0; }
-  .hero { grid-template-columns: 1fr; padding-top: 8px; }
-  .stage { height: 44vh; }
+  .hero { grid-template-columns: 1fr; padding-top: 8px; padding-bottom: 12px; }
+  /* As tall as the drawing needs and no taller, so no empty band above and below it. */
+  .stage { height: auto; min-height: 0; margin-top: 8px; }
+  .stage svg { height: auto; max-height: 50vh; }
   .panel { grid-template-columns: repeat(3, 1fr); }
   .field.thickness { grid-column: span 2; }
   .side, .go { grid-column: span 3; }
@@ -100,4 +108,15 @@
   .go { padding: 18px; }
   .hint { position: static; grid-column: span 3; padding: 8px var(--gutter) 0; }
   .hint:empty { display: none; }
+}
+
+/* A phone-width Width cell only has room for "Reset". */
+@media (max-width: 520px) {
+  .field .restart .wide { display: none; }
+}
+
+/* On a phone, a slim Generate bar sits above the controls instead of below them. */
+@media (max-width: 640px) {
+  .go { order: -1; padding: 9px 14px; font-size: 18px; border-top: 0; }
+  .go small { display: none; }
 }

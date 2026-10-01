@@ -10,10 +10,23 @@
 .sheet .x { margin-left: auto; background: none; border: 0; color: var(--mute); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
 .sheet .x:hover { color: var(--ink); }
 
+.sheet .intro { margin: 0; padding: 12px 22px 0; max-width: 62ch; color: var(--soft); font-size: 14px; line-height: 1.5; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; padding: 18px 22px 8px; }
 .grid2 label { display: grid; gap: 3px; font-size: 13px; color: var(--soft); align-content: start; }
 .grid2 input, .grid2 select { background: var(--well); border: 1px solid var(--sheet-edge); border-radius: 6px; padding: 8px 10px; font-size: 17px; color: var(--ink); min-width: 0; width: 100%; }
 .grid2 small { color: var(--mute); line-height: 1.35; }
+/* Filled column by column: the kerf slider pushes the left column down one row. */
+.grid2 { grid-auto-flow: column; grid-template-rows: repeat(4, auto); }
+.grid2 .kerf-adjust input { padding: 0; border: 0; background: none; height: 26px; accent-color: var(--slider, var(--alarm)); cursor: pointer; }
+.grid2 .kerf-adjust input[data-zone="green"] { --slider: #5fd38d; }
+.grid2 .kerf-adjust input[data-zone="yellow"] { --slider: #ffd23f; }
+.grid2 .kerf-adjust input[data-zone="red"] { --slider: var(--alarm); }
+.grid2 .kerf-adjust small[data-zone="green"] { color: #5fd38d; }
+.grid2 .kerf-adjust small[data-zone="yellow"] { color: #ffd23f; }
+.grid2 .kerf-adjust small[data-zone="red"] { color: var(--alarm); }
+.grid2 .check { display: grid; gap: 3px; align-content: start; font-size: 13px; }
+.grid2 .check label { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 15px; color: var(--ink); cursor: pointer; }
+.grid2 .check input[type="checkbox"] { width: 20px; height: 20px; padding: 0; accent-color: var(--amber); cursor: pointer; }
 .sheet-foot { display: flex; justify-content: space-between; align-items: center; padding: 12px 22px 20px; }
 .sheet-foot .link { background: none; border: 0; padding: 0; color: var(--mute); text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; font-size: 14px; }
 .sheet-foot .link:hover { color: var(--ink); }
@@ -44,7 +57,7 @@
 .fine { font-size: 13px; color: var(--mute); margin: 0; }
 
 @media (max-width: 760px) {
-  .grid2 { grid-template-columns: 1fr; }
+  .grid2 { grid-template-columns: 1fr; grid-auto-flow: row; grid-template-rows: none; }
   .cut-body { grid-template-columns: 1fr; }
   .cut-bed { margin: 14px 22px 0; height: 38vh; }
 }

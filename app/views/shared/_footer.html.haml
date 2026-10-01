@@ -1,13 +1,8 @@
 %footer.site-footer
   %p
     &copy; 2014&ndash;#{Time.zone.now.year}
-    %a{href: 'https://reinvent.one/'} ReinventONE, Inc.
-    Written by
+    %a{href: 'https://kig.re'} Konstantin Gredeskoul, San Francisco, USA.
     = succeed '.' do
-      %a{href: 'https://kig.re'} Konstantin Gredeskoul
-  %p
-    makeabox #{Makeabox::VERSION} is a web interface for the open source
-    %a{href: 'https://github.com/kigster/laser-cutter'} laser-cutter
-    Ruby gem, version #{Laser::Cutter::VERSION}, MIT licensed.
-    = succeed '.' do
-      %a{href: 'https://github.com/kigster/laser-cutter/blob/master/CONTRIBUTING.md'} Fixes and contributions are welcome.
+      MakeABox v#{Makeabox::VERSION} is built atop open source gem
+      %a{href: 'https://github.com/kigster/laser-cutter'} laser-cutter
+      version #{Laser::Cutter::VERSION}, Licensed MIT.

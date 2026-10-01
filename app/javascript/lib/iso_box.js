@@ -20,17 +20,24 @@ export function tabCount(length, notch) {
 // Returns { viewBox, markup } for an <svg>. Every interpolated value is a number
 // or one of a fixed set of words, so the markup is safe to assign as innerHTML.
 export function isoBox(box) {
-  const { width: W, height: H, depth: D, thickness: t } = box
-  const notch = box.notch || 3 * t
+  // Drawn in inches whatever the units, so a box in millimetres is not 25.4
+  // times larger and its lines do not thin out when the page scales it down.
+  // Only the labels keep the units the box was given in.
+  const inch = box.units === "mm" ? 25.4 : 1
+  const [W, H, D, t] = [box.width, box.height, box.depth, box.thickness].map((value) => value / inch)
+  const notch = (box.notch || 3 * box.thickness) / inch
   const open = box.lid === "back" || box.lid === "plain"
   const unit = Math.max(W, H, D)
-  const lift = open ? Math.max(0.35 * H, 0.18 * unit) : 0
+  // A back lid floats lower and slides forward, just far enough to uncover the
+  // tabs on the back wall: lifted straight up, it would hide them.
+  const lift = { plain: Math.max(0.35 * H, 0.18 * unit), back: Math.max(0.2 * H, 0.08 * unit) }[box.lid] ?? 0
+  const slide = box.lid === "back" ? lift + 2 * t : 0
   const points = []
   let markup = ""
 
   const face = (o, u, a, v, b) => ({ o, u, a, v, b })
   const faces = {
-    top: face([0, 0, H + lift], [1, 0, 0], W, [0, 1, 0], D),
+    top: face([0, slide, H + lift], [1, 0, 0], W, [0, 1, 0], D),
     left: face([0, D, 0], [1, 0, 0], W, [0, 0, 1], H),
     right: face([W, 0, 0], [0, 1, 0], D, [0, 0, 1], H)
   }
@@ -72,10 +79,24 @@ export function isoBox(box) {
   fingers(faces.left, "v1", 0); fingers(faces.right, "v1", 1)
   for (const [f, edge] of [[faces.left, "v0"], [faces.left, "u0"], [faces.right, "v0"], [faces.right, "u0"]]) fingers(f, edge, 1)
 
+  if (box.lid === "back") {
+    // The back wall's tabs stand up out of its top edge, one under each slot
+    // in the far edge of the lid, and as tall as the lid is thick.
+    const count = tabCount(W, notch)
+    for (let i = 1; i < count; i += 2) {
+      const a = (i * W) / count, b = ((i + 1) * W) / count
+      markup += '<g class="tab">'
+      polygon("face left", face([0, t, H], [1, 0, 0], W, [0, 0, 1], t), a, 0, b, t)
+      polygon("face right", face([b, 0, H], [0, 1, 0], t, [0, 0, 1], t), 0, 0, t, t)
+      polygon("face top", face([0, 0, H + t], [1, 0, 0], W, [0, 1, 0], t), a, 0, b, t)
+      markup += "</g>"
+    }
+  }
+
   if (open) {
     // The lid floats above the box, a slab one thickness deep.
-    polygon("face left", face([0, D, H + lift - t], [1, 0, 0], W, [0, 0, 1], t), 0, 0, W, t)
-    polygon("face right", face([W, 0, H + lift - t], [0, 1, 0], D, [0, 0, 1], t), 0, 0, D, t)
+    polygon("face left", face([0, D + slide, H + lift - t], [1, 0, 0], W, [0, 0, 1], t), 0, 0, W, t)
+    polygon("face right", face([W, slide, H + lift - t], [0, 1, 0], D, [0, 0, 1], t), 0, 0, D, t)
   }
   polygon("face top", faces.top, 0, 0, W, D)
   if (!open) {
@@ -95,9 +116,9 @@ export function isoBox(box) {
     markup += `<g class="dim${box.hot === key ? " hot" : ""}"><line x1="${a1[0].toFixed(1)}" y1="${a1[1].toFixed(1)}" x2="${b1[0].toFixed(1)}" y2="${b1[1].toFixed(1)}"/>` +
       `<text x="${mid[0].toFixed(1)}" y="${mid[1].toFixed(1)}" font-size="${size.toFixed(1)}">${Number(value)} ${box.units === "mm" ? "mm" : "in"}</text></g>`
   }
-  dimension("width", [0, D, 0], [W, D, 0], [0, 1.6], W)
-  dimension("depth", [W, 0, 0], [W, D, 0], [1.6, 0], D)
-  dimension("height", [0, D, 0], [0, D, H], [-1.2, 0], H)
+  dimension("width", [0, D, 0], [W, D, 0], [0, 1.6], box.width)
+  dimension("depth", [W, 0, 0], [W, D, 0], [1.6, 0], box.depth)
+  dimension("height", [0, D, 0], [0, D, H], [-Math.max(1.2, (slide + 0.08 * unit) / offset), 0], box.height) // clear of a lid slid forward
 
   const xs = points.map((p) => p[0]), ys = points.map((p) => p[1]), pad = unit * 6
   const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad

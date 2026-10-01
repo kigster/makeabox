@@ -12,6 +12,7 @@ group :default do
   gem 'ed25519'
   gem 'haml'
   gem 'importmap-rails'
+  gem 'redis'
   # Lids are merged but not on RubyGems yet; once 2.0.1 is released, go back to '~> 2.0', '>= 2.0.1'.
   gem 'laser-cutter'
   gem 'lograge'
@@ -44,7 +45,7 @@ group :development do
 end
 
 group :test, :development do
-  gem 'codecov'
+  gem 'coverage-badge'
   gem 'mry', require: false
   gem 'relaxed-rubocop'
   gem 'rspec'

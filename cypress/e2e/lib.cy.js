@@ -34,6 +34,20 @@ describe("isoBox", () => {
     expect(count(closed, "finger")).to.be.greaterThan(count(back, "finger"))
   })
 
+  it("raises tabs on the back wall where a back lid has its slots", () => {
+    const slots = (tabCount(5, 3 * 0.245) - 1) / 2 // every other notch along the far edge of the lid
+    expect(count(isoBox({ ...box, lid: "back" }).markup, "tab")).to.eq(slots)
+    expect(count(isoBox({ ...box, lid: "plain" }).markup, "tab")).to.eq(0)
+    expect(count(isoBox({ ...box, lid: "full" }).markup, "tab")).to.eq(0)
+  })
+
+  it("draws a box in millimetres at the same size as in inches, so its lines keep their width", () => {
+    const inches = isoBox({ ...box, lid: "full" })
+    const mm = isoBox({ ...box, width: 127, height: 76.2, depth: 101.6, thickness: 6.223, units: "mm", lid: "full" })
+    expect(mm.viewBox).to.eq(inches.viewBox)
+    expect(mm.markup).to.contain(">127 mm<").and.contain(">76.2 mm<").and.contain(">101.6 mm<")
+  })
+
   it("marks the dimension being edited and labels millimetres", () => {
     const { markup } = isoBox({ ...box, lid: "full", units: "mm", hot: "depth" })
     expect(count(markup, "dim hot")).to.eq(1)

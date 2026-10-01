@@ -14,9 +14,21 @@ const STEP = { in: { side: 0.25, thickness: 0.005, notch: 0.05 }, mm: { side: 5,
 // The narrowest notch worth cutting. The widest is a third of the shortest
 // side; on a box too small for both, the narrowest is half the widest. Both
 // ends are rounded down to NOTCH_SCALE, exactly as BoxRequest does.
-const NOTCH_MIN = { in: 0.4, mm: 10 }
+const NOTCH_MIN = { in: 0.2, mm: 5 }
 const NOTCH_SCALE = { in: 100, mm: 10 }
 const MAX_NOTCHES = 150 // BoxRequest::MAX_NOTCHES
+// The kerf slider runs from 0 to 0.1 in and says how a box usually fits: green
+// from 0.026 to 0.045 in, yellow around that out to 0.02 and 0.065 in, red
+// beyond. Less kerf is looser, more is tighter. Inches here, scaled for mm.
+const KERF = { max: 0.1, green: [0.026, 0.045], yellow: [0.02, 0.065] }
+const KERF_FIT = {
+  red: ["Too loose, requires glue or screws", "Likely not fit at all"],
+  yellow: ["Likely to be loose", "Likely to be too tight"],
+  green: ["About just right", "About just right"]
+}
+const KERF_STEP = { in: 0.0005, mm: 0.01 }
+// What "Reset to defaults" under Width puts back, in inches.
+const STARTING_BOX = { width: 5, height: 4, depth: 3, thickness: 0.125, kerf: 0.026 }
 const TRACE_MS = 1500
 
 const clean = (number) => Number(number.toFixed(4))
@@ -36,18 +48,22 @@ const label = (key) => (key === "thickness" ? "Thickness" : key[0].toUpperCase()
 // settings in this browser, and runs the Generate dialog.
 export default class extends Controller {
   static targets = ["preview", "form", "hint", "number", "unit", "chips", "range", "units", "lid", "settings", "optional", "pageSize",
-                    "go", "cut", "cutTitle", "cutMaterial", "drawing", "specs", "phase", "count", "bar", "download"]
-  static values = { settings: Object, streamUrl: String, downloadUrl: String }
+                    "go", "cut", "cutTitle", "cutMaterial", "drawing", "specs", "phase", "count", "bar", "download",
+                    "kerfSlider", "kerfFit", "metadata"]
+  static values = { settings: Object, streamUrl: String, downloadUrl: String, countUrl: String }
 
   connect() {
     this.unit = "in"
     this.hot = null
     this.restore()
     this.refresh()
+    this.resized = new ResizeObserver(() => this.fit())
+    this.resized.observe(this.formTarget)
   }
 
   disconnect() {
     this.stop()
+    this.resized?.disconnect()
   }
 
   // ── reading the form ──
@@ -149,6 +165,21 @@ export default class extends Controller {
     }, { once: true })
   }
 
+  // The slider writes the kerf into its field; the field is what is sent.
+  slideKerf(event) {
+    this.input("kerf").value = clean(Number(event.target.value))
+    this.refresh()
+  }
+
+  // Back to a 5 × 4 × 3 in box of 1/8″ material with the default kerf.
+  // Everything else on the form is left as it is.
+  restart() {
+    if (this.unit !== "in") this.pageSizeTarget.value = "" // a page size in mm has no match in inches
+    this.unitsTargets.forEach((radio) => { radio.checked = radio.value === "in" })
+    for (const [key, value] of Object.entries(STARTING_BOX)) this.input(key).value = value
+    this.refresh()
+  }
+
   stock(event) {
     const value = event.target.dataset.value
     if (!value) return
@@ -213,6 +244,7 @@ export default class extends Controller {
       if (fallback !== undefined) input.placeholder = fallback
     })
     this.pageSizes(unit)
+    this.kerf(unit)
     this.numberTargets.forEach((input) => input.closest(".field").classList.toggle("bad", !(parse(input.value) > 0)))
     this.rangeTarget.textContent = this.notchRange()[1] > 0 ? `${this.notchRange().join(" to ")} ${unit}` : ""
     this.rangeTarget.closest(".field").classList.toggle("bad", this.notchProblem())
@@ -220,8 +252,42 @@ export default class extends Controller {
     const problem = this.problem()
     this.hintTarget.textContent = problem
     this.goTarget.disabled = Boolean(problem)
+    this.fit()
     this.draw()
     this.save()
+  }
+
+  // Long numbers, like 101.6 mm, shrink until they fit their field, down to
+  // half the usual size. Each is measured in a hidden copy of its own font.
+  fit() {
+    const ruler = this.ruler ??= Object.assign(document.createElement("span"), { ariaHidden: "true" })
+    ruler.style.cssText = "position: absolute; visibility: hidden; white-space: pre; left: -9999px"
+    if (!ruler.isConnected) document.body.append(ruler)
+    for (const input of this.formTarget.querySelectorAll(".num input")) {
+      input.style.fontSize = input.style.paddingTop = ""
+      const style = getComputedStyle(input)
+      for (const property of ["fontFamily", "fontSize", "fontWeight", "fontStretch", "letterSpacing", "fontVariantNumeric"]) ruler.style[property] = style[property]
+      ruler.textContent = input.value || input.placeholder
+      const room = input.clientWidth, needed = ruler.getBoundingClientRect().width
+      if (!(room > 0 && needed > room)) continue
+      const full = parseFloat(style.fontSize), size = Math.max(0.5, (0.97 * room) / needed) * full
+      input.style.fontSize = `${size}px`
+      input.style.paddingTop = `${0.95 * (full - size)}px` // keeps it on the same baseline as its neighbours
+    }
+  }
+
+  // Moves the slider to the kerf in the field, or the default when it is blank,
+  // and colours it green, yellow or red.
+  kerf(unit) {
+    const slider = this.kerfSliderTarget, scale = unit === "mm" ? MM_PER_INCH : 1
+    const field = this.input("kerf"), value = parse(field.value)
+    const kerf = Number.isFinite(value) ? value : parse(field.placeholder) || 0
+    Object.assign(slider, { max: KERF.max * scale, step: KERF_STEP[unit] })
+    slider.value = kerf
+    const inches = kerf / scale, within = ([low, high]) => inches >= low - 1e-9 && inches <= high + 1e-9
+    const zone = slider.dataset.zone = within(KERF.green) ? "green" : within(KERF.yellow) ? "yellow" : "red"
+    this.kerfFitTarget.textContent = KERF_FIT[zone][inches < KERF.green[0] ? 0 : 1]
+    this.kerfFitTarget.dataset.zone = zone
   }
 
   pageSizes(unit) {
@@ -258,6 +324,7 @@ export default class extends Controller {
     this.unitsTargets.forEach((radio) => { radio.checked = radio.value === unit })
     this.pageSizes(unit) // the saved page size needs its option to exist first
     for (const [key, value] of Object.entries(saved)) {
+      if (key === "metadata") { this.metadataTarget.checked = value !== "0"; continue }
       const field = this.input(key)
       if (!field || key === "units") continue
       field.value = value
@@ -362,6 +429,7 @@ export default class extends Controller {
     this.track("svg_download", this.filename)
     this.hand(new Blob([this.svg], { type: "image/svg+xml" }), this.filename)
     this.finish()
+    this.countSvg()
   }
 
   // The PDF is drawn again on the server from the same settings. It is fetched
@@ -376,6 +444,7 @@ export default class extends Controller {
       if (!response.ok) return this.fail(response.status === 422 ? await response.text() : STOPPED)
       this.hand(await response.blob(), filename)
       this.finish()
+      this.counted() // the server counted the PDF as it sent it
     } catch (error) {
       this.fail(STOPPED)
     } finally {
@@ -394,6 +463,23 @@ export default class extends Controller {
 
   finish() {
     this.cutTarget.close()
+  }
+
+  // The server never sees an SVG saved from memory, so it is told. A count
+  // that fails to arrive is not worth bothering anyone about.
+  async countSvg() {
+    const token = document.querySelector('meta[name="csrf-token"]')?.content
+    try {
+      await fetch(`${this.countUrlValue}?kind=svg`, { method: "POST", headers: { "X-CSRF-Token": token ?? "" } })
+      this.counted()
+    } catch {
+      // The download itself already happened.
+    }
+  }
+
+  // Tells the counter in the header to catch up.
+  counted() {
+    window.dispatchEvent(new CustomEvent("makeabox:downloaded"))
   }
 
   // Counts a click on a download button in Google Analytics, when it is loaded.

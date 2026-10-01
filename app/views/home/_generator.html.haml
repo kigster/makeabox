@@ -1,11 +1,15 @@
 %main.bench{data: {controller: 'generator',
                    generator_settings_value: @settings.to_json,
                    generator_stream_url_value: box_stream_path,
-                   generator_download_url_value: box_download_path}}
+                   generator_download_url_value: box_download_path,
+                   generator_count_url_value: downloads_path}}
   %section.hero
     .pitch
-      %h1 Fully symmetric enclosure boxes that snap together, straight off the laser cutter's bed.
-      %h2  Set the inside dimensions and your material. Get an SVG or PDF ready for the laser cutter. Free.
+      -# A phone shows the short heading; everything wider shows the long one.
+      %h1
+        %span.long Fully symmetric enclosure boxes that snap together, straight off the laser cutter's bed.
+        %span.short Design your box
+      %h4  Set the inside dimensions and your material. Get an SVG or PDF ready for the laser cutter. Free.
     .stage
       %svg{role: 'img', 'aria-label': 'Preview of your box', data: {generator_target: 'preview'}}
 
@@ -23,6 +27,11 @@
           %input{id: "box_#{name}", name: "box[#{name}]", value: value, inputmode: 'decimal', required: true,
                  data: {generator_target: 'number', action: 'input->generator#edit focus->generator#focus blur->generator#blur keydown->generator#nudge'}}
           %span{data: {generator_target: 'unit'}} in
+        - if name == :width
+          -# On a phone the cell is too narrow for the whole label, so it says just "Reset".
+          %button.more.restart{type: 'button', 'aria-label': 'Reset to defaults', data: {action: 'generator#restart'}}
+            Reset
+            %span.wide to defaults
 
     .field.thickness{data: {key: 'thickness'}}
       %label{for: 'box_thickness', data: {action: 'pointerdown->generator#scrub'}}

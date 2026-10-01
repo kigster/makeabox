@@ -30,7 +30,7 @@ describe("making a box", () => {
   })
 
   it("slides the sections up over the controls, and back down", () => {
-    cy.contains("nav a", "How the tabs work").click()
+    cy.contains("nav a", "How the sides join").click()
     cy.get("dialog#how").should("have.attr", "open")
     cy.get("dialog#how").should("have.class", "up")
     cy.get("dialog#how h2").should("have.text", "How the tabs work")
@@ -60,6 +60,30 @@ describe("making a box", () => {
     field("thickness").should("have.value", "6.22")
     cy.get(".num span").first().should("have.text", "mm")
     cy.get(".chips button").first().should("have.text", "3 mm")
+  })
+
+  it("shrinks a long number until it fits its field", () => {
+    const size = ($input) => parseFloat(getComputedStyle($input[0]).fontSize)
+    field("width").then(($short) => {
+      field("depth").clear().type("1016.125")
+      field("depth").should(($long) => {
+        expect($long[0].scrollWidth).to.be.at.most($long[0].clientWidth)
+        expect(size($long)).to.be.lessThan(size($short))
+      })
+      field("depth").clear().type("4")
+      field("depth").should(($back) => expect(size($back)).to.eq(size($short)))
+    })
+  })
+
+  it("resets the box to 5 × 4 × 3 in of 1/8 in material with the default kerf", () => {
+    cy.contains(".seg span", "mm").click()
+    field("width").clear().type("300")
+    field("thickness").clear().type("6")
+    cy.contains(".field button", "Reset to defaults").click()
+
+    cy.get('[name="box[units]"][value="in"]').should("be.checked")
+    for (const [name, value] of [["width", "5"], ["height", "4"], ["depth", "3"], ["thickness", "0.125"], ["kerf", "0.026"]]) field(name).should("have.value", value)
+    cy.get(".stage svg text").should("contain", "5 in").and("contain", "4 in").and("contain", "3 in")
   })
 
   it("reads a decimal comma, and converts it", () => {
@@ -128,11 +152,48 @@ describe("making a box", () => {
 
   it("offers the optional settings with the gem's defaults as placeholders", () => {
     cy.contains("button", "Kerf, page, margins").click()
-    field("kerf").should("have.attr", "placeholder", "0.0024")
+    field("kerf").should("have.attr", "placeholder", "0.026")
     field("page_size").find("option").should("have.length.greaterThan", 10)
     cy.screenshot("settings", { capture: "viewport" })
     cy.contains("button", "Done").click()
     cy.get("dialog.sheet").first().should("not.have.attr", "open")
+  })
+
+  it("sets the kerf with a slider that colours itself by the value", () => {
+    const slider = () => cy.get(".kerf-adjust input[type=range]")
+    const slide = (value) => slider().invoke("val", value).trigger("input")
+    cy.contains("button", "Kerf, page, margins").click()
+    cy.contains(".kerf-adjust", "Kerf adjustment:")
+    slider().should("have.value", "0.026").and("have.attr", "data-zone", "green") // starts at the default kerf
+    cy.get("#kerf_fit").should("have.text", "About just right")
+
+    for (const [value, zone, fit] of [
+      ["0.03", "green", "About just right"],
+      ["0.05", "yellow", "Likely to be too tight"],
+      ["0.022", "yellow", "Likely to be loose"],
+      ["0.07", "red", "Likely not fit at all"],
+      ["0.01", "red", "Too loose, requires glue or screws"]
+    ]) {
+      slide(value)
+      field("kerf").should("have.value", value)
+      slider().should("have.attr", "data-zone", zone)
+      cy.get("#kerf_fit").should("have.text", fit).and("have.attr", "data-zone", zone)
+    }
+
+    field("kerf").clear().type("0.04")
+    slider().should("have.value", "0.04").and("have.attr", "data-zone", "green")
+    cy.contains("button", "Done").click()
+    cy.contains(".seg span", "mm").click()
+    slider().should("have.attr", "max", "2.54").and("have.attr", "data-zone", "green")
+    field("kerf").should("have.value", "1.02")
+  })
+
+  it("prints the box dimensions on the page unless told not to, and remembers that", () => {
+    cy.contains("button", "Kerf, page, margins").click()
+    cy.contains(".check label", "Include box dimensions?").find("input").should("be.checked").uncheck()
+    cy.window().its("localStorage").invoke("getItem", "makeabox:settings:v1").should("contain", '"metadata":"0"')
+    cy.reload()
+    cy.get('.check input[type=checkbox]').should("not.be.checked")
   })
 
   it("says what went wrong, and recovers on the next try", () => {
@@ -172,10 +233,10 @@ describe("making a box", () => {
     cy.readFile("tmp/cypress/downloads/makeabox-5x3x4in-0.245t.svg").should("contain", "<svg")
   })
 
-  it("keeps the notch length between 0.4 in and a third of the shortest side", () => {
-    cy.get(".field.notch .range").should("have.text", "0.4 to 1 in")
+  it("keeps the notch length between 0.2 in and a third of the shortest side", () => {
+    cy.get(".field.notch .range").should("have.text", "0.2 to 1 in")
     field("notch").type("2")
-    cy.get(".hint").should("contain", "Notch length has to be between 0.4 and 1 in")
+    cy.get(".hint").should("contain", "Notch length has to be between 0.2 and 1 in")
     cy.get(".go").should("be.disabled")
 
     field("notch").clear().type("0.5")
@@ -206,7 +267,7 @@ describe("making a box", () => {
 
   it("shows the range in millimetres", () => {
     cy.contains(".seg span", "mm").click()
-    cy.get(".field.notch .range").should("have.text", "10 to 25.4 mm")
+    cy.get(".field.notch .range").should("have.text", "5 to 25.4 mm")
   })
 
   it("cuts a lid that lifts off", () => {
@@ -243,6 +304,21 @@ describe("making a box", () => {
     cy.get("@gtag").should("have.been.calledWith", "event", "svg_download", { file_name: "makeabox-5x3x4in-0.245t.svg" })
   })
 
+  it("shows the download count in the header, and adds this download to it", () => {
+    const count = ($counter) => Number($counter.attr("aria-label").match(/^[\d,]+/)[0].replaceAll(",", ""))
+    cy.get(".counter .lcd .group").should("have.length", 3)
+    cy.get(".counter .before").should("have.text", "boxes downloaded")
+    cy.get(".counter .after").should("have.text", "since 2015")
+    cy.get(".counter").then(($counter) => {
+      const before = count($counter)
+      cy.get(".go").click()
+      cy.contains("dialog.cut .progress", "Ready", { timeout: 10000 })
+      cy.contains("button", "Download SVG").click()
+      cy.get(".counter").should(($now) => expect(count($now)).to.eq(before + 1)).and("have.class", "tick")
+      cy.get(".counter .lcd").should("contain", String(before + 1).slice(-3))
+    })
+  })
+
   it("keeps the dialog open and says why when the PDF is refused", () => {
     cy.get(".go").click()
     cy.contains("dialog.cut .progress", "Ready", { timeout: 10000 })
@@ -261,6 +337,14 @@ describe("making a box", () => {
     })
   })
 
+  it("shortens the heading on a phone", () => {
+    cy.get(".hero h1").should("contain.text", "Fully symmetric enclosure boxes")
+    cy.get(".hero h1 .short").should("not.be.visible")
+    cy.viewport(390, 844)
+    cy.get(".hero h1 .short").should("be.visible").and("have.text", "Design your box")
+    cy.get(".hero h1 .long").should("not.be.visible")
+  })
+
   it("stacks the form on a phone", () => {
     cy.viewport(390, 844)
     cy.get(".go").should("be.visible")
@@ -272,6 +356,9 @@ describe("making a box", () => {
       top("notch").should("be.greaterThan", first)
     })
     cy.get("body").should(($body) => expect($body[0].scrollWidth).to.be.at.most(390))
+    // A slim Generate bar sits above the controls.
+    cy.get(".go").then(($go) => cy.get("#box_width").should(($width) => expect($go[0].getBoundingClientRect().bottom).to.be.lessThan($width[0].getBoundingClientRect().top)))
+    cy.get(".go small").should("not.be.visible")
     cy.screenshot("phone", { capture: "viewport" })
   })
 
@@ -280,7 +367,7 @@ describe("making a box", () => {
     cy.get(".site-header nav").should("not.be.visible")
     cy.get(".burger").should("have.attr", "aria-expanded", "false").click()
     cy.get(".burger").should("have.attr", "aria-expanded", "true")
-    for (const name of ["How the tabs work", "Discussion", "GitHub", "Donate"]) cy.contains(".site-header nav a", name).should("be.visible")
+    for (const name of ["How the sides join", "Discussion", "GitHub", "Donate"]) cy.contains(".site-header nav a", name).should("be.visible")
     cy.screenshot("phone-menu", { capture: "viewport" })
 
     cy.contains(".site-header nav a", "Donate").click()

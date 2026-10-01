@@ -45,6 +45,7 @@ class BoxesController < ApplicationController
 
     bytes = logging("rendering #{format} for #{request.remote_ip}") { Timeout.timeout(RENDER_SECONDS) { box.render(format) } }
     send_data bytes, filename: box.filename(format), type: BoxRequest::FORMATS.fetch(format), disposition: 'attachment'
+    Makeabox::BoxCounter.record_download(format)
   rescue Timeout::Error, Laser::Cutter::Error => e
     logger.warn("box download failed: #{e.class}: #{e.message}")
     render plain: failure_message(e), status: :unprocessable_content
