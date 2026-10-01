@@ -16,12 +16,11 @@ RSpec.describe ApplicationHelper do
 
   describe '#giscus?' do
     it 'needs both ids' do
-      stub_const('ENV', ENV.to_h.merge('GISCUS_REPO_ID' => 'R_123', 'GISCUS_CATEGORY_ID' => ''))
+      stub_const('ApplicationHelper::GISCUS_CATEGORY_ID', '')
       expect(helper.giscus?).to be false
     end
 
     it 'is on with both' do
-      stub_const('ENV', ENV.to_h.merge('GISCUS_REPO_ID' => 'R_123', 'GISCUS_CATEGORY_ID' => 'DIC_456'))
       expect(helper.giscus?).to be true
     end
   end

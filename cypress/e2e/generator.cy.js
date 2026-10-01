@@ -29,6 +29,31 @@ describe("making a box", () => {
     cy.get(".hero h1").should("have.css", "animation-name", "drift")
   })
 
+  it("slides the sections up over the controls, and back down", () => {
+    cy.contains("nav a", "How the tabs work").click()
+    cy.get("dialog#how").should("have.attr", "open")
+    cy.get("dialog#how").should("have.class", "up")
+    cy.get("dialog#how h2").should("have.text", "How the tabs work")
+    cy.location("hash").should("eq", "#how")
+    cy.get(".go").should("exist") // the controls stay where they are, underneath
+
+    cy.contains("nav a", "Discussion").click()
+    cy.get("dialog#discussion").should("have.attr", "open")
+    cy.get("dialog#how").should("not.have.attr", "open")
+
+    cy.get("dialog#discussion .x").click()
+    cy.get("dialog#discussion").should("not.have.attr", "open")
+    cy.location("hash").should("eq", "")
+  })
+
+  it("opens the panel named in the URL", () => {
+    cy.visit("/#support")
+    cy.get("dialog#support").should("have.attr", "open")
+    cy.contains("dialog#support button", "Donate with PayPal").should("be.visible")
+    cy.get("body").type("{esc}")
+    cy.get("dialog#support").should("not.have.attr", "open")
+  })
+
   it("converts every number when the units change", () => {
     cy.contains(".seg span", "mm").click()
     field("width").should("have.value", "127")

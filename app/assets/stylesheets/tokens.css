@@ -7,6 +7,13 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("barlow-condensed-600-latin.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+
 :root {
   --bed: #151b21;      /* the honeycomb bed */
   --panel: #0d1115;    /* the machine's control panel */

@@ -1,16 +1,16 @@
 !!!
 %html{lang: 'en'}
   = render 'shared/head'
-  %body
+  %body{data: {controller: 'panels'}}
     = render 'shared/bed'
     %header.site-header
       %a.mark{href: root_path}
-        = image_tag 'mark.svg', alt: '', width: 34, height: 34
+        = image_tag 'mark.svg', alt: '', width: 54, height: 54
         makeabox
       %nav{'aria-label': 'Sections'}
-        %a{href: '#how'} How the tabs work
-        %a{href: '#discussion'} Discussion
-        %a{href: 'https://github.com/kigster/laser-cutter'} GitHub
-        %a{href: '#support'} Donate
+        %a{href: '#how', data: {action: 'panels#open', panels_name_param: 'how'}} How the tabs work
+        %a{href: '#discussion', data: {action: 'panels#open', panels_name_param: 'discussion'}} Discussion
+        %a{href: 'https://github.com/kigster/laser-cutter', target: "_blank"} GitHub
+        %a{href: '#support', data: {action: 'panels#open', panels_name_param: 'support'}} Donate
     = yield
     = render 'shared/footer'

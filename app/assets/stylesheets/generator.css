@@ -1,5 +1,5 @@
 /* The first screen: pitch, live preview, and the control strip. */
-.bench { display: grid; grid-template-rows: 1fr auto; min-height: calc(100svh - 72px); }
+.bench { display: grid; grid-template-rows: 1fr auto; min-height: calc(100svh - 62px); }
 
 .hero {
   display: grid; grid-template-columns: minmax(280px, 36fr) 64fr; align-items: center;
