@@ -17,10 +17,11 @@
 .support .sign { color: var(--mute); font-size: 15px; }
 .giscus { margin-top: 18px; }
 
-/* The discussion runs the width of its panel. */
+/* The discussion sits in a centred column, wide enough for code in a comment. */
 #discussion .band { grid-template-columns: minmax(0, 1fr); }
-#discussion .prose { max-width: none; }
-#discussion .prose p { max-width: 62ch; }
+#discussion .prose { width: 100%; max-width: 980px; margin-inline: auto; }
+#discussion .prose h2, #discussion .prose > p { text-align: center; }
+#discussion .prose > p { max-width: 62ch; margin-inline: auto; }
 
 /* The panels: pinned to the bottom, reaching up to the header, 95% opaque, slid up by .up (see panels_controller.js). */
 .rise {
@@ -32,7 +33,7 @@
 }
 .rise.up { transform: none; }
 .rise .x {
-  position: sticky; top: 14px; float: right; margin: 0 var(--gutter) 0 0; z-index: 1;
+  position: sticky; top: 14px; display: block; margin: 0 var(--gutter) -38px auto; z-index: 2; /* takes no room from the content, and sits above it */
   background: rgb(34 44 54 / 0.95); border: 1px solid var(--sheet-edge); border-radius: 99px; width: 38px; height: 38px;
   color: var(--soft); font-size: 24px; line-height: 1; cursor: pointer;
 }
