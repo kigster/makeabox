@@ -2,5 +2,9 @@
 
 Rails.application.routes.draw do
   root 'home#index'
-  post '/' => 'home#index'
+
+  # Draws the box as an SVG and reports progress as server-sent events.
+  get 'box/stream', to: 'boxes#stream', as: :box_stream
+  # The same box as a file: /box/download.pdf or /box/download.svg
+  get 'box/download', to: 'boxes#download', as: :box_download
 end

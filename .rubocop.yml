@@ -4,12 +4,12 @@ inherit_gem:
 inherit_from:
   - .rubocop_todo.yml
 
-require:
+plugins:
   - rubocop-rspec
   - rubocop-rails
 
 AllCops:
-  TargetRubyVersion: 3
+  TargetRubyVersion: 4.0
   NewCops: enable
   UseCache: false
   DefaultFormatter: progress
@@ -17,6 +17,8 @@ AllCops:
     - "bin/*"
     - "**/rubocop"
     - "**/vendor/bundle/**/*"
+    - "node_modules/**/*"
+    - "tmp/**/*"
   Include:
     - '**/*.rb'
     - '**/*.gemfile'

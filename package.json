@@ -1,0 +1,12 @@
+{
+  "name": "makeabox-e2e",
+  "private": true,
+  "description": "End-to-end tests only. The app itself needs no Node: its JavaScript is served through importmap.",
+  "scripts": {
+    "cypress": "cypress run",
+    "cypress:open": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^15.0.0"
+  }
+}

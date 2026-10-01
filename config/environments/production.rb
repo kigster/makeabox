@@ -4,7 +4,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  config.enable_reloading = false
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -25,16 +25,10 @@ Rails.application.configure do
   # config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
-  # config.assets.js_compressor = :uglifier
-  config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
 
   # Generate digests for assets URLs.
-  config.assets.digest = true
-
-  # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
@@ -78,5 +72,4 @@ Rails.application.configure do
   config.log_formatter = Logger::Formatter.new
 
   config.cache_store = :mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)
-  config.session_store :mem_cache_store
 end

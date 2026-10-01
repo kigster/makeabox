@@ -1,0 +1,69 @@
+%main.bench{data: {controller: 'generator',
+                   generator_settings_value: @settings.to_json,
+                   generator_stream_url_value: box_stream_path,
+                   generator_download_url_value: box_download_path}}
+  %section.hero
+    .pitch
+      %h1 Boxes that snap together, straight off the bed.
+      %p Set the inside dimensions and your material. Get an SVG or PDF ready for the laser cutter. Free.
+    .stage
+      %svg{role: 'img', 'aria-label': 'Preview of your box', data: {generator_target: 'preview'}}
+
+  -# Without JavaScript this form still works: it downloads the PDF.
+  %form.panel{action: box_download_path(format: :pdf), method: 'get', autocomplete: 'off', novalidate: true,
+              data: {generator_target: 'form', action: 'submit->generator#generate'}}
+    %p.hint{role: 'status', data: {generator_target: 'hint'}}
+
+    - { width: 5, height: 3, depth: 4 }.each do |name, value|
+      .field{data: {key: name}}
+        %label{for: "box_#{name}", data: {action: 'pointerdown->generator#scrub'}}
+          = name.to_s.capitalize
+          %i drag or ↑↓
+        .num
+          %input{id: "box_#{name}", name: "box[#{name}]", value: value, inputmode: 'decimal', required: true,
+                 data: {generator_target: 'number', action: 'input->generator#edit focus->generator#focus blur->generator#blur keydown->generator#nudge'}}
+          %span{data: {generator_target: 'unit'}} in
+
+    .field.thickness{data: {key: 'thickness'}}
+      %label{for: 'box_thickness', data: {action: 'pointerdown->generator#scrub'}}
+        Material thickness
+        %i drag or ↑↓
+      .num
+        %input#box_thickness{name: 'box[thickness]', value: 0.245, inputmode: 'decimal', required: true,
+                             data: {generator_target: 'number', action: 'input->generator#edit focus->generator#focus blur->generator#blur keydown->generator#nudge'}}
+        %span{data: {generator_target: 'unit'}} in
+      .chips{data: {generator_target: 'chips', action: 'click->generator#stock'}}
+
+    .field.notch{data: {key: 'notch'}}
+      %label{for: 'box_notch', data: {action: 'pointerdown->generator#scrub'}}
+        Notch length
+        %i drag or ↑↓
+      .num
+        %input#box_notch{name: 'box[notch]', inputmode: 'decimal', placeholder: 'auto',
+                         data: {generator_target: 'optional', action: 'input->generator#edit focus->generator#focus blur->generator#blur keydown->generator#nudge'}}
+        %span{data: {generator_target: 'unit'}} in
+      %small.range{data: {generator_target: 'range'}}
+
+    .side
+      .seg{role: 'group', 'aria-label': 'Units'}
+        - { 'in' => 'inches', 'mm' => 'mm' }.each do |unit, text|
+          %label
+            %input{type: 'radio', name: 'box[units]', value: unit, checked: unit == 'in', data: {generator_target: 'units', action: 'change->generator#convert'}}
+            %span= text
+      %label.pick
+        %span.sr Top of the box
+        %select{name: 'box[lid]', data: {generator_target: 'lid', action: 'change->generator#edit'}}
+          %option{value: 'full'} Closed box
+          %option{value: 'back', disabled: !@settings[:lidsSupported]} Lid, tabs along the back
+          %option{value: 'plain', disabled: !@settings[:lidsSupported]} Lid, no tabs
+      - unless @settings[:lidsSupported]
+        %small.soon Lids need laser-cutter 2.0.1 or newer.
+      %button.more{type: 'button', data: {action: 'generator#openSettings'}} Kerf, page, margins…
+
+    %button.go{type: 'submit', data: {generator_target: 'go'}}
+      Generate
+      %small or press Enter
+
+    = render 'settings'
+
+  = render 'cut'

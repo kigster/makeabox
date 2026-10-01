@@ -54,7 +54,7 @@ ruby: 		brew ## Installs Ruby if needed
 			rbenv global $(RUBY_VERSION); \
 			"
 
-bundle: 	ruby ## Run the local test suite
+bundle: 	ruby ## Installs the gems
 		@printf "$(YLW)$(FMT)$(CLR)" "Installing bundled gems..."
 		@bundle check || bundle install -j 12 --quiet
 
@@ -66,12 +66,19 @@ lint: 		bundle ## Runs rubocop
 		@printf "$(YLW)$(FMT)$(CLR)" "Running Rubocop..."
 		@bash -c "bundle exec rubocop --color"
 
-lint-fix: 	bundle ## Runs rubocop with auto-correct
+lint-fix: 	bundle ## Runs rubocop with auto-correct, then the specs
 		@bash -c "bundle exec rubocop -a --color; @bundle exec rspec --force-color"
 
 lint-fix-all: 	bundle ## Runs rubocop with a more dangerous auto-correct
 		bundle exec rubocop -A --color; @bundle exec rspec
 
+
+e2e: 		bundle ## Runs the Cypress suite against a local server on port 3055 (start it with: make server)
+		@npm install --silent
+		@npx cypress run
+
+server:		bundle ## Starts the app on http://127.0.0.1:3055, the address the Cypress suite expects
+		@bundle exec puma -p 3055 -e development -w 0 -t 1:4 config.ru
 
 pre-commit: 	test lint  ## Runs rspec and rubocop before the commit
 

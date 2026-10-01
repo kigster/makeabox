@@ -17,7 +17,7 @@ RSpec.describe Makeabox::HostPortProbe do
       end
 
       it 'is closed before the server is started' do
-        expect(`#{nc_command}`).to match(/Connection refused/)
+        expect(`#{nc_command}`).to include('Connection refused')
       end
     end
   end

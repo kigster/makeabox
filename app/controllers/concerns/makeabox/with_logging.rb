@@ -5,20 +5,21 @@ module Makeabox
   module WithLogging
     protected
 
-    # Method should be called with a block, which receives a hash called `extra`,
-    # where `extra[:message]` is the message that will be printed upon block completion.
-    # Therefore the block is able to alter the log message post execution.
-    # @param *args Array arguments are joined with a command stringified
-    # @param **opts Hash arguments are passed into the JSON logger as is
-    def logging(*args, **_opts)
+    # Runs the block and logs how long it took, whether or not it raised. The block receives a hash
+    # `extra`, and may change `extra[:message]` to alter what is logged.
+    #
+    # @param args [Array<String>] joined with '. ' to make the message
+    # @return whatever the block returns
+    def logging(*args)
       extra = { message: args.join('. ') }
-      start_time = Time.now.to_f
-
-      yield(extra).tap do |_result|
-        duration = start_time - Time.now.to_f
-
-        Rails.logger.info("duration ➜ #{format('%.2fs', duration)}sec | #{extra[:message]}")
-      end
+      start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      yield(extra)
+    rescue Exception => e # rubocop:disable Lint/RescueException
+      extra[:message] += " | failed: #{e.class}"
+      raise
+    ensure
+      duration = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
+      Rails.logger.info("duration ➜ #{format('%.2f', duration)}s | #{extra[:message]}")
     end
   end
 end

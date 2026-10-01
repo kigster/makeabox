@@ -1,0 +1,24 @@
+/* Everything below the first screen. */
+.band {
+  background: var(--sheet); border-top: 1px solid var(--rule);
+  padding: clamp(40px, 6vw, 80px) var(--gutter);
+  display: grid; grid-template-columns: minmax(0, 62ch) minmax(0, 1fr); gap: clamp(24px, 5vw, 72px); align-items: start;
+}
+.band:nth-of-type(even) { background: var(--panel); }
+.prose h2 { font-stretch: 116%; font-weight: 800; font-size: clamp(26px, 2.6vw, 36px); line-height: 1.05; margin: 0 0 16px; letter-spacing: -0.015em; }
+.prose h3 { font-stretch: 110%; font-weight: 700; font-size: 17px; margin: 26px 0 4px; color: var(--amber); }
+.prose p { margin: 0 0 12px; color: var(--soft); font-size: 17px; line-height: 1.55; }
+.band figure { margin: 0; }
+.band img { display: block; width: 100%; max-width: 520px; height: auto; border-radius: 6px; border: 1px solid var(--edge); }
+
+.support .donate {
+  background: var(--amber); color: #1d1204; border: 0; border-radius: 8px; padding: 12px 26px; margin: 8px 0 14px;
+  font-weight: 800; font-stretch: 114%; font-size: 18px; cursor: pointer;
+}
+.support .donate:hover { background: #ffc666; }
+.support .sign { color: var(--mute); font-size: 15px; }
+.giscus { margin-top: 18px; }
+
+@media (max-width: 900px) {
+  .band { grid-template-columns: 1fr; }
+}

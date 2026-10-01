@@ -50,7 +50,7 @@ module Makeabox
       #         around_action :log_incoming_request
       #      end
       #
-      def log_incoming_request(&_block)
+      def log_incoming_request(&)
         level, message = construct_log_message
         log_block(message,
                   level:         level,

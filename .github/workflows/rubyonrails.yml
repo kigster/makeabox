@@ -1,43 +1,73 @@
-# This workflow uses actions that are not certified by GitHub.  They are
-# provided by a third-party and are governed by separate terms of service,
-# privacy policy, and support documentation.
-#
-# This workflow will install a prebuilt Ruby version, install dependencies, and
-# run tests and linters.
 name: "Ruby on Rails CI"
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
     steps:
-      - uses: niden/actions-memcached@v7
       - name: Checkout code
-        uses: actions/checkout@v3
-      # Add or replace dependency steps here
+        uses: actions/checkout@v4
       - name: Install Ruby and gems
-        uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+        uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1.327.0
         with:
           bundler-cache: true
-      # Add or replace database setup steps here
-      # Add or replace test runners here
       - name: Run tests
-        run: bundle exec rspec 
+        run: bundle exec rspec
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Ruby and gems
-        uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+        uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1.327.0
         with:
           bundler-cache: true
-      # Add or replace any other lints here
       - name: Lint Ruby files
         run: bundle exec rubocop
+
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: development
+      CYPRESS_BASE_URL: http://127.0.0.1:3055
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1.327.0
+        with:
+          bundler-cache: true
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install Cypress
+        run: |
+          npm ci
+          npx cypress install
+      - name: Start the app
+        run: |
+          mkdir -p tmp/pids log
+          bundle exec puma -p 3055 -e development -w 0 -t 1:4 config.ru > log/puma-ci.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl --silent --fail --output /dev/null http://127.0.0.1:3055/ && exit 0
+            sleep 1
+          done
+          cat log/puma-ci.log
+          exit 1
+      - name: Run Cypress
+        run: npx cypress run
+      - name: Keep screenshots of failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: tmp/cypress/screenshots

@@ -1,0 +1,103 @@
+/* The first screen: pitch, live preview, and the control strip. */
+.bench { display: grid; grid-template-rows: 1fr auto; min-height: calc(100svh - 72px); }
+
+.hero {
+  display: grid; grid-template-columns: minmax(280px, 36fr) 64fr; align-items: center;
+  padding: 12px var(--gutter) 28px; min-height: 0;
+}
+.hero h1 { font-stretch: 118%; font-weight: 800; font-size: clamp(34px, 4.3vw, 62px); line-height: 0.98; margin: 0 0 20px; letter-spacing: -0.02em; }
+/* The heading drifts between orange and light sky blue. The gradient is two
+   headings wide and ends where it starts, so one full shift loops unseen. */
+.hero h1 {
+  background: linear-gradient(100deg, #ff8a3d, #ffb53d, #87cefa, #c6e9ff, #87cefa, #ffb53d, #ff8a3d) 0 0 / 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-bottom: 0.12em; margin-bottom: calc(20px - 0.12em);
+  animation: drift 16s linear infinite;
+}
+@keyframes drift { to { background-position: 200% 0; } }
+.hero p { font-size: clamp(15px, 1.35vw, 18px); color: var(--soft); margin: 0; max-width: 31ch; font-stretch: 96%; }
+
+.stage { height: min(62vh, 640px); min-height: 300px; }
+.stage svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.stage .face { stroke: #2a1a0c; stroke-width: 1.4; stroke-linejoin: round; }
+.stage .top { fill: var(--birch-light); }
+.stage .left { fill: var(--birch); }
+.stage .right { fill: var(--birch-dark); }
+.stage .inside { stroke: #2a1a0c; stroke-width: 1; }
+.stage .floor { fill: #6b5231; }
+.stage .far { fill: #a98a57; }
+.stage .back { fill: #8f7345; }
+.stage .finger { fill: var(--char); opacity: 0.9; }
+.stage .hot-thickness .finger { fill: var(--amber); opacity: 1; }
+.stage .shadow { fill: #000; opacity: 0.42; filter: blur(14px); }
+.stage .dim line { stroke: #5f6c78; stroke-width: 1.4; }
+.stage .dim text { fill: var(--mute); font-stretch: 110%; text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: var(--bed); stroke-width: 8px; }
+.stage .dim.hot line { stroke: var(--amber); stroke-width: 3; }
+.stage .dim.hot text { fill: var(--amber); font-weight: 600; }
+
+.panel {
+  position: relative; margin: 0;
+  background: var(--panel); border-top: 3px solid var(--amber); border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr) minmax(0, 1.2fr) minmax(0, 1.3fr) minmax(140px, 1.1fr);
+}
+.hint { position: absolute; left: var(--gutter); bottom: calc(100% + 10px); margin: 0; font-size: 14px; color: var(--alarm); }
+
+.field { position: relative; padding: 16px clamp(12px, 1.5vw, 22px) 14px; border-right: 1px solid var(--rule); display: grid; gap: 10px; align-content: start; }
+.field > label { font-size: 13px; color: var(--mute); font-stretch: 110%; cursor: ew-resize; user-select: none; touch-action: none; display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; overflow: hidden; }
+.field > label i { font-style: normal; opacity: 0; transition: opacity 0.15s; white-space: nowrap; }
+.field:hover > label i, .field:focus-within > label i { opacity: 0.7; }
+.num { display: flex; align-items: baseline; gap: 6px; }
+.num input {
+  width: 100%; min-width: 0; background: none; border: 0; padding: 0; outline: 0;
+  font-size: clamp(28px, 3.1vw, 44px); font-weight: 300; font-stretch: 110%; line-height: 1.1;
+  font-variant-numeric: tabular-nums; caret-color: var(--amber);
+}
+.num span { font-size: 14px; color: var(--mute); }
+.num input::placeholder { color: var(--mute); opacity: 0.7; }
+.range { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+.field::after { content: ""; position: absolute; inset: auto 0 0 0; height: 3px; background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform 0.18s ease-out; }
+.field:focus-within::after { transform: scaleX(1); }
+.field:focus-within .num input { color: var(--amber); }
+.field.bad .num input { color: var(--alarm); }
+.field.bad::after { background: var(--alarm); transform: scaleX(1); }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button, .more, .pick select {
+  background: none; border: 1px solid #3a4651; border-radius: 99px; padding: 2px 10px;
+  font-size: 13px; color: var(--soft); cursor: pointer;
+}
+.chips button:hover, .more:hover, .pick select:hover { border-color: var(--soft); }
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+
+.side { padding: 14px clamp(12px, 1.5vw, 22px); border-right: 1px solid var(--rule); display: grid; gap: 8px; align-content: center; justify-items: start; }
+.seg { display: inline-flex; border: 1px solid #3a4651; border-radius: 99px; padding: 2px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; padding: 3px 14px; font-size: 14px; border-radius: 99px; color: var(--soft); cursor: pointer; }
+.seg input:checked + span { background: var(--ink); color: var(--panel); }
+.seg input:focus-visible + span { outline: 2px solid var(--amber); outline-offset: 2px; }
+.pick select { padding: 4px 10px; max-width: 100%; }
+.pick select option { background: var(--panel); color: var(--ink); }
+.soon { color: var(--mute); font-size: 12.5px; line-height: 1.3; }
+
+.go {
+  background: var(--beam); color: #160a04; border: 0; cursor: pointer;
+  font-stretch: 120%; font-weight: 800; font-size: clamp(20px, 2vw, 28px);
+  display: grid; place-content: center; gap: 2px; text-align: center; padding: 14px;
+}
+.go small { font-weight: 500; font-stretch: 100%; font-size: 12.5px; opacity: 0.75; }
+.go:hover { background: #ff6f45; }
+.go:disabled { background: #4a3a34; color: #9b8c86; cursor: not-allowed; }
+
+@media (max-width: 900px) {
+  .bench { min-height: 0; }
+  .hero { grid-template-columns: 1fr; padding-top: 8px; }
+  .stage { height: 44vh; }
+  .panel { grid-template-columns: repeat(3, 1fr); }
+  .field.thickness { grid-column: span 2; }
+  .side, .go { grid-column: span 3; }
+  .field.thickness, .field.notch, .side, .go { border-top: 1px solid var(--rule); }
+  .side { grid-auto-flow: column; justify-content: start; align-items: center; gap: 10px 14px; grid-auto-flow: row; }
+  .go { padding: 18px; }
+  .hint { position: static; grid-column: span 3; padding: 8px var(--gutter) 0; }
+  .hint:empty { display: none; }
+}

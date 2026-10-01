@@ -2,14 +2,27 @@
 
 require 'rails_helper'
 
-RSpec.describe ApplicationHelper, type: :helper do
-  describe '#asset_image' do
-    subject(:url) { asset_image(image) }
+RSpec.describe ApplicationHelper do
+  describe '#tracking?' do
+    it 'is off outside production' do
+      expect(helper.tracking?).to be false
+    end
 
-    let(:image) { 'buttons/up-long/btn-donate-monthly.png' }
+    it 'is on in production' do
+      allow(Rails).to receive(:env).and_return(ActiveSupport::EnvironmentInquirer.new('production'))
+      expect(helper.tracking?).to be true
+    end
+  end
 
-    it { is_expected.not_to be_nil }
-    it { is_expected.not_to start_with 'http' }
-    it { is_expected.to eq '/images/buttons/up-long/btn-donate-monthly.png' }
+  describe '#giscus?' do
+    it 'needs both ids' do
+      stub_const('ENV', ENV.to_h.merge('GISCUS_REPO_ID' => 'R_123', 'GISCUS_CATEGORY_ID' => ''))
+      expect(helper.giscus?).to be false
+    end
+
+    it 'is on with both' do
+      stub_const('ENV', ENV.to_h.merge('GISCUS_REPO_ID' => 'R_123', 'GISCUS_CATEGORY_ID' => 'DIC_456'))
+      expect(helper.giscus?).to be true
+    end
   end
 end

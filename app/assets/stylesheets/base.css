@@ -1,0 +1,47 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bed);
+  color: var(--ink);
+  font: 16px/1.5 "Archivo", system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+button, input, select { font: inherit; color: inherit; }
+a { color: var(--ink); text-underline-offset: 0.18em; }
+a:hover { color: var(--amber); }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.bed, .sparks { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+.site-header, .bench, .band, .site-footer { position: relative; z-index: 1; }
+
+.site-header {
+  display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px);
+  padding: 20px var(--gutter); font-size: 15px;
+}
+.site-header .mark { display: flex; align-items: center; gap: 10px; font-stretch: 125%; font-weight: 800; font-size: 21px; letter-spacing: 0.01em; text-decoration: none; color: var(--ink); }
+.site-header nav { margin-left: auto; display: flex; gap: inherit; }
+.site-header nav a { color: #aeb8c1; text-decoration: none; }
+.site-header nav a:hover { color: var(--ink); }
+
+.site-footer { background: var(--panel); border-top: 1px solid var(--rule); padding: 28px var(--gutter) 40px; color: var(--mute); font-size: 14px; }
+.site-footer p { margin: 0 0 6px; max-width: 80ch; }
+.site-footer a { color: var(--soft); }
+
+@media (max-width: 640px) {
+  .site-header nav a:nth-child(n + 2) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

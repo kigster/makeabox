@@ -16,7 +16,7 @@ module Makeabox
     keepalive:      true,
     compress:       true,
     pool:           {
-      sizes:   10,
+      size:    10,
       timeout: 30
     },
   }.freeze

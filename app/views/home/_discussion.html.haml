@@ -1,0 +1,14 @@
+%section#discussion.band
+  .prose
+    %h2 Discussion
+    - if giscus?
+      %p Questions, photos of what you made, and bug reports. Sign in with GitHub to post.
+      %script{src: 'https://giscus.app/client.js', async: true, crossorigin: 'anonymous',
+              data: {repo: 'kigster/makeabox', repo_id: ENV.fetch('GISCUS_REPO_ID'), category: ENV.fetch('GISCUS_CATEGORY', 'General'),
+                     category_id: ENV.fetch('GISCUS_CATEGORY_ID'), mapping: 'pathname', strict: '0', reactions_enabled: '1',
+                     emit_metadata: '0', input_position: 'top', theme: 'dark_dimmed', lang: 'en', loading: 'lazy'}}
+    - else
+      %p
+        Questions, photos of what you made, and bug reports live on GitHub.
+        = succeed '.' do
+          %a{href: 'https://github.com/kigster/makeabox/discussions'} Join the discussion

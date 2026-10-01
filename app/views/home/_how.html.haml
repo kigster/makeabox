@@ -1,0 +1,29 @@
+%section#how.band
+  .prose
+    %h2 How the tabs work
+    %p
+      You give the inside dimensions of the box, the empty space it has to hold, and the thickness of the material.
+      Makeabox draws six panels whose edges are cut into tabs, also called notches or teeth, so each side snaps into its neighbours.
+    %p
+      Every edge is divided into an odd number of equal sections. That keeps each panel symmetric, which is what makes these
+      boxes easy to put together: a closed box has only three different panels, and none of them can go in backwards.
+      A lid that lifts off adds a fourth.
+    %h3 Thickness
+    %p
+      Measure your sheet with calipers instead of trusting the label. Plywood sold as 1/4&Prime; is often closer to 0.2&Prime;,
+      and the tabs are exactly as deep as the number you enter.
+    %h3 Notch length
+    %p
+      Left blank, tabs are about three times the thickness. A value you enter is a guide: the width is adjusted so that
+      a whole, odd number of tabs fits each edge. It can be anything from 10 mm (0.4 in) up to a third of the shortest side; on a very small box the lower limit drops to half the upper one.
+    %h3 Kerf
+    %p
+      The laser burns away a thin line of material. Kerf is the width of that line, and the drawing is widened by it so
+      the tabs fit tightly. Cut a small test box first, then raise the kerf if the fit is loose.
+    %p
+      The drawing opens in LightBurn, Inkscape, Illustrator or CorelDRAW, where you can add holes and engraving before
+      sending it to the cutter.
+      = succeed '.' do
+        %a{href: 'https://github.com/kigster/laser-cutter'} The code that draws it is open source
+  %figure
+    = image_tag 'notched-boxes.jpg', alt: 'A laser-cut acrylic enclosure held together by notched edges', loading: 'lazy'
