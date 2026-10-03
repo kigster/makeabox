@@ -3,6 +3,8 @@
 Rails.application.routes.draw do
   root 'home#index'
 
+  get 'sitemap.xml', to: 'sitemaps#show', as: :sitemap
+
   # Draws the box as an SVG and reports progress as server-sent events.
   get 'box/stream', to: 'boxes#stream', as: :box_stream
   # The same box as a file: /box/download.pdf or /box/download.svg
