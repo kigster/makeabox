@@ -10,11 +10,16 @@ RSpec.describe 'Search engines' do
     expect(response.body.lines.map(&:strip)).to include('User-agent: *', 'Allow: /', 'Disallow: /box/', 'Sitemap: https://makeabox.io/sitemap.xml')
   end
 
-  it 'find the page in the sitemap' do
+  it 'returns HTTP 200 with an XML content type' do
     get '/sitemap.xml'
 
     expect(response).to have_http_status(:ok)
     expect(response.media_type).to eq('application/xml').or eq('text/xml')
+  end
+
+  it 'find the page in the sitemap' do
+    get '/sitemap.xml'
+
     sitemap = Nokogiri::XML(response.body, &:strict)
     expect(sitemap.root.namespace.href).to eq 'http://www.sitemaps.org/schemas/sitemap/0.9'
     expect(sitemap.css('url loc').map(&:text)).to eq ['https://makeabox.io/']
