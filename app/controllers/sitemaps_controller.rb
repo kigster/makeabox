@@ -4,8 +4,8 @@
 # nginx does not treat .xml as a static file, unlike robots.txt.
 class SitemapsController < ApplicationController
   def show
-    send_data Rails.root.join('public/sitemap.xml').read,
-              type: 'application/xml',
+    send_data Rails.public_path.join('sitemap.xml').read,
+              type:        'application/xml',
               disposition: 'inline'
   end
 end
