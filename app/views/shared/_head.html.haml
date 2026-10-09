@@ -7,6 +7,9 @@
   %meta{name: 'theme-color', content: '#151b21'}/
 
   %title= content_for?(:title) ? yield(:title) : 'Make A Box: laser cutter templates for symmetric enclosure boxes'
+  -# Only pages that name their own canonical URL get one.
+  - if content_for?(:canonical)
+    %link{rel: 'canonical', href: yield(:canonical)}/
   %meta{name: 'description', content: 'Enter the inside dimensions of a box and the thickness of your material. Get a free SVG or PDF your laser cutter can cut, with tabs that snap together.'}/
 
   -# The card shown when a link to makeabox is shared.

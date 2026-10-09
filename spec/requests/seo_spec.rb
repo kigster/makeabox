@@ -18,4 +18,20 @@ RSpec.describe 'Search engines' do
     expect(sitemap.css('url loc').map(&:text)).to eq ['https://makeabox.io/']
     expect(Date.iso8601(sitemap.at_css('url lastmod').text)).to be <= Time.zone.today
   end
+
+  describe 'the home page' do
+    let(:page) { response.parsed_body }
+
+    it 'names makeabox.io as its canonical address' do
+      get '/'
+
+      expect(page.css('link[rel=canonical]').pluck('href')).to eq ['https://makeabox.io/']
+    end
+
+    it 'keeps that address when the request carries tracking parameters' do
+      get '/', params: { utm_source: 'newsletter', utm_campaign: 'fall', gclid: 'abc123' }
+
+      expect(page.css('link[rel=canonical]').pluck('href')).to eq ['https://makeabox.io/']
+    end
+  end
 end
