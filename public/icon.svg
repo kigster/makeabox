@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="makeabox">
+  <!-- three plywood panels of a box, seen from a corner (simplified from logo.svg for small sizes) -->
+  <path fill="#efd9aa" d="M16 2.5 27.7 9.25 16 16 4.3 9.25z"/>
+  <path fill="#e2c48f" d="M4.3 9.25 16 16v13.5L4.3 22.75z"/>
+  <path fill="#c4a269" d="M16 16 27.7 9.25v13.5L16 29.5z"/>
+  <!-- the laser, where the three panels meet -->
+  <circle cx="16" cy="16" r="6" fill="#ff5a2b" fill-opacity="0.35"/>
+  <circle cx="16" cy="16" r="1.5" fill="#fff"/>
+</svg>
