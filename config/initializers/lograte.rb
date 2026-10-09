@@ -6,7 +6,7 @@ Rails.application.configure do
   config.lograge.enabled   = true
   config.lograge.formatter = Lograge::Formatters::KeyValue.new
   config.colorize_logging  = false
-  config.lograge.logger    = ActiveSupport::Logger.new(Rails.root.join('log', "#{Rails.env}.log").to_s)
+  config.lograge.logger    = ActiveSupport::Logger.new(ENV['RAILS_LOG_TO_STDOUT'].present? ? $stdout : Rails.root.join('log', "#{Rails.env}.log").to_s)
 
   config.lograge.custom_options =
     lambda do |event|

@@ -37,7 +37,8 @@ module Makeabox
 
       def create_logger
         rails_env = ::Makeabox::Logging.detect_rails_env
-        logger = ::Logger.new("log/#{rails_env}.log")
+        # In a container (RAILS_LOG_TO_STDOUT) the log goes to stdout, for Cloud Logging.
+        logger = ::Logger.new(ENV['RAILS_LOG_TO_STDOUT'].to_s.empty? ? "log/#{rails_env}.log" : $stdout)
 
         logger.formatter = logger_format_proc
 

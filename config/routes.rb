@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   get 'sitemap.xml', to: 'sitemaps#show', as: :sitemap
 
+  # For Cloud Run and load balancers: 200 once the app has booted.
+  get 'up', to: 'rails/health#show', as: :rails_health_check
+
   # Draws the box as an SVG and reports progress as server-sent events.
   get 'box/stream', to: 'boxes#stream', as: :box_stream
   # The same box as a file: /box/download.pdf or /box/download.svg

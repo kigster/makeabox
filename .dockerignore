@@ -1,6 +1,44 @@
-.git
-.dockerignore
-tmp
-log
-doc
+# Kept out of the image: secrets first, then what only development and CI use.
 
+# Secrets. The container gets SECRET_KEY_BASE and the rest from its environment.
+config/master.key
+config/credentials/*.key
+config/secrets.yml
+config/secrets/
+.env*
+*.pem
+
+# Version control and editors
+.git
+.github
+.gitignore
+.dockerignore
+.claude
+.plans
+.idea
+.vscode
+
+# Built or written at run time
+log/*
+tmp/*
+public/assets
+coverage
+node_modules
+storage/*
+
+# Development, tests and deployment to the old server
+spec
+cypress
+cypress.config.*
+package.json
+package-lock.json
+config/deploy
+config/deploy.rb
+config/nginx
+config/nginx.conf
+config/systemd.puma.service
+config/initializers-archived
+lib/capistrano
+Capfile
+doc
+docs

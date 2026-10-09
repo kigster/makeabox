@@ -15,6 +15,8 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
+  # Assets carry a digest in their names, so browsers may keep them for a year.
+  config.public_file_server.headers = { 'cache-control' => "public, max-age=#{1.year.to_i}, immutable" }
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
@@ -32,7 +34,8 @@ Rails.application.configure do
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
-  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+  # nginx on the old server sends files for Rails; in a container nothing does (X_SENDFILE_HEADER="").
+  config.action_dispatch.x_sendfile_header = ENV.fetch('X_SENDFILE_HEADER', 'X-Accel-Redirect').presence
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = false
@@ -43,14 +46,15 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
 
-  # Use a different logger for distributed setups.
-  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
+  # In a container the logs go to stdout, where Cloud Logging collects them.
+  config.logger = ActiveSupport::TaggedLogging.logger($stdout) if ENV['RAILS_LOG_TO_STDOUT'].present?
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = 'https://makeabox.io' if Makeabox.live?
+  # ASSET_HOST overrides it; ASSET_HOST="" serves assets from the app itself, as in a container.
+  config.action_controller.asset_host = ENV.fetch('ASSET_HOST') { 'https://makeabox.io' if Makeabox.live? }.presence
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -71,5 +75,10 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = Logger::Formatter.new
 
-  config.cache_store = :mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)
+  # memcached on the old server; without one (MEMCACHED_HOST="", as in a container) each process caches in memory.
+  config.cache_store = if Makeabox::MEMCACHED_HOST.present?
+                         [:mem_cache_store, Makeabox::MEMCACHED_URL, Makeabox.memcached_options(:cache)]
+                       else
+                         :memory_store
+                       end
 end
