@@ -33,5 +33,13 @@ RSpec.describe 'Search engines' do
 
       expect(page.css('link[rel=canonical]').pluck('href')).to eq ['https://makeabox.io/']
     end
+
+    it 'introduces the generator in a paragraph under its one heading' do
+      get '/'
+
+      expect(page.css('h1').size).to eq 1
+      expect(page.at_css('.hero .pitch p').text).to start_with('Set the inside dimensions and your material.')
+      expect(page.css('h4')).to be_empty
+    end
   end
 end
