@@ -3,6 +3,8 @@
 module ApplicationHelper
   GISCUS_REPO_ID = "MDEwOlJlcG9zaXRvcnkyNDUyMTQzNg=="
   GISCUS_CATEGORY_ID = "DIC_kwDOAXYq3M4DGyTy"
+  # The address search engines should index, whatever host or query a request used.
+  SITE_URL = "https://makeabox.io/"
 
   # Analytics and the New Relic browser agent only make sense on the live site.
   def tracking?
