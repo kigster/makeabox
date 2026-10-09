@@ -6,17 +6,18 @@
     = render 'shared/google'
   %meta{name: 'theme-color', content: '#151b21'}/
 
-  %title= content_for?(:title) ? yield(:title) : 'Make A Box: laser cutter templates for symmetric enclosure boxes'
+  %title= content_for?(:title) ? yield(:title) : 'Free Laser Cut Box Generator - SVG & PDF | makeabox'
   -# Only pages that name their own canonical URL get one.
   - if content_for?(:canonical)
     %link{rel: 'canonical', href: yield(:canonical)}/
   %meta{name: 'description', content: 'Enter the inside dimensions of a box and the thickness of your material. Get a free SVG or PDF your laser cutter can cut, with tabs that snap together.'}/
 
   -# The card shown when a link to makeabox is shared.
+  - social_title = 'Free Laser Cut Box Generator: SVG and PDF templates for boxes that snap together'
   - teaser = 'Dynamically generate symmetric and free SVG and PDF templates for your laser-cutter, to produce self-snapping boxes of any size. Increase kerf for tighter fit.'
   %meta{property: 'og:type', content: 'website'}/
   %meta{property: 'og:site_name', content: 'makeabox'}/
-  %meta{property: 'og:title', content: 'Make A Box: generate laser cutter box templates for enclosures, with the lids or not.'}/
+  %meta{property: 'og:title', content: social_title}/
   %meta{property: 'og:description', content: teaser}/
   %meta{property: 'og:url', content: root_url}/
   %meta{property: 'og:image', content: image_url('social.png')}/
@@ -24,7 +25,7 @@
   %meta{property: 'og:image:height', content: '630'}/
   %meta{property: 'og:image:alt', content: 'The makeabox logo and name'}/
   %meta{name: 'twitter:card', content: 'summary_large_image'}/
-  %meta{name: 'twitter:title', content: 'makeabox'}/
+  %meta{name: 'twitter:title', content: social_title}/
   %meta{name: 'twitter:description', content: teaser}/
   %meta{name: 'twitter:image', content: image_url('social.png')}/
 

@@ -34,6 +34,20 @@ RSpec.describe 'Search engines' do
       expect(page.css('link[rel=canonical]').pluck('href')).to eq ['https://makeabox.io/']
     end
 
+    it 'has one title naming the generator, its formats and the brand' do
+      get '/'
+
+      expect(page.css('title').map(&:text)).to eq ['Free Laser Cut Box Generator - SVG & PDF | makeabox']
+    end
+
+    it 'gives shared links the same title on every network' do
+      get '/'
+
+      og = page.at_css('meta[property="og:title"]')['content']
+      expect(og).to include('Laser Cut Box Generator', 'SVG', 'PDF')
+      expect(page.at_css('meta[name="twitter:title"]')['content']).to eq og
+    end
+
     it 'introduces the generator in a paragraph under its one heading' do
       get '/'
 
