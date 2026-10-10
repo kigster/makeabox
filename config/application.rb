@@ -39,6 +39,14 @@ module Makeabox
       config.secret_key_base = secret if secret.present?
     end
 
+    # In a container there is no secrets.yml. Without SECRET_KEY_BASE the app
+    # would boot and then fail every request, health check included, so it
+    # refuses to boot instead and the deploy fails where it can be seen.
+    if Rails.env.production? && !secrets_file.exist? &&
+       ENV.values_at('SECRET_KEY_BASE', 'SECRET_KEY_BASE_DUMMY', 'RAILS_MASTER_KEY').all?(&:blank?)
+      raise 'Set SECRET_KEY_BASE: production has no secret key without it.'
+    end
+
     # Design sources, not something to publish.
     config.assets.excluded_paths << Rails.root.join('app/assets/photoshop')
 

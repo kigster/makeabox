@@ -34,3 +34,5 @@ results/
 .envrc.secrets
 **/.ruby-lsp
 vendor/bundle
+.terragrunt-cache
+.terraform

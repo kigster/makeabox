@@ -20,10 +20,23 @@ RSpec.describe 'Search engines' do
   it 'find the page in the sitemap' do
     get '/sitemap.xml'
 
+    expect(response).to have_http_status(:ok)
     sitemap = Nokogiri::XML(response.body, &:strict)
     expect(sitemap.root.namespace.href).to eq 'http://www.sitemaps.org/schemas/sitemap/0.9'
     expect(sitemap.css('url loc').map(&:text)).to eq ['https://makeabox.io/']
     expect(Date.iso8601(sitemap.at_css('url lastmod').text)).to be <= Time.zone.today
+  end
+
+  context 'when static files are served by nginx instead of Rails' do
+    subject(:sitemap_response) { sitemap_request.get('/sitemap.xml') }
+
+    # Exercise the routes without ActionDispatch::Static, retaining production sendfile handling.
+    let(:sitemap_app) { Rack::Sendfile.new(Rails.application.routes, 'X-Accel-Redirect') }
+    let(:sitemap_request) { Rack::MockRequest.new(sitemap_app) }
+
+    its(:status) { is_expected.to eq(200) }
+    its(:media_type) { is_expected.to eq('application/xml') }
+    its(:body) { is_expected.to eq(Rails.public_path.join('sitemap.xml').read) }
   end
 
   describe 'the home page' do
