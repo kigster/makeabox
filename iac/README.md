@@ -1,6 +1,6 @@
-# Qualified.at - GCP Infrastructure as Code
+# GCP Infrastructure as Code
 
-This repository contains the Terraform and Terragrunt configuration to deploy the Qualified.at Rails application to Google Cloud Platform (GCP).
+This repository contains the Terraform and Terragrunt configuration to deploy the Rails application to Google Cloud Platform (GCP).
 
 ## Architecture Overview
 
