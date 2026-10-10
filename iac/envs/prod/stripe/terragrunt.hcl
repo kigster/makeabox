@@ -37,7 +37,7 @@ EOF
 }
 
 inputs = {
-  webhook_url = "https://makeabox.at/stripe/webhooks"
+  webhook_url = "https://makeabox.io/stripe/webhooks"
   environment = "prod"
 
   # THE list. Read from the same file StripeMirror::EnabledEvents reads, so the

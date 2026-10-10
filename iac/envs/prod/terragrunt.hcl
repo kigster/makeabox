@@ -16,5 +16,5 @@ inputs = {
   rails_master_key_secret_name = "rails-master-key"
 
   # Custom domain mapped to the web service (must be pre-verified with Google)
-  domain = "makeabox.at"
+  domain = "makeabox.io"
 }
