@@ -1,6 +1,6 @@
 variable "webhook_url" {
   type        = string
-  description = "Absolute URL Stripe POSTs events to, e.g. https://qualified.at/stripe/webhooks"
+  description = "Absolute URL Stripe POSTs events to, e.g. https://makeabox.at/stripe/webhooks"
 }
 
 variable "enabled_events" {
@@ -31,7 +31,7 @@ variable "enabled_events" {
 
 variable "description" {
   type        = string
-  default     = "qualified.at — billing event ingestion (managed by Terraform)"
+  default     = "makeabox.at — billing event ingestion (managed by Terraform)"
   description = "Human-readable label shown in the Stripe dashboard's webhook list."
 }
 

@@ -6,9 +6,9 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    project  = "qualifiedat-production" # Replace with your project ID
+    project  = "makeabox-production" # Replace with your project ID
     location = "us-central1"
-    bucket   = "qualified-at-tf-state-prod"
+    bucket   = "makeabox-at-tf-state-prod"
     prefix   = "${path_relative_to_include()}/terraform.tfstate"
   }
 }

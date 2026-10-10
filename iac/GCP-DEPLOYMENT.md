@@ -13,7 +13,7 @@ To deploy the Rails app, the local Docker image must be pushed to a repository i
 1. **Authenticate the Google Cloud CLI:** Ensure you are logged into the correct project.
    ```bash
    gcloud auth login
-   gcloud config set project qualifiedat-production
+   gcloud config set project makeabox-production
    ```
 1. **Configure Docker Auth:** Configure the Docker client to use `gcloud` as a credential helper for the specific region (`us-central1`).
    ```bash
@@ -21,11 +21,11 @@ To deploy the Rails app, the local Docker image must be pushed to a repository i
    ```
 1. **Tag the Image:** Tag the local image with the exact remote path of the GAR repository.
    ```bash
-   docker tag my-local-app us-central1-docker.pkg.dev/qualifiedat-production/qualified-app/qualified-app:latest
+   docker tag my-local-app us-central1-docker.pkg.dev/makeabox-production/makeabox-app/makeabox-app:latest
    ```
 1. **Push the Image:** Upload the image to Google Cloud.
    ```bash
-   docker push us-central1-docker.pkg.dev/qualifiedat-production/qualified-app/qualified-app:latest
+   docker push us-central1-docker.pkg.dev/makeabox-production/makeabox-app/makeabox-app:latest
    ```
 
 ______________________________________________________________________

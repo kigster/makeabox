@@ -16,7 +16,7 @@ resource "google_project_service" "services" {
 }
 
 resource "google_compute_network" "main" {
-  name                    = "qualified-vpc-${var.environment}"
+  name                    = "makeabox-vpc-${var.environment}"
   auto_create_subnetworks = true
   depends_on              = [google_project_service.services]
 }
@@ -43,7 +43,7 @@ resource "random_password" "db_password" {
 }
 
 resource "google_sql_database_instance" "postgres" {
-  name             = "qualified-db-${var.environment}"
+  name             = "makeabox-db-${var.environment}"
   database_version = "POSTGRES_18"
   region           = var.region
 
@@ -64,7 +64,7 @@ resource "google_sql_database" "database" {
 }
 
 resource "google_sql_user" "user" {
-  name     = "qualified_user"
+  name     = "makeabox_user"
   instance = google_sql_database_instance.postgres.name
   password = random_password.db_password.result
 }
@@ -141,7 +141,7 @@ resource "google_storage_bucket_iam_member" "uploads_admin" {
 # Redis (Memorystore)
 # ------------------------------------------------------------------------------
 resource "google_redis_instance" "cache" {
-  name               = "qualified-redis-${var.environment}"
+  name               = "makeabox-redis-${var.environment}"
   memory_size_gb     = 1 # Smallest tier
   region             = var.region
   authorized_network = google_compute_network.main.id
@@ -159,15 +159,15 @@ resource "google_redis_instance" "cache" {
 data "google_artifact_registry_docker_image" "app" {
   project       = var.project_id
   location      = var.region
-  repository_id = "qualified-app"
-  image_name    = "qualified-app:latest"
+  repository_id = "makeabox-app"
+  image_name    = "makeabox-app:latest"
 }
 
 # ------------------------------------------------------------------------------
 # Web Application (Cloud Run - Puma)
 # ------------------------------------------------------------------------------
 resource "google_cloud_run_v2_service" "web" {
-  name     = "qualified-web-${var.environment}"
+  name     = "makeabox-web-${var.environment}"
   location = var.region
 
   # Allow terraform to replace the service (e.g. when tainted). This gates
@@ -294,7 +294,7 @@ resource "google_cloud_run_service_iam_member" "public" {
 # manually — exactly the shape a queue consumer needs.
 # ------------------------------------------------------------------------------
 resource "google_cloud_run_v2_worker_pool" "worker" {
-  name                = "qualified-sidekiq-${var.environment}"
+  name                = "makeabox-sidekiq-${var.environment}"
   location            = var.region
   deletion_protection = false
   launch_stage        = "BETA"

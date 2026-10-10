@@ -14,7 +14,7 @@ variable "rails_env" {
 
 variable "db_name" {
   type        = string
-  default     = "qualified_production"
+  default     = "makeabox_production"
   description = "Cloud SQL database name. Default preserves the existing prod database; changing it on a live environment forces the database to be replaced."
 }
 

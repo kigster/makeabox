@@ -20,9 +20,9 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    project  = "qualifiedat-production"
+    project  = "makeabox-production"
     location = "us-central1"
-    bucket   = "qualified-at-tf-state-prod"
+    bucket   = "makeabox-at-tf-state-prod"
     prefix   = "envs/prod/stripe/terraform.tfstate"
   }
 }
@@ -37,7 +37,7 @@ EOF
 }
 
 inputs = {
-  webhook_url = "https://qualified.at/stripe/webhooks"
+  webhook_url = "https://makeabox.at/stripe/webhooks"
   environment = "prod"
 
   # THE list. Read from the same file StripeMirror::EnabledEvents reads, so the

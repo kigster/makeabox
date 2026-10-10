@@ -7,7 +7,7 @@ terraform {
 }
 
 inputs = {
-  project_id  = "qualifiedat-production"
+  project_id  = "makeabox-production"
   region      = "us-central1"
   environment = "prod"
   rails_env   = "production"
@@ -16,5 +16,5 @@ inputs = {
   rails_master_key_secret_name = "rails-master-key"
 
   # Custom domain mapped to the web service (must be pre-verified with Google)
-  domain = "qualified.at"
+  domain = "makeabox.at"
 }

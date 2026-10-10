@@ -9,11 +9,11 @@
 # }
 #
 # inputs = {
-#   project_id  = "qualifiedat-staging"
+#   project_id  = "makeabox-staging"
 #   region      = "us-central1"
 #   environment = "staging"
 #   rails_env   = "staging"
-#   db_name     = "qualified_staging"
+#   db_name     = "makeabox_staging"
 #   deletion_protection = false
 #   rails_master_key_secret_name = "rails-master-key"
 # }

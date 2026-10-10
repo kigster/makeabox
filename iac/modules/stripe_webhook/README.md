@@ -21,7 +21,7 @@ terraform {
 }
 
 inputs = {
-  webhook_url    = "https://qualified.at/stripe/webhooks"
+  webhook_url    = "https://makeabox.at/stripe/webhooks"
   environment    = "prod"
   enabled_events = jsondecode(file("${get_repo_root()}/config/stripe/enabled_events.json")).events
 }
