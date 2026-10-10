@@ -1,6 +1,6 @@
-# GCP Infrastructure as Code
+# MakeABox.io - GCP Infrastructure as Code
 
-This repository contains the Terraform and Terragrunt configuration to deploy the Rails application to Google Cloud Platform (GCP).
+This repository contains the Terraform and Terragrunt configuration to deploy the MakeABox.io Rails application to Google Cloud Platform (GCP).
 
 ## Architecture Overview
 
