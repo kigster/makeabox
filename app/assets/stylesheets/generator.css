@@ -29,6 +29,7 @@
 .stage .top { fill: var(--birch-light); }
 .stage .left { fill: var(--birch); }
 .stage .right { fill: var(--birch-dark); }
+.stage .tilted { fill: color-mix(in oklab, var(--birch-light) 55%, var(--birch)); }
 .stage .inside { stroke: #2a1a0c; stroke-width: 1; }
 .stage .floor { fill: #6b5231; }
 .stage .far { fill: #a98a57; }
